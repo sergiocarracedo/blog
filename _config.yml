@@ -91,6 +91,6 @@ theme: sergiocarracedo
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/sergiocarracedo/blog
+  repo: git@github.com:sergiocarracedo/blog.git
   branch: gh-pages
   message:
