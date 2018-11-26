@@ -5,11 +5,11 @@ branches:
   only:
   - master
 
-install: npm install
+install: yarn
 
 before_script:
 - git config --global user.name "Sergio Carracedo"
 - git config --global user.email "info@sergiocarracedo.es"
 - sed -i "s/__GITHUB_TOKEN__/${__GITHUB_TOKEN__}/" _config.yml
 
-script: npm run build
+script: yarn build
