@@ -5,7 +5,7 @@ branches:
   only:
   - master
 
-install: yarn && cd themes/sergiocarracedo && yarn
+install: yarn && cd themes/sergiocarracedo && yarn && cd ../..
 
 before_script:
 - git config --global user.name "Sergio Carracedo"
