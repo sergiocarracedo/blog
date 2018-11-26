@@ -1,0 +1,25 @@
+<%- partial("_partial/menu", null, {cache: true}) %>
+<div id="container">
+    <%- partial("_partial/screen", null, {cache: true}) %>
+
+    <%- partial("_partial/aboutme", null, {cache: true}) %>
+
+    <div id="primary">
+        <a name="blog"></a>
+        <h3 class="block-title">
+            Mi blog
+        </h3>
+        <%- partial('_partial/list', {start: 0}) %>
+    </div>
+    <% if (page.total > 1){ %>
+        <nav id="page-nav">
+            <% var prev_text = "&laquo; " + __('prev');var next_text = __('next') + " &raquo;"%>
+            <%- paginator({
+                prev_text: prev_text,
+                next_text: next_text,
+                format: 'page/%d/#blog'
+            }) %>
+        </nav>
+    <% } %>
+</div>
+<div id="preview"></div>

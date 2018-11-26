@@ -1,0 +1,14 @@
+<div class="post">
+  <a href="<%- url_for(post.path) %>" title="<%- post.title || "Untitled" %>">
+    <%- image_tag(post.cover || theme.cover, {class: "cover"}) %>
+
+    <div class="titles">
+      <h6>
+        <%- post.date.locale("es").format("DD MMMM YYYY") %>
+      </h6>
+      <h3>
+        <%- post.title %>
+      </h3>
+    </div>
+  </a>
+</div>

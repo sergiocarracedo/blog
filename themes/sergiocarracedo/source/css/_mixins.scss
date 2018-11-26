@@ -1,0 +1,162 @@
+$xs: (0px, 767px);
+$sm: (768px, 991px);
+$md: (992px, 1199px);
+$lg: (1200px);
+
+@mixin media($devices...) {
+  @each $device in $devices {
+    @if (length($device) == 2) {
+      @media screen and (min-width: nth($device, 1)) and (max-width: nth($device, 2)) {
+        @content;
+      }
+    } @else {
+      @media screen and (min-width: nth($device, 1)) {
+        @content;
+      }
+    }
+  }
+}
+
+
+
+@mixin gradient($start: $primary-color, $stop: $secondary-color, $start-pos: 0%, $stop-pos: 100%) {
+  background: $start; /* Old browsers */
+  background-color: $start;
+  background: -moz-linear-gradient(left, $start $start-pos, $stop $stop-pos); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop($start-pos, $start), color-stop($stop-pos, $stop)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, $start $start-pos, $stop $stop-pos); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, $start $start-pos, $stop $stop-pos); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, $start $start-pos, $stop $stop-pos); /* IE10+ */
+  background: linear-gradient(to right, $start $start-pos, $stop $stop-pos); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$start, endColorstr=$stop, GradientType=1); /* IE6-8 */
+  background-repeat: no-repeat;
+}
+
+
+@mixin gradient-radial($start, $stop, $start-pos: 0%, $stop-pos: 100% , $shape: circle) {
+  background: $start; /* Old browsers */
+  background: -webkit-radial-gradient($shape, $start $start-pos, $stop $stop-pos); /* Safari 5.1 to 6.0 */
+  background: -o-radial-gradient($shape, $start $start-pos, $stop $stop-pos); /* For Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient($shape, $start $start-pos, $stop $stop-pos); /* For Firefox 3.6 to 15 */
+  background: radial-gradient($shape, $start $start-pos, $stop $stop-pos); /* Standard syntax */
+}
+
+
+@mixin gradient-vertical($start, $stop, $start-pos:0%, $stop-pos: 100% ) {
+  background: $start; /* Old browsers */
+  background: -moz-linear-gradient(left, $start $start-pos, $stop $stop-pos); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop($start-pos,$start), color-stop($stop-pos,$stop)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, $start $start-pos,$stop $stop-pos); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, $start $start-pos,$stop $stop-pos); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, $start $start-pos,$stop $stop-pos); /* IE10+ */
+  background: linear-gradient(to bottom, $start $start-pos,$stop $stop-pos); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$start, endColorstr=$stop,GradientType=0 ); /* IE6-8 */
+  background-repeat: no-repeat;
+}
+
+@mixin vertical-align($xs: true) {
+  @if ($xs == false) {
+    @include media(768px) {
+      top: 50%;
+      position: absolute;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+  } @else {
+    top: 50%;
+    position: absolute;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+}
+
+
+@mixin cover() {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom:0;
+}
+
+
+@mixin transition($property: all , $speed: 1s, $ease: ease-in-out) {
+  -moz-transition: $property $speed $ease;
+  -o-transition: $property $speed $ease;
+  -webkit-transition: $property $speed $ease;
+  transition: $property $speed $ease;
+}
+
+@mixin transition-delay($delay: 0.5s) {
+  -webkit-transition-delay: $delay; /* Safari */
+  transition-delay: $delay;
+}
+
+
+@mixin transform($transform) {
+  -ms-transform: $transform; /* IE 9 */
+  -webkit-transform: $transform; /* Chrome, Safari, Opera */
+  transform: $transform;
+}
+
+@mixin scale ($zoom: 1.1) {
+  @include transform(scale($zoom));
+}
+
+
+@mixin underline-effect($color, $effect: 'left') {
+  text-decoration: none;
+  padding-bottom: 3px;
+  position: relative;
+  &:hover {
+    text-decoration: none;
+  }
+  &:after {
+    text-decoration: none;
+    @include transition(all, .2s);
+    content: '';
+    height: 1px;
+    position: absolute;
+    background: $color;
+    width: 0;
+    bottom: 0;
+  }
+  @if ($effect == 'center') {
+    &:after {
+      left: 50%;
+    }
+
+    &:hover {
+      &:after {
+        width: 100%;
+        left: 0;
+      }
+    }
+  }
+
+  @if ($effect == 'left') {
+    &:after {
+      left: 0;
+    }
+
+    &:hover {
+      &:after {
+        width: 100%;
+      }
+    }
+  }
+
+  @if ($effect == 'right') {
+    &:after {
+      right: 0;
+    }
+
+    &:hover {
+      &:after {
+        width: 100%;
+      }
+    }
+  }
+}

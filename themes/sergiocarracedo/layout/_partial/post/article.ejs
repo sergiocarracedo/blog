@@ -1,0 +1,22 @@
+<div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        <%- page.title %>
+      </h1>
+      <div class="stuff">
+        <span><%- page.date.locale("es").format("DD MMMM YYYY") %></span>
+        <%- partial('_partial/post/tag', {post: page}) %>
+      </div>
+
+      <% if (page.cover) { %>
+      <div class="article-image">
+        <img src="<%- page.cover %>" alt="<%- page.title %>">
+      </div>
+      <% } %>
+      <div class="content markdown">
+        <%- page.content %>
+      </div>
+    </div>
+  </div>
+</div>

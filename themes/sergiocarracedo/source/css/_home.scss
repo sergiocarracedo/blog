@@ -1,0 +1,131 @@
+#home-header {
+  width: 100%;
+  max-height: 460px;
+  overflow: hidden;
+  position: relative;
+  min-height: 460px;
+  background: url(/img/gauss.jpg) no-repeat center center;
+  background-size: cover;
+
+
+  @include media($xs) {
+    max-height: 520px;
+    min-height: 360px;
+  }
+  .content {
+    @include cover();
+    @include gradient-radial(rgba($black, .7), rgba($black, 0), 10%, 22%);
+
+
+
+    .content-wrapper {
+      width: 100%;
+      @include vertical-align();
+
+      @include media($xs) {
+        padding-bottom: 30px;
+        padding-top: 30px;
+
+      }
+
+      text-align: center;
+
+
+      .image-logo {
+        display: block;
+        width: 150px;
+        border-radius: 99999px;
+        border: 10px solid #fff;
+        margin: 0 auto 12px;
+
+        @include media($xs) {
+          width: 80px;
+          border-width: 5px;
+        }
+      }
+
+      h1 {
+        color: $white;
+        font-family: $secondary-font;
+        @include gradient();
+        padding: 10px 20px;
+        font-size: 23px;
+        border-radius: 9999px;
+        display: inline-block;
+        margin-bottom: 20px;
+
+        @include media($xs) {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+  .social {
+    .social-link {
+      background: $white;
+      color: $gray;
+      display: inline-block;
+      border-radius: 9999px;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 20px;
+      text-align: center;
+      @include transition(all, .2s);
+      margin: 3px;
+
+      &:hover {
+        @include scale(1.2);
+      }
+
+    }
+  }
+}
+
+#home-aboutme {
+  @include gradient();
+  text-align: center;
+  color: $white;
+  font-size: 30px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin-bottom: 60px;
+
+  @include media($xs) {
+    font-size: 20px;
+  }
+
+
+  .claim {
+    padding-bottom: 20px;
+
+    a {
+      color: $white;
+      @include underline-effect($white);
+    }
+  }
+}
+
+
+.skills {
+  .chip {
+    display: inline-block;
+    margin: 0 7px 7px 0;
+    background: $gray;
+    padding: 6px 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 9999px;
+  }
+}
+
+
+#primary {
+  .block-title {
+    text-align: center;
+    margin: 0 0 40px;
+    font-size: 40px;
+  }
+}

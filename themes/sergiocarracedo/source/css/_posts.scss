@@ -1,0 +1,87 @@
+.post {
+  overflow: hidden;
+  margin-bottom: 16px;
+
+  > a {
+    display: block;
+    max-height: 350px;
+    overflow: hidden;
+    position: relative;
+    @include transition(all, .2s);
+
+    .titles {
+      @include cover();
+      padding: 30px;
+      @include gradient-vertical(rgba($black,.7), rgba($black ,0), 0%, 100%);
+      @include transition(background, .2s);
+      color: $white;
+
+      h6 {
+        margin: 0 0 5px 0;
+        font-size: 14px;
+        font-weight: normal;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+    }
+
+    &:hover {
+      .titles {
+      background-position: 0 -100px;
+      }
+    }
+  }
+}
+
+
+
+.article {
+  margin: 100px auto 0 auto;
+
+  h1.title {
+    margin-bottom: 7px;
+  }
+
+  .stuff {
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 15px;
+    span {
+      display: inline-block;
+      margin-right: 20px;
+    }
+  }
+  .article-image {
+    margin-bottom: 40px;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+
+
+    @include media($xs) {
+      height: 200px;
+    }
+    img {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .content {
+    line-height: 1.5em;
+    margin-bottom: 100px;
+
+    a {
+      display: inline-block;
+      color: $flat-color;
+      font-weight: bold;
+      text-decoration: none;
+      position: relative;
+      @include underline-effect($flat-color);
+    }
+  }
+}
