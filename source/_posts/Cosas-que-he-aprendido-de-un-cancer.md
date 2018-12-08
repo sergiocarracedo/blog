@@ -1,0 +1,42 @@
+---
+title: Cosas que he aprendido de un cáncer
+date: 2018-12-08
+cover: /images/linfoma_1.jpg
+---
+
+Hace unos meses me han diagnosticado un cáncer, un *Linfoma no Hodgkin difuso de células B grandes*. Ahora mismo estoy a mitad de tratamiento y me gustaría compartir lo que he aprendido durante este tiempo.
+
+> Antes de nada aclarar que lo que cuento esta basado en mi experiencia personal, no pretende ser ni una referencia, ni consejos para otras personas.
+
+1. **La palabra _cáncer_ incluye cientos de distintos tipos** y subtipos, lo que implica síntomas, riesgos, complicaciones y tratamientos distintos (muy distintos unos de otros). Aunque la base de la enfermedad es la mismas (una reproducción anormal y sin control de las células tumorales), dependiendo de qué celúlas sean y donde estén situadas es como si fuese una enfermedad distinta.
+
+2. **Yo ni lucho, ni peleo, ni nada que se le parezca contra el cáncer**. De la misma forma que nadie lucha contra una fractura de un hueso. Es una enfermedad de tratamiento pasivo en la que te limitas a ir al médico, hacer pruebas, recibir los tratamientos que te dan y soportar los efectos secundarios. 
+
+3. Si buscas en internet, **TODO ES CÁNCER**, da igual los síntomas que busques, acabarás encontrando (más pronto que tarde) alguna web de "medicina" que relacione ese síntoma por muy inocente que sea con un cáncer. Mi recomendación, **NI CASO**
+
+3. Muchas veces pienso que **para mi entorno es a veces más difícil sobrellevar la situación que para mí**. Ves que no saben que decirte, o como decirlo. Entiendo que es normal, no es una situación común a la que estés acostumbrado. Lo que yo agradezco, ya no son las palabras de ánimo (para alguien tan pragmático como yo las palabras de ánimo son palabras), sino el saber que si realmente necesitases algo hay gente a tu lado, y sí, tienes mucha más gente a tu lado de la que imaginas.
+
+4. **La actitud de uno poco (por no decir nada) va a tener que ver en el resultado del tratamiento**. Pero tomarse con un poco de humor negro (o gris) la situación de uno mismo te permite echarte unas risas. Puedo contar una pequeña anécdota:
+
+  Cuando me iban a hacer la biopsia del ganglio axilar, justo antes de entrar a quirófano (intervención con anestesia general), se acercó la enfermera de quirófano para comprobar los datos (no fuera a ser que me cortasen lo que no era :joy:) y le pidió el teléfono a mi mujer para avisarla mediante SMS cuando saliese del quirófano.
+  Le pregunto la relación familiar que tenia conmigo, ella dijo "Soy su mujer", y a mi solo se me ocurrió decirles, "Bueno, mi viuda si la operación sale mal". :joy: :joy: Aún me río ahora solo pensando en sus caras.
+  
+  Como decía un amigo: "Nos hemos pegado buen galleto, pero ¿y lo que nos hemos reído?"
+  
+5. **Si quieres aprendes** mogollón de cosas: Medicamentos, síntomas, funcionamiento del cuerpo, tratamientos, pruebas diagnoóticas, etc. Si además tienes un grupo de oncólogos como los que me llevan a mí, ellos te indican donde buscar más info, y eso mola mucho.
+
+6. En mi caso, un Linfoma se considera un cáncer de la sangre, es un crecimiento desmedido de los linfocitos que se acumulan en los ganglios haciendo que crezcan de forma desmesuradas, comprimiendo otros órganos. Como el sistema linfático se considera un único órgano el hecho de que se detecten células tumorales en distintos ganglios lejos unos de otros por el cuerpo NO se considera metástasis.
+
+7. Del punto 1 se puede extraer que **el tratamiento de cada cáncer es también un mundo**, no hay soluciones genéricas, incluso para el mismo cáncer. Y las quimioterapias no tiene por que ser medicamentos "raros", por ejemplo una parte del "mio" es la _[prednisona](https://es.wikipedia.org/wiki/Prednisona)_ que tiene unos usos médicos más allá del cáncer.
+ 
+6. En el caso del lifoma de células B Grandes, el tratamiento que parece más típico es el [R-CHOP](https://www.cáncer.gov/espanol/publicaciones/diccionario/def/r-chop):
+  * **R**: [Rituximab](https://es.wikipedia.org/wiki/Rituximab) Es la gran revolución en el tratamiento del linfoma de células B. El funcionamiento médico se me escapa bastante, pero de algunas lecturas simplificadas se puede resumir en que este fármaco (un anticuerpo) se une al antígeno CD20 y provoca una respuesta inmune del organismo que destruye los linfocitos B. 
+    El funcionamiento parece ser tan bueno que, por ejemplo la [Fundación Josep Carreras](https://www2.fcarreras.org/es/lafabrica) está buscando financiación para ensayos clínicos de un antígeno similar para los receptores CD30 (que se expresa prácticamente todos los linfomas de Hodgkin y varios subtipos de linfomas no Hodgkin.) 
+  * **C**: [Ciclofosfamida](https://es.wikipedia.org/wiki/Ciclofosfamida) _La ciclofosfamida es un medicamento de la familia de agentes alquilantes._ El dato más curioso que he extraído es que es un derivado del **Gas mostaza**, si, ese que se usaba en la _Primera guerra mundial_ como arma química.
+  * **H**: [Hidroxidaunorubicina](https://es.wikipedia.org/wiki/Doxorrubicina) Es un potente antibiótico extraído de microbios del suelo. Yo a este le llamo "BitterKas" por que tiene un color practicamente idéntico.
+  * **O**: [Oncovin o Vincristica](https://es.wikipedia.org/wiki/Vincristina) 
+  * **P**: [Prednisona](https://es.wikipedia.org/wiki/Prednisona)
+  
+7. Las "quimios" se aplican en ciclos (en mi caso 21 días) y se mide todo en base a esos ciclos. Las quimios tienen mogollón de efectos secundarios. Ahí vendrá el gran avance en los tratamientos, en minimizar los efectos secundarios para poder aumentar los primarios.
+
+Esta historia aún no ha acabado, asi que seguiré contando curiosidades sobre mi cáncer.

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "hexo": "^3.7.0",
+    "hexo-article-emoji": "https://github.com/frapples/hexo-article-emoji",
     "hexo-deployer-git": "^0.3.1",
     "hexo-generator-archive": "^0.1.5",
     "hexo-generator-category": "^0.1.3",
