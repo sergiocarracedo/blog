@@ -22,7 +22,7 @@ En primer paso es acudir temprano 8:00-8:40 al hospital de día, allí te hacen 
 
 Estos resultados le van a indicar a la oncóloga si puedes recibir el ciclo de quimio, si hay algo fuera de orden, por ejemplo, los leucocitos bajos no se puede poner y se aplazaría una semana.
 
-Sobre una hora, hora y media después, tengo la cita de consulta con la oncóloga (la hora es estimada por que todos tenemos cita a la misma hora y depende de si llegaron los resultados del análisis del laboratorio)
+Sobre una hora, hora y media después, tengo la cita de consulta con la oncóloga (la hora es estimada por que todos tenemos cita a la misma hora y depende de si llegaron los resultados del análisis del laboratorio).
 
 Está cita es para revisar la analítica recién hecha, ver qué tal están los efectos secundarios del anterior ciclo y si todo está ok, programar el tratamiento de quimioterapia y también me dan la cita para el siguiente ciclo. 
 
@@ -30,11 +30,11 @@ Programar el tratamiento de ese día consiste en una hoja de medicación, donde 
 
 Con la hoja de tratamiento paso a la enfermera que me confirma las citas en el sistema informático y pide las quimios a farmacia del hospital.
 
-Las quimios se preparan generalmente en el momento y personalizadas para cada paciente, en función del peso, área corporal, etc
+Las quimios se preparan generalmente en el momento y personalizadas para cada paciente, en función del peso, área corporal, etc.
 
-Pasas a la sala de espera de nuevo hasta que estén las quimios preparadas
+Pasas a la sala de espera de nuevo hasta que estén las quimios preparadas.
 
-Una vez llegan las quimios al hospital de día me pasan y me sientan en un sillón (o en mis últimos ciclos me pasan a una cama ya que me están poniendo un tratamiento intratecal que requiere un pinchazo en la columna). Me canalizan la vía central (**reservorio**)
+Una vez llegan las quimios al hospital de día me pasan y me sientan en un sillón (o en mis últimos ciclos me pasan a una cama ya que me están poniendo un tratamiento intratecal que requiere un pinchazo en la columna). Me canalizan la vía central (**reservorio**).
 
 El reservorio es una especie de cámara que previamente me han implantado en lado derecho la zona superior de las costillas bajo la piel y conectada a una vena "gorda". En mi caso es muy parecido a esto https://www.angiodynamics.com/products/20/Smart-Port-CT-Injectable-Port/
 
@@ -44,9 +44,9 @@ Esta maquina lo "único" que hace es regular el caudal del tratamiento (que suel
  
 Entre quimio y quimio se hace lo que se llama un "lavado" que consiste en poner suero fisiológico para diluir las quimios.
 
-Algunas "quimios" requieren de premedicacion, es decir medicamentos para prepararte para la quimio, con por ejemplo: Paracetamol, Ondasentron (para evitar las náuseas) y otros
+Algunas "quimios" requieren de premedicacion, es decir medicamentos para prepararte para la quimio, con por ejemplo: Paracetamol, Ondasentron (para evitar las náuseas) y otros.
 
-En mi caso la parte de ciclo que se pone en el hospital de día **dura algo más de 7 horas**, sobre todo por el Rituximab que tiene que pasar con un caudal bajo (va variando cada 30 minutos iniciándolo en 100ml/h hasta 400ml/h subiendo en tramos de 100ml/h) para evitar reacciones adversas (subidas de tensión, etc...) que dura sobre 4 horas
+En mi caso la parte de ciclo que se pone en el hospital de día **dura algo más de 7 horas**, sobre todo por el Rituximab que tiene que pasar con un caudal bajo (va variando cada 30 minutos iniciándolo en 100ml/h hasta 400ml/h subiendo en tramos de 100ml/h) para evitar reacciones adversas (subidas de tensión, etc...) que dura sobre 4 horas.
 
 Entre quimio y quimio se hace un "lavado" con suero fisiológico.
 
@@ -56,18 +56,18 @@ Sobre la [vincristina](https://es.wikipedia.org/wiki/Vincristina) un dato "curio
 
 Parte del ciclo también son medicamentos que tomas por otras vías, en mi caso la prednisona, un corticoide (antiinflamatorio) cuya administración es en pastillas vía oral pero que ya tomo en casa en los siguientes días.
 
-Estás quimios provocan una deterioro del sistema inmunológico, suele ser en la siguiente semana ya que es el periodo en el cual se renueva el sistema inmunológico. Para mejorar su recuperación me tengo que pinchar en el abdomen (vía subcutánea) unas inyecciones de Zarzio ([Filgrastim](https://en.wikipedia.org/wiki/Filgrastim)), un medicamento que pone a funcionar la médula ósea (donde se producen los leucocitos). Esto me provoca dolor de huesos, como cuando tienes una gripe a lo bestia pero sin los otros síntomas. Y no debo estar en contacto con niños ni embarazadas (ellos tienen el sistema inmune trabajando fortalecido y pueden contagiar sin ellos tener sintimas), ni en sitios con mucha gente.
+Estás quimios provocan una deterioro del sistema inmunológico, suele ser en la siguiente semana ya que es el periodo en el cual se renueva el sistema inmunológico. Para mejorar su recuperación me tengo que pinchar en el abdomen (vía subcutánea) unas inyecciones de Zarzio ([Filgrastim](https://en.wikipedia.org/wiki/Filgrastim)), un medicamento que pone a funcionar la médula ósea (donde se producen los leucocitos). Esto me provoca dolor de huesos, como cuando tienes una gripe a lo bestia pero sin los otros síntomas. Y no debo estar en contacto con niños ni embarazadas (ellos tienen el sistema inmune trabajando fortalecido y pueden contagiar sin ellos tener síntomas), ni en sitios con mucha gente.
 
 Los efectos secundarios de las quimios varían según la persona, en mi caso, no son demasiado "graves", y son llevables aunque molestos, por ejemplo:
 
 * Piel muy seca
 * Caída del pelo (parcialmente, en la cabeza no lo he perdido todo y el que queda es más débil y claro)
 * Facilidad para tener heridas o que tarden más en curar (debido al descenso de plaquetas)
-* Yagas o heridas en la boca
+* Llagas o heridas en la boca
 * Sabor metálico
 * Cansancio general
 * Dolor de espalda / cuello
-* Aumento desmedido del apetito (Provocado por la Perdnisona)
+* Aumento desmedido del apetito (Provocado por la Prednisona)
 * Perdida de sensibilidad en las manos (Provocado por la Vincristina)
 * Y algunos más leves...
 
