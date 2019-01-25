@@ -59,16 +59,3 @@ Señalar que los niveles de radiación emitidos son altos (unas 200 veces la rad
 
  
 [{% img /images/geigerlog.png %}](https://sourceforge.net/projects/geigerlog/)
-
-
-
-
-
-
-
-
-
-
-
-
-
