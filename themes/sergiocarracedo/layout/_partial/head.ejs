@@ -34,4 +34,5 @@ var description = '';
     <% if (theme.rss){ %><link rel="alternative" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml"> <% } %>
     <% if (theme.favicon){ %><link rel="icon" href="<%- url_for(theme.favicon) %>"> <% } %>
     <%- css(['css/sergiocarracedo'])%>
+    <%- open_graph({image: page.cover}) %>
 </head>
