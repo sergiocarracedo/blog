@@ -1,5 +1,5 @@
 ---
-title: Lámpara de escritorio domótica
+title: '"Domotizar" una lámpara de escritorio por 10€'
 date: 2019-02-04
 cover: /images/lampara.jpg
 ---
@@ -7,9 +7,9 @@ cover: /images/lampara.jpg
 {% img "right-33" /images/sonoff.jpg %}
 Hace ya unos cuantos meses había comprado [este aparatillo](https://amzn.to/2HDOlWM): un interruptor wifi, con la intención de probar a "domotizar" algo en casa.
 
-Este modelo concreto es de doble canal por lo que lleva dos interruptores en el mismo aparato.
+Este modelo concreto es de doble canal por lo que lleva dos interruptores en el mismo aparato, pero para este proyecto con un sólo canal es suficiente.
 
-Como la mayoría de estos aparatos de bajo coste están basado en el chip ESP8266 usado originalmente para dotar de conectividad wifi a los Arduino, pero que ha demostrado su solvencia usado de forma independiente.
+Como la mayoría de estos aparatos de bajo coste están basado en el [chip ESP8266](https://es.wikipedia.org/wiki/ESP8266) usado originalmente para dotar de conectividad wifi a los Arduino, pero que ha demostrado su solvencia usado de forma independiente.
 
 Como era mi primera prueba no quise complicarme mucho y decidí no flashearlo ni nada por el estilo usando el software "original"
 
