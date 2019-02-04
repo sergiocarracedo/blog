@@ -85,12 +85,14 @@
     }
 
 
+    .left-40,
     .left-33,
     .left-50 {
       float: left;
       margin: 0 15px 15px 0;
     }
 
+    .right-40,
     .right-33,
     .right-50 {
       float: right;
@@ -100,6 +102,11 @@
     .right-50,
     .left-50 {
       width: 50%;
+    }
+
+    .right-40,
+    .left-40 {
+      width: 40%;
     }
 
     .right-33,
