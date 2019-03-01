@@ -84,6 +84,11 @@
       @include underline-effect($flat-color);
     }
 
+    h3 {
+      margin-top: 50px;
+      margin-bottom: 20px;
+    }
+
 
     .left-40,
     .left-33,
@@ -127,7 +132,7 @@
 
 
     .video-container {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
   }
