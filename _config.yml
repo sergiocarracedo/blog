@@ -99,3 +99,10 @@ article_emoji:
   full: true
   style:
     display: inline
+
+photoswipe:
+  enable: true
+  imageFileBaseDir: source/_posts
+  imgSrcIn: dataOriginal
+  className: image-container
+  dataType: content-image

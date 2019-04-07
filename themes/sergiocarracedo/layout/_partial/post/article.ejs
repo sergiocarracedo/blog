@@ -6,7 +6,6 @@
       </h1>
       <div class="stuff">
         <span><%- page.date.locale("es").format("DD MMMM YYYY") %></span>
-        <%- partial('_partial/post/tag', {post: page}) %>
       </div>
 
       <% if (page.cover) { %>
@@ -20,3 +19,5 @@
     </div>
   </div>
 </div>
+
+<%- partial("_partial/photoswipe")%>
