@@ -160,3 +160,57 @@ $lg: (1200px);
     }
   }
 }
+
+
+
+@mixin a-inverse($color, $hover-color) {
+  @include underline-effect-inverse($color, 'right');
+  @include transition(all, .2s);
+  &:hover {
+    color: $hover-color;
+  }
+}
+
+
+@mixin underline-effect-inverse($color, $effect: 'left') {
+  text-decoration: none;
+  padding-bottom: 3px;
+  position: relative;
+  &:hover {
+    text-decoration: none;
+  }
+  &:after {
+    text-decoration: none;
+    @include transition(all, .2s);
+    content: '';
+    height: 1px;
+    position: absolute;
+    background: $color;
+    width: 100%;
+    bottom: 0;
+  }
+
+  &:hover {
+    &:after {
+      width: 0;
+    }
+  }
+
+  @if ($effect == 'center') {
+    &:after {
+      left: 50%;
+    }
+  }
+
+  @if ($effect == 'left') {
+    &:after {
+      left: 0;
+    }
+  }
+
+  @if ($effect == 'right') {
+    &:after {
+      right: 0;
+    }
+  }
+}
