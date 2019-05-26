@@ -1,7 +1,7 @@
 ---
 title: Impresiones tras un mes de uso de un teclado mecánico
 date: 2019-05-25 17:53:43
-cover:
+cover: /images/kromKernel.jpg
 ---
 Ya no se si como deformación profesional o como "tara mental" propia, siempre he sido bastante quisquilloso con los periféricos, tanto teclado como ratón, porque al fin y al cabo paso al menos 8 horas diarias usándolos y es importante sentirse cómodo con ellos.
 
