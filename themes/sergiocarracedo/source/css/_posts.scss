@@ -112,14 +112,14 @@
     .left-33,
     .left-50 {
       float: left;
-      margin: 0 15px 15px 0;
+      padding: 0 15px 15px 0;
     }
 
     .right-40,
     .right-33,
     .right-50 {
       float: right;
-      margin: 0 0 15px 15px;
+      padding: 0 0 15px 15px;
     }
 
     .width-50,
@@ -150,10 +150,11 @@
     .right-33,
     .left-33,
     .left-50 {
+      box-sizing: border-box;
       @include media($xs) {
         float: none;
         width: 100%;
-        margin: 0 0 15px 0;
+        padding: 0 0 15px 0;
       }
     }
 
