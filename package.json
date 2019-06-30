@@ -9,6 +9,7 @@
     "build": "hexo clean && hexo generate && hexo deploy"
   },
   "dependencies": {
+    "fstream": "^1.0.12",
     "hexo": "^3.7.0",
     "hexo-article-emoji": "https://github.com/frapples/hexo-article-emoji",
     "hexo-deployer-git": "^0.3.1",
