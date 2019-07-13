@@ -20,7 +20,7 @@ permalink_defaults:
 
 # Directory
 source_dir: source
-public_dir: public
+public_dir: docs
 #tag_dir: tags
 #archive_dir: archives
 #category_dir: categories
@@ -43,7 +43,7 @@ highlight:
   line_number: true
   auto_detect: false
   tab_replace:
-  
+
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
@@ -63,7 +63,7 @@ category_generator:
 
 tag_generator:
   per_page: 0
-  
+
 # Category & Tag
 default_category: uncategorized
 category_map:
@@ -89,11 +89,11 @@ theme: sergiocarracedo
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
-deploy:
-  type: git
-  repo: https://__GITHUB_TOKEN__@github.com/sergiocarracedo/blog.git
-  branch: gh-pages
-  message:
+#deploy:
+#  type: git
+#  repo: https://__GITHUB_TOKEN__@github.com/sergiocarracedo/blog.git
+#  branch: gh-pages
+#  message:
 
 article_emoji:
   full: true

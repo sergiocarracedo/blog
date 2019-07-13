@@ -6,7 +6,7 @@
     "version": "3.9.0"
   },
   "scripts": {
-    "build": "hexo clean && hexo generate && hexo deploy"
+    "build": "hexo clean && hexo generate"
   },
   "dependencies": {
     "fstream": "^1.0.12",
