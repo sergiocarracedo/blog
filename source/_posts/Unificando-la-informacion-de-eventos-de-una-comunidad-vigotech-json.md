@@ -1,18 +1,18 @@
 ---
 title: 'Unificando la información de eventos de una comunidad: vigotech.json'
-date: 2019-09-03
+date: 2019-09-02
 cover: /images/vigotech.jpg
 ---
 
 [VigoTech Alliance](https://vigotech.org/) la comunidad que aglutina a los grupos de tecnología de Vigo y su área de influencia, tiene entre uno de sus objetivos coordinar y divulgar las fechas de los eventos de cada uno de los grupos miembros.
 
-En el momento de escribir esta entrada hay 18 grupos, que funcionan de forma autónoma a la hora de organizar meetups, eventos, charlas, etc. lo que a la hora de mantener la información de los eventos actualizada de forma manual es una tarea complicada.
+En el momento de escribir esta entrada tiene 18 grupos miembros, que funcionan de forma autónoma a la hora de organizar meetups, eventos, charlas, etc, lo que hace que a la hora de mantener la información de los eventos actualizada de forma manual sea una tarea complicada.
 
-Teniendo en cuanta que la mayoría de los grupos usan plataformas para crear y publicitar sus eventos (mayoritariamente _Meetup_) surgió la idea de automatizar la recogida de información de los eventos y servirla en lugar único para que pudiese ser consultada de forma sencilla por cualquiera, y ya puesto, por que excluir a las máquinas de esto.
+Teniendo en cuanta que la mayoría de los grupos usan plataformas para crear y publicitar sus eventos (mayoritariamente _Meetup_) surgió la idea de automatizar la recogida de información de los eventos y servirla en lugar único para que pudiese ser consultada de forma sencilla por cualquiera, y ya puestos, ¿por qué excluir a las máquinas de esto?
 
 De aquí nació la idea de crear un archivo ([vigotech.json](https://vigotech.org/vigotech.json)) colgado en el servidor de la web, que sirviese como fuente de información de VigoTech, de sus miembros, sus eventos, sus videos, etc.
 
-Pero por hacerlo un poco mejor, se dotó a dicho fichero, de un esquema ([JSON Schema](https://github.com/VigoTech/vigotech.github.io/blob/source/static/vigotech-schema.json))que permitiese validarlo.
+Pero por hacerlo un poco mejor se dotó a dicho fichero de un esquema ([JSON Schema](https://github.com/VigoTech/vigotech.github.io/blob/source/static/vigotech-schema.json)) que permitiese validarlo.
 
 Resumiendo la estructura, partimos de un nodo raíz que es el propio _meta grupo_ VigoTech y que tiene como propiedades cosas como, el logo, los links a web y redes sociales y sus propios eventos (si, eventos que son de todo el meta grupo y no de un grupo concreto) y lo más importante los miembros.
 
@@ -28,10 +28,12 @@ Los miembros son también objectos cuyas propiedades son similares a la anterior
     "meetup": "https://www.meetup.com/es-ES/AIndustriosa/",
     "youtube": "https://www.youtube.com/channel/UC9DPKfcLiNd7SEU-QLlIG7A"
   },
-  "events": {
-    "type": "meetup",
-    "meetupid": "AIndustriosa"
-  },
+  "events": [
+    {
+      "type": "meetup",
+      "meetupid": "AIndustriosa"
+    }
+  ],
   "videos": [
     {
       "type": "youtube",
