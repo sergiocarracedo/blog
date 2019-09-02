@@ -36,6 +36,65 @@
   }
 }
 
+#post-aboutme {
+  @include gradient();
+  text-align: center;
+  color: $white;
+  font-size: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+
+  @include media($xs) {
+    font-size: 17px;
+  }
+
+
+  .claim {
+    padding-bottom: 20px;
+
+    a {
+      color: $white;
+      @include underline-effect($white);
+    }
+  }
+
+  .me {
+    .image-logo {
+      flex: 1;
+      display: block;
+      width: 90px;
+      border-radius: 99999px;
+      border: 6px solid #fff;
+      margin: 0 auto 12px;
+
+      @include media($xs) {
+        width: 80px;
+        border-width: 5px;
+      }
+    }
+
+    h1 {
+      color: $white;
+      font-family: $secondary-font;
+      @include gradient();
+      padding: 10px 20px;
+      font-size: 20px;
+      border-radius: 9999px;
+      display: inline-block;
+      margin-bottom: 20px;
+
+      @include media($xs) {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .back {
+    color: $white;
+    @include a-inverse($white, $white);
+  }
+}
+
 
 
 .article {

@@ -20,4 +20,31 @@
   </div>
 </div>
 
+<div class="post-nav container-fluid-1200">
+  <div class="grid-row">
+    <div class="next col-xs-6">
+      <% if (page.prev) { %>
+        <div class="nav-previous">
+          <a href="<%- config.root %><%- page.prev.path %>" rel="prev">
+            <i class="fa fa-arrow-left"></i> <%- page.prev.title %>
+          </a>
+        </div>
+      <% } %>
+    </div>
+    <div class="prev col-xs-6">
+      <% if (page.next) { %>
+        <div class="nav-next">
+          <a href="<%- config.root %><%- page.next.path %>" rel="next">
+            <%- page.next.title %> <i class="fa fa-arrow-right"></i>
+          </a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+
+
 <%- partial("_partial/photoswipe")%>
+
+<%- partial("_partial/post/footer")%>

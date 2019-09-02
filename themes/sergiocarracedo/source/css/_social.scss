@@ -1,0 +1,19 @@
+.social {
+  .social-link {
+    background: $white;
+    color: $gray;
+    display: inline-block;
+    border-radius: 9999px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    text-align: center;
+    @include transition(all, .2s);
+    margin: 3px;
+
+    &:hover {
+      @include scale(1.2);
+    }
+  }
+}
