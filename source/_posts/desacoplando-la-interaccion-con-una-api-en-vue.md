@@ -239,6 +239,6 @@ methods:
 
 Obviamente nuestro objeto _Api_ puede tener más funciones que hagan llamadas a otros endpoints, tener una forma común de mostrar errores, etc. Eso se lo dejo a vuestra imaginación
 
-Por último, y como _spoiler_ de un próximo _post_, decir que si hacemos uso de muchos endpoints distintos, el fichero `api.js` puede ser enorme y lo razonable sería trocearlo, e incluso separar las el objecto de la entidad a la que acceda, por ejemplo `this.$api.user.get` o `this.$api.settings.update`, pero como digo eso da para otro _post_
+Por último, y como _spoiler_ de un próximo _post_, decir que si hacemos uso de muchos endpoints distintos, el fichero `api.js` puede ser enorme y lo razonable sería trocearlo, e incluso separar las el objecto de la entidad a la que acceda, por ejemplo `this.$api.user.get` o `this.$api.user.create` o `this.$api.billing.list` o cualquier otro ejemplo que se os ocurra, pero como digo eso da para otro _post_.
 
 
