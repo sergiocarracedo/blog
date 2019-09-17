@@ -1,0 +1,35 @@
+---
+title: "Moviendo tu blog wordpress de dominio"
+date: 2011-08-12
+cover: /images/pexels-photo-310983.jpeg
+---
+En ocasiones necesitamos cambiar una página realizada en _Wordpress_ de ruta o de dominio, esto puede deberse simplemente a que estabamos trabajando en una copia local y una vez finalizada la llevamos al servidor definitivo, o por que queremos hacer funcionar nuestro blog, que tenemos en un servidor , en local.
+
+Wordpress guarda en la base de datos información referenciada a rutas absolutas, por lo que una vez movido el blog dejará de funcionar o no lo hará de una forma correcta.
+
+Con estos sencillos pasos podrás resolver este inconveniente.
+
+En primer lugar es muy importante realizar una **copia de seguridad** de la **base de datos**, por lo que pudiera pasar.
+
+Una vez que tenemos copiado todo el contenido del árbol de directorios y la base de datos de _Wordpress_en la nueva ubicación cambiamos si es necesario los datos de acceso a la base de datos (si fuese necesario), estos datos se encuentan en `wp-config.php`
+
+Ahora accedemos a la base de datos con _phpmyadmin_, o cualquier otro cliente que nor permita ejecutar las siguientes consultas _SQL_.
+```
+UPDATE wp_options SET option_value = replace(option_value, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');
+UPDATE wp_options SET option_value = replace(option_value, 'feed://DOMINIOANTERIOR.com', 'feed://NUEVODOMINIO.com');
+UPDATE wp_posts SET guid = replace(guid, 'http://DOMINIOANTERIOR.com','http://NUEVODOMINIO.com');
+UPDATE wp_posts SET post_content = replace(post_content, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');
+UPDATE wp_postmeta SET meta_value = replace(meta_value, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');
+```
+
+Con esto tenemos hecha la mayor parte del trabajo, pero si hemos cambiado la ruta (independientemente de que cambie el dominio) y utilizamos _URLs amigables_ mediante _mod_rewrite_, necesitamos cambiar el .htaccess
+
+```
+RewriteEngine On
+RewriteBase / #Modificar con la ruta adecuada
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L] #Modificar con la ruta adecuada
+
+```

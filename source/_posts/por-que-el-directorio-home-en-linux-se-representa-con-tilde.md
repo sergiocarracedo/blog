@@ -6,7 +6,7 @@ cover: /images/pexels-photo-698808.jpeg
 Cuando comencé a dar mis primeros pasos en Linux me llamó la atención que si quería cambiar a mi directorio home, lo podía hacer de "la forma larga"
 
 ```
-$ cd /home/opsou
+$ cd /home/usuario
 ```
 
 O usando ~ (lo que los anglosajones llaman _tilde_)
