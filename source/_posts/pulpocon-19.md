@@ -1,6 +1,6 @@
 ---
 title: "Mi edificante experiencia ayudando a organizar la PulpoCon19"
-date: 2019-09-17
+date: 2019-09-26
 cover: /images/pulpocon.jpg
 ---
 
