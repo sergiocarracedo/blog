@@ -10,7 +10,7 @@ Así que me he decidido a hacer un pequeño inventario de hardware y software de
 
 ## Hardware
 
-Aunque dispongo de un portátil, normalmente desarrollo en un PC de escritorio:
+Aunque dispongo de un portátil, normalmente desarrollo en un PC de escritorio que uso a veces tambien para jugar:
 
 * **Procesador:** Intel i3 de 4º generación.
 * **Memoria**: 32GB de RAM.

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/source/_posts/Mi-entorno-de-trabajo-Hardware-Software.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/mi-entorno-de-trabajo-hardware-software.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/mi-entorno-de-trabajo-hardware-software.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/mi-entorno-de-trabajo-hardware-software.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,8 +30,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/mi-entorno-de-trabajo-hardware-software.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor>
-                <caret column="3" selection-start-column="3" selection-end-column="3" />
+              <first_editor relative-caret-position="391">
+                <caret line="12" column="112" selection-start-line="12" selection-start-column="112" selection-end-line="12" selection-end-column="112" />
               </first_editor>
               <second_editor />
             </state>
@@ -112,12 +112,6 @@
             <path>
               <item name="sergiocarracedo.es" type="b2602c69:ProjectViewProjectNode" />
               <item name="sergiocarracedo.es" type="462c0819:PsiDirectoryNode" />
-              <item name="source" type="462c0819:PsiDirectoryNode" />
-              <item name="_posts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sergiocarracedo.es" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sergiocarracedo.es" type="462c0819:PsiDirectoryNode" />
               <item name="themes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -163,12 +157,12 @@
       <option name="presentableId" value="Default" />
       <updated>1570384999453</updated>
       <workItem from="1570385000674" duration="2360000" />
-      <workItem from="1570387459276" duration="677000" />
+      <workItem from="1570387459276" duration="797000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3037000" />
+    <option name="totallyTimeSpent" value="3157000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="20" width="1869" height="1060" extended-state="6" />
@@ -231,8 +225,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/mi-entorno-de-trabajo-hardware-software.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor>
-            <caret column="3" selection-start-column="3" selection-end-column="3" />
+          <first_editor relative-caret-position="391">
+            <caret line="12" column="112" selection-start-line="12" selection-start-column="112" selection-end-line="12" selection-end-column="112" />
           </first_editor>
           <second_editor />
         </state>
