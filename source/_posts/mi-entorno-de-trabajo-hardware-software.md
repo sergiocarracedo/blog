@@ -16,12 +16,12 @@ Aunque dispongo de un portátil, normalmente desarrollo en un PC de escritorio q
 * **Memoria**: 32GB de RAM.
 * **Grafica**: Nvidia GeForce GTX 950 2GB
 * **Almacenamiento**: 1 SSD de 120GB para el sistema, 1 HDD de 1TB para las webs y el directorio home, 1 HDD de 500GB para los backups (tanto locales como remotos) y un SSD de 80GB para los juegos 
-* **Monitores**: Uso dos monitores de 24", con resolución FullHD (1920x1080px)
+* **Monitores**: Uso dos monitores de 24" con resolución FullHD (1920x1080px)
 * **Teclado**: Krom Kernel (un teclado mécanico del que ya he {% post_link Impresiones-tras-un-mes-de-uso-de-un-teclado-mecanico "hablado por aqui" %}) 
 * **Ratón**: Un [Logitech MX Master](https://www.amazon.es/Logitech-MX-Master-inal%C3%A1mbrico-Bluetooth/dp/B00ULNAOMA)
 * **Mesa**: [Ikea Malm](https://www.ikea.com/es/es/p/malm-escritorio-blanco-60214159/)
 * **Silla**: Silla [1337 Indutries](https://1337industries.com/producto/silla-gaming-1337-industries-gc757sp-bl-azul/)
-* **Flexo**: [Ikea FORSÅ](https://www.ikea.com/es/es/p/forsa-lampara-flexo-trabajo-niquelado-80146763/) "Tuneada para que se {% post_link lampara-de-escritorio-domotica "encienda y apague automaticamente" %}
+* **Flexo**: [Ikea FORSÅ](https://www.ikea.com/es/es/p/forsa-lampara-flexo-trabajo-niquelado-80146763/) "Tuneada" para que se {% post_link lampara-de-escritorio-domotica "encienda y apague automaticamente" %}
 * **Microfono**: Micrófono de mesa Plantronics
 * **Webcam**: No tengo
 
