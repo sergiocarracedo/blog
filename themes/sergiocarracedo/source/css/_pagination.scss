@@ -9,21 +9,30 @@
 
   .page-number {
     border-radius: 9999px;
-    background: #aaa;
-    color: $black;
+    background: $primary-color;
+    color: $light-grey;
     min-width: 40px;
     height: 40px;
     text-align: center;
     line-height: 40px;
+    transition: all ease-in-out .2s;
+
+    &:hover {
+      background: $flat-color;
+    }
 
     &.current {
-      background: $primary-color;
-      color: $white;
+      background: $light-grey;
+      color: $black;
     }
   }
 
   .extend {
-    color: $primary-color;
-    @include underline-effect($primary-color);
+    color: $light-grey;
+    @include underline-effect($secondary-color);
+
+    &:hover {
+      color: $secondary-color;
+    }
   }
 }

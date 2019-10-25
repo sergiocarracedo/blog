@@ -28,7 +28,6 @@ var description = '';
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta property="twitter:card" content="summary_large_image">
     <% if (keywords) { %><meta name="keywords" content="<%= keywords %>"> <% } %>
     <% if (description) { %><meta name="description" content="<%= description %>"> <% } %>
     <% if (config.author){ %><meta name="author" content="<%= config.author %>"> <% } %>
@@ -39,6 +38,8 @@ var description = '';
       image: page.cover,
       title: page.title,
       description: page.description,
+      twitter_card: 'summary_large_image',
+      twitter_image: config.url + url_for(page.cover)
       }) %>
 
     <script async src='https://www.google-analytics.com/analytics.js'></script>

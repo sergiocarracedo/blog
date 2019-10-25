@@ -2,7 +2,7 @@
 .content {
   font-size: 18px;
   line-height: 1.4em;
-  color: #232323;
+  color: $white;
 
   h1 {
     font-size: 39px
@@ -29,7 +29,9 @@
 
   a {
     background: transparent;
-    color: $flat-color;
+    color: $secondary-color;
+    word-wrap:break-word;
+    max-width: 100%;
     text-decoration: underline;
     &:hover {
       text-decoration: none;
@@ -67,7 +69,7 @@
   > h1, > h2, > h3, > h4, > h5, > h6 {
     margin-top: 2rem;
     margin-bottom: 0.8rem;
-    color: #000;
+    color: lighten($flat-color, 20%);
     &:first-child {
       margin-top: 0;
     }
@@ -77,10 +79,11 @@
     cursor: pointer;
   }
   pre, .highlight {
-    background: #2d2d2d;
+    background: #151515;
     margin: 1.6rem 0;
     padding: 0.8rem 0.8rem;
     border-style: solid;
+    border-color: transparent;
     border-width: 1px 0;
     overflow: auto;
     color: #ccc;
@@ -96,6 +99,9 @@
     transform: translate(0, 3px);
   }
 
+  iframe {
+    margin-bottom: 30px;
+  }
 
   code, pre {
     font-family: "Source Code Pro", monospace
@@ -109,10 +115,6 @@
     word-wrap:break-word;
   }
 
-  a {
-    word-wrap:break-word;
-    max-width: 100%;
-  }
   pre {
     code {
       background: none;
@@ -122,17 +124,21 @@
   }
 
   blockquote {
-    color: #656565;
+    color: $light-grey;
     margin: 0 0 1.1em;
-    border-left: 3px solid #efefef;
+    border-left: 3px solid $flat-color;
     border-left-width: 6px;
-    background-color: rgba(119, 119, 119, 0.05);
+    background-color: darken($flat-color, 12%); //rgba(119, 119, 119, 0.05);
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 15px 20px;
 
     p:last-child {
       margin: 0;
+    }
+
+    a:hover {
+      color: $white !important;
     }
   }
   table {

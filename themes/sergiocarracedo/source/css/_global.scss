@@ -14,7 +14,8 @@ html {
 html, body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-font-smoothing: antialiased;
-  background: #fff;
+  background: $gray;
+  color: $white;
 }
 body {
   font-family: $primary-font;

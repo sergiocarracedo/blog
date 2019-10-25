@@ -10,11 +10,11 @@
   }
 
   a {
-    color: $primary-color;
+    color: $link-color;
     @include transition(all, .2s);
-    @include underline-effect($primary-color);
+    @include underline-effect($link-hover-color);
     &:hover {
-      color: $flat-color;
+      color: $link-hover-color;
     }
   }
 }

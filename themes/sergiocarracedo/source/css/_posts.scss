@@ -34,6 +34,7 @@
       }
     }
   }
+
 }
 
 #post-aboutme {
@@ -106,7 +107,7 @@
 
   .stuff {
     margin-bottom: 30px;
-    color: #666;
+    color: $light-grey;
     font-size: 15px;
     span {
       display: inline-block;
@@ -136,11 +137,10 @@
 
     a {
       display: inline-block;
-      font-weight: bold;
       text-decoration: none;
       position: relative;
-      color: $flat-color;
-      @include a-inverse($flat-color, darken($secondary-color, 20%));
+      color: $link-color;
+      @include a-inverse($link-color, $link-hover-color);
     }
 
     h1 {
