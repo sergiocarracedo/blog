@@ -1,5 +1,5 @@
 ---
-title: "PHP Reflection: Anotaciones, PHPDoc, y mucho más"
+title: "PHP Reflection: Anotaciones, PHPDoc y mucho más"
 date: 2019-11-01
 cover: /images/php-reflection-949215.jpg
 ---
