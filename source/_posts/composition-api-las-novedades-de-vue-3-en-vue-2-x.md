@@ -16,7 +16,7 @@ Una de las novedades, que nos traerá es lo que en ese momento se llamó **Hooks
 
 Esta nueva API nos permite simplificar los componentes y facilitar reusar código, sobre todo tendrá repercusión en componentes de tamaño medio y grande ya que permitirá extraer parte de la lógica de forma sencilla en varios ficheros, reusarla y organizar mejor el código por conceptos lógicos en lugar de por opciones. Actualmente en Vue 2.x tenemos que organizar el código de un componente por opciones, de la siguente manera:
 
-```
+```javascript
 export default {
     name: 'component-name',
     props: {
@@ -70,21 +70,21 @@ En primer lugar vemos un `import` que nos _trae_: `reactive`, `computed` y `ref`
 
 A continuación vemos un metodo `setup()`, nada de las opciones "tradicionales" (_data_, _methods_, _computed_, etc), y aquí es donde haremos la magia del **composition API**. En lugar de tener una opción en el objeto para cada cosa: _data_, _computed_, _methods_ los definimos directamente en el método `setup()` y los devolvemos. **Vamos paso por paso:**
 
-```
+```javascript
 const text = ref("")
 ```
 _Vue_ necesita que el elemento _reactivo_ sea [pasado por referencia](https://vue-composition-api-rfc.netlify.com/#computed-state-and-refs), cosa que _javascript_ no hace con los tipos primitivos como en este caso (un _String_), para ello _Composition API_ nos provee el `ref()`.
 
 En el caso de que usásemos un objeto que quisiésemos que fuese reactivo, usaríamos 'reactive'
 
-```
+```javascript
 const state = reactive({
   text: ''
 })
 ```
 
 Lo siguiente que nos encontramos es la variable computada:
-```
+```javascript
 const uppercase = computed(() => text.value.toUpperCase());
 ```
 
@@ -95,14 +95,14 @@ Aquí ya podemos ver un par de detalles:
 * Otro detalle importante es **¿dónde esta el _this_?**, pues básicamente no está, `setup()` es llamado antes de montar el componente, por lo que en ese contexto _this_ no funciona como lo conocíamos.  
 
 Un poco más adelante tenemos lo que antes era el método `addEmoji` que ahora es una función:
-```
+```javascript
 function addEmoji() {
     text.value += "😂";
 }
 ```
  
 y finalmente devolvemos todos los elementos que vamos a usar:
-```
+```javascript
 return {
   text,
   uppercase,
@@ -112,7 +112,7 @@ return {
 
 A primera vista parece todo un poco más complicado y engorroso, y seguro que lo es para componentes pequeños, pero en cuanto el componente empieza a crecer esto nos permite agrupar la lógica de cada parte del componente en lugar de tenerla separada en las distintas propiedades del objeto, además nos simplifica extraer tanto las variables reactivas y computadas, como los métodos a un fichero externo:
 
-```
+```javascript
 import compositionFunction from "./demoCompositionApi.js";
 export default {
   setup() {

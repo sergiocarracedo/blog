@@ -35,11 +35,11 @@ var description = '';
     <% if (theme.favicon){ %><link rel="icon" href="<%- url_for(theme.favicon) %>"> <% } %>
     <%- css(['css/sergiocarracedo'])%>
     <%- open_graph({
-      image: page.cover,
+      image: page.cover || '',
       title: page.title,
       description: page.description,
       twitter_card: 'summary_large_image',
-      twitter_image: config.url + url_for(page.cover)
+      twitter_image: (config.url + url_for(page.cover || ''))
       }) %>
 
     <script async src='https://www.google-analytics.com/analytics.js'></script>
