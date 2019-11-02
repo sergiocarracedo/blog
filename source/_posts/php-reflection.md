@@ -88,7 +88,11 @@ array(1) {
   }
 }
 ```
-De nuevo tenemos otro `array` pero en este caso de instancias de `ReflectionParameter`. Vamos a seguir jugando: Vamos a consultar el tipo de dato del parámetro, si tiene un valor por defecto, si es opcional (esta petición puede ser un poco redundante, ya que si tiene valor por defecto es obviamente un parámetro opcional) y si tiene valor por defecto que nos diga si este está asignado por una constante (y su nombre).
+De nuevo tenemos otro `array` pero en este caso de instancias de `ReflectionParameter`. Sigamos jugando, Vamos a consultar: 
+* el tipo de dato del parámetro
+* si tiene un valor por defecto
+* si es opcional (esta petición puede ser un poco redundante, ya que si tiene valor por defecto es obviamente un parámetro opcional)
+* si tiene valor por defecto que nos diga si este está asignado por una constante (y su nombre).
 
 
 ```php 
@@ -112,7 +116,7 @@ Como veis podemos obtener una información exhaustiva de la clase, métodos, par
 Recomiendo echar un vistazo a la lista completa de métodos disponibles: https://www.php.net/manual/es/class.reflectionclass.php
 
 ## Los comentarios: PHPDoc y las anotaciones
-Entre esa lista de métodos que nos devuelven información de la clase (o función o método) esta `getDocComment` que nos devuelve el **comentario de documentación** del elemento, :warning: y ojo que he puesto **comentario de documentación** en negrita por que nos devuelve eso, no nos va a devolver cualquier comentario.
+Entre esa lista de métodos que nos devuelven información de la clase (o función o método) está `getDocComment` que nos devuelve el **comentario de documentación** del elemento, :warning: y ojo que lo he puesto en negrita por que nos devuelve exactamente eso, no nos va a devolver cualquier comentario.
 
 PHP considera que un bloque de comentario es de documentación cuando comienza por `/**` 
 

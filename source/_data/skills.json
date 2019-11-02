@@ -13,16 +13,22 @@
       "icon": "fab fa-drupal"
     },
     {
-      "name": "Vue",
-      "icon": "fab fa-vuejs",
-      "color": "#41B883",
-      "textColor": "white"
-    },
-    {
       "name": "JS",
       "icon": "fab fa-js",
       "color": "#F0DB4F",
       "textColor": "black"
+    },
+    {
+      "name": "Symfony",
+      "icon": "fab fa-symfony",
+      "textColor": "white",
+      "color": "#333"
+    },
+    {
+      "name": "Vue",
+      "icon": "fab fa-vuejs",
+      "color": "#41B883",
+      "textColor": "white"
     },
     {
       "name": "Linux",
