@@ -45,8 +45,8 @@ $function = function($number) use ($text) {
 
 $function(12); //Prints 'El número es: 12'  
 ```
-Donde el valor de `$text` es el del contexto de ejecucuión. (Este es un ejemplo _chorra_)
-En PHP las _closures_ se representan internamente como una [clase](https://www.php.net/manual/es/class.closure.php)
+Donde el valor de `$text` es el del contexto de ejecución. (Este es un ejemplo _chorra_).
+En PHP las _closures_ se representan internamente como una [clase](https://www.php.net/manual/es/class.closure.php).
 
 ### Funciones λ (lambda)
 También llamadas _funciones anónimas_, son aquellas que no tienen un nombre y se invocan, o bien directamente o almacenando su referencia en una variable.
