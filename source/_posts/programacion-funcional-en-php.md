@@ -52,7 +52,7 @@ En PHP las _closures_ se representan internamente como una [clase](https://www.p
 También llamadas _funciones anónimas_, son aquellas que no tienen un nombre y se invocan, o bien directamente o almacenando su referencia en una variable.
 ```php
 (function($a) {
-  echo 'El numero es '. $a * 2;
+  echo 'El número es '. $a * 2;
 })(12); // Prints 'El número es 24
 ```
 
