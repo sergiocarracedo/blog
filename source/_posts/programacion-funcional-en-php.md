@@ -14,8 +14,8 @@ Son aquellas que pueden recibir como parámetros otra función, por ejemplo la f
 
 ### Funciones puras
 
-Son aquellas que no tiene efectos secundarios, es decir aplican el concepto matemático de función en el que dado un valor/es de entrada aplicamos un conjunto de operaciones y obtenemos un resultado. 
-Y ese resultado *es siempre el mismo para la misma entrada*, el resultado no puede depender de un estado interno o de una lectura interna de datos.
+Son aquellas que no tienen efectos secundarios, es decir aplican el concepto matemático de función en el que dado un valor/es de entrada aplicamos un conjunto de operaciones y obtenemos un resultado. 
+Y ese resultado **es siempre el mismo para la misma entrada**, el resultado no puede depender de un estado interno o de una lectura interna de datos.
 
 Esto nos da ventajas como poder cachear sin miedo el valor del resultado para un conjunto de parámetros de entrada ya que el resultado *siempre* será el mismo.
 
@@ -57,11 +57,11 @@ También llamadas _funciones anónimas_, son aquellas que no tienen un nombre y 
 ```
 
 ### Vale ya de teoría! Vamos
-Bueno después de esta pequeña introducción a la programación funcional seguro que has visto que la has usado más de una vez, a lo mejor sin darte cuenta.
+Después de esta pequeña introducción a la programación funcional seguro que has visto que la has usado más de una vez, a lo mejor sin darte cuenta.
 
 Estoy convencido de que lo has hecho, y si no deberías.
 
-Como decía al principio, [@felixgomexlopez](https://twitter.com/felixgomezlopez) me hablo de una librería PHP que nos da herramientas para trabajar de forma más cómoda con programación funcional en PHP.
+Como decía al principio, [@felixgomexlopez](https://twitter.com/felixgomezlopez) me habló de una librería PHP que nos da herramientas para trabajar de forma más cómoda con programación funcional en PHP.
 
 Esta librería es [Phunctional](https://github.com/Lambdish/phunctional) y se instala de una forma tan simple como:
 
@@ -69,7 +69,7 @@ Esta librería es [Phunctional](https://github.com/Lambdish/phunctional) y se in
 $ composer require Lambdish/phunctional
 ```
 
-El conjunto de funciones nos aporta en muchos casos funcionalidades ya presentes de alguna forma en PHP pero de forma que homogeniza la forma de pasar parámetros,
+Nos aporta en muchos casos funcionalidades ya presentes de alguna forma en PHP pero de forma que homogeniza la forma de pasar parámetros.
 
 Ya hablé hace en unos años en una [_lightning_ en un PHPVigo](https://docs.google.com/presentation/d/1C7eEtWsiawZA0X0Vm1N-KE5QFxaHX6Y45DK50uL9lJ0/edit#slide=id.g1d60cdcfc8_0_36) de las vergüenzas de PHP, con respecto a algunas de las funciones de manejo de _arrays_, por ejemplo 
 ```php

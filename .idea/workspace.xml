@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/programacion-funcional-en-php.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/programacion-funcional-en-php.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,8 +30,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/programacion-funcional-en-php.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="597">
-                <caret line="122" column="347" lean-forward="true" selection-start-line="122" selection-start-column="347" selection-end-line="122" selection-end-column="347" />
+              <first_editor relative-caret-position="258">
+                <caret line="71" column="1" selection-start-line="71" selection-start-column="1" selection-end-line="71" selection-end-column="1" />
                 <folding>
                   <element signature="e#6#46#0" expanded="true" />
                 </folding>
@@ -236,12 +236,12 @@
       <workItem from="1574846976578" duration="1861000" />
       <workItem from="1574852532209" duration="291000" />
       <workItem from="1575323820140" duration="1044000" />
-      <workItem from="1575326270656" duration="9082000" />
+      <workItem from="1575326270656" duration="10088000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40921000" />
+    <option name="totallyTimeSpent" value="41927000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="27" width="1863" height="1053" extended-state="6" />
@@ -446,8 +446,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/programacion-funcional-en-php.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="597">
-            <caret line="122" column="347" lean-forward="true" selection-start-line="122" selection-start-column="347" selection-end-line="122" selection-end-column="347" />
+          <first_editor relative-caret-position="258">
+            <caret line="71" column="1" selection-start-line="71" selection-start-column="1" selection-end-line="71" selection-end-column="1" />
             <folding>
               <element signature="e#6#46#0" expanded="true" />
             </folding>
