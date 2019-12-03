@@ -1,4 +1,4 @@
-Nuestra web, como otras muchas, utiliza cookies que permitirán mejorar su experiencia como usuario y en cumplimiento de la LSSI (LEY 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico), vamos a informarle sobre que son, cuales utilizamos en nuestra web, como eliminarlas y le pediremos el consentimiento para su uso.
+Esta web, como otras muchas, utiliza cookies que permitirán mejorar su experiencia como usuario y en cumplimiento de la LSSI (LEY 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico), vamos a informarle sobre que son, cuales utilizamos en nuestra web, como eliminarlas y le pediremos el consentimiento para su uso.
 
 ## INFORMACIÓN
 ### ¿Qué son las cookies?
@@ -19,7 +19,7 @@ Son un tipo de cookies en el que los datos siguen almacenados en el terminal y a
 Son las creadas por el responsable de la página web.
 
 ### COOKIES DE TERCEROS
-Son las creadas y gestionas por otras entidades, como prestadores de servicios publicitarios, de personalización o análisis, estos terceros nos pueden reportar datos anónimos.
+Son las creadas y gestionas por otras entidades, como prestadores de servicios publicitarios, de personalización o análisis, estos terceros pueden reportar datos anónimos.
 
 ## COOKIES SEGÚN FINALIDAD
 
@@ -42,43 +42,75 @@ Son aquéllas que permiten la gestión, de la forma más eficaz posible, de los 
 
  
 
-## ¿Qué tipo de cookies utilizamos ?
-A continuación te definimos las funciones y el tipo de cookies que utilizamos en http://www.vigotech.org y su finalidad:
+## ¿Qué tipo de cookies utiliza esta web ?
+A continuación te definimos las funciones y el tipo de cookies que utilizamos en esta web y su finalidad:
 
  
-
 ### COOKIES PROPIAS
 
-**cookieconsent_status** Almacena la respuesta al consentimiento de uso de cookies durante 1 año.
+##### cookieconsent_status
+Almacena la respuesta al consentimiento de uso de cookies durante 1 año.
 
 ### COOKIES DE TERCEROS
 
 #### Google Analitycs:
 
 Tipo: Cookie analítica de terceros utilizadas por nosotros y por Google
-[Más Información](https://developers.google.com/analytics/devguides/collection/analyticsjs):
+[Más Información](https://developers.google.com/analytics/devguides/collection/gajs/cookie-usage?hl=es):
 Definición: Las Cookies analíticas son aquéllas que permiten al responsable de las mismas, el seguimiento y análisis del comportamiento de los usuarios de los sitios web a los que están vinculadas.
 Finalidad: La información recogida mediante este tipo de cookies se utiliza en la medición de la actividad de los sitios web, aplicación o plataforma y para la elaboración de perfiles de navegación de los usuarios de dichos sitios, aplicaciones y plataformas, con el fin de introducir mejoras en función del análisis de los datos de uso que hacen los usuarios del servicio. 
-Cookies: 
-_utma: 
-Finalidad: Registra la fecha de la primera y última vez que el usuario visito el sitio web.
-Expira: 2 años
-_utmb:
-Finalidad: Calcula el tiempo que dura la visita de un usuario almacenando el momento que entro en la página
-Expira: 30 minutos
-_utmc:
-Finalidad: Calcula el tiempo que dura la visita de un usuario almacenando el momento que sale de la página.
-Expira: Al finalizar la sesión
-_utmz:
-Finalidad: Mantiene un seguimiento de donde proviene el visitante, que motor de búsqueda se utilizó, en que enlace hizo click, que palabras claves utilizo y desde en qué lugar del mundo se accedió a la página.
-Expira: 6 meses
-_ga.js:
-Finalidad: cookies de origen para: determinar el dominio que se medirá, distinguir a los usuarios únicos, recordar el número y la duración de las visitas anteriores, recordar la información de las fuentes de tráfico, determinar el inicio y el fin de una sesión, recordar el valor de las variables personalizadas de visitante. 
-Expira: 2 años
-_ga:
-Finalidad: Se utiliza para distinguir a los usuarios 
-Expira: 2 años
+#### Cookies: 
+##### _utma: 
+**Finalidad**: Registra la fecha de la primera y última vez que el usuario visito el sitio web. **Expira**: 2 años
+##### _utmb:
+**Finalidad**: Calcula el tiempo que dura la visita de un usuario almacenando el momento que entro en la página. **Expira**: 30 minutos
+##### _utmc:
+**Finalidad**: Calcula el tiempo que dura la visita de un usuario almacenando el momento que sale de la página. **Expira**: Al finalizar la sesión
+##### _utmz:
+**Finalidad**: Mantiene un seguimiento de donde proviene el visitante, que motor de búsqueda se utilizó, en que enlace hizo click, que palabras claves utilizo y desde en qué lugar del mundo se accedió a la página. **Expira**: 6 meses
+##### _ga 
+**Finalidad**: Se utiliza para distinguir a los usuarios **Expira**: 2 años
 
+##### _gid	
+**Finalidad**: Se usa para distinguir a los usuarios. **Expira**: 24 horas
+##### _gat
+**Finalidad**: Se usa para limitar el porcentaje de solicitudes. **Expira**: 1 minuto	
+##### AMP_TOKEN	
+**Finalidad**: Incluye un token que se puede utilizar para recuperar un ID de cliente del servicio de ID de cliente de AMP. Otros posibles valores indican inhabilitaciones, solicitudes en curso o errores obtenidos al recuperar un ID del servicio de ID de cliente de AMP. **Expira**: 30 segundos a 1 año	
+##### _gac_<property-id>
+**Finalidad**: Incluye información de la campaña relativa al usuario. Si has vinculado tus cuentas de Google Analytics y AdWords, las etiquetas de conversión de sitios web leerán esta cookie, a menos que la inhabilites. [Más información](https://support.google.com/adwords/answer/7521212?hl=es) **Expira**: 90 días
+
+
+#### Disqus:
+
+Tipo: Cookies necesarias por el sistema de comentarios Disqus
+[Más Información](https://help.disqus.com/en/articles/1717103-disqus-privacy-policy):
+Definición:Estas cookies son aquéllas que permiten al responsable de las mismas, la gestión del sistema de comentarios.
+Finalidad: La información recogida mediante este tipo de cookies se utiliza en la medición de la actividad de los sitios web, aplicación o plataforma y para la elaboración de perfiles de navegación de los usuarios de dichos sitios, aplicaciones y plataformas, con el fin de introducir mejoras en función del análisis de los datos de uso que hacen los usuarios del servicio. 
+#### Cookies: 
+##### __qca: 
+**Finalidad**: Registra la fecha de la primera y última vez que el usuario visito el sitio web. **Expira**: 2 años
+ 
+##### __jid
+**Finalidad**: Identificar al usuario logueado en Disqus. **Expira**: 30 minutos
+##### _utma: 
+**Finalidad**: Registra la fecha de la primera y última vez que el usuario visito el sitio web. **Expira**: 2 años
+##### _utmb:
+**Finalidad**: Calcula el tiempo que dura la visita de un usuario almacenando el momento que entro en la página. **Expira**: 30 minutos
+##### _utmc:
+**Finalidad**: Calcula el tiempo que dura la visita de un usuario almacenando el momento que sale de la página. **Expira**: Al finalizar la sesión
+##### _utmz:
+**Finalidad**: Mantiene un seguimiento de donde proviene el visitante, que motor de búsqueda se utilizó, en que enlace hizo click, que palabras claves utilizo y desde en qué lugar del mundo se accedió a la página. **Expira**: 6 meses
+##### mc
+**Finalidad**: Mantiene un seguimiento de donde proviene el visitante, que motor de búsqueda se utilizó, en que enlace hizo click, que palabras claves utilizo y desde en qué lugar del mundo se accedió a la página. **Expira**: 6 meses
+##### _ga.js:
+**Finalidad**: cookies de origen para: determinar el dominio que se medirá, distinguir a los usuarios únicos, recordar el número y la duración de las visitas anteriores, recordar la información de las fuentes de tráfico, determinar el inicio y el fin de una sesión, recordar el valor de las variables personalizadas de visitante. **Expira**: 2 años
+##### _ga:
+**Finalidad**: Se utiliza para distinguir a los usuarios. **Expira**: 2 años
+##### disqus_unique:
+**Finalidad**: Estadisticas internas de Disqus usadas para visitantes anónimos. **Expira**:: 1 año
+##### testCookie:
+**Finalidad**: Usada por Disqus para comprobar si el navegador permite cookies de terceros. **Expira**: Sesión 
  
 
 ## Revocación del consentimiento:
@@ -110,3 +142,5 @@ Tambien puedes obtener más información en:
 * https://cookiesandyou.com/
 
 Por último, puede gestionar las cookies instaladas por Adobe Flash Player desde la web de Adobe. Las cookies de terceros podrán ser modificadas, implementadas o anuladas por ellos mismos sin que nos lo notifiquen, por lo que no podemos hacernos responsables de que la información esté perfectamente actualizada en todo momento según la ley establece. No obstante para ofrecerle un mejor servicio de información hemos enlazado las políticas de cookies y privacidad de estos terceros con la finalidad de que se puedan consultar en cualquier momento en su versión más actualizada y por nuestra parte iremos revisándola periódicamente para actualizar nuestros textos.
+
+Actualización: 1/12/2019

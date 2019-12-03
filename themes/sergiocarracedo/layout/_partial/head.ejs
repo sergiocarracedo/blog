@@ -50,6 +50,24 @@ var description = '';
         ga('create', 'UA-133459072-1', 'auto');
         ga('send', 'pageview');
       }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
@@ -71,16 +89,17 @@ var description = '';
             "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
             "allow": "Ok, continua",
             "deny": "Nada de cookies",
-            "link": "Saber más"
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
           },
           "onStatusChange": function(status, chosenBefore) {
             if (status == 'allow') {
-              runGA();
+               runCookiesAllowed()
             }
           },
           "onInitialise" : function(status) {
             if (status == 'allow') {
-              runGA();
+               runCookiesAllowed()
             }
           }
         })
