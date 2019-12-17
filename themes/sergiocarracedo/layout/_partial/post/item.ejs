@@ -1,6 +1,6 @@
 <div class="post">
   <a href="<%- url_for(post.path) %>" title="<%- post.title || "Untitled" %>">
-    <%- image_tag(post.cover || theme.cover, {class: "cover"}) %>
+    <%- image_tag(image_version(post.cover || theme.cover, {prefix: 'teaser'}), {class: "cover"}) %>
 
     <div class="titles">
       <h6>

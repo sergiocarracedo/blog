@@ -87,6 +87,17 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: sergiocarracedo
 
+responsive_images:
+  pattern: '**/*.+(png|jpg|jpeg)'
+  sizes:
+    teaser:
+      width: 712
+      height: 400
+    header:
+      width: 1200
+      height: 400
+
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:

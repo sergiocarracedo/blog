@@ -3,6 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/_config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/article.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/article.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/item.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/item.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/themes/sergiocarracedo/source/css/_posts.scss" beforeDir="false" afterPath="$PROJECT_DIR$/themes/sergiocarracedo/source/css/_posts.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,33 +23,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/head.ejs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2300">
-              <caret line="100" column="36" selection-start-line="100" selection-start-column="36" selection-end-line="100" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/aboutme.ejs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="5" column="87" selection-start-line="5" selection-start-column="87" selection-end-line="5" selection-end-column="87" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/source/css/sergiocarracedo.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/header.ejs">
           <provider selected="true" editor-type-id="text-editor" />
@@ -61,17 +40,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/article.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1058">
-              <caret line="46" column="26" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="26" />
+            <state relative-caret-position="276">
+              <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="71" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/item.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="69">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/source/css/_posts.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5106">
-              <caret line="222" column="5" selection-start-line="222" selection-start-column="5" selection-end-line="222" selection-end-column="5" />
+            <state relative-caret-position="230">
+              <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -88,14 +76,28 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/_posts/simracing-mas-real-que-virtual.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="344">
+              <first_editor relative-caret-position="346">
                 <caret line="47" column="28" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
               </first_editor>
               <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/_config.yml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_config.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="183">
+              <caret line="80" column="12" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -145,7 +147,6 @@
         <option value="$PROJECT_DIR$/source/_posts/php-reflectionclass.md" />
         <option value="$PROJECT_DIR$/source/_data/skills.json" />
         <option value="$PROJECT_DIR$/source/_posts/php-reflection.md" />
-        <option value="$PROJECT_DIR$/_config.yml" />
         <option value="$PROJECT_DIR$/source/_posts/lambdish-functional-Funciones-lambda-en-PHP.md" />
         <option value="$PROJECT_DIR$/source/_posts/lambdish-phunctional-Funciones-lambda-en-PHP.md" />
         <option value="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/aboutme.ejs" />
@@ -153,8 +154,6 @@
         <option value="$PROJECT_DIR$/source/_posts/programacion-funcional-en-php.md" />
         <option value="$PROJECT_DIR$/source/_posts/cookies.md" />
         <option value="$PROJECT_DIR$/source/cookies.md" />
-        <option value="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/article.ejs" />
-        <option value="$PROJECT_DIR$/themes/sergiocarracedo/source/css/_posts.scss" />
         <option value="$PROJECT_DIR$/themes/sergiocarracedo/source/css/sergiocarracedo.scss" />
         <option value="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/head.ejs" />
         <option value="$PROJECT_DIR$/themes/sergiocarracedo/source/css/_comments.scss" />
@@ -162,6 +161,10 @@
         <option value="$PROJECT_DIR$/themes/sergiocarracedo/source/css/_highlight.scss" />
         <option value="$PROJECT_DIR$/source/_posts/tu-propio-v-model-en-un-componente-vue.md" />
         <option value="$PROJECT_DIR$/source/_posts/simracing-mas-real-que-virtual.md" />
+        <option value="$PROJECT_DIR$/_config.yml" />
+        <option value="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/article.ejs" />
+        <option value="$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/item.ejs" />
+        <option value="$PROJECT_DIR$/themes/sergiocarracedo/source/css/_posts.scss" />
       </list>
     </option>
   </component>
@@ -176,7 +179,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -194,12 +196,6 @@
               <item name="sergiocarracedo.es" type="462c0819:PsiDirectoryNode" />
               <item name="source" type="462c0819:PsiDirectoryNode" />
               <item name="_data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sergiocarracedo.es" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sergiocarracedo.es" type="462c0819:PsiDirectoryNode" />
-              <item name="source" type="462c0819:PsiDirectoryNode" />
-              <item name="_posts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sergiocarracedo.es" type="b2602c69:ProjectViewProjectNode" />
@@ -263,6 +259,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -307,18 +304,19 @@
       <workItem from="1575323820140" duration="1044000" />
       <workItem from="1575326270656" duration="15573000" />
       <workItem from="1575497190539" duration="3893000" />
-      <workItem from="1576064294673" duration="8303000" />
+      <workItem from="1576064294673" duration="8905000" />
+      <workItem from="1576620615481" duration="446000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59608000" />
+    <option name="totallyTimeSpent" value="60656000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="50" y="27" width="1870" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21405049" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21679473" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -436,13 +434,6 @@
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/_config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2369">
-          <caret line="103" column="14" selection-start-line="103" selection-start-column="14" selection-end-line="103" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/_data/skills.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="575">
@@ -555,27 +546,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/article.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1058">
-          <caret line="46" column="26" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/source/css/_posts.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5106">
-          <caret line="222" column="5" selection-start-line="222" selection-start-column="5" selection-end-line="222" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/source/css/_comments.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="12" column="3" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/_posts/tu-propio-v-model-en-un-componente-vue.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -586,13 +556,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/source/css/_comments.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="12" column="3" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/source/_posts/simracing-mas-real-que-virtual.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="344">
+          <first_editor relative-caret-position="346">
             <caret line="47" column="28" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/_config.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="80" column="12" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/article.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/layout/_partial/post/item.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/sergiocarracedo/source/css/_posts.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
         </state>
       </provider>
     </entry>

@@ -12,9 +12,13 @@
     .titles {
       @include cover();
       padding: 30px;
-      @include gradient-vertical(rgba($black,.7), rgba($black ,0), 0%, 100%);
-      @include transition(background, .2s);
+      @include gradient-vertical(rgba($black,.8), rgba($black ,0), 0%, 100%);
+      @include transition(background, .4s);
       color: $white;
+
+      @include media($xs) {
+        padding: 15px 20px;
+      }
 
       h6 {
         margin: 0 0 5px 0;
@@ -25,6 +29,10 @@
       h3 {
         margin: 0;
         font-size: 22px;
+
+        @include media($xs) {
+          font-size: 20px;
+        }
       }
     }
 
@@ -116,18 +124,18 @@
   }
   .article-image {
     margin-bottom: 40px;
-    height: 400px;
+    // height: 400px;
     overflow: hidden;
     position: relative;
 
 
     @include media($xs) {
-      height: 200px;
+      // height: 200px;
     }
     img {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
+      //position: absolute;
+      //top: 50%;
+      //transform: translateY(-50%);
     }
   }
 
