@@ -3,13 +3,13 @@ title: "Instagram RBG Project"
 date: 2020-01-01
 cover: /images/instagram/ig-cover.jpg
 ---
-This is first 2020 post and first in English. I joined a team whose main language is English and i need to improve it :sad:
+This is my first 2020 post and the first one in English. I joined a team whose main language is English and i need to improve it :sad:
 
 I will start writing about non-technical topics, in this case about my 3 public Instagram accounts.
 
 ### Red
 
-About 3 years ago, in 2016, I decided to create an Instagram account only for red things pictures because I thought in the global visual effect in the account profile page. This the effect I talking about:
+About 3 years ago, in 2016, I decided to create an Instagram account only for red things pictures because I thought in the global visual effect in the account profile page. This is the effect I am talking about:
 
 {% img "photoswipe mb-0" /images/instagram/sergiocarracedo-red.png %}
 &nbsp;
@@ -29,9 +29,9 @@ And a few days later, I completed the RGB project creating the blue one: https:/
 {% img "photoswipe mb-0" /images/instagram/sergiocarracedo-blue.png %}
 &nbsp;
 
-In the beginning I thought that take pictures based on a single color would be easy but was wrong. Take pictures is complicated, maybe red ones are easiest, and blue ones hardest, always with the constraint of not repeating topic.
+In the beginning I thought that taking pictures based on a single color would be easy but I was wrong. Taking pictures is complicated, maybe the red are the easiest, and blue ones the hardest, always with the constraint of not repeating topic.
 
-There are a lot of blue ones if you think in the sea and the skies, but all those pictures would be similar.
+There are a lot of blue ones if you think of the sea and the skies, but all those pictures would be similar.
 
 I you like this idea (different Instagram account based in color), please follow them:
 

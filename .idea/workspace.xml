@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/instagram-rbg.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/instagram-rbg.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -86,8 +86,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/instagram-rbg.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="414">
-                <caret line="14" column="6" lean-forward="true" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+              <first_editor relative-caret-position="735">
+                <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
               </first_editor>
               <second_editor />
             </state>
@@ -318,12 +318,12 @@
       <workItem from="1576064294673" duration="8905000" />
       <workItem from="1576620615481" duration="1065000" />
       <workItem from="1576871334338" duration="2512000" />
-      <workItem from="1576955064416" duration="1294000" />
+      <workItem from="1576955064416" duration="2141000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65081000" />
+    <option name="totallyTimeSpent" value="65928000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="56" y="27" width="1864" height="1053" extended-state="6" />
@@ -630,8 +630,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/instagram-rbg.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="414">
-            <caret line="14" column="6" lean-forward="true" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+          <first_editor relative-caret-position="735">
+            <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
           </first_editor>
           <second_editor />
         </state>
