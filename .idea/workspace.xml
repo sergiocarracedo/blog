@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/source/_posts/instagram-rbg.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/instagram-rbg.md" afterDir="false" />
-    </list>
+    <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -320,12 +318,12 @@
       <workItem from="1576871334338" duration="2512000" />
       <workItem from="1576955064416" duration="2222000" />
       <workItem from="1577013456425" duration="126000" />
-      <workItem from="1577121471144" duration="16000" />
+      <workItem from="1577121471144" duration="619000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66151000" />
+    <option name="totallyTimeSpent" value="66754000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="56" y="27" width="1864" height="1053" extended-state="6" />

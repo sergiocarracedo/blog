@@ -1,5 +1,5 @@
 ---
-title: "Instagram RBG Project"
+title: "Instagram RGB Project"
 date: 2019-12-23
 cover: /images/instagram/ig-cover.jpg
 ---
