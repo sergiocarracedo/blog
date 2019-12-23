@@ -33,7 +33,7 @@ In the beginning I thought that taking pictures based on a single color would be
 
 There are a lot of blue ones if you think of the sea and the skies, but all those pictures would be similar.
 
-I you like this idea (different Instagram account based in color), please follow them:
+If you like this idea (different Instagram accounts based in color), please follow them:
 
 Red: https://www.instagram.com/sergiocarracedo.red/
 Green: https://www.instagram.com/sergiocarracedogreen/
