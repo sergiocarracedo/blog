@@ -1,9 +1,9 @@
 ---
 title: "Instagram RBG Project"
-date: 2020-01-01
+date: 2019-12-23
 cover: /images/instagram/ig-cover.jpg
 ---
-This is my first 2020 post and the first one in English. I joined a team whose main language is English and i need to improve it :disappointed:
+This is my first post  in English. I joined a team whose main language is English and i need to improve it :disappointed:
 
 I will start writing about non-technical topics, in this case about my 3 public Instagram accounts.
 
