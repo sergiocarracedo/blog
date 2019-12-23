@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/_posts/instagram-rbg.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/instagram-rbg.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -86,8 +87,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/instagram-rbg.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="735">
-                <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+              <first_editor relative-caret-position="138">
+                <caret line="5" column="142" selection-start-line="5" selection-start-column="142" selection-end-line="5" selection-end-column="142" />
               </first_editor>
               <second_editor />
             </state>
@@ -184,6 +185,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -270,13 +272,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../pulpocon/2019/web" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
@@ -318,18 +319,18 @@
       <workItem from="1576064294673" duration="8905000" />
       <workItem from="1576620615481" duration="1065000" />
       <workItem from="1576871334338" duration="2512000" />
-      <workItem from="1576955064416" duration="2141000" />
+      <workItem from="1576955064416" duration="2222000" />
+      <workItem from="1577013456425" duration="126000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65928000" />
+    <option name="totallyTimeSpent" value="66135000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="56" y="27" width="1864" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2219163" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2246696" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -630,8 +631,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/instagram-rbg.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="735">
-            <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+          <first_editor relative-caret-position="138">
+            <caret line="5" column="142" selection-start-line="5" selection-start-column="142" selection-end-line="5" selection-end-column="142" />
           </first_editor>
           <second_editor />
         </state>
