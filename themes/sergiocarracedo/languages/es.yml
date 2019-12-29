@@ -9,7 +9,7 @@ comment: Comentarios
 archive_a: Archivos
 archive_b: "Archivos: %s"
 page: Página %d
-recent_posts: Entraads recientes
+recent_posts: Entradas recientes
 newer: Más nuevo
 older: Más antiguo
 share: Compartir
@@ -17,3 +17,5 @@ powered_by: Powered by
 rss_feed: RSS Feed
 category: Categoría
 tag: Etiqueta
+index:
+  title: Test título
