@@ -51,9 +51,9 @@ If you use _vue-cli_, this is the default config for _Webpack_.
 
 For simple apps it is a good idea keep all your built code into a single file, because client's browser loads `app.css` the first time user accesses your app and keep it in cache, next access the file will be served from local browser's cache (until cache expire).
 
-But, when your application starts to grow the `app.js` will be huge, slowly down the page loading. There will even be parts of the app that are never used, for example "pages" (in this context think pages as Vue page component, not static pages) forbidden for regular users.
+But when your application starts to grow the `app.js` will be huge, slowing down the page loading. There will even be parts of the app that are never used, for example "pages" (in this context think pages as Vue page component, not static pages) forbidden for regular users.
 
-In this case a good solution is chunking your `app.js` using [async components](https://vuejs.org/v2/guide/components-dynamic-async.html) for page components. You can split every page into different files which will be loaded when user navigate to route.
+In this case a good solution is chunking your `app.js` using [async components](https://vuejs.org/v2/guide/components-dynamic-async.html) for page components. You can split every page into different files which will be loaded when user navigates to route.
 
 This strategy uses the _[Webpack's code splitting](https://webpack.js.org/guides/code-splitting/)_ feature.
 
@@ -69,9 +69,9 @@ const routes = [
 ]
 ```
 
-_Webpack_ now will create a separated file for your page component. But as is, the user receives no feedback about the loading process. We could improve the router using a loading component. 
+_Webpack_ now will create a separated file for your page components. But this way the user receives no feedback about the loading process. We could improve the router using a loading component. 
 
-An async component must provide a _Promise.resolve_. When you write `() => import('./views/HomeComponent')` implicit you return a _Promise_ that resolves the component. But if you want use the _[handling loading state](https://vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State)_ you need return an explicit _Promise_
+An async component must provide a _Promise.resolve_. When you write `() => import('./views/HomeComponent')` implicit you return a _Promise_ that resolves the component. But if you want to use the _[handling loading state](https://vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State)_ you need to return an explicit _Promise_
 
 Like this:
 ```js
@@ -99,13 +99,12 @@ function lazyLoadView (AsyncPageComponent) {
 }
 ```
 
-As you see, we use a _Promise.resolve_ that return component render function.
+As you can see, we use a _Promise.resolve_ that returns component render function.
 
 _data_ and _children_ are necessary to pass props, attributes and events to component [More info](https://vuejs.org/v2/guide/render-function.html#Passing-Attributes-and-Events-to-Child-Elements-Components)
 
-With these changes, when the user navigate to `/` in first the app show the _LoadingComponent_ and then, when the component is fully loaded, shows it.
-
-To end, say that you can group the components in the same _chunk_ using following notation.
+With these changes, when the user navigate to `/` firstly, the app shows the _LoadingComponent_ and then, when the component is fully loaded, shows it.
+Finally, say that you can group the components in the same _chunk_ using the following notation.
 
 ```js
 import(/* webpackChunkName: "group-main" */ './HomeComponent.vue')
