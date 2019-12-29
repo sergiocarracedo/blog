@@ -6,7 +6,7 @@ cover: /images/pexels-photo-64782.jpg
 ---
 When you start to create SPA _(Single page application)_ you must bear in mind that SPA doesn't mean _Single JavaScript file_.
 
-Usually you use _Webpack_ for handle your app builds, by default _Webpack_ create one file for all assets, *even CSS*. 
+You normally use _Webpack_ for handling your app builds, by default _Webpack_ create one file for all assets, *even CSS*. 
 
 The first step, maybe, is separate styles from _app.js_ in they own CSS files.
 
