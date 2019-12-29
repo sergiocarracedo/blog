@@ -4,7 +4,7 @@ date: 2019-12-29
 tags: vue
 cover: /images/pexels-photo-64782.jpg
 ---
-When you start to create SPA _(Single page application)_ you must keep in mind that SPA doesn't mean _Single JavaScript file_.
+When you start to create SPA _(Single page application)_ you must bear in mind that SPA doesn't mean _Single JavaScript file_.
 
 Usually you use _Webpack_ for handle your app builds, by default _Webpack_ create one file for all assets, *even CSS*. 
 
