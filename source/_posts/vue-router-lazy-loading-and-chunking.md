@@ -10,7 +10,7 @@ You normally use _Webpack_ for handling your app builds, by default, _Webpack_ c
 
 The first step, maybe, is separate styles from _app.js_ in their own CSS files.
 
-To do this, we'll use the _Webpack_ plugin _[MiniCssExtractPlugin](https://webpack.js.org/plugins/mini-css-extract-plugin/)_ witch we configure like this:
+To do this, we'll use the _Webpack_ plugin _[MiniCssExtractPlugin](https://webpack.js.org/plugins/mini-css-extract-plugin/)_ which we'll configure like this:
 
 ```js
 // webpack.config.js
@@ -43,13 +43,13 @@ module.exports = {
   },
 ```
 
-This forces _Webpack_ to extract CSS into a separate file, for example `app.css`
+This forces _Webpack_ to extract CSS into separated files, for example `app.css`
 
 If you use _vue-cli_, this is the default config for _Webpack_. 
 
 ### Going forward
 
-For simple apps is a good idea keep all your build code into a single file, because client's browser load `app.css` the first time user access your app and keep in cache, next access the file will be served from local browser's cache (until cache expire).
+For simple apps it is a good idea keep all your built code into a single file, because client's browser loads `app.css` the first time user accesses your app and keep it in cache, next access the file will be served from local browser's cache (until cache expire).
 
 But, when your application starts to grow the `app.js` will be huge, slowly down the page loading. There will even be parts of the app that are never used, for example "pages" (in this context think pages as Vue page component, not static pages) forbidden for regular users.
 
