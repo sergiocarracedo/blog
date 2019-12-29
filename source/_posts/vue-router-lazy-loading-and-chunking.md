@@ -8,7 +8,7 @@ When you start to create SPA _(Single page application)_ you must bear in mind t
 
 You normally use _Webpack_ for handling your app builds, by default, _Webpack_ create one file for all assets, *even CSS*. 
 
-The first step, maybe, is separate styles from _app.js_ in they own CSS files.
+The first step, maybe, is separate styles from _app.js_ in their own CSS files.
 
 To do this, we'll use the _Webpack_ plugin _[MiniCssExtractPlugin](https://webpack.js.org/plugins/mini-css-extract-plugin/)_ witch we configure like this:
 
