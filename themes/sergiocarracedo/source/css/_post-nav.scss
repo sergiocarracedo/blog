@@ -1,5 +1,28 @@
 .post-nav {
   margin-bottom: 50px;
+  background: #191919;
+
+  .grid-row {
+    padding-top: 17px;
+    padding-bottom: 15px;
+  }
+
+  .nav-cover {
+    margin-bottom: 10px;
+    display: block;
+    img {
+      width: 150px;
+      display: inline-block;
+      text-align: right;
+      transition: all .2s ease-in-out;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
+    }
+  }
 
   .prev {
     text-align: right;
@@ -9,7 +32,15 @@
     text-align: left;
   }
 
-  a {
+  .nav-next {
+    .nav-cover {
+      text-align: right;
+    }
+  }
+
+
+
+  a.nav-text {
     color: $link-color;
     @include transition(all, .2s);
     @include underline-effect($link-hover-color);
