@@ -54,6 +54,13 @@ img {
   height: auto;
 }
 
+.center-img {
+  img {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .share {
   position: relative;
   a {
