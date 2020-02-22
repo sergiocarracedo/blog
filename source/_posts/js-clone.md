@@ -6,17 +6,17 @@ tags: js clone deep-clone
 
 Cloning objects in _Javascript_ (and in other language) is a tricky task. JS doesn't store the object value in your variable or in your constant, instead, store a pointer to the object value (the object reference).
 
-Even when you pass an object to a function or to a method you are passing that object by reference, not the real value.
+Even when you passes an object to a function or method, you are passing this object by reference, not the value.
 
-This picture shows perfectly the difference.
+This picture perfectly shows the difference.
 
-<div class="center-img">
+<div class='center-img'>
   ![By reference and by value](/images/pass-by-reference-vs-pass-by-value-animation.gif) 
 </div>
 
-As you can see, if your pass (or copy) an object by reference and then you change any property, the "source" object's property also changes.
+As you can see, if you pass (or copy) an object by reference and then change any property, the 'source' object's property also changes.
 
-In all example I'll use that object down bellow
+In any example I'll use the object below
 
 ```js
 const sourceObject = {
@@ -25,35 +25,121 @@ const sourceObject = {
     l2_2: [1, 2, 3, 4],
     l2_3: {
       l3_1: 'l3_3',
-      l3_3: 'l3_3'
+      l3_3: () => 'l3_3'
     }
   },
   l1_2: 'My original object'
 } 
 ```
 
-# "Standard" clone
-We'll use a "_standard_" clone assigning value to other constant
+# 'Standard' cloning
+We'll use a '_standard_' cloning by assign the source value to other constant
 
 ```js
 const copiedObject = sourceObject
 
 console.log('sourceObject', sourceObject.l1_2)
-// My original object
+// My original object --> ✔️
 
 clonedObject.l1_2 = 'My cloned object'
 
 console.log('clonedObject', clonedObject.l1_2)
-// My original object
+// My original object --> ✔️
 
 console.log('sourceObject', sourceObject.l1_2)
-// My original object
+// My original object --> ❌
 ```
 [![Edit practical-violet-dki61](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/practical-violet-dki61?fontsize=14&hidenavigation=1&theme=dark)
 
-As I said before, when I change the property `l1_2` in cloned object, the value also changes in the source object.
+As I said before, when I change property `l1_2` on cloned object, the value also changes on the source object.
 
-Using this strategy, you is not copying the object at all.
+Using this strategy, you are not copying the object at all.
 
 # Using spread operator
-This time I'll use the spread operator, that 
+This time I'll use the spread operator, that 'returns' every element in the object individually.
+
+```js
+console.log('sourceObject l1_2', sourceObject.l1_2)
+// My original object --> ✔️
+console.log('sourceObject l1_1.l2_1', sourceObject.l1_1.l2_1)
+// 123 --> ✔️
+
+const clonedObject = { ...sourceObject }
+clonedObject.l1_2 = 'My cloned object'
+
+console.log('clonedObject', clonedObject.l1_2)
+// My cloned object --> ✔️
+console.log('sourceObject', sourceObject.l1_2)
+// My original object  --> ✔️
+
+clonedObject.l1_1.l2_1 = '321'
+
+console.log('clonedObject l1_1.l2_1', clonedObject.l1_1.l2_1)
+// 123 --> ✔️
+console.log('sourceObject l1_1.l2_1', sourceObject.l1_1.l2_1)
+// 123 --> ❌️
+```
+[![Edit sleepy-rain-1gtsb](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/sleepy-rain-1gtsb?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
+
+Now property `l2_1` is copied by value, we can change it and original object `l2_1` keeps original value, but if when I changed `l1_1.l2_1` (2th depth property) we get the same as the first attempt. 
+
+Spread operator do a _shallow copy_ of the object. Only first level depth properties are copied by value, the nested ones keeps copying by reference.
+
+# Using `Object.assign`
+ 
+Like _spread operator_, just do a _shallow copy_, then I will not create the example, trust me, you will get the same result.
+ 
+```js
+const clonedObject = Object.assign({}, sourceObject)
+```
+
+# Using `JSON.parse` and `JSON.stringify`
+This is a simple and fast way to deep clone an object, the point is convert the object to string with `JSON.stringify` and then get an object from the string using `JSON.parse`
+
+Lets do it
+
+```js
+const clonedObject = JSON.parse(JSON.stringify(sourceObject))
+
+clonedObject.l1_1.l2_1 = '321'
+
+console.log('clonedObject l1_1.l2_1', clonedObject.l1_1.l2_1)
+// 321 --> ✔️
+console.log('sourceObject l1_1.l2_1', sourceObject.l1_1.l2_1)
+// 123 --> ✔
+```
+
+Everything seems fine! :tada: 
+But, did you notice `l1_1.l2_3.l3_3` property is a function? :cry:
+
+```js
+console.log('clonedObject l1_1.l2_3.l3_3', clonedObject.l1_1.l2_3.l3_3)
+// undefined --> ❌️
+console.log('sourceObject l1_1.l2_3.l3_3', sourceObject.l1_1.l2_3.l3_3)
+// function l3_3() {} --> ✔️
+```
+
+[![Edit xenodochial-frost-q8k71](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/xenodochial-frost-q8k71?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
+
+Oh, oh, functions are not copied using that method, then, what could  we do? The solution is iterate every nested property in the object and use, for example, the spread operator method. Hard and dirty work.
+
+# Loadash to the rescue
+
+[Lodash](https://lodash.com/) is a modular utility library that adds many funcionalities, and one of them is [`cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep) that do exactily we need: clone (deep) an object through nested properties, keeping all value types, even functions.
+
+```js
+import { cloneDeep } from 'lodash'
+
+const clonedObject = cloneDeep(sourceObject)
+
+console.log('clonedObject l1_1.l2_3.l3_3', clonedObject.l1_1.l2_3.l3_3)
+// function l3_3() {} --> ✔️
+console.log('sourceObject l1_1.l2_3.l3_3', sourceObject.l1_1.l2_3.l3_3)
+// function l3_3() {} --> ✔️
+```
+
+[![Edit trusting-currying-2o6uf](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/trusting-currying-2o6uf?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
+
+
+
+
