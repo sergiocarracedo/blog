@@ -1,7 +1,8 @@
 ---
-title: Cloning objects in Javascript
+title: (Deep) Cloning objects in Javascript
 date: 2020-02-22 18:28:28
 tags: js clone deep-clone
+cover: /images/karen-lau-tRR3w-S2A3Y-unsplash.jpg
 ---
 
 Cloning objects in _Javascript_ (and in other language) is a tricky task. JS doesn't store the object value in your variable or in your constant, instead, store a pointer to the object value (the object reference).
@@ -141,5 +142,26 @@ console.log('sourceObject l1_1.l2_3.l3_3', sourceObject.l1_1.l2_3.l3_3)
 [![Edit trusting-currying-2o6uf](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/trusting-currying-2o6uf?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
 
 
+# Performance
+We'll copy source object 10.000 times using each method to compare time elapsed. Compare memory usage is no sense because `Object.assign` and _Spread Operator_ method are not copying nested property by value.
 
+Results in my browser are following:
+
+* Object.assign clone elapsed time: **4ms**
+* Spread operator clone elapsed time: **22ms**
+* JSON clone elapsed time: **47ms**
+* Lodash clone elapsed time: **92ms**
+
+
+As you can see, if you only need to do a shallow clone `Object.assign` is faster solution, and if you only need to clone values in nested properties (not functions or symbols), `JSON.parse(JSON.stringify())` could be a faster solution. But if you want make sure that all values are copied you must use _lodash_ or a similar solution.
+ 
+Test yourself in codesandbox!
+
+[![Edit romantic-shannon-epf1o](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/romantic-shannon-epf1o?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
+
+
+
+<small>
+Header picture: <a style="background-color:black;color:white;text-decoration:none;padding:4px 6px;font-family:-apple-system, BlinkMacSystemFont, &quot;San Francisco&quot;, &quot;Helvetica Neue&quot;, Helvetica, Ubuntu, Roboto, Noto, &quot;Segoe UI&quot;, Arial, sans-serif;font-size:12px;font-weight:bold;line-height:1.2;display:inline-block;border-radius:3px" href="https://unsplash.com/@pic_parlance?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Karen Lau"><span style="display:inline-block;padding:2px 3px"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-2px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path></svg></span><span style="display:inline-block;padding:2px 3px">Karen Lau</span></a>
+</small>
 

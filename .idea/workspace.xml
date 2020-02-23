@@ -23,8 +23,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/js-clone.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="238">
-                <caret line="129" column="5" lean-forward="true" selection-start-line="129" selection-start-column="5" selection-end-line="129" selection-end-column="5" />
+              <first_editor relative-caret-position="193">
+                <caret line="157" column="28" selection-start-line="157" selection-start-column="28" selection-end-line="157" selection-end-column="28" />
               </first_editor>
               <second_editor />
             </state>
@@ -43,7 +43,11 @@
       <find>homo</find>
       <find>.highlight</find>
       <find>.gutter</find>
+      <find>:white_medium_square:</find>
     </findStrings>
+    <replaceStrings>
+      <replace>:white_large_square:</replace>
+    </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/source/_posts</dir>
       <dir>$PROJECT_DIR$/themes</dir>
@@ -173,20 +177,20 @@
       <workItem from="1577696105836" duration="54000" />
       <workItem from="1577727596058" duration="1531000" />
       <workItem from="1582392530303" duration="2443000" />
-      <workItem from="1582406236031" duration="3552000" />
+      <workItem from="1582406236031" duration="6320000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3552000" />
+    <option name="totallyTimeSpent" value="6320000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="50" y="27" width="1870" height="1053" extended-state="6" />
+    <frame x="42" y="27" width="1878" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="npm" side_tool="true" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24972558" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24863388" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
@@ -213,8 +217,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/js-clone.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="238">
-            <caret line="129" column="5" lean-forward="true" selection-start-line="129" selection-start-column="5" selection-end-line="129" selection-end-column="5" />
+          <first_editor relative-caret-position="193">
+            <caret line="157" column="28" selection-start-line="157" selection-start-column="28" selection-end-line="157" selection-end-column="28" />
           </first_editor>
           <second_editor />
         </state>
