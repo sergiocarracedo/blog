@@ -4,7 +4,9 @@
     <bookmark url="file://$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md" line="11" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="" />
+    <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/themes/sergiocarracedo/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,7 +21,7 @@
     </execution>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/_posts/js-clone.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
@@ -36,8 +38,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="92">
-                <caret line="4" column="38" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
+              <first_editor relative-caret-position="689">
+                <caret line="30" column="94" selection-start-line="30" selection-start-column="94" selection-end-line="30" selection-end-column="94" />
               </first_editor>
               <second_editor />
             </state>
@@ -48,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/simracing-mas-real-que-virtual.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="-2476" />
+              <first_editor />
               <second_editor />
             </state>
           </provider>
@@ -58,8 +60,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/vigo-hace-pina.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="298">
-                <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+              <first_editor relative-caret-position="322">
+                <caret line="14" selection-start-line="14" selection-end-line="14" />
               </first_editor>
               <second_editor />
             </state>
@@ -70,7 +72,7 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/desacoplando-la-interaccion-con-una-api-en-vue.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="-5866" />
+              <first_editor />
               <second_editor />
             </state>
           </provider>
@@ -80,7 +82,7 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/Impresiones-tras-un-mes-de-uso-de-un-teclado-mecanico.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="-621" />
+              <first_editor />
               <second_editor />
             </state>
           </provider>
@@ -90,7 +92,7 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/Juegos-Sandbox-Minecraft-y-7-Days-to-die-7D2D.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="-3036" />
+              <first_editor />
               <second_editor />
             </state>
           </provider>
@@ -100,7 +102,7 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/Mapas-interactivos-a-partir-de-un-SVG.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="-1625" />
+              <first_editor />
               <second_editor />
             </state>
           </provider>
@@ -120,7 +122,7 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/php-reflection.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="-3842" />
+              <first_editor />
               <second_editor />
             </state>
           </provider>
@@ -173,6 +175,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -195,7 +198,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -279,21 +281,16 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10870000" />
+    <option name="totallyTimeSpent" value="11208000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="42" y="27" width="1878" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="npm" side_tool="true" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24863388" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2546448" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -301,10 +298,15 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -324,7 +326,7 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/simracing-mas-real-que-virtual.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-2476" />
+          <first_editor />
           <second_editor />
         </state>
       </provider>
@@ -332,8 +334,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/vigo-hace-pina.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="298">
-            <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+          <first_editor relative-caret-position="322">
+            <caret line="14" selection-start-line="14" selection-end-line="14" />
           </first_editor>
           <second_editor />
         </state>
@@ -342,7 +344,7 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/desacoplando-la-interaccion-con-una-api-en-vue.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-5866" />
+          <first_editor />
           <second_editor />
         </state>
       </provider>
@@ -350,7 +352,7 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/Impresiones-tras-un-mes-de-uso-de-un-teclado-mecanico.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-621" />
+          <first_editor />
           <second_editor />
         </state>
       </provider>
@@ -358,7 +360,7 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/Juegos-Sandbox-Minecraft-y-7-Days-to-die-7D2D.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-3036" />
+          <first_editor />
           <second_editor />
         </state>
       </provider>
@@ -366,7 +368,7 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/Mapas-interactivos-a-partir-de-un-SVG.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-1625" />
+          <first_editor />
           <second_editor />
         </state>
       </provider>
@@ -382,7 +384,7 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/php-reflection.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-3842" />
+          <first_editor />
           <second_editor />
         </state>
       </provider>
@@ -390,8 +392,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="92">
-            <caret line="4" column="38" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
+          <first_editor relative-caret-position="689">
+            <caret line="30" column="94" selection-start-line="30" selection-start-column="94" selection-end-line="30" selection-end-column="94" />
           </first_editor>
           <second_editor />
         </state>
