@@ -4,9 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md" line="11" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/themes/sergiocarracedo/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -276,12 +274,12 @@
       <workItem from="1577696105836" duration="54000" />
       <workItem from="1577727596058" duration="1531000" />
       <workItem from="1582392530303" duration="2443000" />
-      <workItem from="1582406236031" duration="10266000" />
+      <workItem from="1582406236031" duration="10870000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10266000" />
+    <option name="totallyTimeSpent" value="10870000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="42" y="27" width="1878" height="1053" extended-state="6" />
