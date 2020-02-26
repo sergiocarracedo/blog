@@ -4,9 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md" line="11" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md" afterDir="false" />
-    </list>
+    <list default="true" id="1a44ba93-a1b3-41d3-8982-2c98367d43a9" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/themes/sergiocarracedo/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,7 +36,7 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="689">
+              <first_editor relative-caret-position="989">
                 <caret line="30" column="94" selection-start-line="30" selection-start-column="94" selection-end-line="30" selection-end-column="94" />
               </first_editor>
               <second_editor />
@@ -281,7 +279,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11208000" />
+    <option name="totallyTimeSpent" value="11810000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="42" y="27" width="1878" height="1053" extended-state="6" />
@@ -392,7 +390,7 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/same-avatar-in-diferent-account.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="689">
+          <first_editor relative-caret-position="989">
             <caret line="30" column="94" selection-start-line="30" selection-start-column="94" selection-end-line="30" selection-end-column="94" />
           </first_editor>
           <second_editor />
