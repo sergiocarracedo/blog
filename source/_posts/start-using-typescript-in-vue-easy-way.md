@@ -45,7 +45,7 @@ If you want start to use [class-style component syntax](https://vuejs.org/v2/gui
 ```
 ? Use Babel alongside TypeScript (required for modern mode, auto-detected polyfills, transpiling JSX)? (Y/n)
 ```
-"Yes". Probably you was using it yet.
+"Yes". You were probably already using it.
 
 The next two questions are the most important
 
@@ -88,7 +88,7 @@ Then our component look like:
 </template>
 <script lang="ts">
 import Vue from 'vue'
-export default Vue.extent({
+export default Vue.extend({
   props: ....,
   data () ....,
   methods: ....
