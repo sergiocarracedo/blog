@@ -1,5 +1,5 @@
 ---
-title: "Understanding Javascript's event loop: Macrotask and microtasks"
+title: "Understanding Javascript's event loop: Macrotasks and microtasks"
 date: 2020-04-27
 tags: js loop
 cover: /images/js-event-loop-106155.jpg
