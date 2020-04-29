@@ -1,5 +1,5 @@
 ---
-title: No sólo de medicina vive el hombre 
+title: Mi experiencia con el trato médico-paciente
 date: 2019-01-28
 cover: /images/medicina.jpg
 ---
