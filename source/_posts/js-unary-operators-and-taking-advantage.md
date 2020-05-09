@@ -1,5 +1,5 @@
 ---
-title: "Javacript unary operators: Taking advantage using them"
+title: "Javascript unary operators: Taking advantage using them"
 date: 2020-05-09
 tags: js
 cover: /images/unary-operators-1364700.jpg
