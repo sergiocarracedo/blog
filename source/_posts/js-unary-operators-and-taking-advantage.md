@@ -90,7 +90,7 @@ Unary minus do the same, but negate the result.
 
 The `!` operator behaves similarly: It tries to convert the value to `boolean`, but negate the result of the cast, but if we double negate the value we found a way to cast values to `boolean`
 
-```javascript`
+```javascript
 console.log(!!'10a') // true
 console.log(!!'') // false
 console.log(!!0) // false

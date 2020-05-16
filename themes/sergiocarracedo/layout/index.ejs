@@ -6,13 +6,13 @@
     <div id="primary">
         <a name="blog"></a>
         <h3 class="block-title">
-            Mi blog
+            My blog
         </h3>
         <%- partial('_partial/list', {start: 0}) %>
     </div>
     <% if (page.total > 1){ %>
         <nav id="page-nav">
-            <% var prev_text = "&laquo; " + __('prev');var next_text = __('next') + " &raquo;"%>
+            <% var prev_text = "« " + __('prev');var next_text = __('next') + " »"%>
             <%- paginator({
                 prev_text: prev_text,
                 next_text: next_text,

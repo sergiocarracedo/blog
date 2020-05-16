@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "fstream": "^1.0.12",
-    "hexo": "^4.2.0",
+    "global": "^4.4.0",
+    "hexo": "^4.2.1",
     "hexo-article-emoji": "https://github.com/frapples/hexo-article-emoji",
     "hexo-deployer-git": "^2.1.0",
     "hexo-filter-responsive-images": "^1.5.0",

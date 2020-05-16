@@ -1,6 +1,18 @@
 {
   "skills": [
     {
+      "name": "JS",
+      "icon": "fab fa-js",
+      "color": "#F0DB4F",
+      "textColor": "black"
+    },
+    {
+      "name": "Vue",
+      "icon": "fab fa-vuejs",
+      "color": "#41B883",
+      "textColor": "white"
+    },
+    {
       "name": "PHP",
       "color": "#787CB5",
       "textColor": "white",
@@ -12,24 +24,14 @@
       "textColor": "white",
       "icon": "fab fa-drupal"
     },
-    {
-      "name": "JS",
-      "icon": "fab fa-js",
-      "color": "#F0DB4F",
-      "textColor": "black"
-    },
+
     {
       "name": "Symfony",
       "icon": "fab fa-symfony",
       "textColor": "white",
       "color": "#333"
     },
-    {
-      "name": "Vue",
-      "icon": "fab fa-vuejs",
-      "color": "#41B883",
-      "textColor": "white"
-    },
+
     {
       "name": "Linux",
       "icon": "fab fa-linux",
@@ -100,6 +102,10 @@
     },
     {
       "name": "CSS Grid Layout",
+      "icon": "fas fa-grip-horizontal"
+    },
+    {
+      "name": "Data Visualization",
       "icon": "fas fa-grip-horizontal"
     }
   ]
