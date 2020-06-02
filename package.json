@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "hexo": {
-    "version": "4.2.0"
+    "version": "4.2.1"
   },
   "scripts": {
     "build": "hexo clean && hexo generate && hexo deploy"
@@ -12,8 +12,9 @@
     "fstream": "^1.0.12",
     "global": "^4.4.0",
     "hexo": "^4.2.1",
-    "hexo-article-emoji": "https://github.com/frapples/hexo-article-emoji",
+    "hexo-cli": "^3.1.0",
     "hexo-deployer-git": "^2.1.0",
+    "hexo-filter-github-emojis": "^2.1.0",
     "hexo-filter-responsive-images": "^1.5.0",
     "hexo-generator-archive": "^1.0.0",
     "hexo-generator-category": "^1.0.0",
