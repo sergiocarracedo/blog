@@ -1,5 +1,5 @@
 ---
-title: My favorites YouTube Channels 2020
+title: My favorite YouTube Channels 2020
 date: 2020-06-02
 tags: youtube
 cover: /images/youtube2020.jpg
