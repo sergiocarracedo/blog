@@ -26,6 +26,7 @@
     "hexo-renderer-sass": "^0.4.0",
     "hexo-renderer-stylus": "^1.1.0",
     "hexo-server": "^1.0.0",
+    "hexo-tag-asciinema": "^0.0.3",
     "lodash": "^4.17.13",
     "lodash.merge": "^4.6.2",
     "lodash.mergewith": "^4.6.2",
