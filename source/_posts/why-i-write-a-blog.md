@@ -1,6 +1,6 @@
 ---
 title: Why I write a blog
-date: 2020-07-20
+date: 2020-07-15
 tags:
 cover: /images/why-i-write-a-blog-977931.jpg
 ---
