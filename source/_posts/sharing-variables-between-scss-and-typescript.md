@@ -1,13 +1,13 @@
 ---
-title: Exporting SCSS variables and importing in Typescript 
-date: 2020-07-29
+title: Sharing variables between SCSS and Typescript 
+date: 2020-07-17
 tags:
 cover: /images/share-scss-variables-ts-3951901.jpg
 ---
 
-Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, you have a list of colors in your SCSS file and need to check the variable names in typescript to be sure is an available color.
+Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, if you have a list of colors in your SCSS file and need to check the variable names in typescript to be sure is an available color.
 
-Imagine a Vue component that have a property to set the background color: 
+Imagine a Vue component have a property to set the background color: 
 
 ```html
 <template>
@@ -122,7 +122,7 @@ $colors: (
 
 Then, we will refactor our compoment like this:
 
-```js
+```html
 <template>
   <div :class="['component', colorClass]">
     My component
