@@ -5,12 +5,12 @@ tags:
 cover: /images/why-i-write-a-blog-977931.jpg
 ---
 
-If you are here (Welcome!) you are reading my blog, this is obvious :joy:, and I want to share with you why a write it.
+If you are here (Welcome!) you are reading my blog, this is obvious :joy:, and I want to share with you why I write it.
 
-Write a blog is in some ways a hard task:
+Writing a blog is in some ways a hard task:
  
-* You must find an interesting topic to write about it.
-* Look for information related to the chosen topic
+* You should find an interesting topic to write about.
+* Look for information related to the chosen topic.
 * Read a lot of references about it.
 * Write your blog post.
 * Review it.
