@@ -17,7 +17,7 @@ Writing a blog is in some ways a hard task:
 * Correct it.
 * Find a beautiful and related picture for the header and home page.
 * And finally publish it.
-* Well, also you could want to share on Twitter or Linked In too.
+* You could also want to share on Twitter or LinkedIn.
 
 Ok, but why do you do this "effort"? In somehow I do this thinking of myself:
 
