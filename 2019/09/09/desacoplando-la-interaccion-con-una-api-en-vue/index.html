@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Desacoplando la interacción con una API en Vue: vue.$api</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Durante el desarrollo de una web, una SPA en Vue es muy habitual que ese desarrollo implique intera,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Durante el desarrollo de una web, una SPA en Vue es muy habitual que ese desarrollo implique interactuar con una API y lo habitual será que uses axios para ello (aunque lo que voy a explicar valdría p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Desacoplando la interacción con una API en Vue: vue.$api">
+<meta property="og:url" content="https://sergiocarracedo.es/2019/09/09/desacoplando-la-interaccion-con-una-api-en-vue/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Durante el desarrollo de una web, una SPA en Vue es muy habitual que ese desarrollo implique interactuar con una API y lo habitual será que uses axios para ello (aunque lo que voy a explicar valdría p">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/vue-api.jpg">
+<meta property="article:published_time" content="2019-09-09T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/vue-api.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Desacoplando la interacción con una API en Vue: vue.$api</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Desacoplando la interacción con una API en Vue: vue.$api
+      </h1>
+      <div class="stuff">
+        <span>September 09, 2019</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_vue-api.jpg">
+      </div>
+      
+      <div class="content markdown">
+        <p>Durante el desarrollo de una web, una SPA en <em>Vue</em> es muy habitual que ese desarrollo implique interactuar con una <em>API</em> y lo habitual será que uses <em><a href="https://github.com/axios/axios" target="_blank" rel="noopener">axios</a></em> para ello (aunque lo que voy a explicar valdría para cualquiera otra librería)</p>
+<p>Es muy habitual que cuando necesitamos interactuar con un <em>endpoint</em> de la <em>API</em>, lo hagamos directamente desde el controlador, entendiendo por controlador el componente que se encarga de responder a una ruta.</p>
+<p>Por ejemplo:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line">data() {</span><br><span class="line"> return {</span><br><span class="line">  users: []</span><br><span class="line"> },</span><br><span class="line">...</span><br><span class="line">methods:</span><br><span class="line"> ...</span><br><span class="line"> getUsers(page) {</span><br><span class="line">   axios({</span><br><span class="line">      method: 'get',</span><br><span class="line">      url: 'https://reqres.in/api/users',</span><br><span class="line">      data: {</span><br><span class="line">        page          </span><br><span class="line">      }</span><br><span class="line">    }).then(res =&gt; {</span><br><span class="line">      this.users = res.data.data</span><br><span class="line">    }).catch(res =&gt; {</span><br><span class="line">      // Do something on error</span><br><span class="line">    })  </span><br><span class="line"> }   </span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+<p>Esto cumple su función básica que es la de pedirle a la <em>API</em> la lista de usuarios de la página indicada y guardarlos en <em>users</em> para que este disponible para renderizar.</p>
+<p>Se me ocurren varios problemas que nos podemos encontrar a botepronto:</p>
+<ul>
+<li>Si necesitamos pedir los usuarios desde varios controladores tendríamos que duplicar este código.</li>
+<li>Si para hacer la llamada necesitamos añadir alguna cabecera de autorización, token o similar, tendríamos que saber en todas las llamadas a la <em>API</em> que usen esa autentificación aplicarlo y usarlo desde una variable de entorno que deberíamos conocer.</li>
+<li>La gestión de errores puede ser tediosa, si por ejemplo siempre que la <em>API</em> responda un error lo vamos a mostrar en pantalla de la misma forma tendríamos que programarlo en cada llamada.</li>
+<li>Lo mismo si usamos <em>loaders</em> en pantalla, tenemos que acordarnos de añadirlos cada vez que usemos una llamada a la <em>API</em>.</li>
+</ul>
+<p>Una solución más elegante seria mover las llamadas a la <em>API</em> a funciones en un fichero externo que importamos en cada controlador y de las que hacemos uso:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import Api from './api.js'</span><br><span class="line">....</span><br><span class="line">data() {</span><br><span class="line"> return {</span><br><span class="line">  users: []</span><br><span class="line"> },</span><br><span class="line">...</span><br><span class="line">methods:</span><br><span class="line"> ...</span><br><span class="line"> getUsers(page) {</span><br><span class="line">  Api.getUsers(page)</span><br><span class="line">    .then(res =&gt; {</span><br><span class="line">      this.users = res.data.data</span><br><span class="line">    })</span><br><span class="line"> }   </span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Y el contenido de <code>api.js</code> sería:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export default {</span><br><span class="line">  getUsers: function (page) {</span><br><span class="line">    return axios({</span><br><span class="line">       method: 'get',</span><br><span class="line">       url: 'https://reqres.in/api/users',</span><br><span class="line">       data: {</span><br><span class="line">         page          </span><br><span class="line">       }</span><br><span class="line">     }) </span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Con esto además de simplificar el código ya podríamos reusar la llamada a la <em>API</em> en varios controladores.</p>
+<p>Si queremos que cada vez que hagamos una llamada a la <em>API</em> se muestre un cargador en el front (y este desaparezca al terminar la carga), seria razonable usar <em><a href="https://vuex.vuejs.org/" target="_blank" rel="noopener">vuex</a></em> o similar para esto, entonces nuestro <em>controlador</em> quedaría así</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import Api from './api.js'</span><br><span class="line">....</span><br><span class="line">data() {</span><br><span class="line"> return {</span><br><span class="line">  users: []</span><br><span class="line"> },</span><br><span class="line">...</span><br><span class="line">methods:</span><br><span class="line"> ...</span><br><span class="line"> getUsers(page) {</span><br><span class="line">  this.$store.commit('loading', true)</span><br><span class="line">  Api.getUsers(page)</span><br><span class="line">    .then(res =&gt; {</span><br><span class="line">    this.$store.commit('loading', false)</span><br><span class="line">      this.users = res.data.data</span><br><span class="line">    })</span><br><span class="line">    .catch(error =&gt; {</span><br><span class="line">      this.$store.commit('loading', false)</span><br><span class="line">    })</span><br><span class="line"> }   </span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+<p>(Doy por supuesto que hay un store que tiene una mutación encargada de mostrar un componente <em>loading</em> en la UI)</p>
+<p>Pero, de esta forma volvemos a tener el mismo problema, para cada llamada a la función que gestiona la <em>API</em> tenemos que acordarnos de hacer el <em>commit</em> al <em>store</em> tanto al principio de la llamada como cuando devuelve datos como, importante, cuando hay un error.</p>
+<p>Vale, llevemos esto a nuestro <code>api.js</code></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import store from './store.js' // Donde tengamos nuestra store definida</span><br><span class="line"></span><br><span class="line">export default {</span><br><span class="line">  getUsers: function (page) {</span><br><span class="line">    store.commit('loading', true)</span><br><span class="line">    return </span><br><span class="line">      axios({</span><br><span class="line">        method: 'get',</span><br><span class="line">        url: 'https://reqres.in/api/users',</span><br><span class="line">        data: {</span><br><span class="line">          page          </span><br><span class="line">        }</span><br><span class="line">      })</span><br><span class="line">      .then(res =&gt; {</span><br><span class="line">        store.commit('loading', false)</span><br><span class="line">      })</span><br><span class="line">      .catch(error =&gt; {</span><br><span class="line">        store.commit('loading', false)</span><br><span class="line">      })</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>OJO</strong>, pero si dejamos esto así, al capturar la resolución de la <em>promesa</em> (con el <em>then</em> y el <em>catch</em>), nuestro controlador no recibirá dicha resolución, por lo que tenemos que reenviarselas de la siguiente forma:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import store from './store.js' // Donde tengamos nuestra store definida</span><br><span class="line"></span><br><span class="line">export default {</span><br><span class="line">  getUsers: function (page) {</span><br><span class="line">    store.commit('loading', true)</span><br><span class="line">    return </span><br><span class="line">      axios({</span><br><span class="line">        method: 'get',</span><br><span class="line">        url: 'https://reqres.in/api/users',</span><br><span class="line">        data: {</span><br><span class="line">          page          </span><br><span class="line">        }</span><br><span class="line">      })</span><br><span class="line">      .then(res =&gt; {</span><br><span class="line">        store.commit('loading', false)</span><br><span class="line">        return res // &lt;--- Devolvemos la misma promesa ya resuelta (propagamos)</span><br><span class="line">      })</span><br><span class="line">      .catch(error =&gt; {</span><br><span class="line">        store.commit('loading', false)</span><br><span class="line">        throw error // &lt;-- Lanzamos de nuevo la misma excepción</span><br><span class="line">      })</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>De esta forma el propagar la resolución de la promesa el controlador ni se ha enterado que hemos lanzado el <em>loader</em> y lo hemos desactivado.</p>
+<p>Vale, pues ahora, porqué, en lugar de tener que importar <code>api.js</code> en cada controlador, no hacemos que esté disponible en toda la app, de la misma forma que lo esta, por ejemplo la <em>store</em> de <em>vuex</em>: ‘vue.$store’ es decir: ‘vue.$api.getUsers()’</p>
+<p>Para ello creamos un plugin de <em>vue</em>, que es tan sencillo como lo siguiente en nuestro <code>api.js</code></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import store from './store.js' // Donde tengamos nuestra store definida</span><br><span class="line">import axios from 'axios'</span><br><span class="line"></span><br><span class="line">export default {</span><br><span class="line">  install (Vue) {</span><br><span class="line">    Vue.prototype.$api = Api</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">const Api = {</span><br><span class="line">  getUsers: function (page) {</span><br><span class="line">    store.commit('loading', true)</span><br><span class="line">    return </span><br><span class="line">      axios({</span><br><span class="line">        method: 'get',</span><br><span class="line">        url: 'https://reqres.in/api/users',</span><br><span class="line">        data: {</span><br><span class="line">          page          </span><br><span class="line">        }</span><br><span class="line">      })</span><br><span class="line">      .then(res =&gt; {</span><br><span class="line">        store.commit('loading', false)</span><br><span class="line">        return res // &lt;--- Devolvemos la misma promesa ya resuelta (propagamos)</span><br><span class="line">      })</span><br><span class="line">      .catch(error =&gt; {</span><br><span class="line">        store.commit('loading', false)</span><br><span class="line">        throw error // &lt;-- Lanzamos de nuevo la misma excepción</span><br><span class="line">      })</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Y nuestro <em>entrypoint</em>, que suele ser <code>main.js</code>, lo dejamos como algo así:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import Vue from "vue";</span><br><span class="line">import App from "./App.vue";</span><br><span class="line">import Api from "./api.js"; // &lt;----------------</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = false;</span><br><span class="line"></span><br><span class="line">Vue.use(Api) // &lt;----------------</span><br><span class="line"></span><br><span class="line">new Vue({</span><br><span class="line">  render: h =&gt; h(App)</span><br><span class="line">}).$mount("#app");</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Ahora ya tenemos disponible el acceso al objecto <em>Api</em> en cualquier controlador con solo usar <code>this.$api.getUser()</code>, y en el caso de nuestro ejemplo quedaría</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">data() {</span><br><span class="line"> return {</span><br><span class="line">  users: []</span><br><span class="line"> },</span><br><span class="line">...</span><br><span class="line">methods:</span><br><span class="line"> ...</span><br><span class="line"> getUsers(page) {</span><br><span class="line">  this.$api.getUsers(page)</span><br><span class="line">    .then(res =&gt; {</span><br><span class="line">      this.users = res.data.data</span><br><span class="line">    })</span><br><span class="line"> }   </span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Obviamente nuestro objeto <em>Api</em> puede tener más funciones que hagan llamadas a otros endpoints, tener una forma común de mostrar errores, etc. Eso se lo dejo a vuestra imaginación</p>
+<p>Por último, y como <em>spoiler</em> de un próximo <em>post</em>, decir que si hacemos uso de muchos endpoints distintos, el fichero <code>api.js</code> puede ser enorme y lo razonable sería trocearlo, e incluso separar las el objecto de la entidad a la que acceda, por ejemplo <code>this.$api.user.get</code> o <code>this.$api.user.create</code> o <code>this.$api.billing.list</code> o cualquier otro ejemplo que se os ocurra, pero como digo eso da para otro <em>post</em>.</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2019/09/26/pulpocon-19/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_pulpocon.jpg">
+            </a>
+
+            <a href="/2019/09/26/pulpocon-19/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Mi edificante experiencia ayudando a organizar la PulpoCon19
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2019/09/02/Unificando-la-informacion-de-eventos-de-una-comunidad-vigotech-json/" rel="next" class="nav-cover">
+              <img src="/images/teaser_vigotech.jpg">
+            </a>
+
+            <a href="/2019/09/02/Unificando-la-informacion-de-eventos-de-una-comunidad-vigotech-json/" rel="next" class="nav-text">
+              Unificando la información de eventos de una comunidad: vigotech.json <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>

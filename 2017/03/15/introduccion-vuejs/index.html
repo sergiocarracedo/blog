@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Introducción a Vue.js</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Desde hace unos años han aparecido multitud de librerías y frameworks javascript para el desarrollo,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Desde hace unos años han aparecido multitud de librerías y frameworks javascript para el desarrollo de aplicaciones frontend, facilitado por el aumento de rendimiento y velocidad de javascript en los">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introducción a Vue.js">
+<meta property="og:url" content="https://sergiocarracedo.es/2017/03/15/introduccion-vuejs/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Desde hace unos años han aparecido multitud de librerías y frameworks javascript para el desarrollo de aplicaciones frontend, facilitado por el aumento de rendimiento y velocidad de javascript en los">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-196160.jpeg">
+<meta property="article:published_time" content="2017-03-15T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/pexels-photo-196160.jpeg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Introducción a Vue.js</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Introducción a Vue.js
+      </h1>
+      <div class="stuff">
+        <span>March 15, 2017</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_pexels-photo-196160.jpeg">
+      </div>
+      
+      <div class="content markdown">
+        <p>Desde hace unos años han aparecido multitud de librerías y frameworks javascript para el desarrollo de aplicaciones frontend, facilitado por el aumento de rendimiento y velocidad de <em>javascript</em> en los navegadores modernos.</p>
+<p>Existe una variedad, que yo definiria como excesiva, de frameworks JS. Entre los más famosos o extendidos estan <em>Angular.js, Angular2, React.js, Ember.js</em>, y también el objeto de este post: <strong>Vue.js</strong>.</p>
+<p><strong>Vue.js</strong> se define a si mismo como “<em>Intuitivo, rápido y por componentes MVVM para construir interfaces interactivas</em>“ (podéis saber más sobre el patrón Model-View-Viewmodel aquí: <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel</a>)</p>
+<p>Bajo mi punto de vista las ventajas de <strong>Vue.js</strong> son,</p>
+<ul>
+<li>Es muy sencillo de aprender.</li>
+<li>El código es sencillo de entender y de mantener.</li>
+<li>El sistema de compomentes es muy sencillo de entender y crear componentes es casi trivial.</li>
+<li>El sistema de data binding.</li>
+<li>La velocidad de ejecución (prometen ser más rápidos que React.js y Angular)</li>
+</ul>
+<p>Si has trabajado con <em>React.js</em>, <strong>Vue.js</strong> te parecera conceptualmente similar (por ejemplo también usa Virtual DOM), ellos mismos lo explican aquí <a href="https://vuejs.org/v2/guide/comparison.html" target="_blank" rel="noopener">https://vuejs.org/v2/guide/comparison.html</a></p>
+<p><strong>Vue.js</strong> esta enfocado en el core. Por defecto no aporta <em>routing _ni otras funcionalidades, pero estas pueden realizarse mediante plugins, de hecho <strong>Vue.js *<em>tiene dos plugins oficiales *</em>vue-router</strong>, y <strong>vuex</strong> un _port</em> de <em>Redux</em> para <strong>Vue.js</strong>.</p>
+<p>Vamos a ver un ejemplo muy simple de <strong>Vue.js</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang="es"&gt; &nbsp;</span><br><span class="line">&lt;head&gt; &nbsp;</span><br><span class="line">&nbsp; &nbsp;&lt;meta charset="UTF-8"&gt;</span><br><span class="line"> &nbsp; &lt;title&gt;Introdución a Vue.js&lt;/title&gt;</span><br><span class="line">&lt;/head&gt; &nbsp;</span><br><span class="line">&lt;body&gt; &nbsp;</span><br><span class="line">&nbsp; &nbsp;&lt;div id="app"&gt;&nbsp; &nbsp; &nbsp; &nbsp; </span><br><span class="line">        &lt;input type="text" placeholder="Escribe tu nombre" v-model="name" /&gt;</span><br><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; &lt;span&gt;Has escrito {{ name }}&lt;/span&gt;</span><br><span class="line">&nbsp; &nbsp; &lt;/div&gt;</span><br><span class="line">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">vm = new Vue({</span><br><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; el: '#app',</span><br><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; data() {</span><br><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return {</span><br><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;name: '', &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><br><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span><br><span class="line">&nbsp; &nbsp; &nbsp; &nbsp; },</span><br><span class="line">&nbsp; &nbsp; });</span><br><span class="line">&nbsp; &nbsp; &lt;/script&gt;</span><br><span class="line">&lt;/body&gt; &nbsp;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Puedes ver el ejemplo funcionando en <a href="https://jsfiddle.net/sergio_carracedo/0d2ymgft/" target="_blank" rel="noopener">https://jsfiddle.net/sergio_carracedo/0d2ymgft/</a></p>
+<p>Lo que vemos aquí, es un ejemplo básico del <em>data binding</em>, al crear la instancia principal de <strong>Vue</strong> le pasamos un objeto plano, con dos elementos:</p>
+<ul>
+<li><code>el</code>: es el punto de montaje de <strong>Vue</strong>, normalmente es un div con el id <em>#app</em></li>
+<li><code>data</code>: debe ser una función que devuelva las variables que se van a <em>bindear*<em>, *</em>_en nuestro ejemplo _name</em></li>
+</ul>
+<p>En el <em>input</em> vemos el atributo <em>v-model</em> que indica a <strong>Vue</strong> el nombre de la variable que se <em>bindeará</em>, funcionando en ambos sentidos, si modificamos en cualquier lugar el valor del <em>name</em> se modificará en el input (y en todos los lugares donde se referencie) y si modificamos el valor del input el valor de <em>name</em> se modificará en todos los lugares, por ejemplo en el <span> __ </span></p>
+<p>Como ves en unas pocas y sencillas líneas hemos puesto a funcionar <strong>Vue.js</strong>, obviamente este es un ejemplo casi trivial, y <strong>Vue.js</strong> es mucho más que esto, se pueden crear aplicaciones complejas con facilidad y en poco tiempo.</p>
+<p>Estos dos videos que dejo a continuación explican mejor que como funciona de <strong>Vue.js</strong> en 60 minutos. En el segundo explica como crear un <em>CRUD</em> usando <strong>Vue.js</strong> a partir de una API (creada en ese caso en <strong>Slim</strong>)</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/z6hQqgvGI4Y" frameborder="0" loading="lazy" allowfullscreen=""></iframe></div>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/IUgstalu6zo" frameborder="0" loading="lazy" allowfullscreen=""></iframe></div>
+
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2017/04/03/vuex-el-redux-de-vuejs-i/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_pexels-photo-99541_0.jpeg">
+            </a>
+
+            <a href="/2017/04/03/vuex-el-redux-de-vuejs-i/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Vuex el Redux de Vue.js (I)
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2017/03/07/entidad-con-propietario-en-laravel-54/" rel="next" class="nav-cover">
+              <img src="/images/teaser_pexels-photo-132907_0.jpeg">
+            </a>
+
+            <a href="/2017/03/07/entidad-con-propietario-en-laravel-54/" rel="next" class="nav-text">
+              Entidad con propietario en Laravel 5.4 <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>

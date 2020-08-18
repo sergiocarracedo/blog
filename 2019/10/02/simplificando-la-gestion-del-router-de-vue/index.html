@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Simplificando la gestión del router de Vue</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Cuando creamos nuestra aplicación Vue una de las cosas que debemos configurar, si nuestra app dispo,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Cuando creamos nuestra aplicación Vue una de las cosas que debemos configurar, si nuestra app dispone de varias páginas, es el router. Vue dispone de un router propio lo suficientemente bueno para que">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Simplificando la gestión del router de Vue">
+<meta property="og:url" content="https://sergiocarracedo.es/2019/10/02/simplificando-la-gestion-del-router-de-vue/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Cuando creamos nuestra aplicación Vue una de las cosas que debemos configurar, si nuestra app dispone de varias páginas, es el router. Vue dispone de un router propio lo suficientemente bueno para que">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/vue-router-2742048.jpg">
+<meta property="article:published_time" content="2019-10-02T16:47:34.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/vue-router-2742048.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Simplificando la gestión del router de Vue</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Simplificando la gestión del router de Vue
+      </h1>
+      <div class="stuff">
+        <span>October 02, 2019</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_vue-router-2742048.jpg">
+      </div>
+      
+      <div class="content markdown">
+        <p>Cuando creamos nuestra aplicación Vue una de las cosas que debemos configurar, si nuestra app dispone de varias páginas, es el <a href="https://router.vuejs.org/guide/#javascript" target="_blank" rel="noopener">router</a>.</p>
+<p>Vue dispone de un router propio lo suficientemente bueno para que no necesites usar ningún otro y que se configura de una forma similar a esta:</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">'vue-router'</span></span><br><span class="line"><span class="keyword">import</span> Login <span class="keyword">from</span> <span class="string">'../pages/Login'</span></span><br><span class="line"><span class="keyword">import</span> Home <span class="keyword">from</span> <span class="string">'../pages/Home'</span></span><br><span class="line"><span class="keyword">import</span> Article <span class="keyword">from</span> <span class="string">'../pages/Article'</span></span><br><span class="line"></span><br><span class="line">Vue.use(Router)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Router({</span><br><span class="line">    routes: [</span><br><span class="line">        {</span><br><span class="line">            path: <span class="string">'/login'</span>,</span><br><span class="line">            name: <span class="string">'login'</span>,</span><br><span class="line">            component: Login</span><br><span class="line">        },</span><br><span class="line">        {</span><br><span class="line">            path: <span class="string">'/'</span>,</span><br><span class="line">            name: <span class="string">'home'</span>,</span><br><span class="line">            component: Home,</span><br><span class="line">            meta: {</span><br><span class="line">                auth: <span class="literal">true</span></span><br><span class="line">            }</span><br><span class="line">        },</span><br><span class="line">        {</span><br><span class="line">            path: <span class="string">'/articulo/:slug'</span>,</span><br><span class="line">            name: <span class="string">'home'</span>,</span><br><span class="line">            props: <span class="literal">true</span>,</span><br><span class="line">            component: Article,</span><br><span class="line">            meta: {</span><br><span class="line">                auth: <span class="literal">true</span></span><br><span class="line">            }</span><br><span class="line">        },</span><br><span class="line">    ]</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Como vemos las cada ruta se define en un Objeto dentro de un Array, indicando el <em>path</em> al que responderá, el nombre y el componente que mostrará dicha página o vista, además de otras muchas configuraciones que podría tener.</p>
+<p>Si nuestra aplicación tiene muchas páginas este array se volverá un poco complicado de manejar.</p>
+<p>Si habeis trabajado con <a href="https://nuxtjs.org/" target="_blank" rel="noopener">Nuxt.js</a> conoceréis que en su caso, con colocar los componentes en la carpeta <em>pages</em>, ya se genera de forma automática la ruta con el nombre del componente, que además podemos meter en distintos niveles de carpetas.</p>
+<p>Pues ese comportamiento es lo que vamos a replicar de una forma más básica para cualquier aplicación Vue que no necesite emplear <em>Nuxt.js</em></p>
+<p>En primer lugar modificamos el <code>router.js</code>, vamos a explicarlo por partes:</p>
+<p>Importamos <em>Vue</em> y <em>Vue router</em> y le indicamos a Vue que lo use, nada extraño aquí:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import Vue from 'vue'</span><br><span class="line">import Router from 'vue-router'</span><br><span class="line"></span><br><span class="line">Vue.use(Router)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Haciendo uso de la <a href="https://webpack.js.org/guides/dependency-management/" target="_blank" rel="noopener">gestión de dependencias</a> de <em>Webpack</em>, en concreto de <code>require.context()</code>, que nos permite, en nuestro caso, obtenemos un contexto con todos los archivos <code>*.vue</code> en la carpeta <code>/pages</code> que es donde guardamos las páginas de nuestra <em>App</em>.</p>
+<blockquote>
+<p>Esto sólo funciona en un entorno webpack si usamos Vue directamente en el navegador  <code>require.context</code> no estará definido.</p>
+</blockquote>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const files = require.context('../pages/', false, /\.vue$/)</span><br><span class="line">const pages = []</span><br><span class="line"></span><br><span class="line">files.keys().forEach((key) =&gt; {</span><br><span class="line">    if (key === './index.js') return</span><br><span class="line">    pages[key.replace(/(\.\/|\.vue)/g, '')] = files(key).default</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>A continuación vamos añadiendo rutas de <em>vue-router</em> en función de los archivos que tenemos en nuestro contexto, usando el nombre del fichero como ruta (en minúsculas) y para el nombre de la ruta el nombre indicado en el componente o el nombre del fichero, y, obviamente el propio componente como componente que gestionará esa ruta.</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const routes = []</span><br><span class="line">Object.keys(pages).forEach(page =&gt; {  </span><br><span class="line">  const route = {</span><br><span class="line">    path: '/' + page.toLowerCase()</span><br><span class="line">    name: pages[page].name.toLowerCase || page.toLowerCase()</span><br><span class="line">    component: pages[page]</span><br><span class="line">  }  </span><br><span class="line">  routes.push(route)</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Ahora sólo tenemos que instanciar el router</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const router = new Router({  </span><br><span class="line">  routes: routes</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Y <em>voilà</em> cada componente que añadamos a la carpeta <code>/pages</code> tendrá su propia ruta sin necesidad de hacer nada más.</p>
+<h3 id="Pero-¿y-si-quiero-personalizar-la-ruta-anadirle-parametros-o-metas-Un-paso-mas"><a href="#Pero-¿y-si-quiero-personalizar-la-ruta-anadirle-parametros-o-metas-Un-paso-mas" class="headerlink" title="Pero, ¿y si quiero personalizar la ruta, añadirle parámetros, o metas?. Un paso más"></a>Pero, ¿y si quiero personalizar la ruta, añadirle parámetros, o metas?. Un paso más</h3><p>Lo que acabamos de hacer es cómodo pero poco flexible, ya que no podríamos configurar por ejemplo una ruta que contenga parámetros o indicarle un <em>meta.requireAuth</em> para que el router mediante un <em>guard</em> compruebe si el usuario esta sogueado.</p>
+<p>Para solucionarlo lo que podemos hacer es definir en nuestro componente una <em>key</em> llamada ‘route’ que contenga esa configuración y que si esta existe nuestro generador de rutas lo lea y aplique, y si no que use el procedimiento por defecto.</p>
+<p>Modificamos la parte de generación de rutas</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const routes = []</span><br><span class="line">Object.keys(pages).forEach(page =&gt; {  </span><br><span class="line">  let route = {}</span><br><span class="line"></span><br><span class="line">  if (pages[page].route !== undefined) {</span><br><span class="line">    route = pages[page].route</span><br><span class="line">  } else {</span><br><span class="line">    route = {</span><br><span class="line">      path: '/' + page.toLowerCase()</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  route.component = pages[page]</span><br><span class="line">  routes.push(route)</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Y en nuestro componente, por ejemplo <code>Articule.vue</code> añadimos la key de esta forma:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  ....</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default {</span><br><span class="line">  ....</span><br><span class="line">  route: {</span><br><span class="line">    path: '/articulo/:slug',</span><br><span class="line">    name: 'article',</span><br><span class="line">    props: true,    </span><br><span class="line">    meta: {</span><br><span class="line">        auth: true</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  ...</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Y así el generador de rutas que hemos creado usará esa configuración.</p>
+<p>De esta forma además tenemos la configuración de la página en el propio componente.</p>
+<p>Esto podríamos ir iterandolo para permitir, por ejemplo, como hace <em>Nuxt.js</em> crear rutas a partir de las carpetas y demás, pero creo que esta ya fuera del objetivo y ¿por qué no usar <em>Nuxt.js</em> directamente?</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2019/10/06/mi-entorno-de-trabajo-hardware-software/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_entorno-trabajo-1432673.jpg">
+            </a>
+
+            <a href="/2019/10/06/mi-entorno-de-trabajo-hardware-software/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Mi entorno de trabajo: Hardware & Software
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2019/09/26/pulpocon-19/" rel="next" class="nav-cover">
+              <img src="/images/teaser_pulpocon.jpg">
+            </a>
+
+            <a href="/2019/09/26/pulpocon-19/" rel="next" class="nav-text">
+              Mi edificante experiencia ayudando a organizar la PulpoCon19 <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>

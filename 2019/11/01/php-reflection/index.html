@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - PHP Reflection: Anotaciones, PHPDoc y mucho más</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,La reflexíón en PHP es algo que nunca he usado, y que posiblemente no usaré más allá de curiosear s,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="La reflexíón en PHP es algo que nunca he usado, y que posiblemente no usaré más allá de curiosear su funcionamiento como en este post (como otras muchas veces es posible que me trague estas palabras �">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP Reflection: Anotaciones, PHPDoc y mucho más">
+<meta property="og:url" content="https://sergiocarracedo.es/2019/11/01/php-reflection/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="La reflexíón en PHP es algo que nunca he usado, y que posiblemente no usaré más allá de curiosear su funcionamiento como en este post (como otras muchas veces es posible que me trague estas palabras �">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/php-reflection-949215.jpg">
+<meta property="article:published_time" content="2019-11-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/php-reflection-949215.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">PHP Reflection: Anotaciones, PHPDoc y mucho más</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        PHP Reflection: Anotaciones, PHPDoc y mucho más
+      </h1>
+      <div class="stuff">
+        <span>November 01, 2019</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_php-reflection-949215.jpg">
+      </div>
+      
+      <div class="content markdown">
+        <p>La <a href="https://www.php.net/manual/es/intro.reflection.php" target="_blank" rel="noopener">reflexíón en PHP</a> es algo que nunca he usado, y que posiblemente no usaré más allá de curiosear su funcionamiento como en este <em>post</em> (como otras muchas veces es posible que me trague estas palabras <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f604.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png?v8">😄</span>), y creo que la mayoría de vosotros tampoco ha usado.</p>
+<p>Esta este conjunto de clases está con nosotros desde PHP 5.0, es decir desde julio de 2004 (hace ahora más de 15 años <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f613.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f613.png?v8">😓</span>) y nos proveen un sistema para hacer ingeniería inversa de clases, interfaces, métodos, propiedades, generadores, incluso extensiones del lenguaje.</p>
+<p>Para obtener información de cada una de las partes de nuestro código debemos usar una de las clases definidas:</p>
+<ul>
+<li><code>ReflectionFunction</code>: Para obtener información de una función.</li>
+<li><code>ReflectionGenerator</code>: Para obtener información de un generador.</li>
+<li><code>ReflectionExtension</code> y <code>ReflectionZendExtension</code>: Para obtener información de una extensión.</li>
+<li><code>ReflectionClass</code> y <code>ReflectionObject</code>: Para obtener información de una clase y un objecto instanciado respectivamente.</li>
+</ul>
+<p>Vamos a centrarnos en <code>ReflectionClass</code> y veamos una clase muy sencilla</p>
+<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="string">'DEFAULT_RADIUS'</span>, <span class="number">20</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Shape</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">area</span><span class="params">()</span>:<span class="title">float</span></span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Clase que representa un Circulo</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Circle</span> <span class="keyword">implements</span> <span class="title">Shape</span></span></span><br><span class="line"><span class="class"></span>{</span><br><span class="line">    <span class="comment">// Constante PI</span></span><br><span class="line">    <span class="keyword">const</span> PI = <span class="number">3.1415</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Radio del circulo</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">private</span> $radius;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> $radius Radio del circulo</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(float $radius = DEFAULT_RADIUS)</span></span>{</span><br><span class="line">        <span class="keyword">$this</span>-&gt;radius = $radius;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    Devuelve el radio del circulo    </span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">area</span><span class="params">()</span>: <span class="title">float</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> pow(<span class="keyword">$this</span>-&gt;r, <span class="number">2</span>) * <span class="keyword">$this</span>-&gt;PI;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Para obtener información de esta clase en primer lugar debemos instanciar <code>ReflectionClass</code> pasando el nombre de la clase a “investigar” en el constructor</p>
+<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$reflection = <span class="keyword">new</span> ReflectionClass(Circle::class);</span><br></pre></td></tr></tbody></table></figure>
+<p>Y usando los métodos de esta clase podremos obtener distintos datos de la clase, por si queremos obtener la lista de todos los métodos.</p>
+<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var_dump($refection-&gt;getMethods());</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">array(2) {</span><br><span class="line">  [0]=&gt; object(ReflectionMethod)#2 (2) {</span><br><span class="line">    ["name"]=&gt; string(11) "__construct"</span><br><span class="line">    ["class"]=&gt; string(6) "Circle"</span><br><span class="line">  }</span><br><span class="line">  [1]=&gt; object(ReflectionMethod)#3 (2) {</span><br><span class="line">    ["name"]=&gt; string(4) "area"</span><br><span class="line">    ["class"]=&gt; string(6) "Circle"</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>Como vemos nos devuelve un <code>array</code> de instancias de la clase <code>ReflectionMethod</code> que a vez también nos devolverá información sobre la cada método, por ejemplo le pedimos que nos de la lista de párametros del primer método de la lista (en este caso el constructor)</p>
+<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var_dump($reflection-&gt;getMethods()[<span class="number">0</span>]-&gt;getParameters());</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array(1) {</span><br><span class="line">  [0]=&gt; object(ReflectionParameter)#2 (1) {</span><br><span class="line">    ["name"]=&gt; string(6) "radius"</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>De nuevo tenemos otro <code>array</code> pero en este caso de instancias de <code>ReflectionParameter</code>. Sigamos jugando, Vamos a consultar: </p>
+<ul>
+<li>el tipo de dato del parámetro</li>
+<li>si tiene un valor por defecto</li>
+<li>si es opcional (esta petición puede ser un poco redundante, ya que si tiene valor por defecto es obviamente un parámetro opcional)</li>
+<li>si tiene valor por defecto que nos diga si este está asignado por una constante (y su nombre).</li>
+</ul>
+<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$parameter = $reflection-&gt;getMethods()[<span class="number">0</span>]-&gt;getParameters()[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">var_dump((string)$parameter-&gt;getType());</span><br><span class="line"><span class="comment">// string(5) "float"</span></span><br><span class="line"></span><br><span class="line">var_dump($parameter-&gt;getDefaultValue());</span><br><span class="line"><span class="comment">// int(20)</span></span><br><span class="line"></span><br><span class="line">var_dump($parameter-&gt;isOptional());</span><br><span class="line"><span class="comment">// bool(true)</span></span><br><span class="line"></span><br><span class="line">var_dump($parameter-&gt;getDefaultValueConstantName());</span><br><span class="line"><span class="comment">// string(14) "DEFAULT_RADIUS"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>Como veis podemos obtener una información exhaustiva de la clase, métodos, parámetros, etc. Cosas como por ejemplo en que línea empieza (<code>getStartLine()</code>) o acaba (<code>getEndLine()</code>) la definición de la clase o el nombre del fichero (<code>getFileName()</code>). </p>
+<p>Recomiendo echar un vistazo a la lista completa de métodos disponibles: <a href="https://www.php.net/manual/es/class.reflectionclass.php" target="_blank" rel="noopener">https://www.php.net/manual/es/class.reflectionclass.php</a></p>
+<h2 id="Los-comentarios-PHPDoc-y-las-anotaciones"><a href="#Los-comentarios-PHPDoc-y-las-anotaciones" class="headerlink" title="Los comentarios: PHPDoc y las anotaciones"></a>Los comentarios: PHPDoc y las anotaciones</h2><p>Entre esa lista de métodos que nos devuelven información de la clase (o función o método) está <code>getDocComment</code> que nos devuelve el <strong>comentario de documentación</strong> del elemento, <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/26a0.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/26a0.png?v8">⚠</span> y ojo que lo he puesto en negrita por que nos devuelve exactamente eso, no nos va a devolver cualquier comentario.</p>
+<p>PHP considera que un bloque de comentario es de documentación cuando comienza por <code>/**</code> </p>
+<p> Veamos un ejemplo:</p>
+<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Comentarios de documentación del constructor</span></span><br><span class="line">var_dump($reflection-&gt;getMethods()[<span class="number">0</span>]-&gt;getDocComment());</span><br><span class="line"><span class="comment">// string(49) "/**</span></span><br><span class="line"><span class="comment">//    * @param $radius Radio del circulo</span></span><br><span class="line"><span class="comment">//    */"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Comentarios de documentación del método area()</span></span><br><span class="line">var_dump($reflection-&gt;getMethods()[<span class="number">0</span>]-&gt;getDocComment());</span><br><span class="line"><span class="comment">// bool(false)</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>Si os fijáis en el método <code>area</code> el bloque de comentario comienza por <code>/*</code> en lugar de <code>/**</code> y el método lo ignora.</p>
+<p>Como os podéis imaginar este método es el que ha permitido la creación de “cosas” como <a href="https://www.phpdoc.org/" target="_blank" rel="noopener">PHPDoc</a> o traer las anotaciones como tienen de forma nativa otros lenguajes, pero tened en cuenta que el método <code>getDocComment</code> devuelve el comentario tal cual, no lo interpreta o <em>parsea</em>, ahí es donde entran en juego las clases como <a href="https://github.com/doctrine/annotations" target="_blank" rel="noopener">doctrine/annotations</a> que se encargan de realizar dicho <em>parseo</em>.</p>
+<p>Como curiosidad indicar que hay varias propuestas de RFC para llevar las anotaciones de forma nativa al intérprete del lenguaje, algunas de ellas bastante longevas, que aún siguen en <em>Draft</em> y no han sido votadas para llevarlas realmente al intérprete.</p>
+<ul>
+<li><a href="https://wiki.php.net/rfc/annotations" target="_blank" rel="noopener">https://wiki.php.net/rfc/annotations</a></li>
+<li><a href="https://wiki.php.net/rfc/attributes" target="_blank" rel="noopener">https://wiki.php.net/rfc/attributes</a> </li>
+<li><a href="https://wiki.php.net/rfc/annotations_v2" target="_blank" rel="noopener">https://wiki.php.net/rfc/annotations_v2</a></li>
+</ul>
+<p>En resumen, las clases de <em>reflexión</em> son útiles y muy interesantes, pero como decía al principio, y a riesgo de tragarme mis palabras, son algo que la mayoría, posiblemente, nunca use en un proyecto real, aunque nunca se sabe y siempre es bueno conocer las herramientas que nos da el lenguaje.</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2019/12/03/programacion-funcional-en-php/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_phunctional-33317.jpg">
+            </a>
+
+            <a href="/2019/12/03/programacion-funcional-en-php/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2019/10/26/composition-api-las-novedades-de-vue-3-en-vue-2-x/" rel="next" class="nav-cover">
+              <img src="/images/teaser_composition-api-414579.jpg">
+            </a>
+
+            <a href="/2019/10/26/composition-api-las-novedades-de-vue-3-en-vue-2-x/" rel="next" class="nav-text">
+              Composition API: Las novedades de Vue 3 en Vue 2.x <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>

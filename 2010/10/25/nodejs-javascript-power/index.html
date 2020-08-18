@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Node.js: Javascript power!!</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Node.js es un entorno de programación de entrada/salida orientada a eventos, sobre el motor de Java,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Node.js es un entorno de programación de entrada&#x2F;salida orientada a eventos, sobre el motor de Javascript V8 (el mismo que usa Google Chrome) Pero ¿Que quiere decir todo esto? ¿Y para que me puede ser">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js: Javascript power!!">
+<meta property="og:url" content="https://sergiocarracedo.es/2010/10/25/nodejs-javascript-power/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Node.js es un entorno de programación de entrada&#x2F;salida orientada a eventos, sobre el motor de Javascript V8 (el mismo que usa Google Chrome) Pero ¿Que quiere decir todo esto? ¿Y para que me puede ser">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/node.jpg">
+<meta property="article:published_time" content="2010-10-25T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/node.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Node.js: Javascript power!!</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Node.js: Javascript power!!
+      </h1>
+      <div class="stuff">
+        <span>October 25, 2010</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_node.jpg">
+      </div>
+      
+      <div class="content markdown">
+        <p><strong><a href="http://www.nodejs.org" target="_blank" rel="noopener">Node.js</a></strong> es un entorno de programación de entrada/salida orientada a eventos, sobre el motor de Javascript <strong>V8</strong> (el mismo que usa Google Chrome)</p>
+<p><em>Pero ¿Que quiere decir todo esto? ¿Y para que me puede servir?</em></p>
+<p>Lo más básico que podemos realizar con <strong>node.js</strong> es un servidor web (HTTP).</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var http = require('http');</span><br><span class="line"></span><br><span class="line">http.createServer(function (req, res) {</span><br><span class="line"></span><br><span class="line">  res.writeHead(200, {'Content-Type': 'text/plain'});</span><br><span class="line"></span><br><span class="line">  res.end('Hello World\n');</span><br><span class="line"></span><br><span class="line">}).listen(8124, "127.0.0.1");</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Con estas pocas lineas tenemos un servidor web escuchando el puerto 8124 funcionando en nuestro equipo y respondiendonos siempre “<em>Hello World</em>“</p>
+<p>Podemos crear tambien servidores  TCP.</p>
+<p>Para programar un servidor <strong>node.js</strong> empleamos javascript como lenguaje, con los que nos evitamos muchas de las complicaciones de otros lenguajes de programación como C, C++, python, etc.</p>
+<p>Como comentaba, esta completamente orientado a eventos por lo que no tendremos que preocuparnos de muchas tareas que el servidor realiza por nosotros, por ejemplo. Si queremos responder a una petición, programamos la respuesta al evento “on data”.</p>
+<p>Es muy ligero y rápido, y su <a href="http://nodejs.org/api.html" target="_blank" rel="noopener">API</a> es simplemente fantastica, tenemos acceso de recursos del equipo (ficheros) y muchas utilidades que nos facilitarán el trabajo de programación.</p>
+<p>Muchos os preguntareis: <em>¿Para que necesito programar un servidor HTTP si hay opciones muy potentes disponibles (apache, ngix, etc)?</em></p>
+<p><em>La respuesta es bien sencilla, no son tan ligeros y especificos como <strong>node.js</strong>, con el podremos hacer uso de la <a href="http://es.wikipedia.org/wiki/Tecnolog%C3%ADa_Push" target="_blank" rel="noopener">tecnología push</a> que nos permitira hacer virguerias como estas:</em></p>
+<ul>
+<li><p>Chat en el navegador: <a href="http://chat.nodejs.org/" target="_blank" rel="noopener">http://chat.nodejs.org/</a></p>
+</li>
+<li><p>Podemos mostrar el cursor de los otros visitantes de la web: <a href="http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/" target="_blank" rel="noopener">http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/</a></p>
+</li>
+<li><p>Servidor de archivos estáticos <a href="http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/" target="_blank" rel="noopener">http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/</a></p>
+</li>
+</ul>
+<p>En proximos post seguiremos adentrandonos en este maravilloso proyecto</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2010/11/26/musica-invisible/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_pexels-photo-96857.jpeg">
+            </a>
+
+            <a href="/2010/11/26/musica-invisible/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Música invisible
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2010/10/19/servidor-de-maquinas-virtuales-remotas-con-virtualbox/" rel="next" class="nav-cover">
+              <img src="/images/teaser_virtualbox.png">
+            </a>
+
+            <a href="/2010/10/19/servidor-de-maquinas-virtuales-remotas-con-virtualbox/" rel="next" class="nav-text">
+              Servidor de Máquinas virtuales remotas con Virtualbox <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>

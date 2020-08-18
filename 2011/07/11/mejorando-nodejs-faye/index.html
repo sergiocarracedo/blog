@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Mejorando node.js: Faye</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Como ya comentamos en una entrada anterior node.js es una herramienta muy potente, que nos permite ,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Como ya comentamos en una entrada anterior node.js es una herramienta muy potente, que nos permite crear servidores empleando javascript como lenguaje de programación en el servidor, pero puede ser co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mejorando node.js: Faye">
+<meta property="og:url" content="https://sergiocarracedo.es/2011/07/11/mejorando-nodejs-faye/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Como ya comentamos en una entrada anterior node.js es una herramienta muy potente, que nos permite crear servidores empleando javascript como lenguaje de programación en el servidor, pero puede ser co">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/mejorando_node.js_faye.jpg">
+<meta property="article:published_time" content="2011-07-11T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/mejorando_node.js_faye.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Mejorando node.js: Faye</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Mejorando node.js: Faye
+      </h1>
+      <div class="stuff">
+        <span>July 11, 2011</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_mejorando_node.js_faye.jpg">
+      </div>
+      
+      <div class="content markdown">
+        <p>Como ya comentamos en una entrada anterior <strong>node.js</strong> es una herramienta muy potente, que nos permite crear servidores empleando javascript como lenguaje de programación en el servidor, pero puede ser costoso crear ciertas herramientas y protocolos desde 0. <strong><a href="http://faye.jcoglan.com/node.html" target="_blank" rel="noopener" title="Faye">Faye</a></strong> es una capa (extensión) sobre <strong>node.js</strong>, lógicamente escrita en javascript, que crea un sistema de publicación y suscripción a canales de mensajes basados en el protocolo <strong><a href="http://svn.cometd.com/trunk/bayeux/bayeux.html" target="_blank" rel="noopener">Bayeux</a>.</strong></p>
+<p>En otras palabras, <strong>faye</strong> se encarga de gestionar los canales, los envios de mensajes y la recepción por parte de los subscriptores a esos canales. <strong>Faye</strong> consta de dos partes, una en el lado servidor y otra en el lado cliente (también escrita en javascript) Para explicar el funcionamiento de <strong>faye</strong> más fácilmente pongamos un ejemplo: Imaginemos que estamos creando una aplicación que necesita enviar notificaciones en tiempo real a todos los usuarios conectados a una página. En nuestro <em>script</em> para <strong>node.js</strong> instroducimos lo siguiente: </p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Faye = <span class="built_in">require</span>(<span class="string">'faye'</span>), server = <span class="keyword">new</span> Faye.NodeAdapter({<span class="attr">mount</span>: <span class="string">'/'</span>}); server.listen(<span class="number">8000</span>);</span><br></pre></td></tr></tbody></table></figure>
+<p>y lanzamos <strong>node.js</strong> </p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ node faye.js</span><br></pre></td></tr></tbody></table></figure>
+<p>Ahora en el cliente, cargamos un fichero javascript con este contenido: </p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> client = <span class="keyword">new</span> Faye.Client(<span class="string">'&lt;a href="http://localhost:8000/"&gt;http://localhost:8000/&lt;/a&gt;'</span>); client.subscribe(<span class="string">'/messages'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">message</span>) </span>{ alert(<span class="string">'Got a message: '</span> + message.text); });</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Con estas dos sencillas operaciones, todos los usuarios que estén conectados a nuestra web estarán subscritos al canal <em>messages</em> y estarán en disposición de recibir información. Para enviar un mensaje, desde uno de los clientes, que puede ser nuestro panel de control de la web ejecutamos el siguiente javascript:</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client.publish(<span class="string">'/messages'</span>,{ <span class="attr">text</span>: <span class="string">'Hello world'</span> });</span><br></pre></td></tr></tbody></table></figure>
+<p>Y inmediatamente en todos los navegadores de los visitantes de la web aparecerá un <em>alert</em> con el mensaje “Hello world” Este es un ejemplo extraído de la web de faye, pero quería explicarlo con un ejemplo práctico. Como veis la potencialidad y simpleza de este sistema es grande, ya que podemos enviar más variables que <em>message</em> si lo necesitasemos (por ejemplo, número de mensajes sin leer, fecha, etc), tambien podemos tener varios canales distintos a por los que enviar distintos tipos de información o solo subscribir a algunos usuarios a esos canales. En un próximo post explicaré como manipular los mensajes en el lado servidor, para por ejemplo, almacenarlos en una base de datos, enviar mensajes desde el propio servidor, etc.</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2011/07/12/chat-en-tu-navegador-con-nodejs-y-faye/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_chat_en_tu_navegador_con_node.js_y_faye.jpg">
+            </a>
+
+            <a href="/2011/07/12/chat-en-tu-navegador-con-nodejs-y-faye/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Chat en tu navegador con node.js y Faye
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2011/06/27/3d-sin-plugins-en-tu-navegador-con-javascript-threejs/" rel="next" class="nav-cover">
+              <img src="/images/teaser_deer-1333814_1920.jpg">
+            </a>
+
+            <a href="/2011/06/27/3d-sin-plugins-en-tu-navegador-con-javascript-threejs/" rel="next" class="nav-text">
+              3D sin plugins en tu navegador con javascript: three.js <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>

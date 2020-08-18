@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Accediendo al Sergas y a eSaude desde linux</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Debido mi ya no tan reciente enfermedad, y dedicado tiempo a acceder a la página web del Sergas (Se,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Debido mi ya no tan reciente enfermedad, y dedicado tiempo a acceder a la página web del Sergas (Servizo Galego de Saúde) para usar un servicio que fue presentado en 2016, y que desde finales de 2018">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Accediendo al Sergas y a eSaude desde linux">
+<meta property="og:url" content="https://sergiocarracedo.es/2019/04/07/Accediendo-al-Sergas-y-al-eSaude-desde-linux/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Debido mi ya no tan reciente enfermedad, y dedicado tiempo a acceder a la página web del Sergas (Servizo Galego de Saúde) para usar un servicio que fue presentado en 2016, y que desde finales de 2018">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/esaude.jpg">
+<meta property="article:published_time" content="2019-04-07T19:26:46.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.288Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/esaude.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Accediendo al Sergas y a eSaude desde linux</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Accediendo al Sergas y a eSaude desde linux
+      </h1>
+      <div class="stuff">
+        <span>April 07, 2019</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_esaude.jpg">
+      </div>
+      
+      <div class="content markdown">
+        <p>Debido mi ya no tan <a href="/2018/12/08/Cosas-que-he-aprendido-de-un-cancer/" title="reciente enfermedad">reciente enfermedad</a>, y dedicado tiempo a acceder a la página web del <a href="https://www.sergas.es/" target="_blank" rel="noopener">Sergas</a> (Servizo Galego de Saúde) para usar un servicio que fue <a href="https://www.farodevigo.es/gran-vigo/2016/05/11/sergas-lanza-app-consultar-tratamientos/1458511.html" target="_blank" rel="noopener">presentado en 2016</a>, y que desde <a href="https://www.lavozdegalicia.es/noticia/galicia/2018/12/17/puede-consultar-pruebas-medicas-internet/0003_201812G17P49913.htm" target="_blank" rel="noopener">finales de 2018</a> permite acceder a la función, que yo creo que útil, de descarga de las pruebas diagnosticas de imagen: TACs, resonancias, radiografías, ecografías, etc…</p>
+<p>Para acceder a esta herramienta es necesario disponer de eDNI, Chave365 o de un certificado digital, pero en este último caso es necesario pasar antes por el Centro de Salud para autorizar a dicho certificado a darnos acceso a nuestros datos de Salud, un paso que no entiendo del todo, puesto que para obtener un certificado de la FNMT, debemos verificar nuestra identidad. </p>
+<p>Como usuario de Linux que soy, por desgracia siempre encuentro alguna pequeña (o no tan pequeña) pega para acceder a sitios web y herramientas de la administración. He de decir en su descargo que esto sucede cada vez menos.</p>
+<p>En el caso de usar eDNI, en primer lugar debemos tener un lector y <a href="https://www.vidaxp.com/tecnologia/como-configurar-dnie-ubuntu-chrome-firefox/" target="_blank" rel="noopener">tenerlo configurado</a>.</p>
+<img src="/images/esaude-login.png" class="right-33 photoswipe">
+
+<p>Accedemos al portal <em>eSsaude</em> ya sea desde el banner en la web del Sergas o directamente en<br><a href="https://esaude.sergas.es/" target="_blank" rel="noopener">https://esaude.sergas.es/</a></p>
+<p>Nos logueamos haciendo uso del eDni y ya podremos acceder al portal, y a lo que más nos interesa: La historia clínica: Prueba diagnosticas de imagen e Informes (tambíen hay otras opciones que por el momento no he usado).</p>
+ <img src="/images/esaude-historiaclinica.png" class="left-33 photoswipe">
+
+
+<p>En primer lugar tenemos los Informes que es una lista de documentos en formato PDF, aquí encontraremos desde Informes de Alta hospitalaria, Análisis de Sangre, Informes de radiología (de TACs, escáneres, PETs, etc), Informes de cirugía, y seguramente otros tipos que en mi caso no hay información.</p>
+<p>El acceso a estos informes no suponen ningún reto para un usuario de linux, ya que son documentos en formato PDF, un formato estándar y pueden ser leídos con cualquier visor, como el que trae por defecto tu distro.</p>
+<img src="/images/esaude-probasimaxe.png" class="right-33 photoswipe">
+
+<p>El problema llega en el apartado de “Pruebas diagnósticas de imagen”, aquí aparece una lista de las pruebas, no aparecen todas, pero no he logrado saber el criterio, en mi caso <a href="/2018/12/29/Una-prueba-radiologica-PET-CT-un-friki-Yo-y-un-contador-Geiger/" title="los PETs">los PETs</a> no aparecen.</p>
+<p>En esta página si queremos acceder a las imágenes de una de las pruebas, debemos solicitar la descarga, que pasado cierto tiempo (nos avisan a nuestro email) podremos descargar.</p>
+<p>Una vez descargado el archivo ZIP debemos descomprimirlo, en mi caso (Ubuntu 18.04.2) el gestor de archivos comprimidos de Gnome no funcionaba correctamente puesto que no respetaba la estructura de carpetas interna al descomprimir, por lo que tuve que hacerlo usando la línea de comandos: <code>unzip [normbreDelArchivo.zip]</code> y listo.</p>
+<p>Y aquí nos encontramos con una aplicación para <em>Windows</em> que nos da acceso a las imágenes de la prueba, no hay archivos JPG, ni nada similar a los que acceder.</p>
+<p>En un primer intento traté de ejecutar el visor con <a href="https://www.winehq.org/" target="_blank" rel="noopener">Wine</a>, pero, tras dedicarle unas horas sin resultados, decidí atacar por otro lado.</p>
+<p>Viendo los archivos que componían el descargable se hacía referencia a algo llamado DICOM, que de entrada pensé que se trataba del nombre del propio visor, pero que no tarde en descubrir que es un <a href="https://es.wikipedia.org/wiki/DICOM" target="_blank" rel="noopener">estándar para el intercambio de imágenes médicas</a>. En este estándar se incluye el propio formato de los archivos, así como el protocolo de comunicación para intercambiar datos. Es decir en el formato hay mucha más información que solo las imágenes, están por ejemplo los datos del paciente, número de historia clínica, datos del aparato que realiza la imagen, etc.</p>
+<p>Sabiendo esto último, me lancé a buscar alguna herramienta de software libre con soporte para linux que me sirviese para abrir y visualizar las pruebas. </p>
+<p>Tras probar varias, la que más me gusto, por funcionalidades y facilidad de uso de entrada fue:<br><a href="https://nroduit.github.io/en/" target="_blank" rel="noopener">WEASIS</a>, con su <a href="https://github.com/nroduit/Weasis" target="_blank" rel="noopener">repo en Github</a>. Está escrita en Java, y es compatible con Linux, OSX y Windows.</p>
+<p>La aplicación parece bastante completa, pero se escapa a mi conocimiento el saber si es potente para un especialista, pero tiene una funcionalidad que me llamo mucho la atención:</p>
+<p>Un TAC se almacena como multiples imágenes (400-500) que representan cada uno de los cortes transversales del cuerpo que realiza el TAC (cortes de imagen, obviamente), esta aplicación, permite, a partir de esos cortes en un eje, genera los cortes en los otros 2, generando 3 vistas del interior del cuerpo, tal y como muestra la imagen extraída de la página web de Weasis, donde hay <a href="https://nroduit.github.io/en/" target="_blank" rel="noopener">muchas más imágenes de ejemplo</a></p>
+<img src="/images/esaude-weasis.jpg" class="photoswipe">
+<p><em>Imagen de un TAC extraida de la web de Weasis</em></p>
+<p>Obviamente no soy medico, ni radiólogo, ni nada que se le parezca, pero lo que si soy es curioso y estas herramientas me permiten visualizar las pruebas e intentar hacerme una imagen mental de lo que me va contando el médico.</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2019/04/20/no-todo-es-trabajar-jugando-con-trenes/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_openttd_cover.jpg">
+            </a>
+
+            <a href="/2019/04/20/no-todo-es-trabajar-jugando-con-trenes/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> No todo es trabajar: Jugando con trenes
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2019/03/31/Mis-proyectos-Open-Source/" rel="next" class="nav-cover">
+              <img src="/images/teaser_opensource.jpg">
+            </a>
+
+            <a href="/2019/03/31/Mis-proyectos-Open-Source/" rel="next" class="nav-text">
+              Mis proyectos Open Source <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>

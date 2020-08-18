@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Vuex el Redux de Vue.js (II)</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,En la primera parte, expliqué algunos de los conceptos básicos de vuex: *El *state, ** los **getter,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="En la primera parte, expliqué algunos de los conceptos básicos de vuex: *El *state, ** los **getters y las mutations. Si recuerdas, el paradigma de una librería de control del patrón de estado como vu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vuex el Redux de Vue.js (II)">
+<meta property="og:url" content="https://sergiocarracedo.es/2017/04/06/vuex-el-redux-de-vuejs-ii/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="En la primera parte, expliqué algunos de los conceptos básicos de vuex: *El *state, ** los **getters y las mutations. Si recuerdas, el paradigma de una librería de control del patrón de estado como vu">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-99541_1.jpeg">
+<meta property="article:published_time" content="2017-04-06T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/pexels-photo-99541_1.jpeg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Vuex el Redux de Vue.js (II)</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Vuex el Redux de Vue.js (II)
+      </h1>
+      <div class="stuff">
+        <span>April 06, 2017</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_pexels-photo-99541_1.jpeg">
+      </div>
+      
+      <div class="content markdown">
+        <p>En la <a href="/2017/04/03/vuex-el-redux-de-vuejs-i/" title="primera parte">primera parte</a>, expliqué algunos de los conceptos básicos de <strong>vuex: *<em>El *</em>state, ** los **getters</strong> y las <strong>mutations</strong>. Si recuerdas, el paradigma de una <em>librería de control del patrón de estado</em> como <strong>vuex</strong> es mantener el <em>state</em> como única fuente de verdad, y para ello los valores del estado solo pueden ser modificados mediante <em>mutations</em>, que deben ser además <strong>síncronas</strong>. Si necesitamos hacer “cambios” de forma asíncrona podemos hacer uso de las <strong>acciones / actions.</strong></p>
+<blockquote>
+<p>Hago aquí un pequeño inciso, aunque parezca repetitivo, escribiré al menos una vez todos los conceptos en castellano y en ingles; en castellano para que se entiendan mejor los conceptos y la lectura no sea extraña y en inglés para mantener la misma terminología que <strong>vuex.</strong></p>
+</blockquote>
+<h3 id="Acciones-Actions"><a href="#Acciones-Actions" class="headerlink" title="Acciones / Actions"></a><strong>Acciones / Actions</strong></h3><p>Las acciones son similares a las mutaciones, con dos diferencias principales:</p>
+<ul>
+<li>Las acciones no modifican el estado, sino que las acciones <strong>emiten mutaciones (commit mutations)</strong></li>
+<li>Las acciones pueden contener <strong>operaciones asíncronas</strong>.</li>
+</ul>
+<p>Las acciones reciben un objeto <strong>contexto (context)</strong> que expone los mismos métodos y propiedades que el <strong>Store</strong> (el store no es más que la instancia de vuex que contiene el estado, las mutaciones, las acciones y los getters.</p>
+<p>Una acción se vería así:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">actions: {</span><br><span class="line">&nbsp;  getAllPosts: (context) =&gt; {</span><br><span class="line">    Api.getAllPosts().then(response =&gt; {</span><br><span class="line">      let posts = response.data;</span><br><span class="line">      context.commit(types.RECEIVE_POSTS, { posts })</span><br><span class="line">    })</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Esta acción, como ves es asíncrona, ya que descarga una lista de <em>posts</em> haciendo uso de un objeto API, y una vez resuelta la promesa, emite un <em>mutation _pasándole como _payload</em> la lista de posts.</p>
+<p>Las acciones tampoco se llaman de forma directa, si no que lo hacemos mediante un <em>dispatch</em>.</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.dispatch('getAllPosts', {payload})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Como ves, la acción puede también recibir un <em>payload</em>, de la misma forma que una mutación.</p>
+<p>Como hemos visto las acciones pueden ser asíncronas y si necesitamos saber cuando se ha ejecutado la podemos devolver una <em>promesa</em> que el <em>dispacher</em> se encargará de devolver. Modificando el ejemplo anterior:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">actions: {</span><br><span class="line">  getAllPosts: (context) =&gt; {</span><br><span class="line">    return new Promise((resolve, reject) =&gt; {</span><br><span class="line">      Api.getAllPosts().then(response =&gt; {</span><br><span class="line">        let posts = response.data;</span><br><span class="line">        context.commit(types.RECEIVE_POSTS, { posts })</span><br><span class="line">      })</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// y de esta forma llamamos a la acción y obtenemos su promesa</span><br><span class="line">store.dispatch('getAllPosts').then(() =&gt; {</span><br><span class="line">  //......</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Y ahora, ¿como usamos todo esto en la vida real?. La respuesta es sencilla, (doy por hecho que tienes vuex <a href="https://vuex.vuejs.org/en/installation.html" target="_blank" rel="noopener">instalado</a> como dependencia de tu proyecto). Por un lado debemos crear un <em>store</em> de esta forma:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// Asegurate de llamar a Vue.use(Vuex) primero</span><br><span class="line"></span><br><span class="line">const store = new Vuex.Store({</span><br><span class="line"> state: {</span><br><span class="line">   count: 0</span><br><span class="line"> },</span><br><span class="line"> mutations: {</span><br><span class="line">&nbsp;   increment: (state) =&gt; {</span><br><span class="line">&nbsp;     state.count++</span><br><span class="line">&nbsp;   }</span><br><span class="line"> }, </span><br><span class="line"> actions: {</span><br><span class="line"> },</span><br><span class="line"> getters: {</span><br><span class="line"> }</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">//Ahora puedes modificar el estado y acceder a el de esta forma</span><br><span class="line">store.commit('increment');</span><br><span class="line">console.log(store.status.count); // retorna 1</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Usando-el-estado-y-las-mutaciones-en-componentes"><a href="#Usando-el-estado-y-las-mutaciones-en-componentes" class="headerlink" title="Usando el estado y las mutaciones en componentes"></a>Usando el estado y las mutaciones en componentes</h3><p>Ahora, lo lógico es que queramos acceder al estado o emitir una mutación desde un componente. Lo primero es inyectar el <em>store</em> recién creado en Vue, para que este se inyecte en todos los componentes (por el momento no entraremos en más detalles, pero es posible usar un <em>store</em> de forma local en un componente)</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const app = new Vue({</span><br><span class="line"> el: '#app',</span><br><span class="line"> store,</span><br><span class="line"> ......</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Para acceder al store desde un componente lo hacemos de la sigueinte manera:</p>
+<pre>this.$store.state.count</pre>
+
+<p>Lo normal es que queramos usar la reactividad, así que solo tenemos que hacer uso de las *<em>propiedades computadas *</em>(<em>computed properties</em>)</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const Counter = {</span><br><span class="line">   //....</span><br><span class="line">  computed: { </span><br><span class="line">    count() { return this.$store.state.count } </span><br><span class="line">  } </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>De un modo similar, podemos llamar a las acciones o a las mutaciones desde un componente:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.$store.dispatch('accion')</span><br><span class="line">this.$store.commit('mutacion')</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Todo lo que aquí he contado, no es más que la punta del iceberg de <strong>vuex</strong>, hay mucho más detrás (por ejemplo los <em>mapping helpers</em>, los módulos, el <em>scaffolding</em>). Yo os recomiendo leer en detalle la documentación <a href="https://vuex.vuejs.org/en/" target="_blank" rel="noopener">https://vuex.vuejs.org/en/</a></p>
+<p>También he dejado un github <a href="https://github.com/sergiocarracedo/vuex-demo" target="_blank" rel="noopener">https://github.com/sergiocarracedo/vuex-demo</a> un proyecto de ejemplo, algo sencillo, simplemente descarga una lista de posts y los pagina.</p>
+<p>Espero que estos dos posts sobre <strong>vuex</strong> te gustasen y espero hacer en el futuro algún otro entrando más en detalle.</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2017/04/18/usando-vuejs-electronjs-para-crear-aplicaciones-de-escritorio/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_screenshot_from_2017-04-11_20-38-13.png">
+            </a>
+
+            <a href="/2017/04/18/usando-vuejs-electronjs-para-crear-aplicaciones-de-escritorio/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Usando Vue.js + electron.js para crear aplicaciones de escritorio
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2017/04/03/vuex-el-redux-de-vuejs-i/" rel="next" class="nav-cover">
+              <img src="/images/teaser_pexels-photo-99541_0.jpeg">
+            </a>
+
+            <a href="/2017/04/03/vuex-el-redux-de-vuejs-i/" rel="next" class="nav-text">
+              Vuex el Redux de Vue.js (I) <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>

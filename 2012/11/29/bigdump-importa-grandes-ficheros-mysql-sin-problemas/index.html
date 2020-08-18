@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Bigdump: Importa grandes ficheros mysql sin problemas</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Una de las pesadillas de los desarrolladores web (a menos es una de las mías) es encontrase con la ,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Una de las pesadillas de los desarrolladores web (a menos es una de las mías) es encontrase con la necesidad de subir un volcado SQL muy grande a un servidor y no tener acceso remoto al servidor mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bigdump: Importa grandes ficheros mysql sin problemas">
+<meta property="og:url" content="https://sergiocarracedo.es/2012/11/29/bigdump-importa-grandes-ficheros-mysql-sin-problemas/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Una de las pesadillas de los desarrolladores web (a menos es una de las mías) es encontrase con la necesidad de subir un volcado SQL muy grande a un servidor y no tener acceso remoto al servidor mysql">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-129544.jpeg">
+<meta property="article:published_time" content="2012-11-29T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/pexels-photo-129544.jpeg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Bigdump: Importa grandes ficheros mysql sin problemas</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Bigdump: Importa grandes ficheros mysql sin problemas
+      </h1>
+      <div class="stuff">
+        <span>November 29, 2012</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_pexels-photo-129544.jpeg">
+      </div>
+      
+      <div class="content markdown">
+        <p>Una de las pesadillas de los desarrolladores web (a menos es una de las mías) es encontrase con la necesidad de subir un volcado SQL muy grande a un servidor y no tener acceso remoto al servidor mysql y, tampoco, tener acceso via shell, es decir la “única” vía es usar <strong>PhpMyAdmin</strong>.</p>
+<p>He puesto ú<em>nica</em>  entre comillas por que desde luego hay muchas más alternativas, algunas muy manuales, o algunas más cómodas como la que os propongo: **<a href="http://www.ozerov.de/bigdump/" target="_blank" rel="noopener">Bigdump</a> **</p>
+<p><strong>Bigdump</strong> es un pequeño script <strong>php</strong> que una vez configurado con los datos de nuestra base de datos se encarga de trocear los archivos SQL que subamos para insertarlos “poco a poco” en la base de datos, incluso en servidores con limitaciones como <code>safe_mode</code>.</p>
+<p>Su uso es muy sencillo:</p>
+<ol>
+<li><p>En el fichero descargado <em>bigdump.php</em> configuramos los datos de conexión a la base de datos, es importante no olvidar modificar también la codificación para evitarnos problemas con los caracteres ya que por defecto usará <em>latin1</em></p>
+</li>
+<li><p>Subimos <em>bigdump.php</em> al servidor donde necesitamos hacer la importación “problematica”</p>
+</li>
+<li><p>Subimos al mismo directorio el fichero <em>.sql</em> a importar (podemos subirlo comprimido con <strong>gz</strong>). Si el directorio tiene permisos de escritura nos ofrecerá la posibilidad de subir el fichero directamente desde un formulario, aunque no recomiendo esta opción ya que estamos hablando siempre de ficheros muy grandes</p>
+</li>
+<li><p>Ejecutamos el fichero <em>bigdump.php</em> desde el navegador, por ejemplo <code>http://www.tuweb.com/bigdump.php</code></p>
+</li>
+<li><p>Escogemos el fichero a importar, y comienza la importación del mismo sin tener que preocuparnos de nada más, eso si <strong>no podremos cerrar la ventana del navegador mientras se esta ejecutando la impotación</strong></p>
+</li>
+<li><p><strong>IMPORTANTÍSIMO!!! Por razones de seguridad obvias eliminar el fichero <em>bigdump.php</em> y los <em>.sql</em> o <em>.gz</em> que hemos subido al terminar.</strong></p>
+</li>
+</ol>
+<p><a href="http://www.ozerov.de/bigdump.zip" target="_blank" rel="noopener">Descargar BigDump ver. 0.34b (beta) </a> directamente de la web de su creador</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="/2013/01/07/visualiza-graficamente-tus-expresiones-regulares-regexpercom/" rel="prev" class="nav-cover">
+              <img src="/images/teaser_visualiza_graficamente_tus_expresiones_regulares_regexper.com.jpg">
+            </a>
+
+            <a href="/2013/01/07/visualiza-graficamente-tus-expresiones-regulares-regexpercom/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Visualiza gráficamente tus expresiones regulares: regexper.com
+            </a>
+          </div>
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="/2012/05/24/cuentas-tuteladas-para-menores-en-las-redes-sociales/" rel="next" class="nav-cover">
+              <img src="/images/teaser_pexels-photo-2577939.jpeg">
+            </a>
+
+            <a href="/2012/05/24/cuentas-tuteladas-para-menores-en-las-redes-sociales/" rel="next" class="nav-text">
+              ¿Cuentas tuteladas para menores en las redes sociales? <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+</html>
