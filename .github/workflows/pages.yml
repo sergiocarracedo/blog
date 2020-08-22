@@ -22,7 +22,7 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-npm-cache
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install && yarn --cwd "themes/sergiocarracedo"
       - name: Build
         run: yarn build
       - name: Deploy
