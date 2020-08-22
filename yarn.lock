@@ -81,15 +81,6 @@ ajv@^6.12.2, ajv@^6.12.3:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-align-text@^0.1.1, align-text@^0.1.3:
-  version "0.1.4"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/align-text/-/align-text-0.1.4.tgz#0cd90a561093f35d0a99256c22b7069433fad117"
-  integrity sha1-DNkKVhCT810KmSVsIrcGlDP60Rc=
-  dependencies:
-    kind-of "^3.0.2"
-    longest "^1.0.1"
-    repeat-string "^1.5.2"
-
 amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
@@ -205,11 +196,6 @@ async-foreach@^0.1.3:
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/async-foreach/-/async-foreach-0.1.3.tgz#36121f845c0578172de419a97dbeb1d16ec34542"
   integrity sha1-NhIfhFwFeBct5Bmpfb6x0W7DRUI=
 
-async@~0.2.6:
-  version "0.2.10"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
-  integrity sha1-trvgsGdLnXGXCMo43owjfLUmw9E=
-
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -280,7 +266,7 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.2.2, bluebird@^3.5.0, bluebird@^3.5.1, bluebird@^3.5.2, bluebird@^3.5.5, bluebird@^3.7.0:
+bluebird@^3.2.2, bluebird@^3.5.1, bluebird@^3.5.2, bluebird@^3.5.5, bluebird@^3.7.0:
   version "3.7.2"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha1-nyKcFb4nJFT/qXOs4NvueaGww28=
@@ -342,11 +328,6 @@ camelcase-keys@^2.0.0:
     camelcase "^2.0.0"
     map-obj "^1.0.0"
 
-camelcase@^1.0.2:
-  version "1.2.1"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/camelcase/-/camelcase-1.2.1.tgz#9bb5304d2e0b56698b2c758b08a3eaa9daa58a39"
-  integrity sha1-m7UwTS4LVmmLLHWLCKPqqdqlijk=
-
 camelcase@^2.0.0:
   version "2.1.1"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/camelcase/-/camelcase-2.1.1.tgz#7c1d16d679a1bbe59ca02cacecfb011e201f5a1f"
@@ -361,14 +342,6 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
-
-center-align@^0.1.1:
-  version "0.1.3"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/center-align/-/center-align-0.1.3.tgz#aa0d32629b6ee972200411cbd4461c907bc2b7ad"
-  integrity sha1-qg0yYptu6XIgBBHL1EYckHvCt60=
-  dependencies:
-    align-text "^0.1.3"
-    lazy-cache "^1.0.3"
 
 chalk@^1.1.1:
   version "1.1.3"
@@ -389,14 +362,6 @@ chalk@^2.4.1, chalk@^2.4.2:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
-
-chalk@^3.0.0:
-  version "3.0.0"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/chalk/-/chalk-3.0.0.tgz#3f73c2bf526591f574cc492c51e2456349f844e4"
-  integrity sha1-P3PCv1JlkfV0zEksUeJFY0n4ROQ=
-  dependencies:
-    ansi-styles "^4.1.0"
-    supports-color "^7.1.0"
 
 chalk@^4.0.0:
   version "4.1.0"
@@ -434,15 +399,6 @@ clipboard@^2.0.0:
     good-listener "^1.2.2"
     select "^1.1.2"
     tiny-emitter "^2.0.0"
-
-cliui@^2.1.0:
-  version "2.1.0"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/cliui/-/cliui-2.1.0.tgz#4b475760ff80264c762c3a1719032e91c7fea0d1"
-  integrity sha1-S0dXYP+AJkx2LDoXGQMukcf+oNE=
-  dependencies:
-    center-align "^0.1.1"
-    right-align "^0.1.1"
-    wordwrap "0.0.2"
 
 cliui@^5.0.0:
   version "5.0.0"
@@ -685,7 +641,7 @@ debug@~3.1.0:
   dependencies:
     ms "2.0.0"
 
-decamelize@^1.0.0, decamelize@^1.1.2, decamelize@^1.2.0:
+decamelize@^1.1.2, decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
@@ -1212,18 +1168,6 @@ hexo-cli@^4.0.0:
     resolve "^1.11.0"
     tildify "^2.0.0"
 
-hexo-deployer-git@^2.1.0:
-  version "2.1.0"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/hexo-deployer-git/-/hexo-deployer-git-2.1.0.tgz#2e72f05d7b318dbe29929d156ea13f9132354ff1"
-  integrity sha1-LnLwXXsxjb4pkp0VbqE/kTI1T/E=
-  dependencies:
-    bluebird "^3.5.0"
-    chalk "^3.0.0"
-    hexo-fs "^2.0.0"
-    hexo-util "^1.0.0"
-    moment "^2.18.0"
-    swig-templates "^2.0.2"
-
 hexo-filter-github-emojis@^2.1.0:
   version "2.1.0"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/hexo-filter-github-emojis/-/hexo-filter-github-emojis-2.1.0.tgz#c493ef3db2ab25553db85d143cc73a65ec52ccc1"
@@ -1397,7 +1341,7 @@ hexo-util@1.0.0:
     html-entities "^1.2.1"
     striptags "^3.1.1"
 
-hexo-util@^1.0.0, hexo-util@^1.3.0, hexo-util@^1.4.0:
+hexo-util@^1.3.0, hexo-util@^1.4.0:
   version "1.9.1"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/hexo-util/-/hexo-util-1.9.1.tgz#15dc10d0dca474c978cdba9c20e8d0417ac993de"
   integrity sha1-FdwQ0NykdMl4zbqcIOjQQXrJk94=
@@ -1577,11 +1521,6 @@ is-binary-path@~2.1.0:
   dependencies:
     binary-extensions "^2.0.0"
 
-is-buffer@^1.1.5:
-  version "1.1.6"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
-  integrity sha1-76ouqdqg16suoTqXsritUf776L4=
-
 is-extglob@^2.1.1:
   version "2.1.1"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/is-extglob/-/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
@@ -1750,22 +1689,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-kind-of@^3.0.2:
-  version "3.2.2"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
-  integrity sha1-MeohpzS6ubuw8yRm2JOupR5KPGQ=
-  dependencies:
-    is-buffer "^1.1.5"
-
 kind-of@^6.0.2:
   version "6.0.3"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha1-B8BQNKbDSfoG4k+jWqdttFgM5N0=
-
-lazy-cache@^1.0.3:
-  version "1.0.4"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
-  integrity sha1-odePw6UEdMuAhF07O24dpJpEbo4=
 
 levn@~0.3.0:
   version "0.3.0"
@@ -1822,11 +1749,6 @@ lodash@^4.0.0, lodash@^4.17.13, lodash@^4.17.15, lodash@^4.17.19, lodash@~4.17.1
   version "4.17.20"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha1-tEqbYpe8tpjxxRo1RaKzs2jVnFI=
-
-longest@^1.0.1:
-  version "1.0.1"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
-  integrity sha1-MKCy2jj3N3DoKUoNIuZiXtd9AJc=
 
 loud-rejection@^1.0.0:
   version "1.6.0"
@@ -1941,11 +1863,6 @@ minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha1-Z9ZgFLZqaoqqDAg8X9WN9OTpdgI=
 
-minimist@~0.0.1:
-  version "0.0.10"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
-  integrity sha1-3j+YVD2/lggr5IrRoMfNqDYwHc8=
-
 minipass@^3.0.0:
   version "3.1.3"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/minipass/-/minipass-3.1.3.tgz#7d42ff1f39635482e15f9cdb53184deebd5815fd"
@@ -1985,7 +1902,7 @@ moment-timezone@^0.5.21:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0", moment@^2.10.6, moment@^2.18.0, moment@^2.22.2:
+"moment@>= 2.9.0", moment@^2.10.6, moment@^2.22.2:
   version "2.27.0"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
   integrity sha1-i/9OPiaiNiIN/j423nVrbrqgEF0=
@@ -2225,14 +2142,6 @@ open@^6.3.0:
   integrity sha1-XBPpbQ3IlGhhZPGJZez+iJ7PyKk=
   dependencies:
     is-wsl "^1.1.0"
-
-optimist@~0.6:
-  version "0.6.1"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/optimist/-/optimist-0.6.1.tgz#da3ea74686fa21a19a111c326e90eb15a0196686"
-  integrity sha1-2j6nRob6IaGaERwybpDrFaAZZoY=
-  dependencies:
-    minimist "~0.0.1"
-    wordwrap "~0.0.2"
 
 optionator@^0.8.1:
   version "0.8.3"
@@ -2536,11 +2445,6 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-repeat-string@^1.5.2:
-  version "1.6.1"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
-  integrity sha1-jcrkcOHIirwtYA//Sndihtp15jc=
-
 repeating@^2.0.0:
   version "2.0.1"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/repeating/-/repeating-2.0.1.tgz#5214c53a926d3552707527fbab415dbc08d06dda"
@@ -2616,13 +2520,6 @@ rfdc@^1.1.4:
   version "1.1.4"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/rfdc/-/rfdc-1.1.4.tgz#ba72cc1367a0ccd9cf81a870b3b58bd3ad07f8c2"
   integrity sha1-unLME2egzNnPgahws7WL060H+MI=
-
-right-align@^0.1.1:
-  version "0.1.3"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"
-  integrity sha1-YTObci/mo1FWiSENJOFMlhSGE+8=
-  dependencies:
-    align-text "^0.1.1"
 
 rimraf@2:
   version "2.7.1"
@@ -2889,11 +2786,6 @@ source-map@^0.7.3:
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha1-UwL4FpAxc1ImVECS5kmB91F1A4M=
 
-source-map@~0.5.1:
-  version "0.5.7"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
-  integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
-
 spdx-correct@^3.0.0:
   version "3.1.1"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/spdx-correct/-/spdx-correct-3.1.1.tgz#dece81ac9c1e6713e5f7d1b6f17d468fa53d89a9"
@@ -3122,14 +3014,6 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-swig-templates@^2.0.2:
-  version "2.0.3"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/swig-templates/-/swig-templates-2.0.3.tgz#6b4c43b462175df2a8da857a2043379ec6ea6fd0"
-  integrity sha1-a0xDtGIXXfKo2oV6IEM3nsbqb9A=
-  dependencies:
-    optimist "~0.6"
-    uglify-js "2.6.0"
-
 symbol-tree@^3.2.2:
   version "3.2.4"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
@@ -3274,25 +3158,10 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-uglify-js@2.6.0:
-  version "2.6.0"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/uglify-js/-/uglify-js-2.6.0.tgz#25eaa1cc3550e39410ceefafd1cfbb6b6d15f001"
-  integrity sha1-JeqhzDVQ45QQzu+v0c+7a20V8AE=
-  dependencies:
-    async "~0.2.6"
-    source-map "~0.5.1"
-    uglify-to-browserify "~1.0.0"
-    yargs "~3.10.0"
-
 uglify-js@^3.8.1:
   version "3.10.1"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/uglify-js/-/uglify-js-3.10.1.tgz#dd14767eb7150de97f2573a5ff210db14fffe4ad"
   integrity sha1-3RR2frcVDel/JXOl/yENsU//5K0=
-
-uglify-to-browserify@~1.0.0:
-  version "1.0.2"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz#6e0924d6bda6b5afe349e39a6d632850a0f882b7"
-  integrity sha1-bgkk1r2mta/jSeOabWMoUKD4grc=
 
 unpipe@~1.0.0:
   version "1.0.0"
@@ -3438,25 +3307,10 @@ wide-align@^1.1.0:
   dependencies:
     string-width "^1.0.2 || 2"
 
-window-size@0.1.0:
-  version "0.1.0"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
-  integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
-
 word-wrap@~1.2.3:
   version "1.2.3"
   resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha1-YQY29rH3A4kb00dxzLF/uTtHB5w=
-
-wordwrap@0.0.2:
-  version "0.0.2"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/wordwrap/-/wordwrap-0.0.2.tgz#b79669bb42ecb409f83d583cad52ca17eaa1643f"
-  integrity sha1-t5Zpu0LstAn4PVg8rVLKF+qhZD8=
-
-wordwrap@~0.0.2:
-  version "0.0.3"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
-  integrity sha1-o9XabNXAvAAI03I0u68b7WMFkQc=
 
 wrap-ansi@^5.1.0:
   version "5.1.0"
@@ -3525,13 +3379,3 @@ yargs@^13.3.2:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^13.1.2"
-
-yargs@~3.10.0:
-  version "3.10.0"
-  resolved "https://pkgs.dev.azure.com/InditexData/_packaging/InditexDataFrontend/npm/registry/yargs/-/yargs-3.10.0.tgz#f7ee7bd857dd7c1d2d38c0e74efbd681d1431fd1"
-  integrity sha1-9+572FfdfB0tOMDnTvvWgdFDH9E=
-  dependencies:
-    camelcase "^1.0.2"
-    cliui "^2.1.0"
-    decamelize "^1.0.0"
-    window-size "0.1.0"
