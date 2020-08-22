@@ -1,5 +1,5 @@
 ---
-title: "What is VuePress and why you should use it to document my project?"
+title: "What is VuePress and why you should use it to document your project?"
 date: 2020-08-22
 tags: 
   - vue
