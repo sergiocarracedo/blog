@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/el_uso_de_039039_como_comodin_para_039http039_y_039https039.jpg">
 <meta property="article:published_time" content="2013-01-21T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:modified_time" content="2020-08-22T11:04:36.764Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/el_uso_de_039039_como_comodin_para_039http039_y_039https039.jpg">
@@ -95,7 +95,7 @@
       });
     </script>
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 5.1.0"></head>
 
 <body>
     <div id="single">
@@ -137,10 +137,10 @@
       
       <div class="content markdown">
         <p>Crear una web que pueda ser navegable mediante http y https normalmente supone tener algún tipo de variable  o modificador en el lenguaje que genere la salida HTML del website, por ejemplo PHP para que las peticiones de los recursos, como CSS, JS, imágenes, etc se realicen mediante el protocolo correcto.</p>
-<p>Por ejemplo si estamos navegando por una web en http:// (modo no encriptado) y pedimos una imagen mediante <em>http<strong>s</strong>://<a href="http://www.misitio.com/imagen.png" target="_blank" rel="noopener">www.misitio.com/imagen.png</a></em>  en principio puede parecer que no deberíamos tener ningún problema, pero si la red del visitante filtra el puerto 443 (https) cosa que sucede en algunas empresas (cada vez menos) no podría acceder al recurso, si el recurso que solicitamos (que no coincide en protocolo) necesita hacer uso de alguna cookie, dependiendo de como este configurada esta podría no poder acceder a ella.</p>
+<p>Por ejemplo si estamos navegando por una web en http:// (modo no encriptado) y pedimos una imagen mediante <em>http<strong>s</strong>://<a target="_blank" rel="noopener" href="http://www.misitio.com/imagen.png">www.misitio.com/imagen.png</a></em>  en principio puede parecer que no deberíamos tener ningún problema, pero si la red del visitante filtra el puerto 443 (https) cosa que sucede en algunas empresas (cada vez menos) no podría acceder al recurso, si el recurso que solicitamos (que no coincide en protocolo) necesita hacer uso de alguna cookie, dependiendo de como este configurada esta podría no poder acceder a ella.</p>
 <p>Pero el problema más evidente es cuando el usuario esta navegando por nuestra web usando <strong>https</strong> y la página solicita un recurso mediante <strong>http</strong>, da igual lo buena, caro y bonito que sea nuestro certificado, el navegador mostrará una advertencia que pueda hacer que los usuarios desconfíen de nuestro website.</p>
-<p>Para evitar estos problemas, podemos o bien hacer uso de una variable o similar que modifique el protocolo en nuestra programación o podemos optar por una solución mucho más sencilla que nos cubre en los dos casos: hacer uso de ‘<strong>//</strong>‘ en lugar de http:// o https://, si has leído bien, solo usar // <strong>Por ejemplo, <a href="http://www.misitio.com/miimagen.jpg" target="_blank" rel="noopener">http://www.misitio.com/miimagen.jpg</a> se convertiría en //<a href="http://www.misitio.com/miimagen.jpg" target="_blank" rel="noopener">www.misitio.com/miimagen.jpg</a></strong> Ahora es el navegador el que se encarga de decidir el protocolo que usa en función de como hemos pedido el documento HTML que va a solicitar esos recursos.</p>
-<p>Sobra decir que si por el motivo que sea necesitamos forzar uno de los protocolos, simplemente especificamos el protocolo como hemos hecho hasta el momento. Puedes encontrar más información sobre el uso de SSL en la web en <a href="http://support.google.com/adwords/answer/2580401/?hl=es" target="_blank" rel="noopener">http://support.google.com/adwords/answer/2580401/?hl=es</a></p>
+<p>Para evitar estos problemas, podemos o bien hacer uso de una variable o similar que modifique el protocolo en nuestra programación o podemos optar por una solución mucho más sencilla que nos cubre en los dos casos: hacer uso de ‘<strong>//</strong>‘ en lugar de http:// o https://, si has leído bien, solo usar // <strong>Por ejemplo, <a target="_blank" rel="noopener" href="http://www.misitio.com/miimagen.jpg">http://www.misitio.com/miimagen.jpg</a> se convertiría en //<a target="_blank" rel="noopener" href="http://www.misitio.com/miimagen.jpg">www.misitio.com/miimagen.jpg</a></strong> Ahora es el navegador el que se encarga de decidir el protocolo que usa en función de como hemos pedido el documento HTML que va a solicitar esos recursos.</p>
+<p>Sobra decir que si por el motivo que sea necesitamos forzar uno de los protocolos, simplemente especificamos el protocolo como hemos hecho hasta el momento. Puedes encontrar más información sobre el uso de SSL en la web en <a target="_blank" rel="noopener" href="http://support.google.com/adwords/answer/2580401/?hl=es">http://support.google.com/adwords/answer/2580401/?hl=es</a></p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {

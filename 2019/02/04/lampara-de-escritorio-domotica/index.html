@@ -27,7 +27,7 @@ Hace ya unos cuantos meses había comprado este aparatillo: un interruptor wifi,
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/lampara.jpg">
 <meta property="article:published_time" content="2019-02-04T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:modified_time" content="2020-08-22T11:04:36.764Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/lampara.jpg">
@@ -96,7 +96,7 @@ Hace ya unos cuantos meses había comprado este aparatillo: un interruptor wifi,
       });
     </script>
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 5.1.0"></head>
 
 <body>
     <div id="single">
@@ -138,28 +138,28 @@ Hace ya unos cuantos meses había comprado este aparatillo: un interruptor wifi,
       
       <div class="content markdown">
         <img src="/images/sonoff.jpg" class="right-33">
-<p>Hace ya unos cuantos meses había comprado <a href="https://amzn.to/2HDOlWM" target="_blank" rel="noopener">este aparatillo</a>: un interruptor wifi, con la intención de probar a “domotizar” algo en casa.</p>
+<p>Hace ya unos cuantos meses había comprado <a target="_blank" rel="noopener" href="https://amzn.to/2HDOlWM">este aparatillo</a>: un interruptor wifi, con la intención de probar a “domotizar” algo en casa.</p>
 <p>Este modelo concreto es de doble canal por lo que lleva dos interruptores en el mismo aparato, pero para este proyecto con un sólo canal es suficiente.</p>
-<p>Como la mayoría de estos aparatos de bajo coste están basado en el <a href="https://es.wikipedia.org/wiki/ESP8266" target="_blank" rel="noopener">chip ESP8266</a> usado originalmente para dotar de conectividad wifi a los Arduino, pero que ha demostrado su solvencia usado de forma independiente.</p>
+<p>Como la mayoría de estos aparatos de bajo coste están basado en el <a target="_blank" rel="noopener" href="https://es.wikipedia.org/wiki/ESP8266">chip ESP8266</a> usado originalmente para dotar de conectividad wifi a los Arduino, pero que ha demostrado su solvencia usado de forma independiente.</p>
 <p>Como era mi primera prueba no quise complicarme mucho y decidí no flashearlo ni nada por el estilo usando el software “original”</p>
-<p>Tras darle varias vueltas a que “domotizar” encontré un candidato. Mi <a href="https://www.ikea.com/es/es/productos/iluminacion/lamparas-flexo/fors%C3%A5-l%C3%A1mpara-flexo-de-trabajo-niquelado-art-80146763/" target="_blank" rel="noopener">lampara de escritorio</a>, <strong>esa que siempre me dejaba encendida cuando me levantaba</strong> de la mesa de trabajo <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f605.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f605.png?v8">😅</span>.</p>
+<p>Tras darle varias vueltas a que “domotizar” encontré un candidato. Mi <a target="_blank" rel="noopener" href="https://www.ikea.com/es/es/productos/iluminacion/lamparas-flexo/fors%C3%A5-l%C3%A1mpara-flexo-de-trabajo-niquelado-art-80146763/">lampara de escritorio</a>, <strong>esa que siempre me dejaba encendida cuando me levantaba</strong> de la mesa de trabajo <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f605.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f605.png?v8">😅</span>.</p>
 <p>El proceso de instalación del interruptor wifi fue muy sencillo, cortar el cable de alimentación y conectarlo al nuevo.</p>
 <blockquote>
 <p><span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/26a0.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/26a0.png?v8">⚠</span> Creo que sobra decir que cualquier manipulación de cableado: siempre con la lámpara desenchufada <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/26a0.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/26a0.png?v8">⚠</span></p>
 </blockquote>
-<p>Una vez vuelto a conectar todo, seguí los pasos indicados por la app <a href="https://sonoff.itead.cc/en/ewelink" target="_blank" rel="noopener">eWeLink</a> para sincronizar el dispositivo y ya de entrada podía encender y apagar la lámpara desde el móvil, lo que no es nada práctico.</p>
+<p>Una vez vuelto a conectar todo, seguí los pasos indicados por la app <a target="_blank" rel="noopener" href="https://sonoff.itead.cc/en/ewelink">eWeLink</a> para sincronizar el dispositivo y ya de entrada podía encender y apagar la lámpara desde el móvil, lo que no es nada práctico.</p>
 <p>Mi idea era hacer que la lampara se encendiese al desbloquear el ordenador y que se apagase cuando este entrase en modo ahorro de energía (apagado del monitor).</p>
-<p>Investigando, encontré la forma de que <a href="https://unix.stackexchange.com/questions/28181/run-script-on-screen-lock-unlock" target="_blank" rel="noopener"><em>dbus</em> lance comandos cuando cambia el estado del salva pantallas</a> de <em>Gnome</em></p>
+<p>Investigando, encontré la forma de que <a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/28181/run-script-on-screen-lock-unlock"><em>dbus</em> lance comandos cuando cambia el estado del salva pantallas</a> de <em>Gnome</em></p>
 <p><strong>lamp.sh</strong></p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dbus-monitor --session "type='signal',interface='org.gnome.ScreenSaver'" |</span><br><span class="line">  while read x; do</span><br><span class="line">    case "$x" in </span><br><span class="line">      *"boolean true"*) echo "SALVA PANTALLAS ACTIVADO, APAGAR LAMPARA";;</span><br><span class="line">      *"boolean false"*) echo "SALVA PANTALLAS DESACTIVADO, ENCENDER LAMPARA";;  </span><br><span class="line">    esac</span><br><span class="line">  done</span><br></pre></td></tr></tbody></table></figure>
 
 <p>Este fichero <em>lamp.sh</em> debe lanzarse al iniciar nuestra sesión cada vez que arranquemos el equipo, así que lo más simple es añadirlo a la lista de <em>Startup applications</em> de <em>Gnome</em></p>
 <p>Ahora sólo me quedaba ser capaz de poder lanzar esos <em>eventos</em> al servidor de gestión del interruptor wifi, de la misma forma que lo hace la app móvil.</p>
-<p>Lo que hace el interruptor cuando lo sincronizamos es conectarse a un servidor externo (esta parte es la que menos me gusta, pero puede cambiarse) y esperar comandos. Usando <a href="https://ifttt.com/" target="_blank" rel="noopener">IFTTT</a> podemos enlazar un dispositivo eWeLink (o Sonoff) con un evento, en este caso el evento es un <em>webhook</em> que nos permite llamar a una URL para ejecutar el evento.</p>
+<p>Lo que hace el interruptor cuando lo sincronizamos es conectarse a un servidor externo (esta parte es la que menos me gusta, pero puede cambiarse) y esperar comandos. Usando <a target="_blank" rel="noopener" href="https://ifttt.com/">IFTTT</a> podemos enlazar un dispositivo eWeLink (o Sonoff) con un evento, en este caso el evento es un <em>webhook</em> que nos permite llamar a una URL para ejecutar el evento.</p>
 <p>Este webhook tiene esta forma: <code>https://maker.ifttt.com/trigger/[nombre_del_evento]/with/key/[la_key_que_te_da_ifttt]</code></p>
 <img src="/images/ifttt_lamp.png" class="right-40">
 
-<p>Donde el <strong>nombre del evento</strong> lo definimos al crearlo, y <strong>la_key_que_te_da_ifttt</strong> te la proporciona <strong>IFTTT</strong> al crear el primer webhook <a href="https://ifttt.com/maker_webhooks" target="_blank" rel="noopener">https://ifttt.com/maker_webhooks</a></p>
+<p>Donde el <strong>nombre del evento</strong> lo definimos al crearlo, y <strong>la_key_que_te_da_ifttt</strong> te la proporciona <strong>IFTTT</strong> al crear el primer webhook <a target="_blank" rel="noopener" href="https://ifttt.com/maker_webhooks">https://ifttt.com/maker_webhooks</a></p>
 <p>Ya solo queda crear dos <em>Applets</em> en <em>IFTTT</em> (uno para encender y otro para apagar) enlazados a las acciones que nos proporciona respecto a eWeLink y retocar nuestro <em>lamp.sh</em> para que llame a estos webhooks. </p>
 <p><strong>lamp.sh</strong></p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dbus-monitor --session "type='signal',interface='org.gnome.ScreenSaver'" |</span><br><span class="line">  while read x; do</span><br><span class="line">    case "$x" in </span><br><span class="line">      *"boolean true"*) curl -X POST https://maker.ifttt.com/trigger/turn_off_desktop_lamp/with/key/[TU_KEY];;</span><br><span class="line">      *"boolean false"*) curl -X POST https://maker.ifttt.com/trigger/turn_on_desktop_lamp/with/key/[TU_KEY];;  </span><br><span class="line">    esac</span><br><span class="line">  done</span><br></pre></td></tr></tbody></table></figure>

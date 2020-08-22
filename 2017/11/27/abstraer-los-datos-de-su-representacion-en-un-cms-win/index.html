@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/architecture-construction-build-building-162557.jpeg">
 <meta property="article:published_time" content="2017-11-27T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:modified_time" content="2020-08-22T11:04:36.764Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/architecture-construction-build-building-162557.jpeg">
@@ -95,7 +95,7 @@
       });
     </script>
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 5.1.0"></head>
 
 <body>
     <div id="single">
@@ -136,7 +136,7 @@
       </div>
       
       <div class="content markdown">
-        <p>Tanto en desarrollo web como en otras muchas áreas la <strong>abstracción</strong> es fundamental para poder avanzar sin necesidad de estar pensando en cada uno de los niveles de complejidad. La <a href="https://es.wikipedia.org/wiki/Abstracci%C3%B3n_(inform%C3%A1tica)" target="_blank" rel="noopener"><strong>abstracción</strong></a> básicamente consiste en aislar un elemento de su contexto.</p>
+        <p>Tanto en desarrollo web como en otras muchas áreas la <strong>abstracción</strong> es fundamental para poder avanzar sin necesidad de estar pensando en cada uno de los niveles de complejidad. La <a target="_blank" rel="noopener" href="https://es.wikipedia.org/wiki/Abstracci%C3%B3n_(inform%C3%A1tica)"><strong>abstracción</strong></a> básicamente consiste en aislar un elemento de su contexto.</p>
 <p>Si has leído el título del <em>post</em>, te habrá dado cuenta de que vamos a hablar de <strong>abstracción de contenido</strong> respecto a la <strong>representación (</strong>que tendrá para el visitante de la web), por ejemplo esto es que el campo fecha  (de un artículo), no lo tenga que insertar el autor junto con el resto del texto. Lo mismo que el título, las imágenes o cualquier otro elemento.</p>
 <h3 id="¿Y-por-que-no-hacerlo-asi-insertando-todo-en-un-campo-de-texto"><a href="#¿Y-por-que-no-hacerlo-asi-insertando-todo-en-un-campo-de-texto" class="headerlink" title="¿Y por qué no hacerlo así, insertando todo en un campo de texto?"></a>¿Y por qué no hacerlo así, insertando todo en un campo de texto?</h3><p>Se me ocurren muchos motivos para no hacerlo así: por ejemplo, si necesitas ordenar por fecha y la fecha esta en medio del texto, la tarea de ordenación será mucho más complicada que si la fecha estuviese en un campo separado.</p>
 <p>Aún más, si la fecha además de estar guardada en un campo separado, está guardada de forma estructurada (por ejemplo un <em>timestamp + timezone</em>) podremos mostrar la fecha y hora en las distintas zonas horarias y en los distintos formatos de fecha: <em>DD/MM/YYY, MM/DD/YYY, etc</em></p>
@@ -150,7 +150,7 @@
 <p>Vamos a ver el método de <strong>Separación en campos</strong> con un ejemplo: Supongamos esta misma entrada del blog, en esta web, ¿qué elementos la componen?, A primera vista, un <strong>título</strong>, un <strong>cuerpo de texto</strong>, la <strong>imagen</strong> de cabecera, la <strong>fecha</strong>, las <strong>etiquetas</strong> y los <strong>relacionados.</strong></p>
 <p>Además de estos elementos, en algunas entradas necesito añadir varias imágenes o videos.</p>
 <p>Pues ya tenemos los elementos, ahora en nuestro <em>backend</em> tenemos un campo para cada uno de estos elementos como puede verse en la imagen inferior:</p>
-<p>Quiero llamar la atención sobre el campo <strong>Cuerpo de texto</strong> que es un habitual campo de texto <a href="https://es.wikipedia.org/wiki/WYSIWYG" target="_blank" rel="noopener">WYSIWYG</a>. Este tipo de campos es “peligroso” por que puede tender a ser un cajón desastre donde terminar insertando todo tipo de contenido. En mi opinión para evitar esto, y conseguir la máxima abstracción posible este campo solo debería permitir insertar:</p>
+<p>Quiero llamar la atención sobre el campo <strong>Cuerpo de texto</strong> que es un habitual campo de texto <a target="_blank" rel="noopener" href="https://es.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a>. Este tipo de campos es “peligroso” por que puede tender a ser un cajón desastre donde terminar insertando todo tipo de contenido. En mi opinión para evitar esto, y conseguir la máxima abstracción posible este campo solo debería permitir insertar:</p>
 <ul>
 <li>Negritas (strong), cursiva (em)</li>
 <li>Enlaces (a)</li>

@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-397225.jpeg">
 <meta property="article:published_time" content="2017-05-18T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:modified_time" content="2020-08-22T11:04:36.764Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/pexels-photo-397225.jpeg">
@@ -95,7 +95,7 @@
       });
     </script>
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 5.1.0"></head>
 
 <body>
     <div id="single">
@@ -139,7 +139,7 @@
         <p>Es habitual que administremos o accedamos de una u otra forma a máquina remotas mediante SSH, ya sea mediante contraseña o <em>key</em> (muy recomendado), pero el acceso remoto es una vulnerabilidad en si misma, o al menos es un posible punto de entrada de un atacante o individuo malicioso. </p>
 <p>Lo habitual es disponer de <strong><em>fail2ban</em></strong> sobre el servicio <em>sshd</em> que evite los ataques de fuerza bruta.</p>
 <p>Pero además, puede ser muy interesante recibir una notificación (SMS, email, Push, etc…) cada vez que se produzca un login correcto en el sistema mediante <em>ssh</em>.</p>
-<h3 id="PAM-es-tu-amigo"><a href="#PAM-es-tu-amigo" class="headerlink" title="PAM es tu amigo"></a>PAM es tu amigo</h3><p><a href="https://en.wikipedia.org/wiki/Linux_PAM" target="_blank" rel="noopener">Linux Pluggable Authentication Modules</a> (PAM), sin entrar en mucho detalle, es un sistema de módulos de autentificación para Linux. Simplificando PAM nos permite indicar que se ejecute una aplicación o un script _<strong>bash</strong>_bajo ciertas condiciones, como puede ser en el caso que comentamos, cuando un usuario se loguee exitosamente mediante SSH en nuestro sistema.</p>
+<h3 id="PAM-es-tu-amigo"><a href="#PAM-es-tu-amigo" class="headerlink" title="PAM es tu amigo"></a>PAM es tu amigo</h3><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Linux_PAM">Linux Pluggable Authentication Modules</a> (PAM), sin entrar en mucho detalle, es un sistema de módulos de autentificación para Linux. Simplificando PAM nos permite indicar que se ejecute una aplicación o un script _<strong>bash</strong>_bajo ciertas condiciones, como puede ser en el caso que comentamos, cuando un usuario se loguee exitosamente mediante SSH en nuestro sistema.</p>
 <p>En la mayoría de los sistemas el fichero relativo el login ssh se encuentra en <strong>/etc/pam.d/sshd</strong>, así que editamos dicho fichero</p>
 <pre>$ sudo nano /etc/pam.d/sshd</pre>
 
@@ -147,10 +147,10 @@
 <p><code>session optional pam_exec.so /usr/local/bin/notify-on-ssh-login.sh</code></p>
 <p>Con esta modificación estamos indicando que se ejecute un script <em>on login</em>.</p>
 <p>El contenido del fichero que se ejecutará es el siguiente:</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">!/bin/bash</span><br><span class="line"></span><br><span class="line">if [ "$PAM_TYPE" != "open_session" ]</span><br><span class="line">then</span><br><span class="line">  exit 0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">MY_IP=_XXX.XXX.XXX.XXX_</span><br><span class="line">REMOTE_IP=$(getent hosts "$PAM_RHOST" | awk '{ print $1 }')</span><br><span class="line">if [ "$OFFICE_IP" != "$REMOTE_IP" ]</span><br><span class="line">then</span><br><span class="line">   echo "Login '$PAM_USER' from '$REMOTE_IP'" | mailx -s "ALERT!!!!" _recipient@somewhere.com_</span><br><span class="line">fi</span><br><span class="line">exit 0</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">!/bin/bash</span><br><span class="line"></span><br><span class="line">if [ "$PAM_TYPE" != "open_session" ]</span><br><span class="line">then</span><br><span class="line">  exit 0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">MY_IP=_XXX.XXX.XXX.XXX_</span><br><span class="line">REMOTE_IP=$(getent hosts "$PAM_RHOST" | awk '{ print $1 }')</span><br><span class="line">if [ "$OFFICE_IP" != "$REMOTE_IP" ]</span><br><span class="line">then</span><br><span class="line">   echo "Login '$PAM_USER' from '$REMOTE_IP'" | mailx -s "ALERT!!!!" _recipient@somewhere.com_</span><br><span class="line">fi</span><br><span class="line">exit 0</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 
 <p>Este script lo que hace es comprobar que se ha abierto una sesión (desde SSH), si es asi, comprueba que la IP remota (desde la que se han conectado) no coincide con la que nosotros especifiquemos (para evitar recibir notificaciones cada vez que nosotros mismos nos logueemos) y si no coincide, emplea el <em>mailx</em> para enviar un correo avisándonos de esto.</p>
-<p>En mi caso, como método de notificación uso <a href="https://pushover.net/" target="_blank" rel="noopener">Pushover</a> que permite lanzar notificaciones push a tu móvil, y como ventaja aporta niveles de prioridad, permitiendo, por ejemplo, en un caso “grave” como este que se salte el modo “no molestar” del teléfono.</p>
+<p>En mi caso, como método de notificación uso <a target="_blank" rel="noopener" href="https://pushover.net/">Pushover</a> que permite lanzar notificaciones push a tu móvil, y como ventaja aporta niveles de prioridad, permitiendo, por ejemplo, en un caso “grave” como este que se salte el modo “no molestar” del teléfono.</p>
 <p>Obviamente este script es mejorable y es posible que realice las acciones que nosotros indiquemos.</p>
 <p>Usando <em>PAM</em> también podríamos tener notificaciones de conexiones <em>ppp</em>, o cuando un usuario haga un <em>sudo</em>, hay mucho donde “jugar”.</p>
 <script>

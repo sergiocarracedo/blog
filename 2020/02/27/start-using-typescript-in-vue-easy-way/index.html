@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-1272328.jpeg">
 <meta property="article:published_time" content="2020-02-27T10:58:02.000Z">
-<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:modified_time" content="2020-08-22T11:04:36.768Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta property="article:tag" content="vue, typescript, ts, js">
 <meta name="twitter:card" content="summary_large_image">
@@ -96,7 +96,7 @@
       });
     </script>
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 5.1.0"></head>
 
 <body>
     <div id="single">
@@ -139,15 +139,15 @@
       <div class="content markdown">
         <p>If you program in <em>JavaScript</em> probably somebody told you about the advantages of using <em>Typescript</em> or you thought about start using it.</p>
 <p>As you can see in this chart, more than 50% <em>Javascript</em> developers are using <em>Typescript</em></p>
-<p><img src="/images/javascript_flavors_section_overview.png" alt=""><br><em>Source: <a href="https://2019.stateofjs.com/javascript-flavors/" target="_blank" rel="noopener">https://2019.stateofjs.com/javascript-flavors/</a></em></p>
+<p><img src="/images/javascript_flavors_section_overview.png" alt=""><br><em>Source: <a target="_blank" rel="noopener" href="https://2019.stateofjs.com/javascript-flavors/">https://2019.stateofjs.com/javascript-flavors/</a></em></p>
 <p>Start to use a new technology, new paradigm, new framework or anything could be hard and challenging, this is why is important start integrating new technologies avoiding friction with previous one. Today I’ll try to show you the easiest way to start using <em>Typescript</em> in your Vue projects.  </p>
 <p>In case of <em>Typescript</em> we “just” will add a layer over <em>Javascript</em> then I’ll try to explain easier way to use <em>Typescript</em> with <em>Vue</em> even in existing projects.</p>
 <p>Before start, you should know <em>Typescript</em> using benefits. You have thousands blog’s post talking about that:</p>
 <ul>
-<li><a href="https://apiumhub.com/tech-blog-barcelona/top-typescript-advantages/" target="_blank" rel="noopener">https://apiumhub.com/tech-blog-barcelona/top-typescript-advantages/</a></li>
-<li><a href="https://ionicframework.com/docs/v3/developer-resources/typescript/" target="_blank" rel="noopener">https://ionicframework.com/docs/v3/developer-resources/typescript/</a></li>
-<li><a href="https://medium.com/swlh/the-major-benefits-of-using-typescript-aa8553f5e2ed" target="_blank" rel="noopener">https://medium.com/swlh/the-major-benefits-of-using-typescript-aa8553f5e2ed</a></li>
-<li><a href="https://alligator.io/typescript/typescript-benefits/" target="_blank" rel="noopener">https://alligator.io/typescript/typescript-benefits/</a></li>
+<li><a target="_blank" rel="noopener" href="https://apiumhub.com/tech-blog-barcelona/top-typescript-advantages/">https://apiumhub.com/tech-blog-barcelona/top-typescript-advantages/</a></li>
+<li><a target="_blank" rel="noopener" href="https://ionicframework.com/docs/v3/developer-resources/typescript/">https://ionicframework.com/docs/v3/developer-resources/typescript/</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/swlh/the-major-benefits-of-using-typescript-aa8553f5e2ed">https://medium.com/swlh/the-major-benefits-of-using-typescript-aa8553f5e2ed</a></li>
+<li><a target="_blank" rel="noopener" href="https://alligator.io/typescript/typescript-benefits/">https://alligator.io/typescript/typescript-benefits/</a></li>
 <li>…</li>
 </ul>
 <p>Most repeated benefit is <strong>“types”</strong>. <em>Javascript</em> is a weakly typed language (variables and consts have types, but you can not set its type. Only by means of value)</p>
@@ -158,7 +158,7 @@
 <p>Vue cli starts to add <em>typescript</em> package and necessary dependencies. Also create and update configuration files like <code>tsconfig.json</code>, It needs ask you some questions to configure properly.</p>
 <p>Let view each question in detail and the “correct” answer.</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? Use class-style component syntax? (Y/n)</span><br></pre></td></tr></tbody></table></figure>
-<p>If you want start to use <a href="https://vuejs.org/v2/guide/typescript.html#Class-Style-Vue-Components" target="_blank" rel="noopener">class-style component syntax</a> you should answer “<strong>yes</strong>“. You can answer “no” and you can not use it, but anything else changes. </p>
+<p>If you want start to use <a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/typescript.html#Class-Style-Vue-Components">class-style component syntax</a> you should answer “<strong>yes</strong>“. You can answer “no” and you can not use it, but anything else changes. </p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? Use Babel alongside TypeScript (required for modern mode, auto-detected polyfills, transpiling JSX)? (Y/n)</span><br></pre></td></tr></tbody></table></figure>
 <p>“Yes”. You were probably already using it.</p>
 <p>The next two questions are the most important</p>
@@ -168,14 +168,14 @@
 <p>:warning: You must answer “<strong>Yes</strong>“. It’s the same as, in <code>tsconfig.json</code>, set the value <code>allowJs</code> to <code>true</code>. If you don’t anwser “yes” you will receive a lot of error messages, because the <em>typescript</em> transpiler tries to transpilate <code>.js</code></p>
 <h2 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h2><p>No step 2. You just added <em>Typescript</em> support to your project and everything should work fine as usual.</p>
 <h2 id="Writing-your-first-Vue-component-in-typescript"><a href="#Writing-your-first-Vue-component-in-typescript" class="headerlink" title="Writing your first Vue component in typescript"></a>Writing your first Vue component in <em>typescript</em></h2><p>When you write a Vue component in Javascript, you probably write something similar to:</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> ....</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">export default {</span></span><br><span class="line"><span class="regexp">  props: ....,</span></span><br><span class="line"><span class="regexp">  data () ....,</span></span><br><span class="line"><span class="regexp">  methods: ....</span></span><br><span class="line"><span class="regexp">}</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> ....</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> {</span><br><span class="line">  props: ....,</span><br><span class="line">  data () ....,</span><br><span class="line">  methods: ....</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
 <p>To write a Vue compoment using <em>Typescript</em> you need to set the scripting language using the attribute <code>lang</code> in the script tag.<br>Also, as <em>Typescript</em> needs to infer types, you must define your components with <code>Vue.component</code> or <code>Vue.extend</code> (I prefer second one)</p>
 <p>Then our component look like:</p>
-<figure class="highlight typescript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> ....</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp">&lt;script lang="ts"&gt;</span></span><br><span class="line"><span class="regexp">import Vue from 'vue'</span></span><br><span class="line"><span class="regexp">export default Vue.extend({</span></span><br><span class="line"><span class="regexp">  props: ....,</span></span><br><span class="line"><span class="regexp">  data () ....,</span></span><br><span class="line"><span class="regexp">  methods: ....</span></span><br><span class="line"><span class="regexp">})</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight typescript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> ....</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script lang=<span class="string">"ts"</span>&gt;</span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Vue.extend({</span><br><span class="line">  props: ....,</span><br><span class="line">  data () ....,</span><br><span class="line">  methods: ....</span><br><span class="line">})</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
 
 <p><span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8">🎉</span> Done! You have your first Typescript Vue component.</p>
 <p>The point is you can start using <em>Typescript</em> and keep your previous code. You don’t need to rewrite all components, or you can do step by step.</p>
-<p>I recommend you to read <a href="https://vuejs.org/v2/guide/typescript.html" target="_blank" rel="noopener">Vue documentation about Typescript support</a></p>
+<p>I recommend you to read <a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/typescript.html">Vue documentation about Typescript support</a></p>
 <p>In future blog posts I show how use multiple mixins in <em>Typescript</em> and other tips about <em>typescript</em></p>
 <script>
         document.querySelectorAll('.github-emoji')

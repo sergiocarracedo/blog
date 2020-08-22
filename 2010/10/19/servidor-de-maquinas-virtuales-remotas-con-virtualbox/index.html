@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/virtualbox.png">
 <meta property="article:published_time" content="2010-10-19T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:modified_time" content="2020-08-22T11:04:36.768Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/virtualbox.png">
@@ -95,7 +95,7 @@
       });
     </script>
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 5.1.0"></head>
 
 <body>
     <div id="single">
@@ -143,7 +143,7 @@
 <p>La solución más económica es instalar windows en una máquina virtual y realizar las pruebas desde ella. En nuestro caso usamos VirtualBox.</p>
 <p>El problema de arrancar la maquina virutal en el mismo equipo  es el consumo de recursos, sobre todo de memoria, lo que va a reducir el rendimiento del equipo y nuestra productividad.</p>
 <p>Por ello y aprovechandonos del protoloco VRCP que implementa VirtualBox, podemos instalar  la máquia virtual con windows en otro equipo de la red y acceder a la citada máquina mediante algun cliente de Terminal Server. De esta manera transladaremos la carga de recursos (procesador, memoria, etc) a otro equipo, permitiendonos además que varios usuarios utilicen la máquina virtual desde sus puestos de trabajo.</p>
-<p>Voy a dar por hecho que ya tenemos instalada y configurada la máquina virtual en el equipo remoto (la documentación de instalación se puede consultar <a href="http://www.virtualbox.org/wiki/Linux_Downloads" target="_blank" rel="noopener">aqui</a>).</p>
+<p>Voy a dar por hecho que ya tenemos instalada y configurada la máquina virtual en el equipo remoto (la documentación de instalación se puede consultar <a target="_blank" rel="noopener" href="http://www.virtualbox.org/wiki/Linux_Downloads">aqui</a>).</p>
 <p>Ahora accedemos por ssh al equipo en el que tenemos la máquina virtual.</p>
 <p><code>ssh equipo_vm</code></p>
 <p>Y arrancamos la máquina virtual pero sin interface gŕafica</p>

@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/composition-api-414579.jpg">
 <meta property="article:published_time" content="2019-10-26T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-18T19:59:04.292Z">
+<meta property="article:modified_time" content="2020-08-22T11:04:36.764Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/composition-api-414579.jpg">
@@ -95,7 +95,7 @@
       });
     </script>
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 5.1.0"></head>
 
 <body>
     <div id="single">
@@ -136,7 +136,7 @@
       </div>
       
       <div class="content markdown">
-        <p>Hace ahora casi un año, <strong>Evan You</strong>, creador de Vue, durante la <a href="https://medium.com/vue-mastery/evan-you-previews-vue-js-3-0-ab063dec3547" target="_blank" rel="noopener">VueConf presentó una <em>preview</em></a> de lo que será <strong>Vue 3</strong> cuyas principales lineas maestras son:</p>
+        <p>Hace ahora casi un año, <strong>Evan You</strong>, creador de Vue, durante la <a target="_blank" rel="noopener" href="https://medium.com/vue-mastery/evan-you-previews-vue-js-3-0-ab063dec3547">VueConf presentó una <em>preview</em></a> de lo que será <strong>Vue 3</strong> cuyas principales lineas maestras son:</p>
 <ul>
 <li>Más rápido</li>
 <li>Más pequeño</li>
@@ -144,37 +144,37 @@
 <li>Más amistoso con entornos nativos (Android, iOS, Desktop, etc.)</li>
 <li>Más fácil de usar</li>
 </ul>
-<p>Una de las novedades, que nos traerá es lo que en ese momento se llamó <strong>Hooks API</strong> (<a href="https://vue-composition-api-rfc.netlify.com/#comparison-with-react-hooks" target="_blank" rel="noopener">inspirado en React Hooks</a>), y que ha pasado a llamarse <strong>Composition API</strong>. </p>
+<p>Una de las novedades, que nos traerá es lo que en ese momento se llamó <strong>Hooks API</strong> (<a target="_blank" rel="noopener" href="https://vue-composition-api-rfc.netlify.com/#comparison-with-react-hooks">inspirado en React Hooks</a>), y que ha pasado a llamarse <strong>Composition API</strong>. </p>
 <p>Esta nueva API nos permite simplificar los componentes y facilitar reusar código, sobre todo tendrá repercusión en componentes de tamaño medio y grande ya que permitirá extraer parte de la lógica de forma sencilla en varios ficheros, reusarla y organizar mejor el código por conceptos lógicos en lugar de por opciones. Actualmente en Vue 2.x tenemos que organizar el código de un componente por opciones, de la siguente manera:</p>
 <figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> {</span><br><span class="line">    name: <span class="string">'component-name'</span>,</span><br><span class="line">    props: {</span><br><span class="line">        ...</span><br><span class="line">    },</span><br><span class="line">    components: {</span><br><span class="line">        </span><br><span class="line">    },</span><br><span class="line">    data () {</span><br><span class="line">        <span class="keyword">return</span> { ... }</span><br><span class="line">    },</span><br><span class="line">    computed: {</span><br><span class="line">        ....</span><br><span class="line">    },</span><br><span class="line">    watch () {</span><br><span class="line">        ....</span><br><span class="line">    },</span><br><span class="line">    methods: {</span><br><span class="line">        ....</span><br><span class="line">    },</span><br><span class="line">    mounted () {</span><br><span class="line">        </span><br><span class="line">    }</span><br><span class="line">    ....    </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>Esto, en componentes de cierta complejidad, hace que, por ejemplo, las variables y los métodos que las gestionan esten separados.</p>
 <p>Veamos con un ejemplo simple a que me refiero, un componente que muestra lo que escribimos en un input, lo muestra en mayúsculas y además tenemos un botón para añadir un emoji:</p>
-<iframe src="https://codesandbox.io/embed/vue-template-rg169?autoresize=1&amp;fontsize=14&amp;hidenavigation=1&amp;module=%252Fsrc%252Fcomponents%252FDemo2x.vue&amp;view=editor" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
+<iframe src="https://codesandbox.io/embed/vue-template-rg169?autoresize=1&amp;fontsize=14&amp;hidenavigation=1&amp;module=/src/components/Demo2x.vue&amp;view=editor" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
 
 <p>Si os fijais tenemos por un lado la variable <code>text</code>, en otro la variable computada <code>uppercase</code> y en otroel método <code>addEmoji</code>. En este componente estan todos bastante “cerca”, pero si seguimos añadiendo metodos y variables empiezan a separarse. </p>
 <p>Con <strong>Composition API</strong> podemos tener “cerca” todos estos elementos por lógica o funcionalidad (En el video que enlazo al final se ve esto de forma muy gráfica)  </p>
-<p>Antes de continuar, debemos saber que en Vue 2.x, para poder emplear <em>Composition API</em> necesitamos instalar el paquete <a href="https://github.com/vuejs/composition-api" target="_blank" rel="noopener">vue/composition-api</a> con un simple:</p>
+<p>Antes de continuar, debemos saber que en Vue 2.x, para poder emplear <em>Composition API</em> necesitamos instalar el paquete <a target="_blank" rel="noopener" href="https://github.com/vuejs/composition-api">vue/composition-api</a> con un simple:</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add @vue/composition-api</span><br></pre></td></tr></tbody></table></figure>
 
 <p>Una vez hecho esto refactorizamos el componente de la siguiente forma</p>
-<iframe src="https://codesandbox.io/embed/vue-template-rg169?fontsize=14&amp;hidenavigation=1&amp;module=%252Fsrc%252Fcomponents%252FDemoCompositionApi.vue&amp;view=editor" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
+<iframe src="https://codesandbox.io/embed/vue-template-rg169?fontsize=14&amp;hidenavigation=1&amp;module=/src/components/DemoCompositionApi.vue&amp;view=editor" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
 
 <p>En el <code>&lt;template&gt;</code> no ha cambiado nada significativo, así que vamos al <em>javascript</em> que es donde está la <em>chicha</em>.</p>
 <p>En primer lugar vemos un <code>import</code> que nos <em>trae</em>: <code>reactive</code>, <code>computed</code> y <code>ref</code>, en seguida vamos a ver que es cada uno</p>
 <p>A continuación vemos un metodo <code>setup()</code>, nada de las opciones “tradicionales” (<em>data</em>, <em>methods</em>, <em>computed</em>, etc), y aquí es donde haremos la magia del <strong>composition API</strong>. En lugar de tener una opción en el objeto para cada cosa: <em>data</em>, <em>computed</em>, <em>methods</em> los definimos directamente en el método <code>setup()</code> y los devolvemos. <strong>Vamos paso por paso:</strong></p>
 <figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> text = ref(<span class="string">""</span>)</span><br></pre></td></tr></tbody></table></figure>
-<p><em>Vue</em> necesita que el elemento <em>reactivo</em> sea <a href="https://vue-composition-api-rfc.netlify.com/#computed-state-and-refs" target="_blank" rel="noopener">pasado por referencia</a>, cosa que <em>javascript</em> no hace con los tipos primitivos como en este caso (un <em>String</em>), para ello <em>Composition API</em> nos provee el <code>ref()</code>.</p>
+<p><em>Vue</em> necesita que el elemento <em>reactivo</em> sea <a target="_blank" rel="noopener" href="https://vue-composition-api-rfc.netlify.com/#computed-state-and-refs">pasado por referencia</a>, cosa que <em>javascript</em> no hace con los tipos primitivos como en este caso (un <em>String</em>), para ello <em>Composition API</em> nos provee el <code>ref()</code>.</p>
 <p>En el caso de que usásemos un objeto que quisiésemos que fuese reactivo, usaríamos ‘reactive’</p>
 <figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> state = reactive({</span><br><span class="line">  text: <span class="string">''</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
 
 <p>Lo siguiente que nos encontramos es la variable computada:</p>
-<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> uppercase = computed(<span class="function"><span class="params">()</span> =&gt;</span> text.value.toUpperCase());</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> uppercase = computed(<span class="function">() =&gt;</span> text.value.toUpperCase());</span><br></pre></td></tr></tbody></table></figure>
 
 <p>Sencillo, usamos el <code>computed</code> y le pasamos la función <em>computada</em> y transformamos el valor de la variable <code>text</code> a mayúsculas.</p>
 <p>Aquí ya podemos ver un par de detalles:</p>
 <ul>
-<li>el <code>.value</code>: esto es por qué <code>ref</code> convierte el tipo primitivo en un objeto plano, guardando el valor real en la propiedad <code>value</code>. Nótese que en los <em>templates</em> no es necesario usar el <code>.value</code> ya que se realiza un <a href="https://vue-composition-api-rfc.netlify.com/#ref-unwrapping" target="_blank" rel="noopener"><em>ref unwrapping</em></a></li>
+<li>el <code>.value</code>: esto es por qué <code>ref</code> convierte el tipo primitivo en un objeto plano, guardando el valor real en la propiedad <code>value</code>. Nótese que en los <em>templates</em> no es necesario usar el <code>.value</code> ya que se realiza un <a target="_blank" rel="noopener" href="https://vue-composition-api-rfc.netlify.com/#ref-unwrapping"><em>ref unwrapping</em></a></li>
 <li>Otro detalle importante es <strong>¿dónde esta el <em>this</em>?</strong>, pues básicamente no está, <code>setup()</code> es llamado antes de montar el componente, por lo que en ese contexto <em>this</em> no funciona como lo conocíamos.  </li>
 </ul>
 <p>Un poco más adelante tenemos lo que antes era el método <code>addEmoji</code> que ahora es una función:</p>
@@ -186,11 +186,11 @@
 <p>A primera vista parece todo un poco más complicado y engorroso, y seguro que lo es para componentes pequeños, pero en cuanto el componente empieza a crecer esto nos permite agrupar la lógica de cada parte del componente en lugar de tenerla separada en las distintas propiedades del objeto, además nos simplifica extraer tanto las variables reactivas y computadas, como los métodos a un fichero externo:</p>
 <figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> compositionFunction <span class="keyword">from</span> <span class="string">"./demoCompositionApi.js"</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> {</span><br><span class="line">  setup() {</span><br><span class="line">    <span class="keyword">return</span> {</span><br><span class="line">      ...compositionFunction()</span><br><span class="line">    };</span><br><span class="line">  }</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
 
-<p>Señalar que el método tradicional seguirá estando disponible y no hay planes a largo plazo de eliminarlo, por lo que podremos usar uno u otro método de desarrollo. Esto es algo que <strong>Evan You</strong> ha dejado muy claro despues de el denominado <a href="https://dev.to/danielelkington/vue-s-darkest-day-3fgh" target="_blank" rel="noopener">“Vue Darkest Day”</a>, en el que, con el anuncio del Composition API la comunidad interpretó que se eliminaría el sistema “tradicional” y generó bastante polémica.</p>
+<p>Señalar que el método tradicional seguirá estando disponible y no hay planes a largo plazo de eliminarlo, por lo que podremos usar uno u otro método de desarrollo. Esto es algo que <strong>Evan You</strong> ha dejado muy claro despues de el denominado <a target="_blank" rel="noopener" href="https://dev.to/danielelkington/vue-s-darkest-day-3fgh">“Vue Darkest Day”</a>, en el que, con el anuncio del Composition API la comunidad interpretó que se eliminaría el sistema “tradicional” y generó bastante polémica.</p>
 <p>Recomiendo ver este video para entender de una forma muy gráfica las ventajas del <em>Composition API</em></p>
 <div class="video-container"><iframe src="https://www.youtube.com/embed/6HUjDKVn0e0" frameborder="0" loading="lazy" allowfullscreen=""></iframe></div>
 
-<p>Tambien consultar el <a href="https://vue-composition-api-rfc.netlify.com/#summary" target="_blank" rel="noopener">RFC de Composition API</a></p>
+<p>Tambien consultar el <a target="_blank" rel="noopener" href="https://vue-composition-api-rfc.netlify.com/#summary">RFC de Composition API</a></p>
 <p>Os dejo el proyecto <em>demo</em> en <em>codesandbox</em>:</p>
 <iframe src="https://codesandbox.io/embed/vue-template-rg169?fontsize=14" width="100%" height="600px" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
 
