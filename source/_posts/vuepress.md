@@ -1,5 +1,6 @@
 ---
 title: "What is VuePress and why you should use it to document your project?"
+alias: vuepress
 date: 2020-08-22
 tags: 
   - vue
@@ -8,7 +9,6 @@ tags:
   - documentation
 cover: /images/vuepress.jpg
 ---
-
 [VuePress](https://vuepress.vuejs.org/) defines itself as a *Vue-powered Static Site Generator*. In other words, is a tool to create static sites. A static site is a website where nothing runs on the server. The server only takes care of return the file (HTML file) as is stored in the server.
 
 Is the opposite of a **dynamic site**, like for example a PHP webpage, in that case, your browser makes a request to the server, and the server executes PHP code that, for example, get a post from a database, process it, put that post in an HTML template, etc and returns the result to the browser.
