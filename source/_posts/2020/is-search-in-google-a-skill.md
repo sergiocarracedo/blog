@@ -41,7 +41,7 @@ But if you look closely the "Visually similar images" most of them are beautiful
 {% img "photoswipe" /images/google-skill/googleImageSearchDetail.png 800%}
 </p>
 
-I will not go deeper, but, it's easy to find the relation with the term **Word Cloud** that is the "thing" we must create, and we could search for the theory and maths behind that, find a library which do the task or create from the scratch and finally do our task.
+I will not go deeper, but, it's easy to find the relation with the term **Word Cloud** that is the "thing" we must create, and we could search for the theory and maths behind that, find a library which does the task or create from the scratch and finally do our task.
 
 Probably you agree that use others' experience it part of the developer's job (is part of any job), we are doing all the time, and find the way to reach that experience and knowledge I guess is a skill. 
 
