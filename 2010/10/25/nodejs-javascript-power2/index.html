@@ -5,31 +5,31 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sergio Carracedo - Abstraer los datos de su representación en un CMS = WIN</title>
+    <title>Sergio Carracedo - Node.js: Javascript power!!</title>
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="keywords" content="Sergio Carracedo,"> 
-    <meta name="description" content="Sergio Carracedo personal Blog,Tanto en desarrollo web como en otras muchas áreas la abstracción es fundamental para poder avanzar,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Node.js es un entorno de programación de entrada/salida orientada a eventos, sobre el motor de Java,"> 
     <meta name="author" content="Sergio Carracedo"> 
     <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
     
 <link rel="stylesheet" href="/css/sergiocarracedo.css">
 
-    <meta name="description" content="Tanto en desarrollo web como en otras muchas áreas la abstracción es fundamental para poder avanzar sin necesidad de estar pensando en cada uno de los niveles de complejidad. La abstracción básicament">
+    <meta name="description" content="Node.js es un entorno de programación de entrada&#x2F;salida orientada a eventos, sobre el motor de Javascript V8 (el mismo que usa Google Chrome) Pero ¿Que quiere decir todo esto? ¿Y para que me puede ser">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Abstraer los datos de su representación en un CMS &#x3D; WIN">
-<meta property="og:url" content="https://sergiocarracedo.es/2017/11/27/abstraer-los-datos-de-su-representacion-en-un-cms-win/index.html">
+<meta property="og:title" content="Node.js: Javascript power!!">
+<meta property="og:url" content="https://sergiocarracedo.es/2010/10/25/nodejs-javascript-power2/index.html">
 <meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="Tanto en desarrollo web como en otras muchas áreas la abstracción es fundamental para poder avanzar sin necesidad de estar pensando en cada uno de los niveles de complejidad. La abstracción básicament">
+<meta property="og:description" content="Node.js es un entorno de programación de entrada&#x2F;salida orientada a eventos, sobre el motor de Javascript V8 (el mismo que usa Google Chrome) Pero ¿Que quiere decir todo esto? ¿Y para que me puede ser">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://sergiocarracedo.es/images/architecture-construction-build-building-162557.jpeg">
-<meta property="article:published_time" content="2017-11-27T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-22T11:24:42.287Z">
+<meta property="og:image" content="https://sergiocarracedo.es/images/node.jpg">
+<meta property="article:published_time" content="2010-10-25T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-31T07:46:14.444Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://sergiocarracedo.es/images/architecture-construction-build-building-162557.jpeg">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/node.jpg">
 
     <script async src='https://www.google-analytics.com/analytics.js'></script>
 
@@ -112,7 +112,7 @@
         </a>
       </div>
       <div class="hidden-xs col-sm-6">
-        <h3 class="subtitle">Abstraer los datos de su representación en un CMS = WIN</h3>
+        <h3 class="subtitle">Node.js: Javascript power!!</h3>
       </div>
     </div>
   </div>
@@ -124,53 +124,39 @@
   <div class="grid-row">
     <div class="main col-xs-12">
       <h1 class="title">
-        Abstraer los datos de su representación en un CMS = WIN
+        Node.js: Javascript power!!
       </h1>
       <div class="stuff">
-        <span>November 27, 2017</span>
+        <span>October 25, 2010</span>
       </div>
 
       
       <div class="article-image">
-        <img src="/images/header_architecture-construction-build-building-162557.jpeg">
+        <img src="/images/header_node.jpg">
       </div>
       
       <div class="content markdown">
-        <p>Tanto en desarrollo web como en otras muchas áreas la <strong>abstracción</strong> es fundamental para poder avanzar sin necesidad de estar pensando en cada uno de los niveles de complejidad. La <a target="_blank" rel="noopener" href="https://es.wikipedia.org/wiki/Abstracci%C3%B3n_(inform%C3%A1tica)"><strong>abstracción</strong></a> básicamente consiste en aislar un elemento de su contexto.</p>
-<p>Si has leído el título del <em>post</em>, te habrá dado cuenta de que vamos a hablar de <strong>abstracción de contenido</strong> respecto a la <strong>representación (</strong>que tendrá para el visitante de la web), por ejemplo esto es que el campo fecha  (de un artículo), no lo tenga que insertar el autor junto con el resto del texto. Lo mismo que el título, las imágenes o cualquier otro elemento.</p>
-<h3 id="¿Y-por-que-no-hacerlo-asi-insertando-todo-en-un-campo-de-texto"><a href="#¿Y-por-que-no-hacerlo-asi-insertando-todo-en-un-campo-de-texto" class="headerlink" title="¿Y por qué no hacerlo así, insertando todo en un campo de texto?"></a>¿Y por qué no hacerlo así, insertando todo en un campo de texto?</h3><p>Se me ocurren muchos motivos para no hacerlo así: por ejemplo, si necesitas ordenar por fecha y la fecha esta en medio del texto, la tarea de ordenación será mucho más complicada que si la fecha estuviese en un campo separado.</p>
-<p>Aún más, si la fecha además de estar guardada en un campo separado, está guardada de forma estructurada (por ejemplo un <em>timestamp + timezone</em>) podremos mostrar la fecha y hora en las distintas zonas horarias y en los distintos formatos de fecha: <em>DD/MM/YYY, MM/DD/YYY, etc</em></p>
-<h3 id="¿Como-puedo-llevar-la-abstraccion-a-cabo"><a href="#¿Como-puedo-llevar-la-abstraccion-a-cabo" class="headerlink" title="¿Cómo puedo llevar la abstracción a cabo?"></a>¿Cómo puedo llevar la abstracción a cabo?</h3><p>Existen varias formas de hacerlo:</p>
+        <p><strong><a target="_blank" rel="noopener" href="http://www.nodejs.org">Node.js</a></strong> es un entorno de programación de entrada/salida orientada a eventos, sobre el motor de Javascript <strong>V8</strong> (el mismo que usa Google Chrome)</p>
+<p><em>Pero ¿Que quiere decir todo esto? ¿Y para que me puede servir?</em></p>
+<p>Lo más básico que podemos realizar con <strong>node.js</strong> es un servidor web (HTTP).</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var http = require('http');</span><br><span class="line"></span><br><span class="line">http.createServer(function (req, res) {</span><br><span class="line"></span><br><span class="line">  res.writeHead(200, {'Content-Type': 'text/plain'});</span><br><span class="line"></span><br><span class="line">  res.end('Hello World\n');</span><br><span class="line"></span><br><span class="line">}).listen(8124, "127.0.0.1");</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Con estas pocas lineas tenemos un servidor web escuchando el puerto 8124 funcionando en nuestro equipo y respondiendonos siempre “<em>Hello World</em>“</p>
+<p>Podemos crear tambien servidores  TCP.</p>
+<p>Para programar un servidor <strong>node.js</strong> empleamos javascript como lenguaje, con los que nos evitamos muchas de las complicaciones de otros lenguajes de programación como C, C++, python, etc.</p>
+<p>Como comentaba, esta completamente orientado a eventos por lo que no tendremos que preocuparnos de muchas tareas que el servidor realiza por nosotros, por ejemplo. Si queremos responder a una petición, programamos la respuesta al evento “on data”.</p>
+<p>Es muy ligero y rápido, y su <a target="_blank" rel="noopener" href="http://nodejs.org/api.html">API</a> es simplemente fantastica, tenemos acceso de recursos del equipo (ficheros) y muchas utilidades que nos facilitarán el trabajo de programación.</p>
+<p>Muchos os preguntareis: <em>¿Para que necesito programar un servidor HTTP si hay opciones muy potentes disponibles (apache, ngix, etc)?</em></p>
+<p><em>La respuesta es bien sencilla, no son tan ligeros y especificos como <strong>node.js</strong>, con el podremos hacer uso de la <a target="_blank" rel="noopener" href="http://es.wikipedia.org/wiki/Tecnolog%C3%ADa_Push">tecnología push</a> que nos permitira hacer virguerias como estas:</em></p>
 <ul>
-<li><p><strong>Tokenizado</strong>: El tokenizado no es la solución optima, pero si es una mejora respecto a insertar todo “junto” en un solo campo.<br>En este caso, lo que hacemos en lugar de insertar la fecha en el campo principal, podemos insertar un token se substituirá por la fecha, por ejemplo [fecha_creacion].<br>Esta solución solo se puede aplicar a algunos campos, ya que al final dependemos de datos ya separados por lo cual es mejor usar el siguiente método.  </p>
+<li><p>Chat en el navegador: <a target="_blank" rel="noopener" href="http://chat.nodejs.org/">http://chat.nodejs.org/</a></p>
 </li>
-<li><p><strong>Separación en campos:</strong> Consiste en realizar un análisis previo del contenido para separarlo en campos independientes.</p>
+<li><p>Podemos mostrar el cursor de los otros visitantes de la web: <a target="_blank" rel="noopener" href="http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/">http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/</a></p>
+</li>
+<li><p>Servidor de archivos estáticos <a target="_blank" rel="noopener" href="http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/">http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/</a></p>
 </li>
 </ul>
-<p>Vamos a ver el método de <strong>Separación en campos</strong> con un ejemplo: Supongamos esta misma entrada del blog, en esta web, ¿qué elementos la componen?, A primera vista, un <strong>título</strong>, un <strong>cuerpo de texto</strong>, la <strong>imagen</strong> de cabecera, la <strong>fecha</strong>, las <strong>etiquetas</strong> y los <strong>relacionados.</strong></p>
-<p>Además de estos elementos, en algunas entradas necesito añadir varias imágenes o videos.</p>
-<p>Pues ya tenemos los elementos, ahora en nuestro <em>backend</em> tenemos un campo para cada uno de estos elementos como puede verse en la imagen inferior:</p>
-<p>Quiero llamar la atención sobre el campo <strong>Cuerpo de texto</strong> que es un habitual campo de texto <a target="_blank" rel="noopener" href="https://es.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a>. Este tipo de campos es “peligroso” por que puede tender a ser un cajón desastre donde terminar insertando todo tipo de contenido. En mi opinión para evitar esto, y conseguir la máxima abstracción posible este campo solo debería permitir insertar:</p>
-<ul>
-<li>Negritas (strong), cursiva (em)</li>
-<li>Enlaces (a)</li>
-<li>Títulos (h2, h3….) pero solo de modo semántico, es decir, que como se muestren corre a cargo del frontend</li>
-<li>Listas (ul, ol)</li>
-</ul>
-<p>En general otras etiquetas que aporten valor semántico al contenido, nada que tenga que ver con la visualización:</p>
-<ul>
-<li>Colores</li>
-<li>Tamaños de texto</li>
-<li>Tipograficas</li>
-<li>Imágenes (como etiqueta,, como token es correcto)</li>
-</ul>
-<p>¿Qué ventajas me da abstraer contenido y separarlo de la visualización?</p>
-<p>Como ya mencionamos antes, una de las ventajas es poder manipular y transformar el contenido antes su visualización, por ejemplo, la fecha en esta entrada de blog, aunque fue introducida como una fecha <em>DD/MM/YYYY HH:MM</em>, se muestra en un formato relativo (<em>Hace x días)</em></p>
-<p>Las imágenes, son recortadas y reescaladas según necesidades, pudiendo tener distintos tamaño en función del tamaño de la pantalla para evitar la descarga innecesaria de datos. Todo ello manteniendo la imagen original inalterada.</p>
-<p>Pero una <strong>ventaja</strong> que se suele ver a <strong>largo plazo</strong>, y que para nosotros es muy importante, es que podríamos <strong>cambiar el diseño de la web sin necesidad de tocar el contenido</strong> en el backend.</p>
-<p>Un cambio de tipografías y/o colores por que el cliente ha cambiado su imagen corporativa, una restructuración profunda del diseño, por ejemplo moviendo elementos de sitio.</p>
-<p>Esto no es solo teoría, tenemos casos reales de clientes que han modificado hasta 4 veces el diseño de la web a o largo de 8 o 9 años, manteniendo la misma estructura interna de contenido, pero modificando la visualización de la web.</p>
-<p>Para finalizar, solo puedo alabar la <strong>simplicidad</strong> que nos aporta <strong>Drupal</strong> a la hora de estructurar el contenido de formas correcta, y mantenerlo separado de la visualización.</p>
+<p>En proximos post seguiremos adentrandonos en este maravilloso proyecto</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -201,12 +187,12 @@
       <div class="next col-xs-6">
         
           <div class="nav-previous">
-            <a href="/2018/01/05/he-dejado-facebook/" rel="prev" class="nav-cover">
-              <img src="/images/teaser_facebook.jpeg">
+            <a target="_blank" href="//2010/11/26/musica-invisible/" rel="prev noopener" class="nav-cover">
+              <img src="/images/teaser_pexels-photo-96857.jpeg">
             </a>
 
-            <a href="/2018/01/05/he-dejado-facebook/" rel="prev" class="nav-text">
-              <i class="fa fa-arrow-left"></i> He dejado de usar Facebook. ¿Y ahora qué?
+            <a target="_blank" href="//2010/11/26/musica-invisible/" rel="prev noopener" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Música invisible
             </a>
           </div>
         
@@ -214,12 +200,12 @@
       <div class="prev col-xs-6">
         
           <div class="nav-next">
-            <a href="/2017/10/23/crear-plantillas-de-email-con-nuxtjs/" rel="next" class="nav-cover">
-              <img src="/images/teaser_pexels-photo-261706.jpeg">
+            <a target="_blank" href="//2010/10/19/servidor-de-maquinas-virtuales-remotas-con-virtualbox/" rel="next noopener" class="nav-cover">
+              <img src="/images/teaser_virtualbox.png">
             </a>
 
-            <a href="/2017/10/23/crear-plantillas-de-email-con-nuxtjs/" rel="next" class="nav-text">
-              Crear plantillas de email con nuxt.js <i class="fa fa-arrow-right"></i>
+            <a target="_blank" href="//2010/10/19/servidor-de-maquinas-virtuales-remotas-con-virtualbox/" rel="next noopener" class="nav-text">
+              Servidor de Máquinas virtuales remotas con Virtualbox <i class="fa fa-arrow-right"></i>
             </a>
           </div>
         
