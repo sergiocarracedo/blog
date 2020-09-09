@@ -10,7 +10,7 @@
 
       <% if (page.cover) { %>
       <div class="article-image">
-        <%- image_tag(image_version(page.cover, {prefix: 'header'})) %>
+        <%- image_tag(image_version(page.cover, {prefix: 'header'}), {width: 1200, height:400 }) %>
       </div>
       <% } %>
       <div class="content markdown">
