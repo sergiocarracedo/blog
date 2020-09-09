@@ -1,7 +1,8 @@
 ---
 title: (Deep) Cloning objects in Javascript
 date: 2020-02-22 18:28:28
-permalink: 2020/02/22/js-clone/
+permalink: deep-cloning-objects-in-javascript/
+alias: 2020/02/22/js-clone/
 tags: js clone deep-clone
 cover: /images/karen-lau-tRR3w-S2A3Y-unsplash.jpg
 ---
