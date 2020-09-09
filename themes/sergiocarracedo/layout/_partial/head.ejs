@@ -70,40 +70,4 @@ var description = '';
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-      window.addEventListener("load", function(){
-        window.cookieconsent.initialise({
-          "palette": {
-            "popup": {
-              "background": "#004262",
-              "text": "#fff"
-            },
-            "button": {
-              "background": "#8ec760",
-              "text": "#ffffff"
-            }
-          },
-          "type": "opt-out",
-          "content": {
-            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
-            "allow": "Ok, continua",
-            "deny": "Nada de cookies",
-            "link": "Saber más",
-            "href": "https://sergiocarracedo.es/cookies.html",
-          },
-          "onStatusChange": function(status, chosenBefore) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          },
-          "onInitialise" : function(status) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          }
-        })
-      });
-    </script>
-
 </head>
