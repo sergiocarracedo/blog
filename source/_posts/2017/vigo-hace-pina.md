@@ -4,7 +4,7 @@ date: 2017-05-04
 permalink: 2017/05/04/vigo-hace-pina/
 cover: /images/pexels-photo-244538.jpeg
 ---
-Hace un par de meses, comentaba que {% post_link algo-se-mueve-en-vigo '"algo se movía" en Vigo' %}, que las comunidades de desarrolladores, y en general técnicas, comenzaban aparecer y crecer.
+Hace un par de meses, comentaba que {% post_link 2017/algo-se-mueve-en-vigo '"algo se movía" en Vigo' %}, que las comunidades de desarrolladores, y en general técnicas, comenzaban aparecer y crecer.
 
 Pues bien, esto **pasa al siguiente nivel**: de la mundana necesidad de coordinar los espacios y las fechas de los _meetups_ de los distintos grupos, ha surgido algo más, algo que personalmente me ilusiona mucho, por que siempre es bonito ver crecer algo, una idea, pero más si uno es participe aunque sea en una pequeña proporción.
 
@@ -12,7 +12,7 @@ Ha nacido **[VigoTech Alliance](http://vigotech.org/)**, un grupo de grupos, o
 
 Esa suma de fuerza de conocimiento, de cada grupo se concreta, por ejemplo, en la difusión de las fechas del resto de grupos y cada grupo, aumentando la visibilidad de todos, y aportando a los asistentes de cada reunión la posibilidad de seguir aprendiendo también en otro de los grupos.
 
-Como ya comentaba en el anterior {% post_link algo-se-mueve-en-vigo 'post' %} se trata de enseñar al mundo (si, ya sé que suena pretencioso, pero déjame soñar un poco ;) ) lo que se hace en **Vigo y en su entorno**, por que se hacen cosas y cosas muy chulas, y muy potentes que poco tienen que envidiar a lo realizado en otras partes del mundo. (y no miro a nadie, coff, coff, _Silicon Valley_).
+Como ya comentaba en el anterior {% post_link 2017/algo-se-mueve-en-vigo 'post' %} se trata de enseñar al mundo (si, ya sé que suena pretencioso, pero déjame soñar un poco ;) ) lo que se hace en **Vigo y en su entorno**, por que se hacen cosas y cosas muy chulas, y muy potentes que poco tienen que envidiar a lo realizado en otras partes del mundo. (y no miro a nadie, coff, coff, _Silicon Valley_).
 
 Creo que algún día haré un _post_ listando las "cosas" tecnológicas que se hacen en Vigo y alrededores y que, por desgracia, tiene mucha menos difusión que si se hiciesen desde el otro lado del Atlántico, pero ese tema para otro día....
 

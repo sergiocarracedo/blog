@@ -6,7 +6,7 @@ tags: avatar, tips, account
 cover: /images/pexels-photo-267350.jpeg
 ---
 
-Probably you have several internet services accounts, and some in the same service, for example two _gmail_ accounts, one for work and a personal, or {% post_link instagram-rbg 'multiple Instagram accounts as me' %}
+Probably you have several internet services accounts, and some in the same service, for example two _gmail_ accounts, one for work and a personal, or {% post_link 2019/instagram-rbg 'multiple Instagram accounts as me' %}
 
 I like to use same picture as avatar in each account, but the problem is difficult to differentiate the account you are logged in only watching the avatar.
 

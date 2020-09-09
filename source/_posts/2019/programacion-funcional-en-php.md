@@ -123,7 +123,7 @@ Como veis las posibilidades son muchas sobre todo para trabajar con *Colecciones
 
 No voy a hacer una descripción de cada función una a una, porque no tiene demasiado sentido ya que tenéis la documentación completa de todas las funciones disponibles en https://github.com/Lambdish/phunctional/blob/master/docs/docs.md y el objetivo de este post es dar a conocer un poco la programación funcional en PHP y esta fantástica librería.
 
-P.D. Uno de los principales contribuidores del proyecto es [Rafa Gómez](https://twitter.com/rafaoe), al que he tenido el placer de conocer en persona en la {% post_link pulpocon-19 'PulpoCon 19%}
+P.D. Uno de los principales contribuidores del proyecto es [Rafa Gómez](https://twitter.com/rafaoe), al que he tenido el placer de conocer en persona en la {% post_link 2019/pulpocon-19 'PulpoCon 19' %}
 
 
 

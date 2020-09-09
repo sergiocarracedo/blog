@@ -11,7 +11,7 @@ tags:
 
 If you are familiarized with Vuex, you must know that Vuex is a [state management pattern library](https://vuex.vuejs.org/#what-is-vuex) for Vue applications. Vuex centralizes the application's state and how components, and other code parts, change it.
 
-You can find a lot of articles talking about Vuex, I even wrote 2 articles 3 year ago talking about it: {% post_link vuex-el-redux-de-vuejs-i "Vuex el redux de VueJS I" %} {% post_link vuex-el-redux-de-vuejs-i "Vuex el redux de VueJS II" %} (_Spanish_)
+You can find a lot of articles talking about Vuex, I even wrote 2 articles 3 year ago talking about it: {% post_link 2017/vuex-el-redux-de-vuejs-i "Vuex el redux de VueJS I" %} {% post_link 2017/vuex-el-redux-de-vuejs-i "Vuex el redux de VueJS II" %} (_Spanish_)
 
 But today I will write about an edge case related to **vuex**, as you could read in the title, about how to export and import Vuex state.
 

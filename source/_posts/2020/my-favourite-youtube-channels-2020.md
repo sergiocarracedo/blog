@@ -6,7 +6,7 @@ permalink: 2020/06/02/my-favourite-youtube-channels-2020/
 cover: /images/youtube2020.jpg
 ---
 
-In 2018, I did a list of my {% post_link Mis-canales-favoritos-de-YouTube favourite YouTube Channels %} (Spanish), almost 2 years pass after this post and on this time I start to watch new channels and remove or watch less other channels.
+In 2018, I did a list of my {% post_link 2018/Mis-canales-favoritos-de-YouTube favourite YouTube Channels %} (Spanish), almost 2 years pass after this post and on this time I start to watch new channels and remove or watch less other channels.
 
 This year I classified the videos by topic (as I did last year), and I added an emoji code:
 

@@ -5,7 +5,7 @@ permalink: 2017/04/06/vuex-el-redux-de-vuejs-ii/
 cover: /images/pexels-photo-99541_1.jpeg
 ---
 
-En la {% post_link vuex-el-redux-de-vuejs-i primera parte %}, expliqué algunos de los conceptos básicos de **vuex: **El **state, ** los **getters** y las **mutations**. Si recuerdas, el paradigma de una _librería de control del patrón de estado_ como **vuex** es mantener el _state_ como única fuente de verdad, y para ello los valores del estado solo pueden ser modificados mediante _mutations_, que deben ser además **síncronas**. Si necesitamos hacer "cambios" de forma asíncrona podemos hacer uso de las **acciones / actions.**
+En la {% post_link 2017/vuex-el-redux-de-vuejs-i primera parte %}, expliqué algunos de los conceptos básicos de **vuex: **El **state, ** los **getters** y las **mutations**. Si recuerdas, el paradigma de una _librería de control del patrón de estado_ como **vuex** es mantener el _state_ como única fuente de verdad, y para ello los valores del estado solo pueden ser modificados mediante _mutations_, que deben ser además **síncronas**. Si necesitamos hacer "cambios" de forma asíncrona podemos hacer uso de las **acciones / actions.**
    
 > Hago aquí un pequeño inciso, aunque parezca repetitivo, escribiré al menos una vez todos los conceptos en castellano y en ingles; en castellano para que se entiendan mejor los conceptos y la lectura no sea extraña y en inglés para mantener la misma terminología que **vuex.**
    

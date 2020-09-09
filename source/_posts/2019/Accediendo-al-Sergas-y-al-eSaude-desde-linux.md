@@ -5,7 +5,7 @@ permalink: 2019/04/07/Accediendo-al-Sergas-y-al-eSaude-desde-linux/
 cover: /images/esaude.jpg
 ---
 
-Debido mi ya no tan {% post_link Cosas-que-he-aprendido-de-un-cancer 'reciente enfermedad' %}, y dedicado tiempo a acceder a la página web del [Sergas](https://www.sergas.es/) (Servizo Galego de Saúde) para usar un servicio que fue [presentado en 2016](https://www.farodevigo.es/gran-vigo/2016/05/11/sergas-lanza-app-consultar-tratamientos/1458511.html), y que desde [finales de 2018](https://www.lavozdegalicia.es/noticia/galicia/2018/12/17/puede-consultar-pruebas-medicas-internet/0003_201812G17P49913.htm) permite acceder a la función, que yo creo que útil, de descarga de las pruebas diagnosticas de imagen: TACs, resonancias, radiografías, ecografías, etc...
+Debido mi ya no tan {% post_link 2018/Cosas-que-he-aprendido-de-un-cancer 'reciente enfermedad' %}, y dedicado tiempo a acceder a la página web del [Sergas](https://www.sergas.es/) (Servizo Galego de Saúde) para usar un servicio que fue [presentado en 2016](https://www.farodevigo.es/gran-vigo/2016/05/11/sergas-lanza-app-consultar-tratamientos/1458511.html), y que desde [finales de 2018](https://www.lavozdegalicia.es/noticia/galicia/2018/12/17/puede-consultar-pruebas-medicas-internet/0003_201812G17P49913.htm) permite acceder a la función, que yo creo que útil, de descarga de las pruebas diagnosticas de imagen: TACs, resonancias, radiografías, ecografías, etc...
 
 Para acceder a esta herramienta es necesario disponer de eDNI, Chave365 o de un certificado digital, pero en este último caso es necesario pasar antes por el Centro de Salud para autorizar a dicho certificado a darnos acceso a nuestros datos de Salud, un paso que no entiendo del todo, puesto que para obtener un certificado de la FNMT, debemos verificar nuestra identidad. 
 
@@ -29,7 +29,7 @@ El acceso a estos informes no suponen ningún reto para un usuario de linux, ya 
 
 {% img "right-33 photoswipe" /images/esaude-probasimaxe.png %}
 
-El problema llega en el apartado de "Pruebas diagnósticas de imagen", aquí aparece una lista de las pruebas, no aparecen todas, pero no he logrado saber el criterio, en mi caso {% post_link Una-prueba-radiologica-PET-CT-un-friki-Yo-y-un-contador-Geiger 'los PETs' %} no aparecen.
+El problema llega en el apartado de "Pruebas diagnósticas de imagen", aquí aparece una lista de las pruebas, no aparecen todas, pero no he logrado saber el criterio, en mi caso {% post_link 2018/Una-prueba-radiologica-PET-CT-un-friki-Yo-y-un-contador-Geiger 'los PETs' %} no aparecen.
 
 En esta página si queremos acceder a las imágenes de una de las pruebas, debemos solicitar la descarga, que pasado cierto tiempo (nos avisan a nuestro email) podremos descargar.
 

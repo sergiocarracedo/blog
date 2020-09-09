@@ -17,7 +17,7 @@ Por añadir algo, me gustaría contar un poco de mi experiencia a nivel personal
 
 Los que me conocen saben que no estoy pasando por un buen momento, ha sido un año especialmente complicado en lo que respecta a salud.
 
-Cuando a principios de año surgió la idea organizar un evento en Vigo para traer a grandes de este mundillo, yo estaba {% post_link Cosas-que-he-aprendido-de-un-cancer 'recuperándome de un linfoma' %} y no sabia como me iba a encontrar para poder participar en "todo esto", pero tenia claro que intentaría hacer lo que estuviese en mi mano.
+Cuando a principios de año surgió la idea organizar un evento en Vigo para traer a grandes de este mundillo, yo estaba {% post_link 2018/Cosas-que-he-aprendido-de-un-cancer 'recuperándome de un linfoma' %} y no sabia como me iba a encontrar para poder participar en "todo esto", pero tenia claro que intentaría hacer lo que estuviese en mi mano.
 
 Y así fue: lo poco que pudo estar en mi mano lo fui más o menos haciendo, todo ello siendo consciente, y es **algo que quiero decir alto y claro**, de que la *PulpoCon19* no sería posible sin el trabajo de [Félix Gómez](https://twitter.com/felixgomezlopez) y [Rolando Caldas](https://twitter.com/rolando_caldas?lang=es), también co-organizadores de PHPVigo.
 
