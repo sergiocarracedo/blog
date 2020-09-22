@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Automate the startup of your projects with yarn create and SAOjs</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Start a project in any language, framework, etc it’s not as simple as it seems. I mean, usually, th,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Start a project in any language, framework, etc it’s not as simple as it seems. I mean, usually, the project requires a lot of configuration files, installing dependencies, set the environment, create">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automate the startup of your projects with yarn create and SAOjs">
+<meta property="og:url" content="https://sergiocarracedo.es/2020/automatize-node-project-creation/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Start a project in any language, framework, etc it’s not as simple as it seems. I mean, usually, the project requires a lot of configuration files, installing dependencies, set the environment, create">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/yarn-create.jpg">
+<meta property="article:published_time" content="2020-09-22T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-22T15:33:11.478Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/yarn-create.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Automate the startup of your projects with yarn create and SAOjs</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Automate the startup of your projects with yarn create and SAOjs
+      </h1>
+      <div class="stuff">
+        <span>September 22, 2020</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/header_yarn-create.jpg" width="1200" height="400">
+      </div>
+      
+      <div class="content markdown">
+        <p>Start a project in any language, framework, etc it’s not as simple as it seems. I mean, usually, the project requires a lot of configuration files, installing dependencies, set the environment, create skeleton files, etc.</p>
+<p>Talking about JavaScript frameworks: everyone has his own CLI tool to start a project with the required files to start to code.</p>
+<p>For example <strong>Angular</strong> has <a target="_blank" rel="noopener" href="https://cli.angular.io/">@angular/cli</a> and you could execute <code>ng new [app-name]</code>or<br><strong>Vue</strong> has <a target="_blank" rel="noopener" href="https://cli.vuejs.org/">@vue/cli</a> and you can start a Vue project executing <code>vue create [project name]</code>.</p>
+<p>This is nice, but usually, the default config is not complaining your development’s requisites you still must editing the config files to set up the project according to your needs, for example, change <code>tsconfig.json</code> configuration, more <em>advanced</em>, you would like to add some code in router file or you would like to create a folder structure for the store, or anything.</p>
+<p>Do all those tasks every time you start a project is boring and spend time.</p>
+<p>In the background, these CLI tools are using a skeleton repo or similar to prepare your project, but thinking in a generic use case.</p>
+<p>So we can do the same but adapting this use case to our use case.</p>
+<h2 id="yarn-create-or-npx-create"><a href="#yarn-create-or-npx-create" class="headerlink" title="yarn create (or npx create)"></a><code>yarn create</code> (or <code>npx create</code>)</h2><p><a target="_blank" rel="noopener" href="https://yarnpkg.com/">Yarn</a> is a node package manager with vitamins, and provides the command <code>create</code></p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yarn create [my-starter-kit]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>You only need to have installed <code>yarn</code>, nothing else. This command gets from your <em>npm registry</em> a package named <code>create-</code> + the name you use in the command, in our example tries to get the package <code>create-my-starter-kit</code></p>
+<p>Then, yarn reads the <code>package.json</code> file of the package, installs the dependencies, and run the command in the <code>bin</code> entry</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">{</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"create-my-starter-kit"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,  </span><br><span class="line">  <span class="attr">"bin"</span>: <span class="string">"lib/cli.js"</span>,</span><br><span class="line">  ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong><code>yarn create</code> won’t do anything else</strong></p>
+<p>You must create the next steps, but, think about it, the user (you, a teammate, a user of an open-source project) only need yarn as a dependency.</p>
+<p>In your <code>cli.js</code> you can do things to prepare the development environment by yourself. But, let’s see how to simplify all these tasks.</p>
+<h2 id="SAOjs"><a href="#SAOjs" class="headerlink" title="SAOjs"></a>SAOjs</h2><p><a target="_blank" rel="noopener" href="https://saojs.org/">SAO</a> describes itself as a <em>Futuristic scaffolding tool</em>. and it’s inspired in <a target="_blank" rel="noopener" href="https://yeoman.io/">Yeoman</a></p>
+<p>These tools allow you to ask the user who runs your <em>create-app</em> questions that you could use to make decisions to install or configure different elements.</p>
+<p>You must create the file <code>saofile.js</code>, and this file must export this elements:</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = {</span><br><span class="line">  templateData: ...,</span><br><span class="line">  prompts: ...,</span><br><span class="line">  actions: ...,</span><br><span class="line">  prepare: ...,</span><br><span class="line">  subGenerators: ...,</span><br><span class="line">  completed: ...</span><br><span class="line">}</span><br><span class="line"><span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## Prompts</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Let's talk about `</span>prompts<span class="string">`. That must return an array of questions to want to do to the user, for example</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>js</span><br><span class="line">  prompts: [</span><br><span class="line">    {</span><br><span class="line">      type: <span class="string">'input'</span>,</span><br><span class="line">      name: <span class="string">'projectName'</span>,</span><br><span class="line">      message: <span class="string">'What is your project name?'</span></span><br><span class="line">    },</span><br><span class="line">    {</span><br><span class="line">      type: <span class="string">'list'</span>,</span><br><span class="line">      name: <span class="string">'packageManager'</span>,</span><br><span class="line">      message: <span class="string">'Your favourite package manager'</span>,</span><br><span class="line">      choices: [<span class="string">'yarn'</span>, <span class="string">'npm'</span>]</span><br><span class="line">    }</span><br><span class="line">  ]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>When you run SAO (we’ll see how to do soon), it’ll ask the user the questions.</p>
+<p>The “prompts” system is very useful, you can ask questions only if a previous question is has some value, etc.</p>
+<p>You can also save some answers as preset for the next projects (Like Vue CLI does)</p>
+<p><a target="_blank" rel="noopener" href="https://v1.saojs.org/saofile.html#prompts">More information about prompts</a></p>
+<h2 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h2><p>The other important key in the saofile’s object is the actions. They define the actions to do. The important thing is that the actions can be conditioned by the user answers.</p>
+<h3 id="Add"><a href="#Add" class="headerlink" title="Add"></a>Add</h3><p>You can copy files from a <code>templateDir</code> (in your create package) to the target (the project to create). That’s that we needed ;) </p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  type: <span class="string">'add'</span>,</span><br><span class="line">  files: <span class="string">'**'</span>, </span><br><span class="line">  templateDir: <span class="string">'/template'</span>,</span><br><span class="line">  ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>You could even filter the files to add depending on the user’s answers<br><a target="_blank" rel="noopener" href="https://v1.saojs.org/saofile.html#type-add">More info</a></p>
+<h3 id="Move"><a href="#Move" class="headerlink" title="Move"></a>Move</h3><p>Moves files in the target (the project to create)</p>
+<h3 id="Modify"><a href="#Modify" class="headerlink" title="Modify"></a>Modify</h3><p>Modify files in the target (the project to create), that is very interesting too, for example, for updating config files according to what the user answered</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> packageName = <span class="built_in">this</span>.packageName</span><br><span class="line">{</span><br><span class="line">  type: <span class="string">'modify'</span>,</span><br><span class="line">  files: <span class="string">'package.json'</span>,</span><br><span class="line">  handler: (data) {</span><br><span class="line">    data.name = packageName</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>In the example, we changed the project name in the <code>package.json</code> according to the user’s previous answers.</p>
+<h3 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h3><p>Delete files in the target.</p>
+<h2 id="Running-SAO"><a href="#Running-SAO" class="headerlink" title="Running SAO"></a>Running SAO</h2><p>You can run SAO from command line or from your <code>cli.js</code> file:</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sao({...customVariables})</span><br><span class="line">  .run()</span><br><span class="line">  .catch(<span class="function">(<span class="params">err</span>) =&gt;</span> {</span><br><span class="line">    <span class="built_in">console</span>.trace(err)</span><br><span class="line">    process.exit(<span class="number">1</span>)</span><br><span class="line">  })</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Probably you worked before with something similar, every time you have been created a project with Vue CLI, Nuxt, React, etc. </p>
+<p>That is a shallow introduction to all the SAO functionalities, but as you can see the possibilities to customize your project creation are high. </p>
+<p>You could create a template with the config files you use habitually and store the creation script in NPM.js, in a private registry, and every time you create a project, invoke <code>yarn create my-project-scaffolding</code> and start to code without the need of prepare manually the config files or miss some dependency.</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a target="_blank" href="//how-vue-reactivity-works-i/" rel="next noopener" class="nav-cover">
+              <img src="/images/teaser_object-define-property-pb-2361801.jpg">
+            </a>
+
+            <a target="_blank" href="//how-vue-reactivity-works-i/" rel="next noopener" class="nav-text">
+              How Vue's reactivity works (I): Object.defineProperty <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+
+</html>
