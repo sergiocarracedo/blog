@@ -1,5 +1,5 @@
 ---
-title: 'Creating your own Vue UI components library: From scratch to NPM'
+title: 'Talk: Creating your own Vue UI components library: From scratch to NPM'
 date: 2020-10-19
 alias: creating-your-own-vue-ui-components-library-from-scratch-to-npm
 tags:
