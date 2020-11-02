@@ -9,9 +9,9 @@ tags:
 cover: /images/2020/safari-svg/cover_pixbay_1807581.jpg
 ---
 ## The context
-A few weeks ago I was developing a website using [NuxtJs](https://nuxtjs.org/), which is not important for the problem but the is the context :wink: ). That was a beautiful website that needs to use a few images as building blocks, the typical section separator with a shape different to a simple line, in this case, the section's separator had 2 colors and a shadow.
+A few weeks ago I was developing a website using [NuxtJs](https://nuxtjs.org/) (which is not important for the problem but the is the context :wink: ). That was a website that needs to use a few images as building blocks, the typical section separator with a shape different to a simple line, in this case, the section's separator had 2 colors and a shadow.
 
-I decided to use an SVG Image for several reasons, for example the image had to adapt to different screen widths, and the image was simple (more complex than a line but simple, It was similar to 2 waves with 2 colors). The SVG files are very useful in these use case, because the file size is small, and you could zoom in infinitely without lost definition.   
+I decided to use SVG images for several reasons, for example the images had to adapt to different screen widths, and the images were simple (more complex than a line but simple, They were similar to 2 waves with 2 colors). The SVG files are very useful in these use case, because the file size is small, and you can scale them infinitely without lost definition.   
 One important thing in this issue as we'll see later is that this image had a shadow.
 
 ## The problem
@@ -20,14 +20,14 @@ Well, I was almost done templating the website, and we started to test the websi
 
 > This webpage is using significant memory. Closing it may improve the responsiveness of your Mac.
 
-And, as side effects, the website animations were not fluid.
+As side effect, the website animations were not fluid.
 
 
 ## Reproducing the problem and fixing it
 
-I needed to test the website by myself to find the reason of this issue, and I don't own a Mac computer, but I have a [BrowserStack](https://www.browserstack.com/) account.
+I needed to test the website by myself to find the reason of this issue. I don't own a Mac computer, but I have a [BrowserStack](https://www.browserstack.com/) account.
 
-[BrowserStack](https://www.browserstack.com/) is a SaaS that allows you to connect, using your browser, to a remote device with other browsers / OS. You can even select old browser versions, a mobile device (like iPhones, etc)
+[BrowserStack](https://www.browserstack.com/) is a SaaS that allows you to connect, using your browser, to remote devices with other browsers / OS. You can even select old browser versions, a mobile device (like iPhones, etc)
 
 
 ![](/images/2020/safari-svg/browserstack.jpg) 
@@ -35,20 +35,20 @@ I needed to test the website by myself to find the reason of this issue, and I d
 
 > **Off-Topic**: BrowserStack supports my open source project [SirenoGrid](https://sirenogrid.com/)
 
-So, with my BrowserStack's account, I could try to reproduce the problem. I open a Safari 13.1 (lastest version) instance in MacOS Catalina, and opened the website, and using the devtools got info about memory usage, and **it was over 1.4GB!!!!** 
+So, with my BrowserStack account, I could try to reproduce the problem. I open a Safari 13.1 (lastest version) instance in MacOS Catalina, and opened the website, and using the devtools got info about memory usage, and **it was over 1.4 GB!!!!** 
 And if you reloaded the website memory usage grows until the system got unresponsive.
 
-The first thing I thought is that the problem was the animations. I remove them: Nothing changes.
+The first thing I thought is that the problem was the animations. I remove them: *Nothing changes*.
 
-I remove javascript: Nothing :confused:
+I remove javascript: *Nothing* :confused:
 
-I continue removing things and trying other things to understand the problem. No results :open_mouth:
+I continue removing things and trying other things to understand the problem. *No results* :open_mouth:
 
 After a long time, I was already a little desperate I disabled all website content blocks, and I realized that when it was a block with an SVG image in the screen, the memory usage was high.
 
 I tried the same for a block with a png image and memory still normal.
 
-WFT?? It should be SVG images.
+WTF?? It should be SVG images.
 
 Then, I replaced all SVG images with PNG versions and website works with reasonable memory usage :tada:
 
@@ -74,7 +74,7 @@ I prepared a bug demo codesandbox, just with 2 simple svg images:
  
 > https://5emtw.csb.app :heavy_exclamation_mark: Open with responsibility in Safari :heavy_exclamation_mark:
 
-And in the first load that is the memory usage is around 600MB!!!! :exploding_head: That's crazy
+And in the first load that is the memory usage is around 600 MB!!!! :exploding_head: That's crazy
 
 {% img center mb-3 /images/2020/safari-svg/memory_leak.jpg %}
 
@@ -82,13 +82,13 @@ And if you reload the page a few times the situations will be worse
 
 {% img center mb-3 /images/2020/safari-svg/memory_leak_after_3_reloads.jpg %}
 
-After 3 reloads the memory usage is 1.26GB, absolutely crazy.
+After 3 reloads the memory usage is 1.26 GB, absolutely crazy.
 
-The same page, and the same images, but without filters 
+The same page, and the same images, but without filters
 
 > https://5emtw.csb.app/nofilters.html
 
-The memory usage is only 21MB, that it's a very normal memory usage
+The memory usage is only 21 MB, that it's a very normal memory usage
 
 {% img center mb-3 /images/2020/safari-svg/without-filters.jpg %}
 
@@ -97,7 +97,7 @@ Even with a simple filter, like:
 
 ```<feFlood flood-opacity="1" result="BackgroundImageFix"/>```
 
-The memory starts to go high, I'm not sure what caused the problem, in my opinion, is something related to composition, the browser keep in memory the raw result of applying a filter and after making all the compositions layers      
+The memory starts to go high, I'm not sure what cause the problem, but in my opinion is something related to composition, I guess the browser keeps in memory the raw result of applying a filter and after making all the compositions layers      .
 
 I reported that bug in the Webkit Bugzilla page: https://bugs.webkit.org/show_bug.cgi?id=218422
-I hope they fix it soon
+I hope they fix it soon.
