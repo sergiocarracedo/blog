@@ -26,11 +26,11 @@
       <div class="next col-xs-6">
         <% if (page.prev) { %>
           <div class="nav-previous">
-            <a href="<%- page.prev.path %>" rel="prev" class="nav-cover">
+            <a href="/<%- page.prev.path %>" rel="prev" class="nav-cover">
               <%- image_tag(image_version(page.prev.cover, {prefix: 'teaser'})) %>
             </a>
 
-            <a href="<%- page.prev.path %>" rel="prev" class="nav-text">
+            <a href="/<%- page.prev.path %>" rel="prev" class="nav-text">
               <i class="fa fa-arrow-left"></i> <%- page.prev.title %>
             </a>
           </div>
@@ -39,11 +39,11 @@
       <div class="prev col-xs-6">
         <% if (page.next) { %>
           <div class="nav-next">
-            <a href="<%- page.next.path %>" rel="next" class="nav-cover">
+            <a href="/<%- page.next.path %>" rel="next" class="nav-cover">
               <%- image_tag(image_version(page.next.cover, {prefix: 'teaser'})) %>
             </a>
 
-            <a href="<%- page.next.path %>" rel="next" class="nav-text">
+            <a href="/<%- page.next.path %>" rel="next" class="nav-text">
               <%- page.next.title %> <i class="fa fa-arrow-right"></i>
             </a>
           </div>
