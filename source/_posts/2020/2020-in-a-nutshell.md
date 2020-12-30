@@ -3,7 +3,7 @@ title: 2020 in a nutshell
 date: 2020-12-30
 alias: 2020-in-a-nutshell
 tags:
-cover: /images/2020/nutshell/pexels-polina-tankilevitch-6024594.jpg
+cover: /images/2020/nutshell/pexels-cottonbro-3401900.jpg
 ---
 
 2020 is almost complete, and it was a year that we will remember for a long time. I don't want to be dramatic, but 2020 left a deep mark on all of us. 
@@ -45,6 +45,3 @@ I'm sure I forget a lot of things in this 2020's summary but in general terms, r
 I wish 2021 will be the year we will forget the pandemic thanks to the vaccines, science, and great health professionals.
 
 Happy 2021!
-
-
-<small>Photo: [Polina Tankilevitch](https://www.pexels.com/es-es/@polina-tankilevitch)</small>
