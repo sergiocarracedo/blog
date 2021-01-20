@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/vigotech.jpg">
 <meta property="article:published_time" content="2019-09-02T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-12-30T16:41:25.365Z">
+<meta property="article:modified_time" content="2021-01-20T19:20:49.041Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/vigotech.jpg">
@@ -59,7 +59,7 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.1.1"></head>
+<meta name="generator" content="Hexo 5.3.0"></head>
 
 <body>
     <div id="single">
@@ -108,7 +108,6 @@
 <p>Resumiendo la estructura, partimos de un nodo raíz que es el propio <em>meta grupo</em> VigoTech y que tiene como propiedades cosas como, el logo, los links a web y redes sociales y sus propios eventos (si, eventos que son de todo el meta grupo y no de un grupo concreto) y lo más importante los miembros.</p>
 <p>Los miembros son también objectos cuyas propiedades son similares a la anterior, añadiendo los videos.</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">"aindustriosa": {</span><br><span class="line">  "name": "A Industriosa",</span><br><span class="line">  "logo": "https://vigotech.org/images/aindustriosa.png",</span><br><span class="line">  "links": {</span><br><span class="line">    "web": "https://aindustriosa.org/",</span><br><span class="line">    "twitter": "https://twitter.com/aindustriosa",</span><br><span class="line">    "meetup": "https://www.meetup.com/es-ES/AIndustriosa/",</span><br><span class="line">    "youtube": "https://www.youtube.com/channel/UC9DPKfcLiNd7SEU-QLlIG7A"</span><br><span class="line">  },</span><br><span class="line">  "events": [</span><br><span class="line">    {</span><br><span class="line">      "type": "meetup",</span><br><span class="line">      "meetupid": "AIndustriosa"</span><br><span class="line">    }</span><br><span class="line">  ],</span><br><span class="line">  "videos": [</span><br><span class="line">    {</span><br><span class="line">      "type": "youtube",</span><br><span class="line">      "channel_id": "UC9DPKfcLiNd7SEU-QLlIG7A"</span><br><span class="line">    }</span><br><span class="line">  ]</span><br><span class="line">},</span><br></pre></td></tr></tbody></table></figure>
-
 <p>Como podéis observar en los eventos y videos, no se indican realmente los eventos, sino la o las fuentes de donde extraer los eventos. En el ejemplo vemos que solo tenemos una fuente de eventos de tipo “meetup” y que el “meetupid” es “AIndustriosa”, lo mismo para los videos.</p>
 <p>Esta sistema nos permite flexibilidad de ir añadiendo “fuentes” de eventos, como realmente hemos hecho.</p>
 <h2 id="De-lo-abstracto-a-lo-real"><a href="#De-lo-abstracto-a-lo-real" class="headerlink" title="De lo abstracto a lo real"></a>De lo abstracto a lo real</h2><p>Si bien, esta definición resuelve en parte el problema planteado de unificar la información, pero lo que realmente queremos es obtener los eventos de cada grupo y sus videos, no solo el sitio de donde obtenerlos.</p>

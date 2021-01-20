@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-310983.jpeg">
 <meta property="article:published_time" content="2011-08-12T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-12-30T16:41:25.361Z">
+<meta property="article:modified_time" content="2021-01-20T19:20:49.041Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/pexels-photo-310983.jpeg">
@@ -59,7 +59,7 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.1.1"></head>
+<meta name="generator" content="Hexo 5.3.0"></head>
 
 <body>
     <div id="single">
@@ -107,10 +107,8 @@
 <p>Una vez que tenemos copiado todo el contenido del árbol de directorios y la base de datos de _Wordpress_en la nueva ubicación cambiamos si es necesario los datos de acceso a la base de datos (si fuese necesario), estos datos se encuentan en <code>wp-config.php</code></p>
 <p>Ahora accedemos a la base de datos con <em>phpmyadmin</em>, o cualquier otro cliente que nor permita ejecutar las siguientes consultas <em>SQL</em>.</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UPDATE wp_options SET option_value = replace(option_value, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');</span><br><span class="line">UPDATE wp_options SET option_value = replace(option_value, 'feed://DOMINIOANTERIOR.com', 'feed://NUEVODOMINIO.com');</span><br><span class="line">UPDATE wp_posts SET guid = replace(guid, 'http://DOMINIOANTERIOR.com','http://NUEVODOMINIO.com');</span><br><span class="line">UPDATE wp_posts SET post_content = replace(post_content, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');</span><br><span class="line">UPDATE wp_postmeta SET meta_value = replace(meta_value, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');</span><br></pre></td></tr></tbody></table></figure>
-
 <p>Con esto tenemos hecha la mayor parte del trabajo, pero si hemos cambiado la ruta (independientemente de que cambie el dominio) y utilizamos <em>URLs amigables</em> mediante <em>mod_rewrite</em>, necesitamos cambiar el .htaccess</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine On</span><br><span class="line">RewriteBase / #Modificar con la ruta adecuada</span><br><span class="line">RewriteRule ^index\.php$ - [L]</span><br><span class="line">RewriteCond %{REQUEST_FILENAME} !-f</span><br><span class="line">RewriteCond %{REQUEST_FILENAME} !-d</span><br><span class="line">RewriteRule . /index.php [L] #Modificar con la ruta adecuada</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-<script>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine On</span><br><span class="line">RewriteBase / #Modificar con la ruta adecuada</span><br><span class="line">RewriteRule ^index\.php$ - [L]</span><br><span class="line">RewriteCond %{REQUEST_FILENAME} !-f</span><br><span class="line">RewriteCond %{REQUEST_FILENAME} !-d</span><br><span class="line">RewriteRule . /index.php [L] #Modificar con la ruta adecuada</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure><script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }

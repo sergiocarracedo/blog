@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-1272328.jpeg">
 <meta property="article:published_time" content="2020-02-27T10:58:02.000Z">
-<meta property="article:modified_time" content="2020-12-30T16:41:25.365Z">
+<meta property="article:modified_time" content="2021-01-20T19:20:49.045Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta property="article:tag" content="vue, typescript, ts, js">
 <meta name="twitter:card" content="summary_large_image">
@@ -60,7 +60,7 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.1.1"></head>
+<meta name="generator" content="Hexo 5.3.0"></head>
 
 <body>
     <div id="single">
@@ -118,7 +118,6 @@
 <h2 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h2><p>I assume you are using <code>vue-cli</code>. You must be sure you are using version 4.0.0+</p>
 <h2 id="Step-1-Adding-Typescript"><a href="#Step-1-Adding-Typescript" class="headerlink" title="Step 1: Adding Typescript"></a>Step 1: Adding Typescript</h2><p>First step is add <em>Typescript</em> using <code>vue-cli</code></p>
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue add typescript</span><br></pre></td></tr></tbody></table></figure>
-
 <p>Vue cli starts to add <em>typescript</em> package and necessary dependencies. Also create and update configuration files like <code>tsconfig.json</code>, It needs ask you some questions to configure properly.</p>
 <p>Let view each question in detail and the “correct” answer.</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? Use class-style component syntax? (Y/n)</span><br></pre></td></tr></tbody></table></figure>
@@ -136,7 +135,6 @@
 <p>To write a Vue compoment using <em>Typescript</em> you need to set the scripting language using the attribute <code>lang</code> in the script tag.<br>Also, as <em>Typescript</em> needs to infer types, you must define your components with <code>Vue.component</code> or <code>Vue.extend</code> (I prefer second one)</p>
 <p>Then our component look like:</p>
 <figure class="highlight typescript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> ....</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script lang=<span class="string">"ts"</span>&gt;</span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Vue.extend({</span><br><span class="line">  props: ....,</span><br><span class="line">  data () ....,</span><br><span class="line">  methods: ....</span><br><span class="line">})</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
-
 <p><span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8">🎉</span> Done! You have your first Typescript Vue component.</p>
 <p>The point is you can start using <em>Typescript</em> and keep your previous code. You don’t need to rewrite all components, or you can do step by step.</p>
 <p>I recommend you to read <a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/typescript.html">Vue documentation about Typescript support</a></p>

@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/js-workflow-38537.jpeg">
 <meta property="article:published_time" content="2020-06-21T12:47:40.000Z">
-<meta property="article:modified_time" content="2020-12-30T16:41:25.365Z">
+<meta property="article:modified_time" content="2021-01-20T19:20:49.045Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/js-workflow-38537.jpeg">
@@ -59,7 +59,7 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.1.1"></head>
+<meta name="generator" content="Hexo 5.3.0"></head>
 
 <body>
     <div id="single">
@@ -126,7 +126,6 @@
 <p>As you can see, before commiting the code, a git hook runs the linter and fix the code (not always is able to fix the code)</p>
 <p>This is the <code>package.json</code> section related to githooks and linter</p>
 <figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  <span class="attr">"gitHooks"</span>: {</span><br><span class="line">    <span class="attr">"pre-commit"</span>: <span class="string">"lint-staged"</span></span><br><span class="line">  },</span><br><span class="line">  <span class="attr">"lint-staged"</span>: {</span><br><span class="line">    <span class="attr">"*.{js,jsx,vue}"</span>: [</span><br><span class="line">      <span class="string">"vue-cli-service lint"</span>,</span><br><span class="line">      <span class="string">"git add"</span></span><br><span class="line">    ]</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
 <p>Vue uses a tool called <a target="_blank" rel="noopener" href="https://github.com/okonet/lint-staged">Lint-staged</a> that allows the linter to only check staged files. I can assume all files in the repo (not modified) are ok because they were linted before commiting to the repo.</p>
 <p>If you want, you could manage git hooks using <a target="_blank" rel="noopener" href="https://github.com/typicode/husky">Husky</a></p>
 <figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  <span class="attr">"husky"</span>: {</span><br><span class="line">    <span class="attr">"hooks"</span>: {</span><br><span class="line">      <span class="attr">"pre-commit"</span>: <span class="string">"lint-staged"</span>,</span><br><span class="line">      <span class="attr">"pre-push"</span>: <span class="string">"vue-cli-service test:unit"</span>,</span><br><span class="line">      <span class="attr">"..."</span>: <span class="string">"..."</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>

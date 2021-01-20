@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-132907_0.jpeg">
 <meta property="article:published_time" content="2017-03-07T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-12-30T16:41:25.361Z">
+<meta property="article:modified_time" content="2021-01-20T19:20:49.041Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/pexels-photo-132907_0.jpeg">
@@ -59,7 +59,7 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.1.1"></head>
+<meta name="generator" content="Hexo 5.3.0"></head>
 
 <body>
     <div id="single">
@@ -104,7 +104,6 @@
 <p>La forma más simple que he encontrado es hacer uso de las posiblilidades que Laravel nos ofrece mediante los <em>middleware.</em></p>
 <p>En primer lugar extendemos el <em>Model</em> que nos provee <em>Elocuent</em></p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace App;</span><br><span class="line">use Illuminate\Database\Eloquent\Model;</span><br><span class="line"></span><br><span class="line">class OwnableModel extends Model {</span><br><span class="line"></span><br><span class="line">  public function getOwnerId() {</span><br><span class="line">    return isset($this-&gt;user_id) ? $this-&gt;user_id : null;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  public function checkIsOwner($user_id) {</span><br><span class="line">    return $this-&gt;getOwnerId() == $user_id;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
 <p>Esta clase tiene dos métodos: </p>
 <p><code>getOwnerID()</code> que se encarga de devolver el id del propietario de la entidad (por defecto usa el campo user_id)</p>
 <p><code>checkIsOwner($user_id)</code> devuelve TRUE si el user_id el el propietario de la entidad</p>
@@ -112,10 +111,8 @@
 <p>Los dos métodos mencionados podremos sobreescribirlos para adaptarlos a nuestras necesidades.</p>
 <p>Ahora tenemos que crear el <em>middleware</em>, en la carpeta <em>app/Http/Middleware</em> creamos el archivo <em>AbortIfNotOwner.php</em> con el siguente contenido.</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace App\Http\Middleware;</span><br><span class="line"></span><br><span class="line">use Closure;</span><br><span class="line">use Illuminate\Support\Facades\Auth;</span><br><span class="line"></span><br><span class="line">class AbortIfNotOwner {</span><br><span class="line">  /**</span><br><span class="line">   * Handle an incoming request.</span><br><span class="line">   *</span><br><span class="line">   * @param  \Illuminate\Http\Request $request</span><br><span class="line">   * @param  \Closure $next</span><br><span class="line">   * @return mixed</span><br><span class="line">   */</span><br><span class="line">  public function handle($request, Closure $next) {</span><br><span class="line">    $isOwner = TRUE;</span><br><span class="line">    foreach ($request-&gt;route()-&gt;parameters() as $model) {</span><br><span class="line">      if ($model instanceof \App\OwnableModel &amp;&amp; !$model-&gt;checkIsOwner(Auth::id())) {</span><br><span class="line">        $isOwner = FALSE;</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    if (!$isOwner) {</span><br><span class="line">      return response('Unauthorized.', 401);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    return $next($request);</span><br><span class="line"></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
 <p>Este middleware debemos añadirlo a las rutas que deseemos comprobar que el dueño de la entidad es el que accede a ella.</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Route::get('/ruta/{entity}/', [ 'uses' =&gt; 'RutaController@index', ])-&gt;middleware('owner');</span><br></pre></td></tr></tbody></table></figure>
-
 <p>Con estos sencillos pasos tenemos protegida la entidad de forma que si un usuario intenta acceder a una entidadad de las que no es propietario recibirá un error HTTP 401.</p>
 <script>
         document.querySelectorAll('.github-emoji')
