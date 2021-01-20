@@ -7,6 +7,12 @@
       "textColor": "black"
     },
     {
+      "icon": "fab fa-js",
+      "name": "TypeScript",
+      "color": "#007acc",
+      "textColor": "white"
+    },
+    {
       "name": "Vue",
       "icon": "fab fa-vuejs",
       "color": "#41B883",
@@ -19,12 +25,16 @@
       "icon": "fab fa-php"
     },
     {
+      "name": "Golang",
+      "color": "#29BEB0",
+      "textColor": "white"
+    },
+    {
       "name": "Drupal",
       "color": "#53B0EB",
       "textColor": "white",
       "icon": "fab fa-drupal"
     },
-
     {
       "name": "Symfony",
       "icon": "fab fa-symfony",
@@ -79,8 +89,7 @@
       "icon": "fas fa-shopping-cart"
     },
     {
-      "name": "Electron.js",
-      "icon": "fab fa-atom"
+      "name": "Electron.js"
     },
     {
       "name": "Nuxt.js"
