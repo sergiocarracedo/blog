@@ -1,6 +1,6 @@
 ---
 title: Deploying a static website in Azure Static Web Apps
-date: 2021-01-06
+date: 2021-01-20
 permalink: azure-static-web-apps/
 cover: /images/2021/azureSWA.jpg
 ---
