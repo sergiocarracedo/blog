@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/node.jpg">
 <meta property="article:published_time" content="2010-10-25T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-01-20T19:23:53.733Z">
+<meta property="article:modified_time" content="2021-04-01T09:34:35.380Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/node.jpg">
@@ -59,7 +59,7 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
     <div id="single">
@@ -104,6 +104,7 @@
 <p><em>Pero ¿Que quiere decir todo esto? ¿Y para que me puede servir?</em></p>
 <p>Lo más básico que podemos realizar con <strong>node.js</strong> es un servidor web (HTTP).</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var http = require('http');</span><br><span class="line"></span><br><span class="line">http.createServer(function (req, res) {</span><br><span class="line"></span><br><span class="line">  res.writeHead(200, {'Content-Type': 'text/plain'});</span><br><span class="line"></span><br><span class="line">  res.end('Hello World\n');</span><br><span class="line"></span><br><span class="line">}).listen(8124, "127.0.0.1");</span><br></pre></td></tr></tbody></table></figure>
+
 <p>Con estas pocas lineas tenemos un servidor web escuchando el puerto 8124 funcionando en nuestro equipo y respondiendonos siempre “<em>Hello World</em>“</p>
 <p>Podemos crear tambien servidores  TCP.</p>
 <p>Para programar un servidor <strong>node.js</strong> empleamos javascript como lenguaje, con los que nos evitamos muchas de las complicaciones de otros lenguajes de programación como C, C++, python, etc.</p>

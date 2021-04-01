@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/vuepress.jpg">
 <meta property="article:published_time" content="2020-08-22T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-01-20T19:23:53.737Z">
+<meta property="article:modified_time" content="2021-04-01T09:34:35.384Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta property="article:tag" content="vue">
 <meta property="article:tag" content="vuepress">
@@ -63,7 +63,7 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
     <div id="single">
@@ -118,6 +118,7 @@
 <p>We will come back to these elements in a moment, but first, we will learn how to start a VuePress website</p>
 <h2 id="Creating-a-VuePress-website"><a href="#Creating-a-VuePress-website" class="headerlink" title="Creating a VuePress website"></a>Creating a VuePress website</h2><p>It’s very easy, just:</p>
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn create vuepress [project-name]</span><br><span class="line"><span class="built_in">cd</span> [project-name]</span><br></pre></td></tr></tbody></table></figure>
+
 <p>And then, to start the dev server <code>yarn docs:dev</code>.</p>
 <p>(This command starts a local dev server, by default, on <code>http://localhost:8080</code></p>
 <p>At this point, you can create content just creating markdown files in <code>docs</code> folder</p>
@@ -140,8 +141,10 @@
 <h2 id="Using-in-an-existing-project"><a href="#Using-in-an-existing-project" class="headerlink" title="Using in an existing project"></a>Using in an existing project</h2><p>I think is a good idea to keep your project and its documentation together, and with VuePress is possible to do it.</p>
 <p>In your project, you only need to add Vuepress as <em>development dependency</em>, that’s all</p>
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add vuepress -D </span><br></pre></td></tr></tbody></table></figure>
+
 <p>And edit your <code>package.json</code> to add the following items in the scripts section to start dev server and build documentation.</p>
 <figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  "scripts": {</span><br><span class="line">    ...</span><br><span class="line">    "docs:dev": "vuepress dev docs",</span><br><span class="line">    "docs:build": "export NODE_ENV=production &amp;&amp; vuepress build docs"</span><br><span class="line">  },</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+
 <h2 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages"></a>Advantages</h2><ul>
 <li>Keep the documentation together with the code makes it easier for developers to read the project documentation and update it, because it is near to the code.</li>
 <li>As documentation is markdown, you can still be reading it even without use VuePress, for example in your IDE or in GitHub.</li>

@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Custom SVG icon set management with Vue</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Manage an icon set can seem a simple task but can be tricky.
+First, there a lot of ways to use an i,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Manage an icon set can seem a simple task but can be tricky. First, there a lot of ways to use an icon on a web page, all with pros and contras: Let’s use this SVG image created by Anu Rocks for all e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Custom SVG icon set management with Vue">
+<meta property="og:url" content="https://sergiocarracedo.es/custom-svg-icon-set-management-with-vue/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Manage an icon set can seem a simple task but can be tricky. First, there a lot of ways to use an icon on a web page, all with pros and contras: Let’s use this SVG image created by Anu Rocks for all e">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/2021/svg-iconset.jpg">
+<meta property="article:published_time" content="2021-04-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-01T09:34:35.384Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/svg-iconset.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs col-sm-6">
+        <h3 class="subtitle">Custom SVG icon set management with Vue</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Custom SVG icon set management with Vue
+      </h1>
+      <div class="stuff">
+        <span>April 01, 2021</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/2021/header_svg-iconset.jpg" width="1200" height="400">
+      </div>
+      
+      <div class="content markdown">
+        <p>Manage an icon set can seem a simple task but can be tricky.</p>
+<p>First, there a lot of ways to use an icon on a web page, all with pros and contras:</p>
+<p>Let’s use this SVG image created by <a target="_blank" rel="noopener" href="https://freeicons.io/profile/730">Anu Rocks</a> for all examples.</p>
+<p><strong>We will assume our icon set is monochrome.</strong></p>
+<div style="background: #fff; display: block; padding: 10px; width: 25px; height: 25px; margin: auto;">
+
+<p><a target="_blank" rel="noopener" href="https://freeicons.io/common-ui-icons/battery-medium-icon-54110"><img src="/images/2021/svg-iconset/example.svg" alt=""></a></p>
+</div>
+
+
+<h2 id="lt-img-gt-tag"><a href="#lt-img-gt-tag" class="headerlink" title="<img> tag"></a>&lt;img&gt; tag</h2><p>The simplest way of adding an icon is using the <code>&lt;img&gt;</code> tag as the other images.</p>
+<p>Example: <code>&lt;img src="/i/example.svg" alt="Battery"&gt;</code></p>
+<blockquote>
+<p>You can also use the tag <code>&lt;object&gt;</code> with same result: <code>&lt;object type="image/svg+xml" data="/i/example.svg"&gt;&lt;/object&gt;</code></p>
+</blockquote>
+<h4 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages:"></a>Advantages:</h4><ul>
+<li>Simple method</li>
+<li>Image can be cached by the browser: if you use in multiple places, only need to download once</li>
+<li>Good usability using the <code>alt</code> attribute</li>
+</ul>
+<h4 id="Disadvantages"><a href="#Disadvantages" class="headerlink" title="Disadvantages:"></a>Disadvantages:</h4><ul>
+<li>Lost all SVG styling by CSS (Still using style over the image tag, but for example, you can’t change the color of the stroke or )</li>
+<li>Lost all the possibilities of the SVG’s DOM manipulation</li>
+</ul>
+<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><p>Another way to insert an icon on your page is creating an HTML placeholder and use the image as a background</p>
+<p>HTML:</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"icon icon-battery"</span> <span class="attr">aria-label</span>=<span class="string">"Battery"</span> <span class="attr">title</span>=<span class="string">"Battery"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
+
+<p>CSS:</p>
+<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.icon</span> {</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">    <span class="attribute">width</span>: .<span class="number">5em</span>; </span><br><span class="line">    <span class="attribute">height</span>: .<span class="number">5em</span>;</span><br><span class="line">}</span><br><span class="line"><span class="selector-class">.icon-battery</span> {</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">url</span>(<span class="string">/i/example.svg</span>) no-repeat center center;</span><br><span class="line">    <span class="attribute">background-size</span>: contain;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>Note the use of <code>.5em</code> as width and height to create a container width a size relative to container font size, <code>.5em</code> is better than 1em, because 1em uses the full size, but you can play with the value.</p>
+</blockquote>
+<p>This method is very similar to the previous one in terms of advantages and disadvantages.<br>You can also insert text into the <code>span</code> tag and  </p>
+<h2 id="Font"><a href="#Font" class="headerlink" title="Font"></a>Font</h2><p>This method requires some extra work to convert SVG to font. It could be done <a target="_blank" rel="noopener" href="https://glyphter.com/">online</a>: </p>
+<p>Once we have the icons as font, we must import the font</p>
+<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@font-face</span> {</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">'My icon set font'</span>;</span><br><span class="line">    <span class="attribute">font-style</span>: normal;</span><br><span class="line">    <span class="attribute">font-weight</span>: normal;</span><br><span class="line">    <span class="attribute">font-display</span>: auto;</span><br><span class="line">    <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">"../webfonts/my-icon-set.eot"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>To use the icons we can use the glyph associated with an icon, for example, our battery icon can be the <code>A</code></p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"font-family: 'My icon set font'"</span> <span class="attr">aria-label</span>=<span class="string">"Battery"</span>&gt;</span>A<span class="tag">&lt;/<span class="name">span</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
+
+<p>There is another way: use the <code>:before</code> pseudo selector and the <code>content</code> property in your CSS to insert the font glyph</p>
+<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.icon</span> {</span><br><span class="line"> <span class="attribute">font-family</span>: <span class="string">'My icon set font'</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.icon-batery</span>:before {</span><br><span class="line"> content: <span class="string">'A'</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"icon icon-battery"</span>  <span class="attr">aria-label</span>=<span class="string">"Battery"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="Advantages-1"><a href="#Advantages-1" class="headerlink" title="Advantages"></a>Advantages</h4><ul>
+<li>It’s very easy changing the icon color, the icon inherits the context color</li>
+<li>Font can be cached</li>
+</ul>
+<h4 id="Disadvantages-1"><a href="#Disadvantages-1" class="headerlink" title="Disadvantages"></a>Disadvantages</h4><ul>
+<li>Requires extra work to convert the icons to fonts</li>
+<li>Add a new icon requires to update the font</li>
+<li>No tree-shaking, unused icons still there</li>
+<li>Is confusing for screen readers, because we are inserting text</li>
+<li>Sometimes align with the regular text fonts isn’t good</li>
+</ul>
+<blockquote>
+<p>Note that is possible define a font using just SVG, but this method is not fully supported by commonly used browsers: <a target="_blank" rel="noopener" href="https://caniuse.com/svg-fonts">https://caniuse.com/svg-fonts</a> </p>
+</blockquote>
+<h2 id="Inline-SVG"><a href="#Inline-SVG" class="headerlink" title="Inline SVG"></a>Inline SVG</h2><p>This is my favorite method in most cases. The method consists in inserting the SVG markup in your HTML.</p>
+<p>In our example</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor  <span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">width</span>=<span class="string">"24"</span> <span class="attr">height</span>=<span class="string">"24"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 24 24"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">path</span> <span class="attr">fill-rule</span>=<span class="string">"evenodd"</span> <span class="attr">d</span>=<span class="string">"M17,5 C18.5976809,5 19.9036609,6.24891996 19.9949073,7.82372721 L20,8 L20,8.17 L20.1933113,8.24671351 C21.1458614,8.66012858 21.8418803,9.55339202 21.9763495,10.6214854 L21.9949073,10.8237272 L22,11 L22,13 C22,14.2181391 21.2716631,15.274045 20.201161,15.7433631 L20,15.822 L20,16 C20,17.5385075 18.8418794,18.8065215 17.3498634,18.9798168 L17.1762728,18.9949073 L17,19 L5,19 C3.40231912,19 2.09633912,17.75108 2.00509269,16.1762728 L2,16 L2,8 C2,6.40231912 3.24891996,5.09633912 4.82372721,5.00509269 L5,5 L17,5 Z M17,7 L5,7 C4.48716416,7 4.06449284,7.38604019 4.00672773,7.88337887 L4,8 L4,16 C4,16.5128358 4.38604019,16.9355072 4.88337887,16.9932723 L5,17 L17,17 C17.5128358,17 17.9355072,16.6139598 17.9932723,16.1166211 L18,16 L18,15 C18,14.5004355 18.3670085,14.0840077 18.8498945,14.0112465 L18.9632725,14.0006747 L19.075685,13.9972247 C19.5546159,13.9618905 19.9369487,13.5888432 19.9929352,13.1192658 L20,13 L20,11 C20,10.4871642 19.6139598,10.0644928 19.1166211,10.0067277 L18.8833789,9.99327227 C18.424297,9.93995063 18.0600494,9.57570299 18.0067277,9.11662113 L18,9 L18,8 C18,7.48716416 17.6139598,7.06449284 17.1166211,7.00672773 L17,7 Z M11,9 C11.5522847,9 12,9.44771525 12,10 L12,14 C12,14.5522847 11.5522847,15 11,15 L7,15 C6.44771525,15 6,14.5522847 6,14 L6,10 C6,9.44771525 6.44771525,9 7,9 L11,9 Z"</span> <span class="attr">fill</span>=<span class="string">"currentColor"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>Note the use of <code>currentColor</code> for the fill attribute to inherit the fill color from the CSS context (color)</p>
+</blockquote>
+<h4 id="Advantages-2"><a href="#Advantages-2" class="headerlink" title="Advantages"></a>Advantages</h4><ul>
+<li>It’s very easy changing the icon color, the icon inherits the context color</li>
+<li>Even, if your icon is not monochrome you can change the color of every single path.</li>
+<li>Can manipulate SVG elements independently</li>
+<li>Icons can be animated (not only a doing a transform of the full icon, but you can also manipulate every path independently)</li>
+<li></li>
+</ul>
+<h4 id="Disadvantages-2"><a href="#Disadvantages-2" class="headerlink" title="Disadvantages"></a>Disadvantages</h4><ul>
+<li>Non-cachable. If the icons appear in several places you must insert the full code.</li>
+<li>In static sites adds a lot of “bytes” to the HTML.</li>
+<li>A change in your icon, require to find and replace on all icon occurrences.</li>
+</ul>
+<h2 id="Encapsulated-inline-SVG"><a href="#Encapsulated-inline-SVG" class="headerlink" title="Encapsulated inline SVG"></a>Encapsulated inline SVG</h2><p>We can improve the previous method using Vue (or another framework: React, Angular, etc, or just using web components). The idea is encapsulated every single icon in a Vue component:</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">:width</span>=<span class="string">"size"</span> <span class="attr">:height</span>=<span class="string">"size"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 24 24"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">path</span> <span class="attr">fill-rule</span>=<span class="string">"evenodd"</span> <span class="attr">d</span>=<span class="string">"M17,5 C18.5976809,5 19.9036609,6.24891996 19.9949073,7.82372721 L20,8 L20,8.17 L20.1933113,8.24671351 C21.1458614,8.66012858 21.8418803,9.55339202 21.9763495,10.6214854 L21.9949073,10.8237272 L22,11 L22,13 C22,14.2181391 21.2716631,15.274045 20.201161,15.7433631 L20,15.822 L20,16 C20,17.5385075 18.8418794,18.8065215 17.3498634,18.9798168 L17.1762728,18.9949073 L17,19 L5,19 C3.40231912,19 2.09633912,17.75108 2.00509269,16.1762728 L2,16 L2,8 C2,6.40231912 3.24891996,5.09633912 4.82372721,5.00509269 L5,5 L17,5 Z M17,7 L5,7 C4.48716416,7 4.06449284,7.38604019 4.00672773,7.88337887 L4,8 L4,16 C4,16.5128358 4.38604019,16.9355072 4.88337887,16.9932723 L5,17 L17,17 C17.5128358,17 17.9355072,16.6139598 17.9932723,16.1166211 L18,16 L18,15 C18,14.5004355 18.3670085,14.0840077 18.8498945,14.0112465 L18.9632725,14.0006747 L19.075685,13.9972247 C19.5546159,13.9618905 19.9369487,13.5888432 19.9929352,13.1192658 L20,13 L20,11 C20,10.4871642 19.6139598,10.0644928 19.1166211,10.0067277 L18.8833789,9.99327227 C18.424297,9.93995063 18.0600494,9.57570299 18.0067277,9.11662113 L18,9 L18,8 C18,7.48716416 17.6139598,7.06449284 17.1166211,7.00672773 L17,7 Z M11,9 C11.5522847,9 12,9.44771525 12,10 L12,14 C12,14.5522847 11.5522847,15 11,15 L7,15 C6.44771525,15 6,14.5522847 6,14 L6,10 C6,9.44771525 6.44771525,9 7,9 L11,9 Z"</span> <span class="attr">fill</span>=<span class="string">"currentColor"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> {</span></span><br><span class="line"><span class="javascript">  name: <span class="string">'battery-icon'</span>,</span></span><br><span class="line">  props: {</span><br><span class="line"><span class="javascript">    size: [<span class="built_in">String</span>, <span class="built_in">Number</span>]</span></span><br><span class="line">  }</span><br><span class="line">})</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>I added the <code>size</code> property to make the icon resizable without need CSS, and as you know icon aspect ratio you only need one dimension.<br>If the icon aspect ratio weren’t 1:1, you only need to do the math in the component:</p>
+<p>For example a icon with a 16:10 aspect ratio (Using height as the base dimension):</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg xmlns="http://www.w3.org/2000/svg" :width="size * 15 / 24" :height="size" viewBox="0 0 24 15"&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>You must create a component for every icon, and insert in your page is simple, just insert the component</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor <span class="tag">&lt;<span class="name">battery-icon</span> <span class="attr">size</span>=<span class="string">"11"</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
+
+<p>With this method, you can encapsulate the icon markup, and his logic (for example you can add a property to set the color of the bar in the battery icon, or even the bar size, creating a dynamic icon)</p>
+<p>If your page is not an SSR page you skip the cache disadvantage because your icon markup is not repeated in your code (but it’s in the browser memory)</p>
+<p>Also, the disadvantage of replacing all the occurrences is fixed with this method.</p>
+<p>Using this method, unused icons don’t are bundled in the build because your bundler (for example <em>webpack</em>) do the threeshaking before build.</p>
+<p>One nice example of project using this method is <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/vue-material-design-icons">https://www.npmjs.com/package/vue-material-design-icons</a>, a Vue wrapper for the great project <a target="_blank" rel="noopener" href="https://materialdesignicons.com/">https://materialdesignicons.com/</a></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="https://sergiocarracedo.es//azure-static-web-apps/" rel="next" class="nav-cover">
+              <img src="/images/2021/teaser_azureSWA.jpg">
+            </a>
+
+            <a href="https://sergiocarracedo.es//azure-static-web-apps/" rel="next" class="nav-text">
+              Deploying a static website in Azure Static Web Apps <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+
+</html>
