@@ -28,7 +28,7 @@ That's complicated, and can be even more, for example if the relation between sc
 
 ## d3-scale
 [**d3-scale**](https://github.com/d3/d3-scale) is our component.
-The are a lot of different types of scales: Continuous (Linear, Power, log, indentity, time, radial), Sequential, Ordinal, etc...  For our example chart we will use Linear.
+The are a lot of different types of scales: Continuous (Linear, Power, log, identity, time, radial), Sequential, Ordinal, etc...  For our example chart we will use Linear.
 
 Before continuing with *scale* I'm going to introduce 2 important concepts: **domain** and **range**
 
@@ -41,11 +41,52 @@ Putting all together:
 ```js
 const xScale = d3.scaleLinear().domain([0, 10]).range([319, 0]) 
 ```
+> Note the range is between `319` and `0` not between `0` and `319`
 
-This returns a function
+This returns a function that links the values in the chart (domain), and the values in the "canvas" (range)
 
+```js
+xScale(0) // 319
+xScale(5) // 159.5
+xScale(10) // 0
+```
 
+Scale also provides some methods for do extra actions, for example, if you want to get the value in the chart from the "canvas" coordinates (the typical use case is getting the chart value in the mouse position) we can use
 
+```js
+xScale.invert(159.5) // 5
+```
+
+> Probably you are thinking the same as me the first time I see that: It's a function that has methods? WTF!. If you want you can go farther but in swallow if the function has arguments returns the "main" value, if not returns an object of functions.
+
+We can do the same for the Y axis:
+
+```js
+const yScale = d3.scaleLinear().domain([0, 20]).range([0, 700]) 
+```
+
+Ok, we have all the tools to manage the data and the canvas, now we must render the data and the axis
+
+# Rendering the chart
+First we must prepare the canvas.
+
+```html
+<html>
+<body>
+<div class="chart"></div>
+</body>
+</html>
+```
+
+```js
+const svg = d3
+    .select(".chart")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+``
 
 
 https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
