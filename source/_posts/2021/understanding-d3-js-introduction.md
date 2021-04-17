@@ -68,7 +68,8 @@ const yScale = d3.scaleLinear().domain([0, 20]).range([0, 700])
 Ok, we have all the tools to manage the data and the canvas, now we must render the data and the axis
 
 # Rendering the chart
-First we must prepare the canvas.
+**d3.js** can render charts in **SVG** and **Canvas** but we will focus on the SVG rendering because is fast enough for most charts and makes easy the interaction and styling.
+To render our line chart, first, we must prepare our the placeholder.
 
 ```html
 <html>
@@ -78,15 +79,63 @@ First we must prepare the canvas.
 </html>
 ```
 
+For our comfort I'm going to define the chart margins and the width and height. The margins are necessary to render the axis, because the size of the chart refers to the draw area. 
+```js
+const margin = { top: 50, right: 50, bottom: 50, left: 50 }
+const width = 1280 - margin.left - margin.right
+const height = 420 - margin.top - margin.bottom
+const n = 20 // Number of points in x axis
+const maxY = 10 // Max y value
+```
+
+Now we will use *d3* to add our SVG chart
+
 ```js
 const svg = d3
-    .select(".chart")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-``
+    .select('.chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+```
+Line by line:
+* `.select(".chart")` selects the DOM element previously we defined
+* `.append('svg')` appends a `<svg>` element to the `<div class="chart">`
+* `.attr('width', width + margin.left + margin.right)` adds an `width` attribute to the `<svg>` element
+* `.attr('height', height + margin.top + margin.bottom)` adds an `hight` attribute to the `<svg>` element
 
+We defined the scales above, but we will do it again, now using our variables to make the chart more reusable
 
-https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
+```js
+const xScale = d3.scaleLinear().domain([0, n - 1]).range([0, width])
+const yScale = d3.scaleLinear().domain([0, maxY]).range([height, 0])
+```
+
+## Rendering the XAxis
+To render the X axis we will create a new SVG group that holds the axis
+```js
+svg
+.append('g')
+.attr('class', 'x axis')
+.attr('transform', 'translate(0,' + height + ')')
+.call(d3.axisBottom(xScale))
+```
+
+Line by line:
+* `.append('g')` appends the new group for the axis
+* `.attr('class', 'axis x-axis')` adds 2 classes to the group (this allows us to style it using CSS)
+* `.attr('transform', 'translate(0,' + height + ')')` moves the axis group bellow the chart draw area
+* `.call(d3.axisBottom(xScale))` call the `d3.axisBottom` function. This function is in charge of rendering the axis, the _axisBottom_ means that the ticks of the axis will be rendered bellow the axis line. There are 3 more functions: `d3.axisTop`, `d3.axisLeft`, `d3.axisRight` to render the axis in different orientations.
+
+## Rendering the line
+```js
+svg
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+```
+
+Line by line:
+* `.append("g")` appends a SVG group element (`g`) to the `svg` element. This group will contain the chart draw area
+* `.attr("transform", "translate(" + margin.left + "," + margin.top + ")")` set the transform attribute to move the group, this makes easy managing the draw, because we don't need to take care of the real position, for the draw area the coordinate system starts on (0, 0)
+  
+
+  https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
