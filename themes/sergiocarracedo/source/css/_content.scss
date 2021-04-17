@@ -86,8 +86,14 @@
     border-color: transparent;
     border-width: 1px 0;
     overflow: auto;
+    overflow-y: hidden;
     color: #ccc;
+    display: block;
     line-height: 20px;
+  }
+
+  .highlight {
+    overflow-y: visible;
   }
 
   //.gutter {
