@@ -81,7 +81,7 @@ To render our line chart, first, we must prepare our the placeholder.
 
 For our comfort I'm going to define the chart margins and the width and height. The margins are necessary to render the axis, because the size of the chart refers to the draw area. 
 ```js
-const margin = { top: 50, right: 50, bottom: 50, left: 50 }
+const margin = { top: 10, right: 10, bottom: 50, left: 50 }
 const width = 1280 - margin.left - margin.right
 const height = 420 - margin.top - margin.bottom
 const n = 20 // Number of points in x axis
@@ -110,32 +110,98 @@ const xScale = d3.scaleLinear().domain([0, n - 1]).range([0, width])
 const yScale = d3.scaleLinear().domain([0, maxY]).range([height, 0])
 ```
 
-## Rendering the XAxis
+### Rendering the XAxis
 To render the X axis we will create a new SVG group that holds the axis
 ```js
 svg
 .append('g')
 .attr('class', 'x axis')
-.attr('transform', 'translate(0,' + height + ')')
+.attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
 .call(d3.axisBottom(xScale))
 ```
 
 Line by line:
 * `.append('g')` appends the new group for the axis
 * `.attr('class', 'axis x-axis')` adds 2 classes to the group (this allows us to style it using CSS)
-* `.attr('transform', 'translate(0,' + height + ')')` moves the axis group bellow the chart draw area
+* `.attr("transform", "translate(" + margin.left + "," + height + ")")` moves the axis group bellow the chart draw area and gives space
 * `.call(d3.axisBottom(xScale))` call the `d3.axisBottom` function. This function is in charge of rendering the axis, the _axisBottom_ means that the ticks of the axis will be rendered bellow the axis line. There are 3 more functions: `d3.axisTop`, `d3.axisLeft`, `d3.axisRight` to render the axis in different orientations.
 
-## Rendering the line
+> About the [`call`](https://github.com/d3/d3-selection/blob/v2.0.0/README.md#selection_call) method: This method call to the function passed as argument and uses as frist argument for the function the selected element. In this case is the same as execute: `d3.axisBottom(xScale)(svg.select('.xaxis'))` (Remember that d3.axisBottom returns a function). The advantage of using `call` is you can concatenate methods because call returns the selection, not the result of the function
+
+After that we can see our x-axis :tada:
+
+### Rendering the YAxis
+Rendering the Y axis is almost the same as X axis:
+
 ```js
 svg
   .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  .attr("class", "y axis")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .call(d3.axisLeft(yScale))
+```
+
+## Rendering the line
+Before do the chart rendering we need the data, in this case we will use random values
+
+```js {
+const dataset = d3.range(n).map((d) => {
+  return { x: d, y: d3.randomUniform(yMax)() }
+})
+/*
+[
+  { x: 0, y: 2.679771859053788 },
+  { x: 1, y: 5.447777017888336 },
+  ...
+  { x: 19, y: 0.083980807899251 }
+]
+*/
+```
+
+Now we will create the line generator that is a function that returns a 
+```js
+const line = d3
+  .line()
+  .x((d) => xScale(d.x))
+  .y((d) => yScale(d.y))
+```
+Line by line:
+* `.line()` is the basic line generator
+* `.x((d) => xScale(d.x))` function that for every point in data set returns the x position in the draw area, this is the reason why we are using the scale function. _d_ represent every dataset point
+* `.y((d) => xScale(d.y)` same as previous line but referred to y-axis
+
+We can also add an extra call to the line generator to configure the interpolation behavior, for example: `.curve(d3.curveMonotoneX)` that make the curve softer. But for now a simple interpolation (linear) is enough.
+
+
+Ok, now we have the line generator, and it's time to draw the line in our chart.
+
+First, we add a SVG group for the line we will draw 
+```js
+const lineWrapper = svg
+  .append('g')
+  .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 ```
 
 Line by line:
-* `.append("g")` appends a SVG group element (`g`) to the `svg` element. This group will contain the chart draw area
-* `.attr("transform", "translate(" + margin.left + "," + margin.top + ")")` set the transform attribute to move the group, this makes easy managing the draw, because we don't need to take care of the real position, for the draw area the coordinate system starts on (0, 0)
+* `.append('g')` appends a SVG group element (`g`) to the `svg` element. This group will contain the chart draw area
+* `.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')` set the transform attribute to move the group, this makes easy managing the draw, because we don't need to take care of the real position, for the draw area the coordinate system starts on (0, 0)
   
+And the render the line
+
+```js
+lineWrapper
+  .append('path')
+  .datum(dataset)
+  .attr('class', 'line')
+  .attr('d', line)
+```
+
+Line by line:
+* `.append('path')` appends a path element (to draw the line)
+* `.datum(dataset)` assigns the dataset to the path element (we will use it in the next lines)
+* `.attr('class', 'line')` add the class `line` to the path element to make asy the css styling
+* `.attr('d', line)` add the `d` attribute, to generate it class to the line generator passing the element, and the `datum`
+
+https://codesandbox.io/s/sharp-water-bmk3t?file=/index.html
 
   https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
