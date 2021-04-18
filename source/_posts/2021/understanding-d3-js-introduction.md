@@ -1,8 +1,8 @@
 ---
 title: Understanding d3.js - A simple line chart
-date: 2021-04-01 11:58:32
+date: 2021-04-19
 permalink: understanding-d3-js-introduction/
-cover:
+cover: /images/2021/d3js_intro.jpg
 ---
 
 Before starting is important to say that **d3.js is not a chart library is a library for making charts**, if you are expecting to pass the data to the library and set 4, 5,... 10 params and get the chart to render, d3.js is not your library.
