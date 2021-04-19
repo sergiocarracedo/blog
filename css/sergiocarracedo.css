@@ -1889,8 +1889,12 @@ pre .javascript .function {
     border-color: transparent;
     border-width: 1px 0;
     overflow: auto;
+    overflow-y: hidden;
     color: #ccc;
+    display: block;
     line-height: 20px; }
+  .content .highlight {
+    overflow-y: visible; }
   .content .emoji {
     transform: translate(0, 3px); }
   .content iframe {
