@@ -19,7 +19,7 @@ In the example the chart we have two axes: X and Y, but we can have more or less
 
 Axis is one of the reference lines of a coordinate system, every single point represents a value in the coordinate system and also a position in the canvas which is displaying the chart.
 
-In our example, in the y-axis the "1" value of the chart is drawn in the position 31px from the axis start, but in SVG or canvas the origin of the coordinate system start on the top left corner, and "y" grows in the direction to monitor bottom. Then to print the 1 value in our chart we must use 319 - 31 (288) as y position.
+In our example, in the y-axis the '1' value of the chart is drawn in the position 31px from the axis start, but in SVG or canvas the origin of the coordinate system start on the top left corner, and 'y' grows in the direction to monitor bottom. Then to print the 1 value in our chart we must use 319 - 31 (288) as y position.
 ![](/images/2021/d3.js/line-chart-axis.png)
 
 That's complicated, and can be even more, if the relation between screen coordinates and chart coordinates aren't lineal, for example, a logarithmic chart.
@@ -43,7 +43,7 @@ const xScale = d3.scaleLinear().domain([0, 10]).range([319, 0])
 ```
 > Note the range is between `319` and `0` not between `0` and `319`
 
-This returns a function that links the values in the chart (domain), and the values in the "canvas" (range)
+This returns a function that links the values in the chart (domain), and the values in the 'canvas' (range)
 
 ```js
 xScale(0) // 319
@@ -51,13 +51,13 @@ xScale(5) // 159.5
 xScale(10) // 0
 ```
 
-Scale also provides some methods for do extra actions, for example, if you want to get the value in the chart from the "canvas" coordinates (the typical use case is getting the chart value in the mouse position) we can use
+Scale also provides some methods for do extra actions, for example, if you want to get the value in the chart from the 'canvas' coordinates (the typical use case is getting the chart value in the mouse position) we can use
 
 ```js
 xScale.invert(159.5) // 5
 ```
 
-> Probably you are thinking the same as me the first time I see that: It's a function that has methods? WTF!. If you want you can go farther but in swallow, if the function has arguments returns the "main" value, if not returns an object of functions.
+> Probably you are thinking the same as me the first time I see that: It's a function that has methods? WTF!. If you want you can go farther but in swallow, if the function has arguments returns the 'main' value, if not returns an object of functions.
 
 We can do the same for the y-axis:
 
@@ -74,7 +74,7 @@ To render our line chart, first, we must prepare our placeholder.
 ```html
 <html>
 <body>
-<div class="chart"></div>
+<div class='chart'></div>
 </body>
 </html>
 ```
@@ -98,8 +98,8 @@ const svg = d3
     .attr('height', height + margin.top + margin.bottom)
 ```
 Line by line:
-* `.select(".chart")` selects the DOM element previously we defined
-* `.append('svg')` appends a `<svg>` element to the `<div class="chart">`
+* `.select('.chart')` selects the DOM element previously we defined
+* `.append('svg')` appends a `<svg>` element to the `<div class='chart'>`
 * `.attr('width', width + margin.left + margin.right)` adds an `width` attribute to the `<svg>` element
 * `.attr('height', height + margin.top + margin.bottom)` adds an `hight` attribute to the `<svg>` element
 
@@ -116,14 +116,14 @@ To render the X axis we will create a new SVG group that holds the axis
 svg
 .append('g')
 .attr('class', 'x axis')
-.attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
+.attr('transform', 'translate(' + margin.left + ',' + (height + margin.top) + ')')
 .call(d3.axisBottom(xScale))
 ```
 
 Line by line:
 * `.append('g')` appends the new group for the axis
 * `.attr('class', 'axis x-axis')` adds 2 classes to the group (this allows us to style it using CSS)
-* `.attr("transform", "translate(" + margin.left + "," + height + ")")` moves the axis group bellow the chart draw area and gives space
+* `.attr('transform', 'translate(' + margin.left + ',' + height + ')')` moves the axis group bellow the chart draw area and gives space
 * `.call(d3.axisBottom(xScale))` call the `d3.axisBottom` function. This function is in charge of rendering the axis, the _axisBottom_ means that the ticks of the axis will be rendered bellow the axis line. There are 3 more functions: `d3.axisTop`, `d3.axisLeft`, `d3.axisRight` to render the axis in different orientations.
 
 > About the [`call`](https://github.com/d3/d3-selection/blob/v2.0.0/README.md#selection_call) method: This method call the function passed as argument and uses as first argument for the function of the selected element. In this case is the same as execute: `d3.axisBottom(xScale)(svg.select('.xaxis'))` (Remember that d3.axisBottom returns a function). The advantage of using `call` is you can concatenate methods because call returns the selection, not the result of the function
@@ -135,9 +135,9 @@ Rendering the Y axis is almost the same as X axis:
 
 ```js
 svg
-  .append("g")
-  .attr("class", "y axis")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .append('g')
+  .attr('class', 'y axis')
+  .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
   .call(d3.axisLeft(yScale))
 ```
 
@@ -208,4 +208,4 @@ Line by line:
 And this is all for the moment. *d3* is a powerful tool but needs you to know some concepts before starting to create charts. The example we did in this post is very, very simple but I think is a good starting point.
 
 My idea is to write more post about *d3* going deeper into the current concept and how to configure and customize the current components (for example configure the axis, the labels, etc) 
-{% iframe https://codesandbox.io/embed/sharp-water-bmk3t?fontsize=14&hidenavigation=1&theme=dark&view=preview 100% 400px}
+{% iframe https://codesandbox.io/embed/sharp-water-bmk3t?fontsize=14&hidenavigation=1&theme=dark&view=preview 100% 400px %}
