@@ -4,14 +4,14 @@ date: 2021-04-25
 permalink: tips-using-typescript-and-vue/
 cover: 
 ---
-Typescript is great "language", makes possible creating more maintainable and understandable software, but requires extra effort to type the variables, the functions arguments, etc...
+Typescript is a great "language", makes it possible to create more maintainable and understandable software, but requires extra effort to type the variables, the functions' arguments, etc...
 
-Vue 2.x, and even more Vue 3 provide a great typescript integration, providing the necessary types to use your app, but not always are trivial, and you need to know tye types you must use in every case.
+Vue 2.x, and even more Vue 3 provide a great typescript integration, providing the necessary types to use your app, but not always are trivial, and you need to know the types you must use in every case.
 
-I want to share with all of you the lessons I learnt in my experience using Vue and TS, the typical questions, and "problems" I found in the way.
+I want to share with all of you the lessons I learned in my experience using Vue and TS, the typical questions, and the "problems" I found in the way.
 
 ## Vuex
-Typing the Vuex's store can't be straight forward, my first time typing the store was frustrating because I didn't was types use.
+Typing the Vuex's store can't be straightforward, my first time typing the store was frustrating because I didn't know types use.
 
 #### State
 The state is a JS object, in type you can type it as a generic `Record<string, any>` but this is not nice. It's better creating and interface that define all the store items types, for example, imagine this store:
@@ -62,7 +62,7 @@ interface MutationTree<S> {
 type Mutation<S> = (state: S, payload?: any) => any;
 ```
 
-Basically, is a map of mutation functions, as you can see, a mutation function get the state type but payload can be anything and return anything
+Basically is a map of mutation functions, as you can see, a mutation function get the state type, but the payload can be anything and return anything
 
 ```ts
 const mutations: MutationTree<StoreState> = {
@@ -83,7 +83,7 @@ interface ActionTree<S, R> {
 type Action<S, R> = ActionHandler<S, R> | ActionObject<S, R>;
 ```
 
-Without go deeper, the `S` is the state of the vuex module, and `R` is the **Root State**. In a simple case (without using vuex modules) `S` and `R` are the same.
+Without going deeper, the `S` is the state of the vuex module, and `R` is the **Root State**. In a simple case (without using vuex modules) `S` and `R` are the same.
 
 #### Getters
 Same as actions, 
@@ -124,10 +124,10 @@ export default defineComponent({
 })
 ```
 
-You can also type the properties in the `props` entry, but as **typescript interfaces don't exist at runtime** we can't use the interface directly as the property type
+You can also type the properties directly in the `props` entry, but as **typescript interfaces don't exist at runtime** we can't use the interface directly as the property type
 
 ```ts
-// Doesn't work because Friend doen't exists in runtime
+// Doesn't work because Friend doesn't exists in the runtime
 {
   props: {
     friend: {
@@ -151,13 +151,70 @@ But, we can pass the type as return of a function, then Vue instance the interfa
 {
   props: {
     friend: Object as () => Friend,
-    friends: Array as () => Friend[]
+    friends: Array as () => Friend[],
+    name: String as () => string
   }
 }
 ```
 [Read more about that](https://frontendsociety.com/using-a-typescript-interfaces-and-types-as-a-prop-type-in-vuejs-508ab3f83480)
 
-## Add extra entries to Vue object
+Remember to type "native" types because `String` is not the same as `string` (`String` is an object and string is a type) [More info about this in Stackoverflow](https://stackoverflow.com/a/14727461)
 
+## Add extra properties to Vue Component Object
+By default, Vue provides us a defined structure for the Vue Component Object, for example, the property `data`, `props`, etc... Using vanilla JS we can add a new property to the Vue Component Object without doing extra works, for example, we want to add a property called `layout` that makes our root component can use different layouts in our view. 
 
+```js
+export default {
+    name: 'my-component',
+    layout: '2-cols' 
+}
+```
 
+If we try to do this using typescript we will get an error because the property `layout` wasn't defined in the Vue Component Object. To fix it we must extend the definition creating a definition file in our `src/`, for example, `src/typings.d.ts`
+
+```ts 
+# src/typings.d.ts
+import Vue from 'vue'
+
+declare module 'vue/types/options' {
+  interface ComponentOptions<V extends Vue> {
+    layout?: string;    
+  }
+}
+```
+
+### Add extra properties to the Vue Instance
+As in the previous chapter, we could want to add a new property to the Vue Instance, for example, to add a global functionality like a toast, etc: `vm.$toast.open()`
+
+Remember you can do it doing something like this, for example, during the plugin installation:
+
+```js
+Vue.prototype.$toast = {
+    open: () => {
+        ....
+    }
+} as ToastHandler
+```
+
+Then we must add to our _definition_ file these lines to declare the new Vue instance properties and their types
+
+```ts 
+# src/typings.d.ts
+import Vue from 'vue'
+declare module 'vue/types/vue' {
+  interface Vue {
+    $toast: ToastHandler;
+  }
+}
+```
+
+Typescript can be tough at the beginning, but gives you more confidence in your code and make it more readable, for example
+```ts
+{
+    props: {
+        friend: Object as () => Friend,
+        person: Object
+    }
+}
+```
+For example in the case of `friend` you only need to go to the type declarations to know the 'friend` structure and properties, even your IDE can provide you autocomplete, but for `person` is very hard to know the object structure. I hope this post can help you using Typescript and Vue.
