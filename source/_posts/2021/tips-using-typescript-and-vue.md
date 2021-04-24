@@ -2,7 +2,7 @@
 title: Tips using Typescript and Vue 
 date: 2021-04-25
 permalink: tips-using-typescript-and-vue/
-cover: 
+cover: /images/2021/vue-typescript-tips-rF4kuvgHhU-unsplash.jpg
 ---
 Typescript is a great "language", makes it possible to create more maintainable and understandable software, but requires extra effort to type the variables, the functions' arguments, etc...
 
@@ -10,10 +10,10 @@ Vue 2.x, and even more Vue 3 provide a great typescript integration, providing t
 
 I want to share with all of you the lessons I learned in my experience using Vue and TS, the typical questions, and the "problems" I found in the way.
 
-## Vuex
+# Vuex
 Typing the Vuex's store can't be straightforward, my first time typing the store was frustrating because I didn't know types use.
 
-#### State
+## State
 The state is a JS object, in type you can type it as a generic `Record<string, any>` but this is not nice. It's better creating and interface that define all the store items types, for example, imagine this store:
 ```js
 const store = {
@@ -52,7 +52,8 @@ const store: StoreState = {
 }
 ```
 
-#### Mutations
+
+## Mutations
 For the mutations, Vuex provides the type `MutationTree<S>`, defined as:
 
 ```ts
@@ -73,7 +74,9 @@ const mutations: MutationTree<StoreState> = {
 ```
 > As the payload is defined by the type as `any` it's a good practice type your payload in every mutation function
 
-#### Actions
+
+
+## Actions
 It's similar to the mutations, but with a peculiarity:
 
 ```ts
@@ -85,7 +88,9 @@ type Action<S, R> = ActionHandler<S, R> | ActionObject<S, R>;
 
 Without going deeper, the `S` is the state of the vuex module, and `R` is the **Root State**. In a simple case (without using vuex modules) `S` and `R` are the same.
 
-#### Getters
+
+
+## Getters
 Same as actions, 
 ```ts
 interface GetterTree<S, R> {
@@ -103,7 +108,9 @@ const getters: GetterTree<StoreState, StoreState> = {
 ```
 > As in the store payload params, it's a good practice to type getter return
 
-## Composition API
+
+
+# Composition API
 If you are using composition API in the setup function we can type our properties as we did in the store. Make sure you are using `defineComponent` instead `Vue.extend` to make it work
 
 ```ts
@@ -160,7 +167,9 @@ But, we can pass the type as return of a function, then Vue instance the interfa
 
 Remember to type "native" types because `String` is not the same as `string` (`String` is an object and string is a type) [More info about this in Stackoverflow](https://stackoverflow.com/a/14727461)
 
-## Add extra properties to Vue Component Object
+
+
+# Add extra properties to Vue Component Object
 By default, Vue provides us a defined structure for the Vue Component Object, for example, the property `data`, `props`, etc... Using vanilla JS we can add a new property to the Vue Component Object without doing extra works, for example, we want to add a property called `layout` that makes our root component can use different layouts in our view. 
 
 ```js
@@ -183,7 +192,9 @@ declare module 'vue/types/options' {
 }
 ```
 
-### Add extra properties to the Vue Instance
+
+
+# Add extra properties to the Vue Instance
 As in the previous chapter, we could want to add a new property to the Vue Instance, for example, to add a global functionality like a toast, etc: `vm.$toast.open()`
 
 Remember you can do it doing something like this, for example, during the plugin installation:
