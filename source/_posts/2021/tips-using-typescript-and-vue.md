@@ -228,4 +228,4 @@ Typescript can be tough at the beginning, but gives you more confidence in your 
     }
 }
 ```
-For example in the case of `friend` you only need to go to the type declarations to know the 'friend` structure and properties, even your IDE can provide you autocomplete, but for `person` is very hard to know the object structure. I hope this post can help you using Typescript and Vue.
+For example in the case of `friend` you only need to go to the type declarations to know the `friend` structure and properties, even your IDE can provide you autocomplete, but for `person` is very hard to know the object structure. I hope this post can help you using Typescript and Vue.
