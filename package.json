@@ -30,7 +30,9 @@
     "lodash": "^4.17.13",
     "lodash.merge": "^4.6.2",
     "lodash.mergewith": "^4.6.2",
-    "uglify-js": "^3.8.1"
+    "uglify-js": "^3.8.1",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^3"
   },
   "devDependencies": {
     "node-sass": "^4.13.1",
