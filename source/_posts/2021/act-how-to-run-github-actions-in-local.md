@@ -1,5 +1,5 @@
 ---
-title: "How to run GitHub action in local with Act"
+title: "How to run GitHub Actions in local with Act"
 date: 2021-06-14
 permalink: act-how-to-run-github-actions-in-local/
 cover: /images/2021/act-jake-givens-iR8m2RRo-z4-unsplash.jpg
