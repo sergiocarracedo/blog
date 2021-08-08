@@ -2,10 +2,14 @@
 <div id="home-header" class>
   <div class="content">
     <div class="content-wrapper">
-      <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
-      <h1>
-        Sergio Carracedo
-      </h1>
+      <a href="<%- url_for('/') %>" title="Home">
+        <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+      </a>
+      <a href="<%- url_for('/') %>" title="Home">
+        <h1>
+          Sergio Carracedo
+        </h1>
+       </a>
 
       <%- partial("_partial/social", null, {cache: true}) %>
 

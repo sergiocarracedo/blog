@@ -1,5 +1,5 @@
 ---
-title: Custom SVG icon set management with Vue
+title: "Custom SVG icon set management with Vue"
 date: 2021-04-01
 permalink: custom-svg-icon-set-management-with-vue/
 cover: /images/2021/svg-iconset.jpg

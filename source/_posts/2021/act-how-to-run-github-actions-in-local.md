@@ -94,27 +94,3 @@ Act can login to private GitHub Enterprise servers as simple as add `--github-in
 # Summary
 *Act* it's a wonderful tool to run GH Action in local when you are creating or iterating it, avoiding using the real repo to test it.
 But *Act is* something more, you can also use it as a local task runner using all the power, and the actions in the GitHub Actions marketplace to create your local task, and this task can easily move to the cloud if you need it.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

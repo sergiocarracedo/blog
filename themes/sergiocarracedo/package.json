@@ -14,6 +14,10 @@
   "dependencies": {
     "global": "^4.4.0",
     "hexo": "^5.0.0",
-    "hexo-server": "^1.0.0"
+    "hexo-server": "^1.0.0",
+    "highlight.js": "10.7.1",
+    "prismjs": "1.24.0",
+    "tar": "3.2.3",
+    "trim-newlines": "3.0.1"
   }
 }
