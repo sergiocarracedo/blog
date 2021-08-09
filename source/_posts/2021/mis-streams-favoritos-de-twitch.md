@@ -110,7 +110,7 @@ Es otra de las grandes del roleplay
 </div>
 <div class="clearfix"></div>
 
-Poco que decir de CodelyTV, aparte de la plataforma de cursos online de la que disponen, divulgan sobre tecnología todas las semanas en Twitch para disfrute de todos nosotros. Con un contenido interesante, entretenido y a deves se generan debates o situaciones divertidas.
+Poco que más decir de CodelyTV que seruramente no conozcas. Aparte de la plataforma de cursos online de la que disponen, divulgan sobre tecnología todas las semanas en Twitch para disfrute de todos nosotros. Con un contenido interesante, entretenido que genera debates y situaciones divertidas.
 
 ### DovCSV https://www.twitch.tv/dotcsv
 Canal dedicado principalmente a noticias sobre AI y ML
