@@ -78,9 +78,9 @@ console.log('sourceObject', sourceObject.l1_2)
 clonedObject.l1_1.l2_1 = '321'
 
 console.log('clonedObject l1_1.l2_1', clonedObject.l1_1.l2_1)
-// 123 --> ✔️
+// 321 --> ✔️
 console.log('sourceObject l1_1.l2_1', sourceObject.l1_1.l2_1)
-// 123 --> ❌️
+// 321 --> ❌️ // Should keep returning 123 if the clone was complete
 ```
 [![Edit sleepy-rain-1gtsb](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/sleepy-rain-1gtsb?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
 
