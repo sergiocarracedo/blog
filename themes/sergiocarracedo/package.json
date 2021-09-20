@@ -16,7 +16,7 @@
     "hexo": "^5.0.0",
     "hexo-server": "^1.0.0",
     "highlight.js": "10.7.1",
-    "prismjs": "1.24.0",
+    "prismjs": "1.25.0",
     "tar": "4.4.15",
     "trim-newlines": "3.0.1"
   }
