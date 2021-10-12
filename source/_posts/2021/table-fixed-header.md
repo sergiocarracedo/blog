@@ -1,6 +1,6 @@
 ---
 title: How to create a table with fixed header
-date: 2021-10-13
+date: 2021-10-12
 permalink: how-to-create-a-table-with-fixed-header/
 cover: /images/2021/table-fixed-header.jpg
 ---
