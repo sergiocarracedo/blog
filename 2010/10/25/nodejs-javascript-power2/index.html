@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/node.jpg">
 <meta property="article:published_time" content="2010-10-25T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-17T11:18:27.186Z">
+<meta property="article:modified_time" content="2021-10-12T09:08:43.341Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/node.jpg">
@@ -59,7 +59,9 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
 
 <body>
     <div id="single">
@@ -75,7 +77,7 @@
           </h4>
         </a>
       </div>
-      <div class="hidden-xs col-sm-6">
+      <div class="hidden-xs hidden-lxs col-sm-6">
         <h3 class="subtitle">Node.js: Javascript power!!</h3>
       </div>
     </div>
@@ -100,46 +102,28 @@
       </div>
       
       <div class="content markdown">
-        <p><strong><a target="_blank" rel="noopener" href="http://www.nodejs.org">Node.js</a></strong> es un entorno de programación de entrada/salida orientada a eventos, sobre el motor de Javascript <strong>V8</strong> (el mismo que usa Google Chrome)</p>
+        <p><strong><a target="_blank" rel="noopener" href="http://www.nodejs.org/">Node.js</a></strong> es un entorno de programación de entrada/salida orientada a eventos, sobre el motor de Javascript <strong>V8</strong> (el mismo que usa Google Chrome)</p>
 <p><em>Pero ¿Que quiere decir todo esto? ¿Y para que me puede servir?</em></p>
 <p>Lo más básico que podemos realizar con <strong>node.js</strong> es un servidor web (HTTP).</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var http = require('http');</span><br><span class="line"></span><br><span class="line">http.createServer(function (req, res) {</span><br><span class="line"></span><br><span class="line">  res.writeHead(200, {'Content-Type': 'text/plain'});</span><br><span class="line"></span><br><span class="line">  res.end('Hello World\n');</span><br><span class="line"></span><br><span class="line">}).listen(8124, "127.0.0.1");</span><br></pre></td></tr></tbody></table></figure>
 
 <p>Con estas pocas lineas tenemos un servidor web escuchando el puerto 8124 funcionando en nuestro equipo y respondiendonos siempre “<em>Hello World</em>“</p>
-<p>Podemos crear tambien servidores  TCP.</p>
+<p>Podemos crear tambien servidores &nbsp;TCP.</p>
 <p>Para programar un servidor <strong>node.js</strong> empleamos javascript como lenguaje, con los que nos evitamos muchas de las complicaciones de otros lenguajes de programación como C, C++, python, etc.</p>
 <p>Como comentaba, esta completamente orientado a eventos por lo que no tendremos que preocuparnos de muchas tareas que el servidor realiza por nosotros, por ejemplo. Si queremos responder a una petición, programamos la respuesta al evento “on data”.</p>
 <p>Es muy ligero y rápido, y su <a target="_blank" rel="noopener" href="http://nodejs.org/api.html">API</a> es simplemente fantastica, tenemos acceso de recursos del equipo (ficheros) y muchas utilidades que nos facilitarán el trabajo de programación.</p>
 <p>Muchos os preguntareis: <em>¿Para que necesito programar un servidor HTTP si hay opciones muy potentes disponibles (apache, ngix, etc)?</em></p>
 <p><em>La respuesta es bien sencilla, no son tan ligeros y especificos como <strong>node.js</strong>, con el podremos hacer uso de la <a target="_blank" rel="noopener" href="http://es.wikipedia.org/wiki/Tecnolog%C3%ADa_Push">tecnología push</a> que nos permitira hacer virguerias como estas:</em></p>
 <ul>
-<li><p>Chat en el navegador: <a target="_blank" rel="noopener" href="http://chat.nodejs.org/">http://chat.nodejs.org/</a></p>
+<li><p>  Chat en el navegador: <a target="_blank" rel="noopener" href="http://chat.nodejs.org/">http://chat.nodejs.org/</a></p>
 </li>
-<li><p>Podemos mostrar el cursor de los otros visitantes de la web: <a target="_blank" rel="noopener" href="http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/">http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/</a></p>
+<li><p>  Podemos mostrar el cursor de los otros visitantes de la web: <a target="_blank" rel="noopener" href="http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/">http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/</a></p>
 </li>
-<li><p>Servidor de archivos estáticos <a target="_blank" rel="noopener" href="http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/">http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/</a></p>
+<li><p>  Servidor de archivos estáticos <a target="_blank" rel="noopener" href="http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/">http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/</a></p>
 </li>
 </ul>
 <p>En proximos post seguiremos adentrandonos en este maravilloso proyecto</p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       </div>
     </div>
   </div>

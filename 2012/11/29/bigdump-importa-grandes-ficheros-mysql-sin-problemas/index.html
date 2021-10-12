@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/pexels-photo-129544.jpeg">
 <meta property="article:published_time" content="2012-11-29T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-17T11:18:27.186Z">
+<meta property="article:modified_time" content="2021-10-12T09:08:43.341Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/pexels-photo-129544.jpeg">
@@ -59,7 +59,9 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
 
 <body>
     <div id="single">
@@ -75,7 +77,7 @@
           </h4>
         </a>
       </div>
-      <div class="hidden-xs col-sm-6">
+      <div class="hidden-xs hidden-lxs col-sm-6">
         <h3 class="subtitle">Bigdump: Importa grandes ficheros mysql sin problemas</h3>
       </div>
     </div>
@@ -100,44 +102,26 @@
       </div>
       
       <div class="content markdown">
-        <p>Una de las pesadillas de los desarrolladores web (a menos es una de las mías) es encontrase con la necesidad de subir un volcado SQL muy grande a un servidor y no tener acceso remoto al servidor mysql y, tampoco, tener acceso via shell, es decir la “única” vía es usar <strong>PhpMyAdmin</strong>.</p>
-<p>He puesto ú<em>nica</em>  entre comillas por que desde luego hay muchas más alternativas, algunas muy manuales, o algunas más cómodas como la que os propongo: **<a target="_blank" rel="noopener" href="http://www.ozerov.de/bigdump/">Bigdump</a> **</p>
+        <p>Una de las pesadillas de los desarrolladores web (a menos es una de las mías) es encontrase con la necesidad de subir un volcado SQL muy grande a un servidor y no tener acceso remoto al servidor mysql y, tampoco, tener acceso via shell, es decir la “única”&nbsp;vía&nbsp;es usar <strong>PhpMyAdmin</strong>.</p>
+<p>He puesto ú_nica_ &nbsp;entre comillas por que desde luego hay muchas más alternativas, algunas muy manuales, o algunas más cómodas como la que os propongo: **<a target="_blank" rel="noopener" href="http://www.ozerov.de/bigdump/">Bigdump</a>&nbsp;**</p>
 <p><strong>Bigdump</strong> es un pequeño script <strong>php</strong> que una vez configurado con los datos de nuestra base de datos se encarga de trocear los archivos SQL que subamos para insertarlos “poco a poco” en la base de datos, incluso en servidores con limitaciones como <code>safe_mode</code>.</p>
 <p>Su uso es muy sencillo:</p>
 <ol>
-<li><p>En el fichero descargado <em>bigdump.php</em> configuramos los datos de conexión a la base de datos, es importante no olvidar modificar también la codificación para evitarnos problemas con los caracteres ya que por defecto usará <em>latin1</em></p>
+<li><p> En el fichero descargado&nbsp;<em>bigdump.php</em>&nbsp;configuramos los datos de conexión a la base de datos, es importante no olvidar modificar&nbsp;también&nbsp;la codificación para evitarnos problemas con los caracteres ya que por defecto usará&nbsp;<em>latin1</em></p>
 </li>
-<li><p>Subimos <em>bigdump.php</em> al servidor donde necesitamos hacer la importación “problematica”</p>
+<li><p> Subimos <em>bigdump.php</em> al servidor donde necesitamos hacer la importación “problematica”</p>
 </li>
-<li><p>Subimos al mismo directorio el fichero <em>.sql</em> a importar (podemos subirlo comprimido con <strong>gz</strong>). Si el directorio tiene permisos de escritura nos ofrecerá la posibilidad de subir el fichero directamente desde un formulario, aunque no recomiendo esta opción ya que estamos hablando siempre de ficheros muy grandes</p>
+<li><p> Subimos al mismo directorio el fichero <em>.sql</em> a importar (podemos subirlo comprimido con <strong>gz</strong>). Si el directorio tiene permisos de escritura nos ofrecerá la posibilidad de subir el fichero directamente desde un formulario, aunque no recomiendo esta opción ya que estamos hablando siempre de ficheros muy grandes</p>
 </li>
-<li><p>Ejecutamos el fichero <em>bigdump.php</em> desde el navegador, por ejemplo <code>http://www.tuweb.com/bigdump.php</code></p>
+<li><p> Ejecutamos el fichero <em>bigdump.php</em> desde el navegador, por ejemplo <code>http://www.tuweb.com/bigdump.php</code></p>
 </li>
-<li><p>Escogemos el fichero a importar, y comienza la importación del mismo sin tener que preocuparnos de nada más, eso si <strong>no podremos cerrar la ventana del navegador mientras se esta ejecutando la impotación</strong></p>
+<li><p> Escogemos el fichero a importar, y comienza la importación del mismo sin tener que preocuparnos de nada más, eso si <strong>no podremos cerrar la ventana del navegador mientras se esta ejecutando la impotación</strong></p>
 </li>
-<li><p><strong>IMPORTANTÍSIMO!!! Por razones de seguridad obvias eliminar el fichero <em>bigdump.php</em> y los <em>.sql</em> o <em>.gz</em> que hemos subido al terminar.</strong></p>
+<li><p> <strong>IMPORTANTÍSIMO!!! Por razones de seguridad obvias eliminar el fichero <em>bigdump.php</em>&nbsp;y los <em>.sql</em>&nbsp;o <em>.gz</em>&nbsp;que hemos subido al terminar.</strong></p>
 </li>
 </ol>
-<p><a target="_blank" rel="noopener" href="http://www.ozerov.de/bigdump.zip">Descargar BigDump ver. 0.34b (beta) </a> directamente de la web de su creador</p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+<p><a target="_blank" rel="noopener" href="http://www.ozerov.de/bigdump.zip">Descargar&nbsp;BigDump ver. 0.34b (beta)&nbsp;</a>&nbsp;directamente de la web de su creador</p>
+
       </div>
     </div>
   </div>

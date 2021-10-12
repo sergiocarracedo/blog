@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - How to create a table with fixed header</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,Tables in HTML are one of the older things in the standard, even before CSS we had HTML tables. In ,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="Tables in HTML are one of the older things in the standard, even before CSS we had HTML tables. In the past tables were used to markup the webpages, but the correct usage is to display tabular data. O">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to create a table with fixed header">
+<meta property="og:url" content="https://sergiocarracedo.es/how-to-create-a-table-with-fixed-header/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="Tables in HTML are one of the older things in the standard, even before CSS we had HTML tables. In the past tables were used to markup the webpages, but the correct usage is to display tabular data. O">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/2021/table-fixed-header.jpg">
+<meta property="article:published_time" content="2021-10-12T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-12T09:08:43.345Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/table-fixed-header.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs hidden-lxs col-sm-6">
+        <h3 class="subtitle">How to create a table with fixed header</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        How to create a table with fixed header
+      </h1>
+      <div class="stuff">
+        <span>October 12, 2021</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/2021/header_table-fixed-header.jpg" width="1200" height="400">
+      </div>
+      
+      <div class="content markdown">
+        <p>Tables in HTML are one of the older things in the standard, even before CSS we had HTML tables. In the past tables were used to markup the webpages, but the correct usage is to display tabular data.</p>
+<p>Over time the standard improves the table styling covering most of the use cases you can consider.</p>
+<p>But, there is a use case it’s not easy to get with the table attributes or style properties, I’m talking about creating a table with a fixed/sticky header (or footer).</p>
+<p>The behavior we want to get is, for a large table, make it possible to scroll the table content showing always on top of the header.</p>
+<h1 id="Possible-solutions"><a href="#Possible-solutions" class="headerlink" title="Possible solutions"></a>Possible solutions</h1><p>There is more than one solution to this problem. It depends on your needs.</p>
+<p>The simplest solution I found is to use CSS to set <code>position: sticky</code> to the <code>th</code> elements: </p>
+<iframe src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&amp;hidenavigation=1&amp;initialpath=/fixed-header-css.html&amp;module=/fixed-header-css.html&amp;theme=dark" width="100%" height="350px" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
+
+<p>This solution can work in most of cases, but have some limitations, for example <code>position: sticky</code> is not supported in legacy browsers <a target="_blank" rel="noopener" href="https://caniuse.com/css-sticky">https://caniuse.com/css-sticky</a>. </p>
+<p>In my opinion, the most important limitation is you must set a background color for the header elements to avoid overlapping the table content. This is not always a good solution for all cases.</p>
+<p><em>Following is the same without set the background color for the <code>th</code> elements</em> </p>
+<iframe src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&amp;hidenavigation=1&amp;initialpath=/fixed-header-css-no-bg.html&amp;module=/fixed-header-css-no-bg.html&amp;theme=dark" width="100%" height="350px" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
+
+<p>Another possible solution is to use <code>display: grid</code> and add the <code>position: fixed</code> to the first row</p>
+<p>But I don’t feel comfortable with this solution because:</p>
+<ul>
+<li>It has the same problem with the header’s background color </li>
+<li>We lose the semantic tags (we are displaying as a table, but the html is not a real table, we have a list of div or other tags that don’t set a semantic meaning)</li>
+<li>We must know the number of cols of the table because we must set it in CSS, for example <code>grid-template-columns: repeat(4, 1fr)</code></li>
+</ul>
+<iframe src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&amp;hidenavigation=1&amp;initialpath=css-grid.html&amp;module=/css-grid.html&amp;theme=dark" width="100%" height="300px" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
+
+
+<h2 id="Duplicating-header-technique"><a href="#Duplicating-header-technique" class="headerlink" title="Duplicating header technique"></a>Duplicating header technique</h2><p>Why don’t just put the header outside the table and only scroll the <code>tbody</code>. You can see the result in the following codesandbox. Please notice now, the header can have a transparent background working well with the gradient page background.</p>
+<iframe src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&amp;hidenavigation=1&amp;initialpath=duplicate.html&amp;module=/duplicate.html&amp;theme=dark" width="100%" height="300px" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
+
+<p>Ok, but probably you noticed it, this solution as we did it doesn’t work well, the header column sizes are not the same as the content, and if the content has a horizontal scroll the header doesn’t follow the scroll position.</p>
+<p>To fix it we need some <em>javascript</em> to sync the header columns width and the scroll position.</p>
+<p>It’s important don’t hide the original table head using something like <code>display: none</code> or alter its width with <code>position: absolute</code> we want the original header with the same column width as in a regular table to copy these values to the cloned header. The best way to do it is using <code>visibility: collapse;</code> that for table rows or columns hide the element, and the space occupied is removed, but the size of the columns is still calculated <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/visibility">https://developer.mozilla.org/en-US/docs/Web/CSS/visibility</a> </p>
+<p>It’s also necessary to set the <code>table-layout: fixed</code> to avoid the browser tries to fit the columns space, we want to use the same space we copy from the original header </p>
+<p>To copy these widths we can use something like this. The column width sync function is called when the table can change the width, for example on window resize. We can improve this just observing when the table is resized, not when the window is resized using the <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver">ResizeObserver</a></p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> syncColsWidth = <span class="function">() =&gt;</span> {</span><br><span class="line">  <span class="keyword">const</span> thead = <span class="built_in">document</span>.getElementById(<span class="string">"thead"</span>);</span><br><span class="line">  <span class="keyword">const</span> theadClone = <span class="built_in">document</span>.getElementById(<span class="string">"thead-clone"</span>);</span><br><span class="line">  <span class="keyword">const</span> theadCols = thead.getElementsByTagName(<span class="string">"th"</span>);</span><br><span class="line">  <span class="keyword">const</span> theadCloneCols = theadClone.getElementsByTagName(<span class="string">"th"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i <span class="keyword">in</span> theadCols) {</span><br><span class="line">    theadCloneCols[i].style.width = <span class="string">`<span class="subst">${theadCols[i].offsetWidth}</span>px`</span>;</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"> <span class="built_in">window</span>.onresize = syncColsWidth;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>We must also sync the scroll position</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> onScrollTable = <span class="function">() =&gt;</span> {</span><br><span class="line">  <span class="keyword">const</span> wrapper = <span class="built_in">document</span>.getElementById(<span class="string">"table-wrapper"</span>);</span><br><span class="line">  <span class="keyword">const</span> clone = <span class="built_in">document</span>.getElementById(<span class="string">"wrapper-header"</span>);</span><br><span class="line">  clone.scrollLeft = wrapper.scrollLeft;</span><br><span class="line">};</span><br><span class="line">       </span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">"table-wrapper"</span>).onscroll = onScrollTable;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>And with that, we have a fully fixed header for our table.</p>
+<p>This solution adds more complexity than the CSS one, but it’s more flexible and allows us to use gradient or image backgrounds. </p>
+<iframe src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&amp;hidenavigation=1&amp;initialpath=duplicate-js.html&amp;module=/duplicate-js.html&amp;theme=dark" width="100%" height="400px" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="https://sergiocarracedo.es//mis-streams-favoritos-de-twitch/" rel="next" class="nav-cover">
+              <img src="/images/2021/twitch/teaser_cover.jpg">
+            </a>
+
+            <a href="https://sergiocarracedo.es//mis-streams-favoritos-de-twitch/" rel="next" class="nav-text">
+              Soy casi un boomer y consumo Twitch: Mis streams favoritos <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="mailto:info@sergiocarracedo.es" class="social-link" title="info@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+
+</html>

@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/karen-lau-tRR3w-S2A3Y-unsplash.jpg">
 <meta property="article:published_time" content="2020-02-22T18:28:28.000Z">
-<meta property="article:modified_time" content="2021-08-17T11:18:27.190Z">
+<meta property="article:modified_time" content="2021-10-12T09:08:43.345Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta property="article:tag" content="js clone deep-clone">
 <meta name="twitter:card" content="summary_large_image">
@@ -60,7 +60,9 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
 
 <body>
     <div id="single">
@@ -76,7 +78,7 @@
           </h4>
         </a>
       </div>
-      <div class="hidden-xs col-sm-6">
+      <div class="hidden-xs hidden-lxs col-sm-6">
         <h3 class="subtitle">(Deep) Cloning objects in Javascript</h3>
       </div>
     </div>
@@ -129,7 +131,7 @@
 <p>Lets do it</p>
 <figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> clonedObject = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(sourceObject))</span><br><span class="line"></span><br><span class="line">clonedObject.l1_1.l2_1 = <span class="string">'321'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'clonedObject l1_1.l2_1'</span>, clonedObject.l1_1.l2_1)</span><br><span class="line"><span class="comment">// 321 --&gt; ✔️</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'sourceObject l1_1.l2_1'</span>, sourceObject.l1_1.l2_1)</span><br><span class="line"><span class="comment">// 123 --&gt; ✔</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>Everything seems fine! :tada:<br>But, did you notice <code>l1_1.l2_3.l3_3</code> property is a function? <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8">😢</span></p>
+<p>Everything seems fine! <span class="github-emoji"><span>🎉</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span><br>But, did you notice <code>l1_1.l2_3.l3_3</code> property is a function? <span class="github-emoji"><span>😢</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
 <figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'clonedObject l1_1.l2_3.l3_3'</span>, clonedObject.l1_1.l2_3.l3_3)</span><br><span class="line"><span class="comment">// undefined --&gt; ❌️</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'sourceObject l1_1.l2_3.l3_3'</span>, sourceObject.l1_1.l2_3.l3_3)</span><br><span class="line"><span class="comment">// function l3_3() {} --&gt; ✔️</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p><a target="_blank" rel="noopener" href="https://codesandbox.io/s/xenodochial-frost-q8k71?expanddevtools=1&amp;fontsize=14&amp;hidenavigation=1&amp;theme=dark"><img src="https://codesandbox.io/static/img/play-codesandbox.svg" alt="Edit xenodochial-frost-q8k71"></a></p>
@@ -153,25 +155,7 @@
 Header picture: <a style="background-color:black;color:white;text-decoration:none;padding:4px 6px;font-family:-apple-system, BlinkMacSystemFont, &quot;San Francisco&quot;, &quot;Helvetica Neue&quot;, Helvetica, Ubuntu, Roboto, Noto, &quot;Segoe UI&quot;, Arial, sans-serif;font-size:12px;font-weight:bold;line-height:1.2;display:inline-block;border-radius:3px" href="https://unsplash.com/@pic_parlance?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Karen Lau"><span style="display:inline-block;padding:2px 3px"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-2px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path></svg></span><span style="display:inline-block;padding:2px 3px">Karen Lau</span></a>
 </small>
 
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       </div>
     </div>
   </div>

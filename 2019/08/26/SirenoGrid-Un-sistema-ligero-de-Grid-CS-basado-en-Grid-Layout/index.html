@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/sireno-grid.jpg">
 <meta property="article:published_time" content="2019-08-26T12:31:08.000Z">
-<meta property="article:modified_time" content="2021-08-17T11:18:27.190Z">
+<meta property="article:modified_time" content="2021-10-12T09:08:43.341Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/sireno-grid.jpg">
@@ -59,7 +59,9 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
 
 <body>
     <div id="single">
@@ -75,7 +77,7 @@
           </h4>
         </a>
       </div>
-      <div class="hidden-xs col-sm-6">
+      <div class="hidden-xs hidden-lxs col-sm-6">
         <h3 class="subtitle">Sireno Grid: Un sistema ligero de Grid CSS, basado en Grid Layout</h3>
       </div>
     </div>
@@ -100,21 +102,15 @@
       </div>
       
       <div class="content markdown">
-        <p><em>CSS Grid Layout</em> es un estándar del W3C que fue llevado a <em>webkit</em> y <em>blink</em> por <a target="_blank" rel="noopener" href="https://igalia.com">Igalia</a> una empresa asentada en Galicia con programadores por todo el mundo y además tuvimos el honor de organizar una charla [<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=NbeP64e8DZQ">Video</a>] de uno de los desarrolladores encargado de implementar CSS Grid Layout en Chromium/Blink y Safari/Webkit: <a target="_blank" rel="noopener" href="https://blogs.igalia.com/mrego/resources/">Manuel Rego</a></p>
+        <p><em>CSS Grid Layout</em> es un estándar del W3C que fue llevado a <em>webkit</em> y <em>blink</em> por <a target="_blank" rel="noopener" href="https://igalia.com/">Igalia</a> una empresa asentada en Galicia con programadores por todo el mundo y además tuvimos el honor de organizar una charla [<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=NbeP64e8DZQ">Video</a>] de uno de los desarrolladores encargado de implementar CSS Grid Layout en Chromium/Blink y Safari/Webkit: <a target="_blank" rel="noopener" href="https://blogs.igalia.com/mrego/resources/">Manuel Rego</a></p>
 <p>Los que llevamos mucho tiempo maquetando (pero mucho, mucho), recordaremos una época en la que se maquetaba usando tablas, ¿por qué?, pues porque la mayoría de los diseños de web, se pueden <em>trocear</em> en áreas o zonas cuadradas o rectangulares, algo que un su momento permitían las tablas. Con la llegada de la <em>web semántica</em> y las mejoras de CSS la maquetación con tablas fue marcada como una mala práctica (que lo era). CSS Grid Layout es “como” volver a maquetar con tablas pero <strong>bien</strong>. No voy a entrar en muchos detalles, pero la maquetación con tablas se definía con las etiquetas y aquí las definimos con las hojas de estilo.</p>
-<h1 id="¿Por-que"><a href="#¿Por-que" class="headerlink" title="¿Por qué?"></a>¿Por qué?</h1><p>Un buen día, hace ya más de un año, cayó en mis manos un proyecto de maquetación web, pero en este caso tenia un requisito nada habitual en ese momento, y este era que la maquetación estuviese basada en <a target="_blank" rel="noopener" href="https://developer.mozilla.org/es/docs/Web/CSS/CSS_Grid_Layout">CSS Grid Layout</a>. Yo llevaba tiempo usando <em>Bootstrap</em> para el <em>layout</em> de columnas, ya que me parece muy cómodo el hecho de poder definir unos tamaños para cada “bloque” según el tamaño de pantalla, y esto no lo quería perder, así que decidí a hacer un sistema de grid similar / inspirado en el de Bootstrap, pero en lugar de usar _</p><div>_ flotantes, como en el caso de <em>Bootstrap 3</em>, o <em>flexbox</em>, como en <em>Bootstrap 4</em>, usaría <em>CSS Grid Layout</em>.<p></p>
+<h1 id="¿Por-que"><a href="#¿Por-que" class="headerlink" title="¿Por qué?"></a>¿Por qué?</h1><p>Un buen día, hace ya más de un año, cayó en mis manos un proyecto de maquetación web, pero en este caso tenia un requisito nada habitual en ese momento, y este era que la maquetación estuviese basada en <a target="_blank" rel="noopener" href="https://developer.mozilla.org/es/docs/Web/CSS/CSS_Grid_Layout">CSS Grid Layout</a>. Yo llevaba tiempo usando <em>Bootstrap</em> para el <em>layout</em> de columnas, ya que me parece muy cómodo el hecho de poder definir unos tamaños para cada “bloque” según el tamaño de pantalla, y esto no lo quería perder, así que decidí a hacer un sistema de grid similar / inspirado en el de Bootstrap, pero en lugar de usar <em></em></p><div> flotantes, como en el caso de <em>Bootstrap 3</em>, o <em>flexbox</em>, como en <em>Bootstrap 4</em>, usaría <em>CSS Grid Layout</em>.<p></p>
 <p>Una vez realizado este proyecto y viendo que esta herramienta funcionaba razonablemente bien, me decidí a usarla en más proyectos y finalmente a <em>compartirla con la comunidad</em>, liberándola a principios de este año.</p>
-<p>Así nació <strong><a target="_blank" rel="noopener" href="https://sirenogrid.com">Sireno Grid</a></strong> con un nombre inspirado en una de las <a target="_blank" rel="noopener" href="https://es.wikipedia.org/wiki/El_Sireno">estatuas</a>, para mi gusto, más feas de mi ciudad (Vigo), pero a la vez con más personalidad.</p>
-<h1 id="Objetivo"><a href="#Objetivo" class="headerlink" title="Objetivo"></a>Objetivo</h1><p><strong><a target="_blank" rel="noopener" href="https://sirenogrid.com">Sireno Grid</a></strong> tiene un simple objetivo: Servir de estructura de <em>grid responsive</em> para que puedas crear tu layout de forma simple, nada de botones, badgets, etc… solo el grid,  los “margenes” y el <em>embed</em> de elementos de forma <em>responsive</em></p>
+<p>Así nació <strong><a target="_blank" rel="noopener" href="https://sirenogrid.com/">Sireno Grid</a></strong> con un nombre inspirado en una de las <a target="_blank" rel="noopener" href="https://es.wikipedia.org/wiki/El_Sireno">estatuas</a>, para mi gusto, más feas de mi ciudad (Vigo), pero a la vez con más personalidad.</p>
+<h1 id="Objetivo"><a href="#Objetivo" class="headerlink" title="Objetivo"></a>Objetivo</h1><p><strong><a target="_blank" rel="noopener" href="https://sirenogrid.com/">Sireno Grid</a></strong> tiene un simple objetivo: Servir de estructura de <em>grid responsive</em> para que puedas crear tu layout de forma simple, nada de botones, badgets, etc… solo el grid,  los “margenes” y el <em>embed</em> de elementos de forma <em>responsive</em></p>
 <p>Como ya comenté <em>Sireno Grid</em> esta inspirado en <em>Bootstrap</em> y por ello he usado más o menos los mismos nombres de clases y con la misma función, para que cambiar de uno a otro sea sencillo. El cambio principal viene en usar la clase <code>.grid-row</code> en lugar de <code>.row</code> para definir la fila, esto lo he hecho pensando en que se puedan usar los dos “frameworks” si fuese necesario.  </p>
 <h2 id="Breakpoints"><a href="#Breakpoints" class="headerlink" title="Breakpoints"></a>Breakpoints</h2><p>Los breakpoints definidos son estos (definidos en una variable SCSS)</p>
-<p><code>$grid-breakpoints: (
-  xs: 0,
-  lxs: 576px,
-  sm: 768px,
-  md: 992px,
-  lg: 1200px
-) !default;</code></p>
+<p><code>$grid-breakpoints: (   xs: 0,   lxs: 576px,   sm: 768px,   md: 992px,   lg: 1200px ) !default;</code></p>
 <h2 id="Los-containers"><a href="#Los-containers" class="headerlink" title="Los containers"></a>Los containers</h2><p>Una cosa que siempre tenia que modificar o añadir sobre <em>Bootstrap</em> eran los containers, por defecto <em>Bootstrap 4</em> solo tiene dos <em>container</em> uno fluid que ocupa el 100% del ancho del navegador y el fijo que adquiere distintos tamaños según el <em>brakpoint</em> usado.</p>
 <p>En ninguno de los proyectos esto me encajaba al 100%, el que más encajaba es el de un <em>container</em> fluido, pero con un tamaño máximo, pero ello <em>Sireno Grid</em> dispone de un ‘.container-fluid’ que se ajusta al 100% del <em>viewport</em> y un ‘.container-fluid-1920’ y un ‘.container-fluid-1440’ que se ajustan al 100% del viewport con un máximo de 1920px y 1440px respectivamente.</p>
 <h2 id="Los-gutters-o-grid-gap"><a href="#Los-gutters-o-grid-gap" class="headerlink" title="Los gutters o grid-gap"></a>Los gutters o grid-gap</h2><p>Por defecto el <code>.grid-row</code> establece un espacio entre columnas o “gutter” de 15px, pero en ocasiones necesitamos que ese gap no exista, para ellos he creado una colección de clases aplicables a cada columna que desactivan ese gap de la forma:</p>
@@ -125,32 +121,14 @@
 <h2 id="Rellenador-de-columnas-o-Col-filler"><a href="#Rellenador-de-columnas-o-Col-filler" class="headerlink" title="Rellenador de columnas o Col filler"></a>Rellenador de columnas o Col filler</h2><p>Seguramente en alguna ocasión os ha sucedido que alrededor de un container has tenido que poner un fondo distinto a cada lado (ya sea un color o una imagen), si esto te ha ocurrido el <code>.grid-filler</code> está pensado para ti.</p>
 <img src="/images/sirenogrid/fillers.png" class="">
 
-<p>&nbsp;<br>Como veras en la página de ejemplos de <strong><a target="_blank" rel="noopener" href="https://sirenogrid.com">Sireno Grid</a></strong> la maquetación de esto es muy sencilla y permite un comportamiento responsive.</p>
+<p>&nbsp;<br>Como veras en la página de ejemplos de <strong><a target="_blank" rel="noopener" href="https://sirenogrid.com/">Sireno Grid</a></strong> la maquetación de esto es muy sencilla y permite un comportamiento responsive.</p>
 <h2 id="Flexbox-fallback"><a href="#Flexbox-fallback" class="headerlink" title="Flexbox fallback"></a><em>Flexbox fallback</em></h2><p>Por desgracia no todos los usuarios actualizan sus navegadores (ya bien por que no pueden por limitaciones técnicas o de políticas corporativas o por que simplemente no lo hacen) así que era requisito establecer un fallback para las funcionalidades de <em>Sireno Grid</em> a <em>flexbox</em> para aquellos navegadores que no implementen el estándar <em>Grid Layout</em>. Esperemos poder eliminar este <em>fallback</em> cuando <em>Grid Layout</em> <a target="_blank" rel="noopener" href="https://caniuse.com/#feat=css-grid">esté más extendido</a></p>
-<h2 id="Otras-caracteristicas"><a href="#Otras-caracteristicas" class="headerlink" title="Otras características"></a>Otras características</h2><p>Me he dejado otras características para que las consulteis en la propia web de <strong><a target="_blank" rel="noopener" href="https://sirenogrid.com">Sireno Grid</a></strong> donde están explicadas y con ejemplos de uso.</p>
+<h2 id="Otras-caracteristicas"><a href="#Otras-caracteristicas" class="headerlink" title="Otras características"></a>Otras características</h2><p>Me he dejado otras características para que las consulteis en la propia web de <strong><a target="_blank" rel="noopener" href="https://sirenogrid.com/">Sireno Grid</a></strong> donde están explicadas y con ejemplos de uso.</p>
 <p>Además en la propia web se indica como usar <em>Sireno Grid</em> en tu proyecto (usando por ejemplo <strong>NPM</strong>) y se muestran ejemplos (código incluido) de las funcionalidades ya comentadas.</p>
 <p>Dejo también aquí enlazada una <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/18dWK5St8n-9aRmVK27_BSt78rnnEqjbVPBwlPxGsC48/edit?usp=sharing"><em>lightning talk</em></a> que hice sobre <em>Sireno Grid</em> en un meetup de <a target="_blank" rel="noopener" href="https://www.meetup.com/es-ES/PHPVigo/">PHPVigo</a></p>
-<h2 id="Agradecimientos"><a href="#Agradecimientos" class="headerlink" title="Agradecimientos"></a>Agradecimientos</h2><p>Agradecer a <a target="_blank" rel="noopener" href="https://pedrofiguera.com">Pedro Figueras</a> el diseño del logo y a <a target="_blank" rel="noopener" href="https://www.browserstack.com/">BrowserStack</a> la cesión de una licencia de uso de su herramienta para realizar el testeo en múltiples navegadores.</p>
+<h2 id="Agradecimientos"><a href="#Agradecimientos" class="headerlink" title="Agradecimientos"></a>Agradecimientos</h2><p>Agradecer a <a target="_blank" rel="noopener" href="https://pedrofiguera.com/">Pedro Figueras</a> el diseño del logo y a <a target="_blank" rel="noopener" href="https://www.browserstack.com/">BrowserStack</a> la cesión de una licencia de uso de su herramienta para realizar el testeo en múltiples navegadores.</p>
 <p><a target="_blank" rel="noopener" href="https://sirenogrid.com/">https://sirenogrid.com/</a></p>
-</div><script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+</div>
       </div>
     </div>
   </div>

@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/screenshot_from_2016-12-28_12-18-18.png">
 <meta property="article:published_time" content="2016-09-12T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-17T11:18:27.186Z">
+<meta property="article:modified_time" content="2021-10-12T09:08:43.341Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/screenshot_from_2016-12-28_12-18-18.png">
@@ -59,7 +59,9 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
 
 <body>
     <div id="single">
@@ -75,7 +77,7 @@
           </h4>
         </a>
       </div>
-      <div class="hidden-xs col-sm-6">
+      <div class="hidden-xs hidden-lxs col-sm-6">
         <h3 class="subtitle">Módulo Drupal 7: Cuenta atras lanzamiento website</h3>
       </div>
     </div>
@@ -100,35 +102,17 @@
       </div>
       
       <div class="content markdown">
-        <p>En más de una ocasión nos ha sucedido que una vez finalizado el trabajo en un sitio web, el cliente solicita que este no se publique de forma instantanea, si no que aparezca una página en la que se muestre una <strong>cuenta atrás</strong> y que una vez esta cuenta llege a 0 el site este online. </p>
-<p>Tradicionalmente esto lo realizabamos de forma manual, pero tiene bastantes desventajas, como tener que estar pendiente de hacer la publicación del sitio. Por ello decidimos crear un <strong>módulo para Drupal 7</strong> que permitiese hacer esta tarea de forma <strong>automática</strong> y que además fuese facil de gestionar por el cliente llegado el caso de que necesitase ajustar la fecha límite de la cuenta atrás.</p>
-<p>Llamamos a este módulo <strong>Site publish countdown</strong> y actualmente esta en el sandbox de módulos de Drupal <a target="_blank" rel="noopener" href="https://www.drupal.org/sandbox/sergiocarracedo/2718591">https://www.drupal.org/sandbox/sergiocarracedo/2718591</a></p>
-<p>Este módulo, una vez instalado y activado, permite al administrador del sitio web establecer la fecha de lanzamiento antes de la cual, <strong>redirigirá todas las visitas anónimas</strong> (a cualquier url) a la página de cuentra atrás. </p>
+        <p>En más de una ocasión nos ha sucedido que una vez finalizado el trabajo en un sitio web, el cliente solicita que este no se publique de forma instantanea, si no que aparezca una página en la que se muestre una <strong>cuenta atrás</strong> y que una vez esta cuenta llege a 0 el site este online.&nbsp;</p>
+<p>Tradicionalmente esto lo realizabamos de forma manual, pero tiene bastantes desventajas, como tener que estar pendiente de hacer la publicación del sitio. Por ello decidimos crear un <strong>módulo para Drupal 7</strong> que permitiese hacer esta tarea de forma <strong>automática</strong> y que además fuese facil de gestionar por el cliente&nbsp;llegado el caso de que necesitase ajustar la fecha límite de la cuenta atrás.</p>
+<p>Llamamos a este módulo&nbsp;<strong>Site publish countdown</strong>&nbsp;y actualmente esta en el sandbox de módulos de Drupal&nbsp;<a target="_blank" rel="noopener" href="https://www.drupal.org/sandbox/sergiocarracedo/2718591">https://www.drupal.org/sandbox/sergiocarracedo/2718591</a></p>
+<p>Este módulo, una vez instalado y activado, permite al administrador del sitio web establecer la fecha de lanzamiento antes de la cual, <strong>redirigirá todas las visitas anónimas</strong> (a cualquier url) a la página de cuentra atrás.&nbsp;</p>
 <p>El adminsitrador o administadores el sito podrán loguearse de forma habitual, y estos podran ver el sitio web con normalidad para poder realizar tareas antes del lanzamiento de la web.</p>
-<p>Una vez agotada la cuenta a atrás la propia página se recargará mostrando ya la versión <em>normal</em> del sitio.</p>
-<p>Este módulo permite a los desarrolladores maquetar y personalizar la página de cuenta atrás, solo es necesario añadir el fichero <em>sitepublishcountdown.tpl.php</em> en la carpeta del tema usado por la web (y limpiar el <em>theme registy</em>). El único contenido obligatorio de este fichero es la siguente linea:</p>
+<p>Una vez agotada la cuenta a atrás la propia página se recargará mostrando ya la versión&nbsp;<em>normal</em>&nbsp;del sitio.</p>
+<p>Este módulo permite a los desarrolladores maquetar y personalizar la página de cuenta atrás, solo es necesario añadir el fichero&nbsp;<em>sitepublishcountdown.tpl.php</em>&nbsp;en la carpeta del tema usado por la web (y limpiar el <em>theme registy</em>). El único contenido obligatorio de este fichero es la siguente linea:</p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;time datetime="&lt;?php print $datetime; ?&gt;"&gt;&lt;?php print $datetime; ?&gt;&lt;/time&gt;</span><br></pre></td></tr></tbody></table></figure>
 
 <p>que es la que se encarga de mostrar la cuenta atrás. El resto queda a libre disposición del maquetador del site para que pueda personalizarla.</p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       </div>
     </div>
   </div>

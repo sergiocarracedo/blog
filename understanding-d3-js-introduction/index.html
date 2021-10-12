@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/2021/d3js_intro.jpg">
 <meta property="article:published_time" content="2021-04-19T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-17T11:18:27.190Z">
+<meta property="article:modified_time" content="2021-10-12T09:08:43.345Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/d3js_intro.jpg">
@@ -59,7 +59,9 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
 
 <body>
     <div id="single">
@@ -75,7 +77,7 @@
           </h4>
         </a>
       </div>
-      <div class="hidden-xs col-sm-6">
+      <div class="hidden-xs hidden-lxs col-sm-6">
         <h3 class="subtitle">Understanding d3.js - A simple line chart</h3>
       </div>
     </div>
@@ -103,10 +105,10 @@
         <p>Before starting is important to say that <strong>d3.js is not a chart library is a library for making charts</strong>, if you are expecting to pass the data to the library and set 4, 5,… 10 params and get the chart to render, d3.js is not your library.</p>
 <p><a target="_blank" rel="noopener" href="https://d3js.org/">d3.js</a> is more than that, is a very flexible library to manage data (data-driven documents) and create the representation of that data (not only charts). <strong>d3.js</strong> provides you the different pieces to create your customized data visualizations (for example charts)</p>
 <p>Let’s start creating a simple line chart:</p>
-<p><img src="/images/2021/d3.js/line-chart.png" alt=""></p>
+<p><img src="/images/2021/d3.js/line-chart.png"></p>
 <h1 id="Scales-domain-and-range"><a href="#Scales-domain-and-range" class="headerlink" title="Scales, domain, and range"></a>Scales, domain, and range</h1><p>Simplifying, there are two pieces in the chart: Axis and line. Let’s talk about the axis.<br>In the example the chart we have two axes: X and Y, but we can have more or less, depending on the chart type.</p>
 <p>Axis is one of the reference lines of a coordinate system, every single point represents a value in the coordinate system and also a position in the canvas which is displaying the chart.</p>
-<p>In our example, in the y-axis the ‘1’ value of the chart is drawn in the position 31px from the axis start, but in SVG or canvas the origin of the coordinate system start on the top left corner, and ‘y’ grows in the direction to monitor bottom. Then to print the 1 value in our chart we must use 319 - 31 (288) as y position.<br><img src="/images/2021/d3.js/line-chart-axis.png" alt=""></p>
+<p>In our example, in the y-axis the ‘1’ value of the chart is drawn in the position 31px from the axis start, but in SVG or canvas the origin of the coordinate system start on the top left corner, and ‘y’ grows in the direction to monitor bottom. Then to print the 1 value in our chart we must use 319 - 31 (288) as y position.<br><img src="/images/2021/d3.js/line-chart-axis.png"></p>
 <p>That’s complicated, and can be even more, if the relation between screen coordinates and chart coordinates aren’t lineal, for example, a logarithmic chart.</p>
 <p><strong>d3.js</strong> brings us a component to help us to abstract the conversion between screen coordinates and chart coordinates:</p>
 <h2 id="d3-scale"><a href="#d3-scale" class="headerlink" title="d3-scale"></a>d3-scale</h2><p><a target="_blank" rel="noopener" href="https://github.com/d3/d3-scale"><strong>d3-scale</strong></a> is our component.<br>There are a lot of different types of scales: Continuous (Linear, Power, log, identity, time, radial), Sequential, Ordinal, etc…  For our example chart, we will use Linear.</p>
@@ -162,7 +164,7 @@
 <blockquote>
 <p>About the <a target="_blank" rel="noopener" href="https://github.com/d3/d3-selection/blob/v2.0.0/README.md#selection_call"><code>call</code></a> method: This method call the function passed as argument and uses as first argument for the function of the selected element. In this case is the same as execute: <code>d3.axisBottom(xScale)(svg.select('.xaxis'))</code> (Remember that d3.axisBottom returns a function). The advantage of using <code>call</code> is you can concatenate methods because call returns the selection, not the result of the function</p>
 </blockquote>
-<p>After that we can see our x-axis <span class="github-emoji" style="color: transparent;background:no-repeat url(https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8) center/contain" data-src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8">🎉</span></p>
+<p>After that we can see our x-axis <span class="github-emoji"><span>🎉</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
 <h3 id="Rendering-the-y-axis"><a href="#Rendering-the-y-axis" class="headerlink" title="Rendering the y-axis"></a>Rendering the y-axis</h3><p>Rendering the Y axis is almost the same as X axis:</p>
 <figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">svg</span><br><span class="line">  .append(<span class="string">'g'</span>)</span><br><span class="line">  .attr(<span class="string">'class'</span>, <span class="string">'y axis'</span>)</span><br><span class="line">  .attr(<span class="string">'transform'</span>, <span class="string">'translate('</span> + margin.left + <span class="string">','</span> + margin.top + <span class="string">')'</span>)</span><br><span class="line">  .call(d3.axisLeft(yScale))</span><br></pre></td></tr></tbody></table></figure>
 
@@ -203,25 +205,7 @@
 <p>And this is all for the moment. <em>d3</em> is a powerful tool but needs you to know some concepts before starting to create charts. The example we did in this post is very, very simple but I think is a good starting point.</p>
 <p>My idea is to write more post about <em>d3</em> going deeper into the current concept and how to configure and customize the current components (for example configure the axis, the labels, etc) </p>
 <iframe src="https://codesandbox.io/embed/sharp-water-bmk3t?fontsize=14&amp;hidenavigation=1&amp;theme=dark&amp;view=preview" width="100%" height="400px" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       </div>
     </div>
   </div>

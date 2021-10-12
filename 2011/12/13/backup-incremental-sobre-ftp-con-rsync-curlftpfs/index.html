@@ -17,16 +17,16 @@
     
 <link rel="stylesheet" href="/css/sergiocarracedo.css">
 
-    <meta name="description" content="Seguro que en alguna ocasión has necesitado realizar un backup de un sitio web al que solo tienes acceso mediante ftp. Lo habitual es emplear un cliente ftp tipo filezilla o directamente trabajando en">
+    <meta name="description" content="Seguro que en alguna ocasión has necesitado realizar un backup de un sitio web al que solo tienes acceso mediante ftp. Lo habitual es emplear un cliente ftp tipo filezilla&amp;nbsp;o directamente trabajan">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Backup incremental sobre FTP con rsync + curlftpfs">
 <meta property="og:url" content="https://sergiocarracedo.es/2011/12/13/backup-incremental-sobre-ftp-con-rsync-curlftpfs/index.html">
 <meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="Seguro que en alguna ocasión has necesitado realizar un backup de un sitio web al que solo tienes acceso mediante ftp. Lo habitual es emplear un cliente ftp tipo filezilla o directamente trabajando en">
+<meta property="og:description" content="Seguro que en alguna ocasión has necesitado realizar un backup de un sitio web al que solo tienes acceso mediante ftp. Lo habitual es emplear un cliente ftp tipo filezilla&amp;nbsp;o directamente trabajan">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/back-to-school-paper-colored-paper-stationery-159519.jpeg">
 <meta property="article:published_time" content="2011-12-13T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-17T11:18:27.186Z">
+<meta property="article:modified_time" content="2021-10-12T09:08:43.341Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/back-to-school-paper-colored-paper-stationery-159519.jpeg">
@@ -59,7 +59,9 @@
       }
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
 
 <body>
     <div id="single">
@@ -75,7 +77,7 @@
           </h4>
         </a>
       </div>
-      <div class="hidden-xs col-sm-6">
+      <div class="hidden-xs hidden-lxs col-sm-6">
         <h3 class="subtitle">Backup incremental sobre FTP con rsync + curlftpfs</h3>
       </div>
     </div>
@@ -100,47 +102,28 @@
       </div>
       
       <div class="content markdown">
-        <p>Seguro que en alguna ocasión has necesitado realizar un <em>backup</em> de un sitio web al que solo tienes acceso mediante <strong>ftp</strong>. Lo habitual es emplear un cliente ftp tipo <a target="_blank" rel="noopener" href="http://filezilla-project.org/">filezilla</a> o directamente trabajando en bash. El problema se plantea cuando, por ejemplo necesitamos realizar una copia incremental del sitio web y no tenemos acceso <strong>ssh</strong> sobre el que pueda trabajar <strong><a target="_blank" rel="noopener" href="http://es.wikipedia.org/wiki/Rsync">rsync</a> *<em>o *</em><a target="_blank" rel="noopener" href="http://www.cis.upenn.edu/~bcpierce/unison/">unison</a></strong>. La solución nos la da <strong><a target="_blank" rel="noopener" href="http://curlftpfs.sourceforge.net/">curlftpfs</a></strong> que nos permite montar un directorio ftp en nuestro sistema para tratarlo como si fuese una carpeta local y realizar un rsyn o unison de forma normal.</p>
+        <p>Seguro que en alguna ocasión has necesitado realizar un <em>backup</em> de un sitio web al que solo tienes acceso mediante <strong>ftp</strong>. Lo habitual es emplear un cliente ftp tipo <a target="_blank" rel="noopener" href="http://filezilla-project.org/">filezilla</a>&nbsp;o directamente trabajando en bash. El problema se plantea cuando, por ejemplo necesitamos realizar una copia incremental del sitio web y no tenemos acceso <strong>ssh</strong> sobre el que pueda trabajar **<a target="_blank" rel="noopener" href="http://es.wikipedia.org/wiki/Rsync">rsync</a>&nbsp;**o <strong><a target="_blank" rel="noopener" href="http://www.cis.upenn.edu/~bcpierce/unison/">unison</a></strong>. La solución nos la da <strong><a target="_blank" rel="noopener" href="http://curlftpfs.sourceforge.net/">curlftpfs</a></strong>&nbsp;que nos permite montar un directorio ftp en nuestro sistema para tratarlo como si fuese una carpeta local y realizar un rsyn o unison de forma normal.</p>
 <p>En primer lugar instalamos <strong>curlftpfs</strong> </p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install curlftpfs</span><br></pre></td></tr></tbody></table></figure>
 
-<p>A continuación debemos editar nuestro <code>/etc/fstab</code> con nuestro editor favorito </p>
+<p>A continuación debemos editar nuestro <code>/etc/fstab</code>&nbsp;con nuestro editor favorito </p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nano /etc/fstab</span><br></pre></td></tr></tbody></table></figure>
 <p>y le añadimos la siguiente linea <code>curlftpfs#_user_:_pass_@_host.com_/_ruta-carpeta-remota_ /_punto-de-montaje_/ fuse ro,user,uid=_userid_,auto 0 0</code></p>
 <p>Donde:</p>
 <ul>
-<li>user: es el nombre de usuario ftp</li>
-<li>pass: el la contraseña de acceso al ftp</li>
-<li>host: es el host ftp</li>
-<li>userid: es el id del usuario no-root al que le permitiremos montar la carpeta, podemos obtener el nuestro mediante el comando</li>
+<li>  user: es el nombre de usuario ftp</li>
+<li>  pass: el la contraseña de acceso al ftp</li>
+<li>  host: es el host ftp</li>
+<li>  userid: es el id del usuario no-root al que le permitiremos montar la carpeta, podemos obtener el nuestro mediante el comando</li>
 </ul>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ id</span><br></pre></td></tr></tbody></table></figure>
 
-<p>En este caso he montado la carpeta <strong>ftp</strong> en modo solo lectura por razones de seguridad (nadie quiere borrar por accidente su sitio web ;) ) La carpeta se montara en el próximo reinicio del sistema o podemos forzarlo mediante </p>
+<p>En este caso he montado la carpeta <strong>ftp</strong>&nbsp;en modo solo lectura por razones de seguridad (nadie quiere borrar por accidente su sitio web ;) ) La carpeta se montara en el próximo reinicio del sistema o podemos forzarlo mediante </p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mount -a</span><br></pre></td></tr></tbody></table></figure>
-
 <p>Lo siguiente realizar un rsync entre la carpeta montada y la carpeta donde almacenaremos el backup, por ejemplo: </p>
 <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rsync -arzvl /punto-de-montaje/* /home/usuario/backups/mi-ftp&lt;/span&gt;</span><br></pre></td></tr></tbody></table></figure>
-<p>Solo nos quedaria crear un script y añadirlo a nuestro <strong>crontab</strong> para que se realice el backup automaticamente. Nota: La velocidad respecto a una sincronización de rsync sobre  SSH es considerablemente inferior, por ello esta técnica de considerarse una alternativa cuando no tenemos posibilididad de acceso <em>ssh</em></p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+<p>Solo nos quedaria crear un script y añadirlo a nuestro&nbsp;<strong>crontab</strong>&nbsp;para que se realice el backup automaticamente. Nota: La velocidad respecto a una sincronización de rsync sobre &nbsp;SSH es considerablemente inferior, por ello esta técnica de considerarse una alternativa cuando no tenemos posibilididad de acceso <em>ssh</em></p>
+
       </div>
     </div>
   </div>
