@@ -1,7 +1,7 @@
 ---
-title: How to create a table with fixed header
+title: How to create a table with a fixed header
 date: 2021-10-12
-permalink: how-to-create-a-table-with-fixed-header/
+permalink: how-to-create-a-table-with-a-fixed-header/
 cover: /images/2021/table-fixed-header.jpg
 ---
 Tables in HTML are one of the older things in the standard, even before CSS we had HTML tables. In the past tables were used to markup the webpages, but the correct usage is to display tabular data.
