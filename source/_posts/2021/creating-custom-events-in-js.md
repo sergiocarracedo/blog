@@ -31,7 +31,7 @@ This function will receive as param a function will be called when the event dis
 
 For example:
 ```ts
-// Out app
+// Main app
 import myTodoComponent from 'myTodoComponent'
 myTodoComponent.setToDoCreateEventHandler(() => alert('TO-DO created'))
 ```
@@ -46,7 +46,6 @@ export function setToDoCreateEventHandler (handler: Function): void {
 }
 ```
 
-Very simple: 
 * We have the variable `toDoCreateEventHandler` where to store the handler, by default I set an empty function `() => {}` that doesn't do anything just to avoid manage `null` values (but you can allow `null` or `undefined` as a handler and check it before dispatch it)
 * Our exposed `setToDoCreateEventHandler` function is in charge of set the handler to the variable
 
