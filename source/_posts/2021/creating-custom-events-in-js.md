@@ -1,6 +1,6 @@
 ---
 title: "Creating custom events in JS"
-date: 2021-10-20
+date: 2021-10-18
 permalink: creating-custom-events-in-js/
 cover: /images/2021/custom-events-1314544.jpg
 ---
