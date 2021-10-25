@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://sergiocarracedo.es/images/2021/custom-events-1314544.jpg">
 <meta property="article:published_time" content="2021-10-18T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-10-18T06:44:54.354Z">
+<meta property="article:modified_time" content="2021-10-25T07:09:49.463Z">
 <meta property="article:author" content="Sergio Carracedo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/custom-events-1314544.jpg">
@@ -117,12 +117,11 @@
 </blockquote>
 <p>This function will receive as param a function will be called when the event dispatches</p>
 <p>For example:</p>
-<figure class="highlight ts"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Out app</span></span><br><span class="line"><span class="keyword">import</span> myTodoComponent <span class="keyword">from</span> <span class="string">'myTodoComponent'</span></span><br><span class="line">myTodoComponent.setToDoCreateEventHandler(<span class="function">() =&gt;</span> alert(<span class="string">'TO-DO created'</span>))</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight ts"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Main app</span></span><br><span class="line"><span class="keyword">import</span> myTodoComponent <span class="keyword">from</span> <span class="string">'myTodoComponent'</span></span><br><span class="line">myTodoComponent.setToDoCreateEventHandler(<span class="function">() =&gt;</span> alert(<span class="string">'TO-DO created'</span>))</span><br></pre></td></tr></tbody></table></figure>
 
 <p>The implementation of the method in the component could be something like:</p>
 <figure class="highlight ts"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Component</span></span><br><span class="line"><span class="keyword">let</span> toDoCreateEventHandler: <span class="built_in">Function</span> = <span class="function">() =&gt;</span> {}</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">setToDoCreateEventHandler</span> (<span class="params">handler: <span class="built_in">Function</span></span>): <span class="title">void</span> </span>{</span><br><span class="line">  toDoCreateEventHandler = handler</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>Very simple: </p>
 <ul>
 <li>We have the variable <code>toDoCreateEventHandler</code> where to store the handler, by default I set an empty function <code>() =&gt; {}</code> that doesn’t do anything just to avoid manage <code>null</code> values (but you can allow <code>null</code> or <code>undefined</code> as a handler and check it before dispatch it)</li>
 <li>Our exposed <code>setToDoCreateEventHandler</code> function is in charge of set the handler to the variable</li>
@@ -147,6 +146,16 @@
   <div class="container-fluid-1200">
     <div class="grid-row">
       <div class="next col-xs-6">
+        
+          <div class="nav-previous">
+            <a href="https://sergiocarracedo.es//database-migrations-in-golang/" rel="prev" class="nav-cover">
+              <img src="/images/2021/teaser_go-migrate-pexels-james-wheeler-1598075.jpg">
+            </a>
+
+            <a href="https://sergiocarracedo.es//database-migrations-in-golang/" rel="prev" class="nav-text">
+              <i class="fa fa-arrow-left"></i> Database migrations in Golang.
+            </a>
+          </div>
         
       </div>
       <div class="prev col-xs-6">
