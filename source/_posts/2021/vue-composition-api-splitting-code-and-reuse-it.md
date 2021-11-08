@@ -1,6 +1,6 @@
 ---
 title: "Vue Composition API: How to split and reuse code"
-date: 2021-11-2
+date: 2021-11-02
 permalink: vue-composition-api-how-to-split-and-reuse-code/
 cover: /images/2021/vue-composition-api-3y1zF4hIPCg-unsplash.jpg
 ---

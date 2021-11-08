@@ -1,6 +1,6 @@
 ---
 title: Database migrations in Golang.
-date: 2021-11-10
+date: 2021-10-25
 permalink: database-migrations-in-golang/
 cover: /images/2021/go-migrate-pexels-james-wheeler-1598075.jpg
 ---
