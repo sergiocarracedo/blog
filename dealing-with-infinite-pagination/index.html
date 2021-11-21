@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sergio Carracedo - Dealing with infinite pagination</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="keywords" content="Sergio Carracedo,"> 
+    <meta name="description" content="Sergio Carracedo personal Blog,In the software development context, pagination is the process of dividing a list of items (rows) i,"> 
+    <meta name="author" content="Sergio Carracedo"> 
+    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="/css/sergiocarracedo.css">
+
+    <meta name="description" content="In the software development context, pagination is the process of dividing a list of items (rows) into groups of the same size. For example if we have these items: 1const items &#x3D; [1, 2, 3, 4, 5, 6, 7,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dealing with infinite pagination">
+<meta property="og:url" content="https://sergiocarracedo.es/dealing-with-infinite-pagination/index.html">
+<meta property="og:site_name" content="Sergio Carracedo">
+<meta property="og:description" content="In the software development context, pagination is the process of dividing a list of items (rows) into groups of the same size. For example if we have these items: 1const items &#x3D; [1, 2, 3, 4, 5, 6, 7,">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sergiocarracedo.es/images/2021/infinite-pagination-GVYRkT5f1tA-unsplash.jpg">
+<meta property="article:published_time" content="2021-11-22T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-21T16:59:31.118Z">
+<meta property="article:author" content="Sergio Carracedo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/infinite-pagination-GVYRkT5f1tA-unsplash.jpg">
+
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <script>
+      function runGA() {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459072-1', 'auto');
+        ga('send', 'pageview');
+      }
+
+      function runDisqus() {
+        /*var disqus_config = function () {
+          this.page.url = 'https://sergiocarracedo.es/';
+          this.page.identifier = 'sergiocarracedo';
+        }*/
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+
+      function runCookiesAllowed() {
+        runGA();
+        runDisqus();
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <div id="single">
+    <div id="top">
+  <div class="bar" style="width: 0;"></div>
+  <div class="container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 col-sm-3">
+        <a class="back-to-home" href="/">
+          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
+          <h4>
+            Sergio Carracedo
+          </h4>
+        </a>
+      </div>
+      <div class="hidden-xs hidden-lxs col-sm-6">
+        <h3 class="subtitle">Dealing with infinite pagination</h3>
+      </div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article container-fluid-1200">
+  <div class="grid-row">
+    <div class="main col-xs-12">
+      <h1 class="title">
+        Dealing with infinite pagination
+      </h1>
+      <div class="stuff">
+        <span>November 22, 2021</span>
+      </div>
+
+      
+      <div class="article-image">
+        <img src="/images/2021/header_infinite-pagination-GVYRkT5f1tA-unsplash.jpg" width="1200" height="400">
+      </div>
+      
+      <div class="content markdown">
+        <p>In the software development context, pagination is the process of dividing a list of items (rows) into groups of the same size.</p>
+<p>For example if we have these items:</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> items = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>]</span><br></pre></td></tr></tbody></table></figure>
+<p>and we want to paginate in pages (groups) of 5 elements we should know the list or the total items in the list, and we can calculate the number of pages, and how to get the items on a page (I’m assuming that the page value starts in 0)</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> itemsPerPage = <span class="number">5</span></span><br><span class="line"><span class="keyword">const</span> items = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pages = <span class="built_in">Math</span>.ceil(items.length / itemsPerPage)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getPageItems = <span class="function">(<span class="params">items, page, itemsPerPage</span>) =&gt;</span> {</span><br><span class="line">  <span class="keyword">return</span> items.slice(page * itemsPerPage, itemsPerPage)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p> This is the ideal situation where the list of items is known, and we are working only on frontend or backend.</p>
+<p>The common situation is when your frontend shows the items and the paginator, and you get the data from an API. In this case, you will do a request like <code>https://example.com/list-items/?page=1</code> or better using <code>offset</code> and <code>limit</code> instead of <code>page</code> for more flexibility: <code>https://example.com/list-items/offset=0&amp;limit=5</code></p>
+<p>In this situation to render the paginator, we must know the total number of items or pages, that is why the response of the server should be something similar to:</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  <span class="attr">"pagination"</span>: {</span><br><span class="line">    <span class="attr">"totalItems"</span>: <span class="number">16</span></span><br><span class="line">  },</span><br><span class="line">  <span class="attr">"items"</span>: [...]</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>Then, after loading the first page we will get the total items in the server, and we can calculate the number of pages and render the paginator.</p>
+<p>If our database table from where we get the items is big, the operation of counting the total number of events can be very expensive.</p>
+<h1 id="Pagination-without-knowing-the-total-count-of-items-a-k-a-Infinite-pagination"><a href="#Pagination-without-knowing-the-total-count-of-items-a-k-a-Infinite-pagination" class="headerlink" title="Pagination without knowing the total count of items (a.k.a. Infinite pagination)"></a>Pagination without knowing the total count of items (a.k.a. Infinite pagination)</h1><p>The concept is very similar to the <em>infinite scrolling</em>, where the user does scroll and when the scroll is in the last item, your component loads a few items more, and so on.</p>
+<p>The different thing is we must show a paginator. How we should show the paginator?</p>
+<p>As we don’t know the total number of pages we have some questions to answer: </p>
+<ul>
+<li>How many pages we must show in the paginator?</li>
+<li>What is the last page?</li>
+</ul>
+<h2 id="The-algorithm"><a href="#The-algorithm" class="headerlink" title="The algorithm"></a>The algorithm</h2><p>This algorithm will help us to know how many pages we must show and how to know the last page</p>
+<p>In our paginator component we must have two variables: </p>
+<ul>
+<li><code>page</code> is the current page</li>
+<li><code>pages</code> is the total number of pages</li>
+<li><code>lastPage</code> is the last confirmed page (default value <code>Number.POSITIVE_INFINITY</code>)</li>
+</ul>
+<p><code>pages</code> is a dynamic value, the initial value is <code>1</code></p>
+<ol>
+<li>Load the first page using the <code>offset</code> and <code>limit</code> params. <code>offset</code> will be 0 (it’s the first page), and limit will be, let’s say 10</li>
+<li>If the count of loaded items is less than the <code>limit</code> in this case 10, then we know this is the last page</li>
+<li>If not, if the count is 10, we increment the value of <code>pages</code> by 1, then our component must render a new page button.</li>
+</ol>
+<p>There is a special case: What happens if the last page has 10 items?<br>In that case when the user tries to go to this page, when we will load it we will get an empty list of items, then, we must set the value of <code>lastPage</code> to the last page with items and use <code>lastPage</code> to only render this number of pages.</p>
+<p>With this simple algorithm we can create an infinite paginator, and obviously, it has some disadvantages:</p>
+<ul>
+<li>The user only can navigate the pages in order (Can’t go to page 10 from page 1 without pass through the page 2,3,4,5…)</li>
+<li>If we have the case of 10 items (<code>limit</code> = page items) in the last page, is strange for the user to go back to the last page and remove the next button</li>
+</ul>
+<p>Despite these disadvantages is a good solution if our backend doesn’t let us know the total number of pages.</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-nav">
+  <div class="container-fluid-1200">
+    <div class="grid-row">
+      <div class="next col-xs-6">
+        
+      </div>
+      <div class="prev col-xs-6">
+        
+          <div class="nav-next">
+            <a href="https://sergiocarracedo.es//integration-tests-in-golang-with-dockertest/" rel="next" class="nav-cover">
+              <img src="/images/2021/teaser_dockertest-pexels-miguel-3785927.jpg">
+            </a>
+
+            <a href="https://sergiocarracedo.es//integration-tests-in-golang-with-dockertest/" rel="next" class="nav-text">
+              Integration tests in Golang with dockertest  <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="post-comments container-fluid-1200">
+    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+</div>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="post-aboutme">
+  <div class="me container-fluid">
+    <div class="grid-row">
+      <div class="col-xs-12 mb-5">
+        <div class="social">
+  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-linkedin"></i>
+  </a>
+  <a href="mailto:hi+blog@sergiocarracedo.es" class="social-link" title="hi+blog@sergiocarracedo.es">
+    <i class="fas fa-envelope"></i>
+  </a>
+
+  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-drupal"></i>
+  </a>
+
+
+  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
+    <i class="fab fa-lastfm"></i>
+  </a>
+  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
+    <i class="fab fa-tumblr"></i>
+  </a>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="claim container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid-1440">
+    <div class="grid-row">
+      <div class="col-xs-12">
+        <a href="/" class="back">
+          Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/sergiocarracedo.js"></script>
+
+
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#004262",
+              "text": "#fff"
+            },
+            "button": {
+              "background": "#8ec760",
+              "text": "#ffffff"
+            }
+          },
+          "type": "opt-out",
+          "content": {
+            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
+            "allow": "Ok, continua",
+            "deny": "Nada de cookies",
+            "link": "Saber más",
+            "href": "https://sergiocarracedo.es/cookies.html",
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          },
+          "onInitialise" : function(status) {
+            if (status == 'allow') {
+               runCookiesAllowed()
+            }
+          }
+        })
+      });
+    </script>
+
+
+</html>

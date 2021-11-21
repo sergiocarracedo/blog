@@ -1893,6 +1893,8 @@ pre .javascript .function {
   font-size: 18px;
   line-height: 1.4em;
   color: #fff; }
+  .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    line-height: 1.2em; }
   .content h1 {
     font-size: 39px; }
   .content h2 {
