@@ -1,6 +1,6 @@
 ---
 title: Dealing with infinite pagination
-date: 2021-11-30
+date: 2021-11-22
 permalink: dealing-with-infinite-pagination/
 cover: /images/2021/infinite-pagination-GVYRkT5f1tA-unsplash.jpg
 ---

@@ -1,16 +1,16 @@
 {
   "skills": [
     {
-      "name": "JS",
-      "icon": "fab fa-js",
-      "color": "#F0DB4F",
-      "textColor": "black"
-    },
-    {
       "icon": "fab fa-js",
       "name": "TypeScript",
       "color": "#007acc",
       "textColor": "white"
+    },
+    {
+      "name": "JS",
+      "icon": "fab fa-js",
+      "color": "#F0DB4F",
+      "textColor": "black"
     },
     {
       "name": "Vue",
@@ -19,21 +19,20 @@
       "textColor": "white"
     },
     {
-      "name": "PHP",
-      "color": "#787CB5",
-      "textColor": "white",
-      "icon": "fab fa-php"
-    },
-    {
       "name": "Golang",
       "color": "#29BEB0",
       "textColor": "white"
     },
     {
-      "name": "Drupal",
-      "color": "#53B0EB",
+      "name": "Node.js",
+      "color": "#68A063",
+      "icon": "fab fa-node-js"
+    },
+    {
+      "name": "PHP",
+      "color": "#787CB5",
       "textColor": "white",
-      "icon": "fab fa-drupal"
+      "icon": "fab fa-php"
     },
     {
       "name": "Symfony",
@@ -41,7 +40,12 @@
       "textColor": "white",
       "color": "#333"
     },
-
+    {
+      "name": "Drupal",
+      "color": "#53B0EB",
+      "textColor": "white",
+      "icon": "fab fa-drupal"
+    },
     {
       "name": "Linux",
       "icon": "fab fa-linux",
@@ -51,6 +55,22 @@
       "name": "Sass",
       "icon": "fab fa-sass",
       "color": "#c69"
+    },
+    {
+      "name": "k8s",
+      "icon": "fas fa-sitemap"
+    },
+    {
+      "name": "Docker",
+      "icon": "fas fa-tasks"
+    },
+    {
+      "name": "GitHub Actions",
+      "icon": "fas fa-rocket"
+    },
+    {
+      "name": "Postgres",
+      "icon": "fas fa-database"
     },
     {
       "name": "MySQL",
