@@ -1,6 +1,6 @@
 ---
 title: 'Running workflows in you k8s cluster: Argo Workflows'
-date: 2021-11-30
+date: 2021-12-28
 permalink: running-workflows-in-you-k8s-cluster-argo-workflows/
 cover: /images/2021/argo-workflows/cover.jpg
 ---
