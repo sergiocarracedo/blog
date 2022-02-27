@@ -1,7 +1,7 @@
 ---
 title: 'Generics in Golang 1.18'
 date: 2022-02-28
-permalink: generics-in-golang-1.10/
+permalink: generics-in-golang-1.18/
 cover: /images/2022/go-generics-4016522.jpg
 ---
 At the moment of writing this post Go 1.18 wasn't released  (the latest version for 1.18 is the [Release Candidate 1](https://groups.google.com/g/golang-announce/c/QHL1fTc352o/m/5sE6moURBwAJ)), but we can still play using the [playground](https://go.dev/play/) (enabling the dev branch) or installing the RC
