@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "sass-loader": "^12.1.0",
     "sireno-grid": "^0.3.0"
   },
