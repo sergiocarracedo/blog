@@ -7,16 +7,16 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "node-sass": "^6.0.1",
-    "sass-loader": "^12.1.0",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^12.6.0",
     "sireno-grid": "^0.3.0"
   },
   "dependencies": {
     "global": "^4.4.0",
-    "hexo": "^5.0.0",
-    "hexo-server": "^2.0.0",
-    "highlight.js": "11.2.0",
-    "prismjs": "1.25.0",
+    "hexo": "^6.0.0",
+    "hexo-server": "^3.0.0",
+    "highlight.js": "11.4.0",
+    "prismjs": "1.27.0",
     "tar": "6.1.11",
     "trim-newlines": "4.0.2"
   }
