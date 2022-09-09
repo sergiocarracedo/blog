@@ -1,5 +1,5 @@
 ---
-title: 'Las arquitecturas limpias como necesidas'
+title: 'Las arquitecturas limpias como necesidad'
 date: 2022-09-08
 permalink: arquitecturas-limpias-como-necesidad/
 cover: /images/2022/arquitecturas-limpias-1650627.jpg
@@ -9,7 +9,7 @@ cover: /images/2022/arquitecturas-limpias-1650627.jpg
 
 Todo tiene su momento y las soluciones que valen hoy, pueden no servir para mañana.
 
-Por eso, cuando hablamos de arquitecturas limpias, clean code, desacomplarte del framework, etc. en muchos casos nos suenan a que nuestro producto va a ser mejor solo por el hecho de aplicarlas.
+Por eso, cuando hablamos de arquitecturas limpias, clean code, desacomparte del framework, etc. en muchos casos nos suenan a que nuestro producto va a ser mejor solo por el hecho de aplicarlas.
 
 Pero no siempre es así, hay fases en la que la simplicidad del código prima sobre su “belleza”, donde la rapidez en el delivery prima sobre la abstracción, pero lo importante es que seamos conscientes antes o despues necesitaremos arquitecturas limpias para seguir creciendo y escalando.
 
