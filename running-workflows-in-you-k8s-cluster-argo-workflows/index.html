@@ -1,356 +1,105 @@
-
-<!DOCTYPE html>
-<html lang="en" class="loading">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sergio Carracedo - Running workflows in you k8s cluster: Argo Workflows</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="keywords" content="Sergio Carracedo,"> 
-    <meta name="description" content="Sergio Carracedo personal Blog,Simplifying it, a workflow is a list of tasks to run in some order and/or fulfilling some dependenc,"> 
-    <meta name="author" content="Sergio Carracedo"> 
-    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    
-<link rel="stylesheet" href="/css/sergiocarracedo.css">
-
-    <meta name="description" content="Simplifying it, a workflow is a list of tasks to run in some order and&#x2F;or fulfilling some dependencies, for example, if we have 5 tasks to run: A, B, C, D, E.Task C depends on finishing tasks A and B,">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Running workflows in you k8s cluster: Argo Workflows">
-<meta property="og:url" content="https://sergiocarracedo.es/running-workflows-in-you-k8s-cluster-argo-workflows/index.html">
-<meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="Simplifying it, a workflow is a list of tasks to run in some order and&#x2F;or fulfilling some dependencies, for example, if we have 5 tasks to run: A, B, C, D, E.Task C depends on finishing tasks A and B,">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://sergiocarracedo.es/images/2021/argo-workflows/cover.jpg">
-<meta property="article:published_time" content="2021-12-28T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-09-09T06:54:31.714Z">
-<meta property="article:author" content="Sergio Carracedo">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/argo-workflows/cover.jpg">
-
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script>
-      function runGA() {
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-133459072-1', 'auto');
-        ga('send', 'pageview');
-      }
-
-      function runDisqus() {
-        /*var disqus_config = function () {
-          this.page.url = 'https://sergiocarracedo.es/';
-          this.page.identifier = 'sergiocarracedo';
-        }*/
-        (function() { // DON'T EDIT BELOW THIS LINE
-          var d = document, s = d.createElement('script');
-          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      }
-
-      function runCookiesAllowed() {
-        runGA();
-        runDisqus();
-      }
-    </script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 6.0.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
-
-<body>
-    <div id="single">
-    <div id="top">
-  <div class="bar" style="width: 0;"></div>
-  <div class="container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 col-sm-3">
-        <a class="back-to-home" href="/">
-          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
-          <h4>
-            Sergio Carracedo
-          </h4>
-        </a>
-      </div>
-      <div class="hidden-xs hidden-lxs col-sm-6">
-        <h3 class="subtitle">Running workflows in you k8s cluster: Argo Workflows</h3>
-      </div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-    <div class="section">
-        <div class="article container-fluid-1200">
-  <div class="grid-row">
-    <div class="main col-xs-12">
-      <h1 class="title">
-        Running workflows in you k8s cluster: Argo Workflows
-      </h1>
-      <div class="stuff">
-        <span>December 28, 2021</span>
-      </div>
-
-      
-      <div class="article-image">
-        <img src="/images/2021/argo-workflows/header_cover.jpg" width="1200" height="400">
-      </div>
-      
-      <div class="content markdown">
-        <p>Simplifying it, a workflow is a list of tasks to run in some order and/or fulfilling some dependencies, for example, if we have 5 tasks to run: <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, <code>E</code>.<br>Task <code>C</code> depends on finishing tasks <code>A</code> and <code>B</code>, task <code>D</code> depends on finishing <code>C</code> and <code>E</code> </p>
-<p>Something like this:</p>
-<p><img src="/images/2021/argo-workflows/grafo.svg" alt="Grafo"></p>
-<p>There are several tools to orchestrate that, but we’ll focus on <em><a target="_blank" rel="noopener" href="https://argoproj.github.io/argo-workflows/">Argo Workflows</a></em></p>
-<p><em>Argo Workflows is an open-source container-native workflow engine for orchestrating parallel jobs on <em>Kubernetes</em>.</em></p>
-<p>Running over Kubernetes is one of the most characteristic things of Argo differentiating it from others.</p>
-<p>Every task you define will run in a container or using other words, you must create a container to run the tasks, and all of it will run in your Kubernetes cluster</p>
-<h2 id="Install-Argo-Workflows"><a href="#Install-Argo-Workflows" class="headerlink" title="Install Argo Workflows"></a>Install Argo Workflows</h2><p>Installing Argo Workflows is very easy, you only need to apply a manifest in your cluster to configure Argo’s services in the cluster:</p>
-<p>For example <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/argoproj/argo-workflows/master/manifests/quick-start-postgres.yaml">https://raw.githubusercontent.com/argoproj/argo-workflows/master/manifests/quick-start-postgres.yaml</a></p>
-<p><small>More info: <a target="_blank" rel="noopener" href="https://argoproj.github.io/argo-workflows/quick-start/">https://argoproj.github.io/argo-workflows/quick-start/</a></small></p>
-<p>Argo Workflows also provides a URL to access a UI to manage Workflows, Events, Reports, Users, Docs, etc…</p>
-<p>To keep track of the workflows, etc. Argo needs persistence for example: Postgres, MySQL, etc…</p>
-<p>As is indicated in the official documentation is highly recommended create a namespace (ex. argo) in the cluster to “install” into it all Argo’s services.</p>
-<h2 id="Workflows"><a href="#Workflows" class="headerlink" title="Workflows"></a>Workflows</h2><p>There are two types of workflows: <em>Regular workflows</em> and <em>Cron Workflows</em></p>
-<p>Both are basically the same, but a <em>cron workflow</em> creates a <em>Regular workflow</em> automatically when should be executed according to the cron syntax, ex. */3 * * * * *. Note it can create more than one workflow </p>
-<p>Workflows are defined as Kubernetes manifest that should be applied to the same namespace as Argo services.</p>
-<p>This manifest defines all the tasks and their dependencies</p>
-<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">argoproj.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Workflow</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">my-workflow</span> </span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">argoproj.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Workflow</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">generateName:</span> <span class="string">my-workflow</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">entrypoint:</span> <span class="string">tasksDependencies</span> <span class="comment"># This is the name of the template to run first</span></span><br><span class="line">  <span class="attr">templates:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">exampleTask</span></span><br><span class="line">      <span class="attr">inputs:</span></span><br><span class="line">        <span class="attr">parameters:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">msg</span></span><br><span class="line">      <span class="attr">container:</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">docker/whalesay</span></span><br><span class="line">        <span class="attr">command:</span> [<span class="string">cowsay</span>]</span><br><span class="line">        <span class="attr">args:</span> [{{ <span class="string">inputs.parameters.msg</span> }}]</span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">tasksDependencies</span></span><br><span class="line">      <span class="attr">dag:</span></span><br><span class="line">        <span class="attr">tasks:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sayHello</span></span><br><span class="line">            <span class="attr">template:</span> <span class="string">exampleTask</span></span><br><span class="line">            <span class="attr">arguments:</span></span><br><span class="line">              <span class="attr">parameters:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">text</span></span><br><span class="line">                  <span class="attr">value:</span> <span class="string">"Hello"</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sayNiceJob</span></span><br><span class="line">            <span class="attr">template:</span> <span class="string">exampleTask</span></span><br><span class="line">            <span class="attr">dependencies:</span> [ <span class="string">sayHello</span> ]</span><br><span class="line">            <span class="attr">arguments:</span></span><br><span class="line">              <span class="attr">parameters:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">text</span></span><br><span class="line">                  <span class="attr">value:</span> <span class="string">"Nice Job"</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sayRunning</span></span><br><span class="line">            <span class="attr">template:</span> <span class="string">exampleTask</span></span><br><span class="line">            <span class="attr">dependencies:</span> [ <span class="string">sayHello</span> ]</span><br><span class="line">            <span class="attr">arguments:</span></span><br><span class="line">              <span class="attr">parameters:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">text</span></span><br><span class="line">                  <span class="attr">value:</span> <span class="string">"Running"</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sayFinished</span></span><br><span class="line">            <span class="attr">template:</span> <span class="string">exampleTask</span></span><br><span class="line">            <span class="attr">dependencies:</span> [ <span class="string">sayRunning</span>, <span class="string">sayNiceJob</span>]</span><br><span class="line">            <span class="attr">arguments:</span></span><br><span class="line">              <span class="attr">parameters:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">text</span></span><br><span class="line">                  <span class="attr">value:</span> <span class="string">"It's over"</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">entrypoint:</span> <span class="string">exampleTask</span> <span class="comment"># This is the name of the template to run first</span></span><br><span class="line">  <span class="attr">templates:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">exampleTask</span></span><br><span class="line">      <span class="attr">inputs:</span></span><br><span class="line">        <span class="attr">parameters:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">msg</span></span><br><span class="line">      <span class="attr">container:</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">docker/whalesay</span></span><br><span class="line">        <span class="attr">command:</span> [<span class="string">cowsay</span>]</span><br><span class="line">        <span class="attr">args:</span> [<span class="string">"<span class="template-variable">{{ inputs.parameters.msg }}</span>"</span>]</span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">tasksDependencies</span></span><br><span class="line">      <span class="attr">dag:</span></span><br><span class="line">        <span class="attr">tasks:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sayHello</span></span><br><span class="line">            <span class="attr">template:</span> <span class="string">exampleTask</span></span><br><span class="line">            <span class="attr">arguments:</span></span><br><span class="line">              <span class="attr">parameters:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">msg</span></span><br><span class="line">                  <span class="attr">value:</span> <span class="string">"Hello"</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sayNiceJob</span></span><br><span class="line">            <span class="attr">template:</span> <span class="string">exampleTask</span></span><br><span class="line">            <span class="attr">dependencies:</span> [ <span class="string">sayHello</span> ]</span><br><span class="line">            <span class="attr">arguments:</span></span><br><span class="line">              <span class="attr">parameters:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">msg</span></span><br><span class="line">                  <span class="attr">value:</span> <span class="string">"Nice Job"</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sayRunning</span></span><br><span class="line">            <span class="attr">template:</span> <span class="string">exampleTask</span></span><br><span class="line">            <span class="attr">dependencies:</span> [ <span class="string">sayHello</span> ]</span><br><span class="line">            <span class="attr">arguments:</span></span><br><span class="line">              <span class="attr">parameters:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">msg</span></span><br><span class="line">                  <span class="attr">value:</span> <span class="string">"Running"</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sayFinished</span></span><br><span class="line">            <span class="attr">template:</span> <span class="string">exapleTask</span></span><br><span class="line">            <span class="attr">dependencies:</span> [ <span class="string">sayRunning</span>, <span class="string">sayNiceJob</span>]</span><br><span class="line">            <span class="attr">arguments:</span></span><br><span class="line">              <span class="attr">parameters:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">msg</span></span><br><span class="line">                  <span class="attr">value:</span> <span class="string">"It's over"</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>Let’s explain this example, but in the first view you can see the power of Argo</p>
-<p>A template defines a job to be done, can be a <a target="_blank" rel="noopener" href="https://argoproj.github.io/argo-workflows/workflow-concepts/#container">container</a> (as in our example), a <a target="_blank" rel="noopener" href="https://argoproj.github.io/argo-workflows/workflow-concepts/#script">script</a>, a <a target="_blank" rel="noopener" href="https://argoproj.github.io/argo-workflows/workflow-concepts/#resource">resource</a> (to do operations on the cluster’s resources directly from the workflow) and <a target="_blank" rel="noopener" href="https://argoproj.github.io/argo-workflows/workflow-concepts/#suspend">suspend</a> that is just to wait the time defined.</p>
-<p>In our example, we defined a template called <code>exampleTask</code> (this name must be unique and can be used to refer to this template).</p>
-<p>For the task, we define one input parameter, a msg to print. This value can be referenced later.</p>
-<p>This task uses a container with the image <code>docker/whalesay</code> from docker registry, but you can use your own and private registry, Argo runs the command <code>[cowsay]</code> and uses the input values defined previously as command arguments <code>[{{inputs.parameters.text}}]</code></p>
-<p>Templates also can define <a target="_blank" rel="noopener" href="https://argoproj.github.io/argo-workflows/workflow-concepts/#template-invocators">Template Invocators</a>, that are used to call other templates and do execution control, in our example we are using DAG ((Directed Acyclic Graph)[<a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/apache-airflow/1.10.12/concepts.html#:~:text=In%20Airflow%2C%20a%20DAG%20%E2%80%93%20or,and%20their%20dependencies)%20as%20code.]">https://airflow.apache.org/docs/apache-airflow/1.10.12/concepts.html#:~:text=In%20Airflow%2C%20a%20DAG%20%E2%80%93%20or,and%20their%20dependencies)%20as%20code.]</a>), but we can use also steps, but that allows us to create better dependencies</p>
-<p>In our case we are defining 3 tasks, all use the same template with different params (but we can use different templates for different tasks), the entry point is <code>sayHello</code> and <code>sayNiceJob</code> and <code>sayRunning</code> after that, and finally <code>sayFinished</code> only will run after <code>sayNiceJob</code> and <code>sayRunning</code>.</p>
-<p>An after applying the manifest: <code>kubectl -n argo -f workflow.yml</code> Argo runs it<br>This is how the workflow looks after running it</p>
-<p><img src="/images/2021/argo-workflows/workflow01.png"></p>
-<p>Clicking over a task we can get information about the run: the summary, the input and outputs, the container involved in the run, and the logs or the run</p>
-<p><img src="/images/2021/argo-workflows/workflow02.png"></p>
-<p>To summarizing, if you have a Kubernetes cluster and need to run workflows, Argo is a very good option.</p>
-<p>I will write more blog post in the future about Argo, for example how to configure the access security.</p>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-nav">
-  <div class="container-fluid-1200">
-    <div class="grid-row">
-      <div class="next col-xs-6">
-        
-          <div class="nav-previous">
-            <a href="https://sergiocarracedo.es//generics-in-golang-1.18/" rel="prev" class="nav-cover">
-              <img src="/images/2022/teaser_go-generics-4016522.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//generics-in-golang-1.18/" rel="prev" class="nav-text">
-              <i class="fa fa-arrow-left"></i> Generics in Golang 1.18
-            </a>
-          </div>
-        
-      </div>
-      <div class="prev col-xs-6">
-        
-          <div class="nav-next">
-            <a href="https://sergiocarracedo.es//dealing-with-infinite-pagination/" rel="next" class="nav-cover">
-              <img src="/images/2021/teaser_infinite-pagination-GVYRkT5f1tA-unsplash.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//dealing-with-infinite-pagination/" rel="next" class="nav-text">
-              Dealing with infinite pagination <i class="fa fa-arrow-right"></i>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-comments container-fluid-1200">
-    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
-</div>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides.
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div id="post-aboutme">
-  <div class="me container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 mb-5">
-        <div class="social">
-  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-linkedin"></i>
-  </a>
-  <a href="mailto:hi+blog@sergiocarracedo.es" class="social-link" title="hi+blog@sergiocarracedo.es">
-    <i class="fas fa-envelope"></i>
-  </a>
-
-  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-github"></i>
-  </a>
-  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-drupal"></i>
-  </a>
-
-
-  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-twitter"></i>
-  </a>
-  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
-    <i class="fab fa-lastfm"></i>
-  </a>
-  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
-    <i class="fab fa-tumblr"></i>
-  </a>
-</div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="claim container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <a href="/" class="back">
-          Home
-        </a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-    </div>
-
-
-</div>
-
-</body>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-
-<script src="/js/jquery.min.js"></script>
-<script src="/js/sergiocarracedo.js"></script>
-
-
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-      window.addEventListener("load", function(){
-        window.cookieconsent.initialise({
-          "palette": {
-            "popup": {
-              "background": "#004262",
-              "text": "#fff"
-            },
-            "button": {
-              "background": "#8ec760",
-              "text": "#ffffff"
-            }
-          },
-          "type": "opt-out",
-          "content": {
-            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
-            "allow": "Ok, continua",
-            "deny": "Nada de cookies",
-            "link": "Saber más",
-            "href": "https://sergiocarracedo.es/cookies.html",
-          },
-          "onStatusChange": function(status, chosenBefore) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          },
-          "onInitialise" : function(status) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          }
-        })
-      });
-    </script>
-
-
-</html>
+<!doctype html><html><head><meta charset=utf-8><meta content="IE=edge,chrome=1" http-equiv=x-ua-compatible><meta content="width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no" name=viewport><title>Sergio Carracedo | Running workflows in you k8s cluster: Argo Workflows</title><meta content="yes" name=apple-mobile-web-app-capable><meta content="black-translucent" name=apple-mobile-web-app-status-bar-style><meta content="Sergio Carracedo's personal page and blog" name=description><meta content="Sergio Carracedo" name=author><link href=favicon.png rel=icon><meta property="og:title" content="Running workflows in you k8s cluster: Argo Workflows"><meta property="og:description" content="Simplifying it, a workflow is a list of tasks to run in some order and/or fulfilling some dependencies, for example, if we have 5 tasks to run: A, B, C, D, E. Task C depends on finishing tasks A and B, task D depends on finishing C and E
+Something like this:
+There are several tools to orchestrate that, but we&rsquo;ll focus on Argo Workflows
+Argo Workflows is an open-source container-native workflow engine for orchestrating parallel jobs on Kubernetes."><meta property="og:type" content="article"><meta property="og:url" content="/running-workflows-in-you-k8s-cluster-argo-workflows/"><meta property="og:image" content="/running-workflows-in-you-k8s-cluster-argo-workflows/cover_hua262203a985fefaaa2fdd728f55a8a75_337092_1920x1080_fill_q75_box_center.jpg"><meta property="article:section" content="blog"><meta property="article:published_time" content="2021-12-28T00:00:00+00:00"><meta property="article:modified_time" content="2021-12-28T00:00:00+00:00"><link href=/scss/main.1fb71fa7ebb2d9065c28cbf3dd7ed45114596cf9b9be107e9d0ded933e45f4e1.css integrity="sha256-H7cfp+uy2QZcKMvz3X7UURRZbPm5vhB+nQ3tkz5F9OE=" rel=stylesheet><link href=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css rel=stylesheet type=text/css></head><body><header class=web-header><h2><a class=back-to-home href=/ title="Back to home"><i class="fas fa-home"></i><div class=back-to-home__content><span class=back-to-home__action>Back to home</span><div class=back-to-home__title><img alt="Sergio Carracedo" class=avatar src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_100x100_fit_q75_box.jpg><h4>Sergio Carracedo</h4></div></div></a></h2><div class=web-header__page-title>Running workflows in you k8s cluster: Argo Workflows</div></header><div class=main-content><article class="post post--single"><div class="post__main wrapper-1200"><aside class=post__metadata><time class=post__date datetime=2021-12-28><i class="far fa-calendar-alt"></i> Dec 28, 2021</time><div class=post__tags><a href=tags/devops class=post__tag><span>devops</span></a>
+<a href=tags/k8s class=post__tag><span>k8s</span></a></div><span class=post__reading-time><i class="far fa-clock"></i> 4 minutes read</span></aside><header class=post__header><h1 class=post__title>Running workflows in you k8s cluster: Argo Workflows</h1></header><figure class=post__cover><img src=/running-workflows-in-you-k8s-cluster-argo-workflows/cover_hua262203a985fefaaa2fdd728f55a8a75_337092_1200x400_fill_q75_box_center.jpg alt="Running workflows in you k8s cluster: Argo Workflows" width=1200 height=400></figure><div class=post__content><p>Simplifying it, a workflow is a list of tasks to run in some order and/or fulfilling some dependencies, for example, if we have 5 tasks to run: <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, <code>E</code>.
+Task <code>C</code> depends on finishing tasks <code>A</code> and <code>B</code>, task <code>D</code> depends on finishing <code>C</code> and <code>E</code></p><p>Something like this:</p><p><img src=grafo.svg alt=Grafo></p><p>There are several tools to orchestrate that, but we&rsquo;ll focus on <em><a href=https://argoproj.github.io/argo-workflows/>Argo Workflows</a></em></p><p><em>Argo Workflows is an open-source container-native workflow engine for orchestrating parallel jobs on <em>Kubernetes</em>.</em></p><p>Running over Kubernetes is one of the most characteristic things of Argo differentiating it from others.</p><p>Every task you define will run in a container or using other words, you must create a container to run the tasks, and all of it will run in your Kubernetes cluster</p><h2 id=install-argo-workflows>Install Argo Workflows</h2><p>Installing Argo Workflows is very easy, you only need to apply a manifest in your cluster to configure Argo&rsquo;s services in the cluster:</p><p>For example <a href=https://raw.githubusercontent.com/argoproj/argo-workflows/master/manifests/quick-start-postgres.yaml>https://raw.githubusercontent.com/argoproj/argo-workflows/master/manifests/quick-start-postgres.yaml</a></p><p>More info: <a href=https://argoproj.github.io/argo-workflows/quick-start/>https://argoproj.github.io/argo-workflows/quick-start/</a></p><p>Argo Workflows also provides a URL to access a UI to manage Workflows, Events, Reports, Users, Docs, etc&mldr;</p><p>To keep track of the workflows, etc. Argo needs persistence for example: Postgres, MySQL, etc&mldr;</p><p>As is indicated in the official documentation is highly recommended create a namespace (ex. argo) in the cluster to &ldquo;install&rdquo; into it all Argo&rsquo;s services.</p><h2 id=workflows>Workflows</h2><p>There are two types of workflows: <em>Regular workflows</em> and <em>Cron Workflows</em></p><p>Both are basically the same, but a <em>cron workflow</em> creates a <em>Regular workflow</em> automatically when should be executed according to the cron syntax, ex. */3 * * * * *. Note it can create more than one workflow</p><p>Workflows are defined as Kubernetes manifest that should be applied to the same namespace as Argo services.</p><p>This manifest defines all the tasks and their dependencies</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>argoproj.io/v1alpha1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Workflow</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>my-workflow </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>argoproj.io/v1alpha1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Workflow</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>generateName</span>: <span style=color:#ae81ff>my-workflow</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>entrypoint</span>: <span style=color:#ae81ff>tasksDependencies</span> <span style=color:#75715e># This is the name of the template to run first</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>templates</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>inputs</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>msg</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>container</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>docker/whalesay</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>command</span>: [<span style=color:#ae81ff>cowsay]</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>args</span>: [{{ <span style=color:#ae81ff>inputs.parameters.msg }}]</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>tasksDependencies</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>dag</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>tasks</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sayHello</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>template</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>arguments</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>                - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>text</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;Hello&#34;</span>
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sayNiceJob</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>template</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>dependencies</span>: [ <span style=color:#ae81ff>sayHello ]</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>arguments</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>                - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>text</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;Nice Job&#34;</span>
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sayRunning</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>template</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>dependencies</span>: [ <span style=color:#ae81ff>sayHello ]</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>arguments</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>                - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>text</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;Running&#34;</span>
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sayFinished</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>template</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>dependencies</span>: [ <span style=color:#ae81ff>sayRunning, sayNiceJob]</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>arguments</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>                - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>text</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;It&#39;s over&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>entrypoint</span>: <span style=color:#ae81ff>exampleTask</span> <span style=color:#75715e># This is the name of the template to run first</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>templates</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>inputs</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>msg</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>container</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>docker/whalesay</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>command</span>: [<span style=color:#ae81ff>cowsay]</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>args</span>: [<span style=color:#e6db74>&#34;{{ inputs.parameters.msg }}&#34;</span>]
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>tasksDependencies</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>dag</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>tasks</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sayHello</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>template</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>arguments</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>                - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>msg</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;Hello&#34;</span>
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sayNiceJob</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>template</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>dependencies</span>: [ <span style=color:#ae81ff>sayHello ]</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>arguments</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>                - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>msg</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;Nice Job&#34;</span>
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sayRunning</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>template</span>: <span style=color:#ae81ff>exampleTask</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>dependencies</span>: [ <span style=color:#ae81ff>sayHello ]</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>arguments</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>                - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>msg</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;Running&#34;</span>
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sayFinished</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>template</span>: <span style=color:#ae81ff>exapleTask</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>dependencies</span>: [ <span style=color:#ae81ff>sayRunning, sayNiceJob]</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>arguments</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>parameters</span>:
+</span></span><span style=display:flex><span>                - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>msg</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;It&#39;s over&#34;</span>
+</span></span></code></pre></div><p>Let&rsquo;s explain this example, but in the first view you can see the power of Argo</p><p>A template defines a job to be done, can be a <a href=https://argoproj.github.io/argo-workflows/workflow-concepts/#container>container</a> (as in our example), a <a href=https://argoproj.github.io/argo-workflows/workflow-concepts/#script>script</a>, a <a href=https://argoproj.github.io/argo-workflows/workflow-concepts/#resource>resource</a> (to do operations on the cluster&rsquo;s resources directly from the workflow) and <a href=https://argoproj.github.io/argo-workflows/workflow-concepts/#suspend>suspend</a> that is just to wait the time defined.</p><p>In our example, we defined a template called <code>exampleTask</code> (this name must be unique and can be used to refer to this template).</p><p>For the task, we define one input parameter, a msg to print. This value can be referenced later.</p><p>This task uses a container with the image <code>docker/whalesay</code> from docker registry, but you can use your own and private registry, Argo runs the command <code>[cowsay]</code> and uses the input values defined previously as command arguments <code>[{{inputs.parameters.text}}]</code></p><p>Templates also can define <a href=https://argoproj.github.io/argo-workflows/workflow-concepts/#template-invocators>Template Invocators</a>, that are used to call other templates and do execution control, in our example we are using DAG ((Directed Acyclic Graph)[https://airflow.apache.org/docs/apache-airflow/1.10.12/concepts.html#:~:text=In%20Airflow%2C%20a%20DAG%20%E2%80%93%20or,and%20their%20dependencies)%20as%20code.]), but we can use also steps, but that allows us to create better dependencies</p><p>In our case we are defining 3 tasks, all use the same template with different params (but we can use different templates for different tasks), the entry point is <code>sayHello</code> and <code>sayNiceJob</code> and <code>sayRunning</code> after that, and finally <code>sayFinished</code> only will run after <code>sayNiceJob</code> and <code>sayRunning</code>.</p><p>An after applying the manifest: <code>kubectl -n argo -f workflow.yml</code> Argo runs it
+This is how the workflow looks after running it</p><p><img src=workflow01.png alt></p><p>Clicking over a task we can get information about the run: the summary, the input and outputs, the container involved in the run, and the logs or the run</p><p><img src=workflow02.png alt></p><p>To summarizing, if you have a Kubernetes cluster and need to run workflows, Argo is a very good option.</p><p>I will write more blog post in the future about Argo, for example how to configure the access security.</p></div></div><aside class=post__nav-wrapper><div class=wrapper-1200><div class="post-nav post-nav--prev"><a class=post-nav__link href="/generics-in-golang-1.18/?ref=footer"><div class=post-nav__cover><img alt=.NextPage.Title src=/generics-in-golang-1.18/go-generics-4016522_hue3e183c5fa902cd4ae789f3e908b1fee_188623_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Generics in Golang 1.18</div></a></div><div class=blog-link><a class=btn href=blog>All Blog posts</a></div><div class="post-nav post-nav--next"><a class=post-nav__link href="/dealing-with-infinite-pagination/?ref=footer"><div class=post-nav__cover><img alt=.PrevPage.Title class=post-nav__cover src=/dealing-with-infinite-pagination/infinite-pagination-GVYRkT5f1tA-unsplash_hue3e183c5fa902cd4ae789f3e908b1fee_191180_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Dealing with infinite pagination</div></a></div></div></aside><aside class=post__comments><div class=wrapper-1200><div id=disqus_thread>To show the comments is mandatory accept cookie policy.</div></div></aside></article></div><footer class=web-footer><div class=wrapper-1200><div class=web-footer__left><div class=me><div class=me__avatar><img alt="Sergio Carracedo" src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_170x170_fit_q75_box.jpg></div><div class=me__titles><h1>Sergio Carracedo</h1><h2>Senior Fullstack developer.</h2><h3>Formula 1, cats, good conversations and small details lover.</h3></div></div></div><div class=web-footer__right><nav role=main class=menu><ul><li class=menu__item><a href>Home</a></li><li class=menu__item><a href=blog>Blog</a></li></ul></nav><div class=social><a class=social__link href=http://www.linkedin.com/in/sergiocarracedo target=_blank title=LinkedIn style=animation-delay:2s><i class="fab fa-linkedin"></i></a>
+<a class=social__link href=mailto:hi+blog@sergiocarracedo.es target=_blank title=Email style=animation-delay:1.9333333333333333s><i class="fas fa-envelope"></i></a>
+<a class=social__link href=https://github.com/sergiocarracedo target=_blank title=GitHub style=animation-delay:1.8666666666666667s><i class="fab fa-github"></i></a>
+<a class=social__link href=https://www.drupal.org/u/sergiocarracedo target=_blank title=Drupal style=animation-delay:1.8s><i class="fab fa-drupal"></i></a>
+<a class=social__link href=https://www.twitter.com/sergiocarracedo target=_blank title=Twitter style=animation-delay:1.7333333333333334s><i class="fab fa-twitter"></i></a>
+<a class=social__link href=http://www.last.fm/user/gasman40 target=_blank title=Last.fm style=animation-delay:1.6666666666666667s><i class="fab fa-lastfm"></i></a>
+<a class=social__link href=http://sergiocarracedo.tumblr.com/ target=_blank title=Tumblr style=animation-delay:1.6s><i class="fab fa-tumblr"></i></a></div></div></div></footer><script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459072-1"></script>
+<script>function runGA(){function e(){dataLayer.push(arguments)}e("js",new Date),e("config","UA-133459072-1")}</script><script>function runDisqus(){(function(){var e=document,t=e.createElement("script");t.src="https://sergiocarracedo.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()}</script><script src=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js></script>
+<script>window.addEventListener("load",function(){window.cookieconsent.initialise({palette:{popup:{background:"#004262",text:"#fff"},button:{background:"#8ec760",text:"#ffffff"}},type:"opt-out",content:{message:"Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",allow:"Ok, continua",deny:"Nada de cookies",link:"Saber más",href:"cookies"},onStatusChange:function(e){e=="allow"&&runCookiesAllowed()},onInitialise:function(e){e=="allow"&&runCookiesAllowed()}})})</script><script>addEventListener("scroll",e=>{let t=document.getElementsByTagName("body")[0];t&&window.scrollY>10?t.classList.add("not-in-top"):t.classList.remove("not-in-top")});function runCookiesAllowed(){runGA(),runDisqus()}</script></body></html>

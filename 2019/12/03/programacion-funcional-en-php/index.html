@@ -1,363 +1,58 @@
-
-<!DOCTYPE html>
-<html lang="en" class="loading">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sergio Carracedo - Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="keywords" content="Sergio Carracedo,"> 
-    <meta name="description" content="Sergio Carracedo personal Blog,Hace unas semanas @felixgomexlopez me habló de una librería en PHP que te ofrecía un montón de func,"> 
-    <meta name="author" content="Sergio Carracedo"> 
-    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    
-<link rel="stylesheet" href="/css/sergiocarracedo.css">
-
-    <meta name="description" content="Hace unas semanas @felixgomexlopez me habló de una librería en PHP que te ofrecía un montón de funciones para manejar iterables y funciones de primera clase (u orden superior) en programación funciona">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Programación funcional en PHP: Un poco de teoría y Lambdish&#x2F;phunctional">
-<meta property="og:url" content="https://sergiocarracedo.es/2019/12/03/programacion-funcional-en-php/index.html">
-<meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="Hace unas semanas @felixgomexlopez me habló de una librería en PHP que te ofrecía un montón de funciones para manejar iterables y funciones de primera clase (u orden superior) en programación funciona">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://sergiocarracedo.es/images/phunctional-33317.jpg">
-<meta property="article:published_time" content="2019-12-03T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-09-09T06:54:31.710Z">
-<meta property="article:author" content="Sergio Carracedo">
-<meta property="article:tag" content="php &quot;programación funcional&quot; lambda">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://sergiocarracedo.es/images/phunctional-33317.jpg">
-
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script>
-      function runGA() {
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-133459072-1', 'auto');
-        ga('send', 'pageview');
-      }
-
-      function runDisqus() {
-        /*var disqus_config = function () {
-          this.page.url = 'https://sergiocarracedo.es/';
-          this.page.identifier = 'sergiocarracedo';
-        }*/
-        (function() { // DON'T EDIT BELOW THIS LINE
-          var d = document, s = d.createElement('script');
-          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      }
-
-      function runCookiesAllowed() {
-        runGA();
-        runDisqus();
-      }
-    </script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 6.0.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
-
-<body>
-    <div id="single">
-    <div id="top">
-  <div class="bar" style="width: 0;"></div>
-  <div class="container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 col-sm-3">
-        <a class="back-to-home" href="/">
-          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
-          <h4>
-            Sergio Carracedo
-          </h4>
-        </a>
-      </div>
-      <div class="hidden-xs hidden-lxs col-sm-6">
-        <h3 class="subtitle">Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional</h3>
-      </div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-    <div class="section">
-        <div class="article container-fluid-1200">
-  <div class="grid-row">
-    <div class="main col-xs-12">
-      <h1 class="title">
-        Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional
-      </h1>
-      <div class="stuff">
-        <span>December 03, 2019</span>
-      </div>
-
-      
-      <div class="article-image">
-        <img src="/images/header_phunctional-33317.jpg" width="1200" height="400">
-      </div>
-      
-      <div class="content markdown">
-        <p>Hace unas semanas <a target="_blank" rel="noopener" href="https://twitter.com/felixgomezlopez">@felixgomexlopez</a> me habló de una librería en PHP que te ofrecía un montón de funciones para manejar iterables y funciones de primera clase (u orden superior) en programación funcional, así que la he probado y (spoiler) me ha encantado. </p>
-<p>Antes de nada veamos algunos conceptos importantes de la <a target="_blank" rel="noopener" href="https://es.wikipedia.org/wiki/Programaci%C3%B3n_funcional">programación funcional</a>:</p>
-<h3 id="Funciones-de-primera-clase-o-de-orden-superior"><a href="#Funciones-de-primera-clase-o-de-orden-superior" class="headerlink" title="Funciones de primera clase o de orden superior"></a>Funciones de primera clase o de orden superior</h3><p>Son aquellas que pueden recibir como parámetros otra función, por ejemplo la función <a target="_blank" rel="noopener" href="https://www.php.net/manual/es/function.array-map.php">‘array_map’</a> de PHP, recibe dos argumentos, un <em>callable</em> y un <em>array</em>, devolviendo una matriz con el resultado de aplicar el <em>callable</em> (normalmente una función) a cada elemento de la matriz original.</p>
-<h3 id="Funciones-puras"><a href="#Funciones-puras" class="headerlink" title="Funciones puras"></a>Funciones puras</h3><p>Son aquellas que no tienen efectos secundarios, es decir aplican el concepto matemático de función en el que dado un valor/es de entrada aplicamos un conjunto de operaciones y obtenemos un resultado.<br>Y ese resultado <strong>es siempre el mismo para la misma entrada</strong>, el resultado no puede depender de un estado interno o de una lectura interna de datos.</p>
-<p>Esto nos da ventajas como poder cachear sin miedo el valor del resultado para un conjunto de parámetros de entrada ya que el resultado <em>siempre</em> será el mismo.</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Función pura</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">suma</span>(<span class="params"><span class="variable">$a</span>, <span class="variable">$b</span></span>) </span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$a</span> + <span class="variable">$b</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">//Función impura</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sumaFactor</span>(<span class="params"><span class="variable">$a</span>, <span class="variable">$b</span></span>) </span>{</span><br><span class="line">    <span class="keyword">return</span> (<span class="variable">$a</span> + <span class="variable">$b</span>) * <span class="variable">$_ENV</span>[<span class="string">'factor'</span>]</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>La segunda función es impura por que cada vez que la llamamos devuelve un valor que depende de algo externo que podria cambiar.</p>
-<h3 id="Clausuras-o-closures"><a href="#Clausuras-o-closures" class="headerlink" title="Clausuras o closures"></a>Clausuras o <em>closures</em></h3><p>Otra de las piezas importantes de la <em>programación funcional</em> en PHP (y otros lenguajes) las <em>closures</em>. Las <em>closures</em> permiten a una función acceder a las variables del ámbito donde es ejecutada.</p>
-<p>Por ejemplo:</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$text</span> = <span class="string">'El número es: '</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$function</span> = <span class="function"><span class="keyword">function</span>(<span class="params"><span class="variable">$number</span></span>) <span class="keyword">use</span> (<span class="params"><span class="variable">$text</span></span>) </span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$text</span> . <span class="variable">$number</span>;  </span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="variable">$function</span>(<span class="number">12</span>); <span class="comment">//Prints 'El número es: 12'  </span></span><br></pre></td></tr></tbody></table></figure>
-<p>Donde el valor de <code>$text</code> es el del contexto de ejecución. (Este es un ejemplo <em>chorra</em>).<br>En PHP las <em>closures</em> se representan internamente como una <a target="_blank" rel="noopener" href="https://www.php.net/manual/es/class.closure.php">clase</a>.</p>
-<h3 id="Funciones-λ-lambda"><a href="#Funciones-λ-lambda" class="headerlink" title="Funciones λ (lambda)"></a>Funciones λ (lambda)</h3><p>También llamadas <em>funciones anónimas</em>, son aquellas que no tienen un nombre y se invocan, o bien directamente o almacenando su referencia en una variable.</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"><span class="variable">$a</span></span>) </span>{</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">'El número es '</span>. <span class="variable">$a</span> * <span class="number">2</span>;</span><br><span class="line">})(<span class="number">12</span>); <span class="comment">// Prints 'El número es 24</span></span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="Vale-ya-de-teoria-Vamos"><a href="#Vale-ya-de-teoria-Vamos" class="headerlink" title="Vale ya de teoría! Vamos"></a>Vale ya de teoría! Vamos</h3><p>Después de esta pequeña introducción a la programación funcional seguro que has visto que la has usado más de una vez, a lo mejor sin darte cuenta.</p>
-<p>Estoy convencido de que lo has hecho, y si no deberías.</p>
-<p>Como decía al principio, <a target="_blank" rel="noopener" href="https://twitter.com/felixgomezlopez">@felixgomexlopez</a> me habló de una librería PHP que nos da herramientas para trabajar de forma más cómoda con programación funcional en PHP.</p>
-<p>Esta librería es <a target="_blank" rel="noopener" href="https://github.com/Lambdish/phunctional">Phunctional</a> y se instala de una forma tan simple como:</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer require Lambdish/phunctional</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Nos aporta en muchos casos funcionalidades ya presentes de alguna forma en PHP pero de forma que homogeniza la forma de pasar parámetros.</p>
-<p>Ya hablé hace en unos años en una <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1C7eEtWsiawZA0X0Vm1N-KE5QFxaHX6Y45DK50uL9lJ0/edit#slide=id.g1d60cdcfc8_0_36"><em>lightning</em> en un PHPVigo</a> de las vergüenzas de PHP, con respecto a algunas de las funciones de manejo de <em>arrays</em>, por ejemplo </p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array_map ( <span class="keyword">callable</span> <span class="variable">$callback</span> , <span class="keyword">array</span> <span class="variable">$array1</span> [, <span class="keyword">array</span> $... ] ) : <span class="keyword">array</span></span><br><span class="line">array_reduce ( <span class="keyword">array</span> <span class="variable">$array</span> , <span class="keyword">callable</span> <span class="variable">$callback</span> [, <span class="keyword">mixed</span> <span class="variable">$initial</span> = <span class="literal">NULL</span> ] ) : <span class="keyword">mixed</span></span><br></pre></td></tr></tbody></table></figure>
-<p>Que como veis, no mantiene una consistencia en el orden de los parámetros.</p>
-<p>Por lo contrario, Lambdish\Phunctional si la mantiene</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Lambdish\Phunctional\map( <span class="keyword">callable</span> <span class="variable">$fn</span>, <span class="variable">$coll</span> ) : <span class="keyword">array</span></span><br><span class="line">Lambdish\Phunctional\reduce( <span class="keyword">callable</span> <span class="variable">$fn</span>, <span class="variable">$coll</span>, <span class="variable">$initial</span> = <span class="literal">null</span> ) : <span class="keyword">array</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>Sólo por esto vale la pena usarlo <span class="github-emoji"><span>😂</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f602.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
-<p>Ya en serio nos provee de mogollón de funciones chulas que nos simplifican la vida, por ejemplo:</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">use</span> <span class="title">function</span> <span class="title">Lambdish</span>\<span class="title">Phunctional</span>\<span class="title">group_by</span>;</span><br><span class="line"></span><br><span class="line">group_by(<span class="string">'strlen'</span>, [<span class="string">'manzana'</span>, <span class="string">'patata'</span>, <span class="string">'melón'</span>, <span class="string">'jamón'</span>, <span class="string">'fresa'</span>, <span class="string">'mandarina'</span>]); </span><br><span class="line"><span class="comment">// [5 =&gt; ['melón', 'jamón', 'fresa'], 6 =&gt; ['patata'], 7 =&gt; ['manzana'], 9 =&gt; ['mandarina']</span></span><br></pre></td></tr></tbody></table></figure>
-<p>Que nos devuelve un nuevo array con los elementos agrupados por el valor resultado de aplicar a cada elemento la función, en este caso <code>strlen</code></p>
-<p>También podemos encadenar varias funciones:</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">use</span> <span class="title">function</span> <span class="title">Lambdish</span>\<span class="title">Phunctional</span>\<span class="title">do_if</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">function</span> <span class="title">Lambdish</span>\<span class="title">Phunctional</span>\<span class="title">each</span>;</span><br><span class="line"></span><br><span class="line">each(</span><br><span class="line">    do_if(</span><br><span class="line">        <span class="function"><span class="keyword">function</span> (<span class="params"><span class="variable">$item</span></span>) </span>{</span><br><span class="line">            <span class="keyword">print</span> <span class="variable">$item</span> . PHP_EOL;</span><br><span class="line">        },</span><br><span class="line">    [</span><br><span class="line">        <span class="function"><span class="keyword">function</span>(<span class="params"><span class="variable">$item</span></span>) </span>{ <span class="keyword">return</span> <span class="variable">$item</span> &gt; <span class="number">10</span>;  },</span><br><span class="line">        <span class="function"><span class="keyword">function</span>(<span class="params"><span class="variable">$item</span></span>) </span>{ <span class="keyword">return</span> is_numeric(<span class="variable">$item</span>) &amp;&amp; !is_string(<span class="variable">$item</span>); }</span><br><span class="line">    ]),</span><br><span class="line">    [ <span class="number">11</span>, <span class="number">3</span>, <span class="string">'14'</span>, <span class="string">'a'</span>, <span class="number">40</span>]    </span><br><span class="line">);</span><br></pre></td></tr></tbody></table></figure>
-
-<p>En este caso, recorremos el <em>array</em> y aplicamos a cada elemento <code>do_if</code> que lo que hace es ejecutar la primera función si el resultado de todas las funciones indicadas en el <em>array</em> es <code>true</code></p>
-<p>Como veis las posibilidades son muchas sobre todo para trabajar con <em>Colecciones</em> (<em>arrays</em>, <em>objectos</em> o <em>generadores</em>).</p>
-<p>No voy a hacer una descripción de cada función una a una, porque no tiene demasiado sentido ya que tenéis la documentación completa de todas las funciones disponibles en <a target="_blank" rel="noopener" href="https://github.com/Lambdish/phunctional/blob/master/docs/docs.md">https://github.com/Lambdish/phunctional/blob/master/docs/docs.md</a> y el objetivo de este post es dar a conocer un poco la programación funcional en PHP y esta fantástica librería.</p>
-<p>P.D. Uno de los principales contribuidores del proyecto es <a target="_blank" rel="noopener" href="https://twitter.com/rafaoe">Rafa Gómez</a>, al que he tenido el placer de conocer en persona en la <a href="/2019/09/26/pulpocon-19/" title="PulpoCon 19">PulpoCon 19</a></p>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-nav">
-  <div class="container-fluid-1200">
-    <div class="grid-row">
-      <div class="next col-xs-6">
-        
-          <div class="nav-previous">
-            <a href="https://sergiocarracedo.es//2019/12/05/tu-propio-v-model-en-un-componente-vue/" rel="prev" class="nav-cover">
-              <img src="/images/teaser_vmodel-256302.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//2019/12/05/tu-propio-v-model-en-un-componente-vue/" rel="prev" class="nav-text">
-              <i class="fa fa-arrow-left"></i> Tu propio v-model en un componente Vue (The right way)
-            </a>
-          </div>
-        
-      </div>
-      <div class="prev col-xs-6">
-        
-          <div class="nav-next">
-            <a href="https://sergiocarracedo.es//2019/11/01/php-reflection/" rel="next" class="nav-cover">
-              <img src="/images/teaser_php-reflection-949215.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//2019/11/01/php-reflection/" rel="next" class="nav-text">
-              PHP Reflection: Anotaciones, PHPDoc y mucho más <i class="fa fa-arrow-right"></i>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-comments container-fluid-1200">
-    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
-</div>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides.
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div id="post-aboutme">
-  <div class="me container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 mb-5">
-        <div class="social">
-  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-linkedin"></i>
-  </a>
-  <a href="mailto:hi+blog@sergiocarracedo.es" class="social-link" title="hi+blog@sergiocarracedo.es">
-    <i class="fas fa-envelope"></i>
-  </a>
-
-  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-github"></i>
-  </a>
-  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-drupal"></i>
-  </a>
-
-
-  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-twitter"></i>
-  </a>
-  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
-    <i class="fab fa-lastfm"></i>
-  </a>
-  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
-    <i class="fab fa-tumblr"></i>
-  </a>
-</div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="claim container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <a href="/" class="back">
-          Home
-        </a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-    </div>
-
-
-</div>
-
-</body>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-
-<script src="/js/jquery.min.js"></script>
-<script src="/js/sergiocarracedo.js"></script>
-
-
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-      window.addEventListener("load", function(){
-        window.cookieconsent.initialise({
-          "palette": {
-            "popup": {
-              "background": "#004262",
-              "text": "#fff"
-            },
-            "button": {
-              "background": "#8ec760",
-              "text": "#ffffff"
-            }
-          },
-          "type": "opt-out",
-          "content": {
-            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
-            "allow": "Ok, continua",
-            "deny": "Nada de cookies",
-            "link": "Saber más",
-            "href": "https://sergiocarracedo.es/cookies.html",
-          },
-          "onStatusChange": function(status, chosenBefore) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          },
-          "onInitialise" : function(status) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          }
-        })
-      });
-    </script>
-
-
-</html>
+<!doctype html><html><head><meta charset=utf-8><meta content="IE=edge,chrome=1" http-equiv=x-ua-compatible><meta content="width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no" name=viewport><title>Sergio Carracedo | Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional</title><meta content="yes" name=apple-mobile-web-app-capable><meta content="black-translucent" name=apple-mobile-web-app-status-bar-style><meta content="Sergio Carracedo's personal page and blog" name=description><meta content="Sergio Carracedo" name=author><link href=favicon.png rel=icon><meta property="og:title" content="Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional"><meta property="og:description" content="Hace unas semanas @felixgomexlopez me habló de una librería en PHP que te ofrecía un montón de funciones para manejar iterables y funciones de primera clase (u orden superior) en programación funcional, así que la he probado y (spoiler) me ha encantado.
+Antes de nada veamos algunos conceptos importantes de la programación funcional:
+Funciones de primera clase o de orden superior Son aquellas que pueden recibir como parámetros otra función, por ejemplo la función &lsquo;array_map&rsquo; de PHP, recibe dos argumentos, un callable y un array, devolviendo una matriz con el resultado de aplicar el callable (normalmente una función) a cada elemento de la matriz original."><meta property="og:type" content="article"><meta property="og:url" content="/2019/12/03/programacion-funcional-en-php/"><meta property="og:image" content="/2019/12/03/programacion-funcional-en-php/phunctional-33317_hue3e183c5fa902cd4ae789f3e908b1fee_180059_1920x1080_fill_q75_box_center.jpg"><meta property="article:section" content="blog"><meta property="article:published_time" content="2019-12-03T00:00:00+00:00"><meta property="article:modified_time" content="2019-12-03T00:00:00+00:00"><link href=/scss/main.1fb71fa7ebb2d9065c28cbf3dd7ed45114596cf9b9be107e9d0ded933e45f4e1.css integrity="sha256-H7cfp+uy2QZcKMvz3X7UURRZbPm5vhB+nQ3tkz5F9OE=" rel=stylesheet><link href=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css rel=stylesheet type=text/css></head><body><header class=web-header><h2><a class=back-to-home href=/ title="Back to home"><i class="fas fa-home"></i><div class=back-to-home__content><span class=back-to-home__action>Back to home</span><div class=back-to-home__title><img alt="Sergio Carracedo" class=avatar src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_100x100_fit_q75_box.jpg><h4>Sergio Carracedo</h4></div></div></a></h2><div class=web-header__page-title>Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional</div></header><div class=main-content><article class="post post--single"><div class="post__main wrapper-1200"><aside class=post__metadata><time class=post__date datetime=2019-12-03><i class="far fa-calendar-alt"></i> Dec 3, 2019</time><div class=post__tags><a href=tags/php class=post__tag><span>php</span></a></div><span class=post__reading-time><i class="far fa-clock"></i> 4 minutes read</span></aside><header class=post__header><h1 class=post__title>Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional</h1></header><figure class=post__cover><img src=/2019/12/03/programacion-funcional-en-php/phunctional-33317_hue3e183c5fa902cd4ae789f3e908b1fee_180059_1200x400_fill_q75_box_center.jpg alt="Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional" width=1200 height=400></figure><div class=post__content><p>Hace unas semanas <a href=https://twitter.com/felixgomezlopez>@felixgomexlopez</a> me habló de una librería en PHP que te ofrecía un montón de funciones para manejar iterables y funciones de primera clase (u orden superior) en programación funcional, así que la he probado y (spoiler) me ha encantado.</p><p>Antes de nada veamos algunos conceptos importantes de la <a href=https://es.wikipedia.org/wiki/Programaci%C3%B3n_funcional>programación funcional</a>:</p><h3 id=funciones-de-primera-clase-o-de-orden-superior>Funciones de primera clase o de orden superior</h3><p>Son aquellas que pueden recibir como parámetros otra función, por ejemplo la función <a href=https://www.php.net/manual/es/function.array-map.php>&lsquo;array_map&rsquo;</a> de PHP, recibe dos argumentos, un <em>callable</em> y un <em>array</em>, devolviendo una matriz con el resultado de aplicar el <em>callable</em> (normalmente una función) a cada elemento de la matriz original.</p><h3 id=funciones-puras>Funciones puras</h3><p>Son aquellas que no tienen efectos secundarios, es decir aplican el concepto matemático de función en el que dado un valor/es de entrada aplicamos un conjunto de operaciones y obtenemos un resultado.
+Y ese resultado <strong>es siempre el mismo para la misma entrada</strong>, el resultado no puede depender de un estado interno o de una lectura interna de datos.</p><p>Esto nos da ventajas como poder cachear sin miedo el valor del resultado para un conjunto de parámetros de entrada ya que el resultado <em>siempre</em> será el mismo.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=display:flex><span><span style=color:#75715e>// Función pura
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>suma</span>($a, $b) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> $a <span style=color:#f92672>+</span> $b
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//Función impura
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>sumaFactor</span>($a, $b) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> ($a <span style=color:#f92672>+</span> $b) <span style=color:#f92672>*</span> $_ENV[<span style=color:#e6db74>&#39;factor&#39;</span>]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>La segunda función es impura por que cada vez que la llamamos devuelve un valor que depende de algo externo que podria cambiar.</p><h3 id=clausuras-o-_closures_>Clausuras o <em>closures</em></h3><p>Otra de las piezas importantes de la <em>programación funcional</em> en PHP (y otros lenguajes) las <em>closures</em>. Las <em>closures</em> permiten a una función acceder a las variables del ámbito donde es ejecutada.</p><p>Por ejemplo:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=display:flex><span>$text <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;El número es: &#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$function <span style=color:#f92672>=</span> <span style=color:#66d9ef>function</span>($number) <span style=color:#66d9ef>use</span> ($text) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> $text <span style=color:#f92672>.</span> $number;  
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$function(<span style=color:#ae81ff>12</span>); <span style=color:#75715e>//Prints &#39;El número es: 12&#39;  
+</span></span></span></code></pre></div><p>Donde el valor de <code>$text</code> es el del contexto de ejecución. (Este es un ejemplo <em>chorra</em>).
+En PHP las <em>closures</em> se representan internamente como una <a href=https://www.php.net/manual/es/class.closure.php>clase</a>.</p><h3 id=funciones-λ-lambda>Funciones λ (lambda)</h3><p>También llamadas <em>funciones anónimas</em>, son aquellas que no tienen un nombre y se invocan, o bien directamente o almacenando su referencia en una variable.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=display:flex><span>(<span style=color:#66d9ef>function</span>($a) {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#39;El número es &#39;</span><span style=color:#f92672>.</span> $a <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span>;
+</span></span><span style=display:flex><span>})(<span style=color:#ae81ff>12</span>); <span style=color:#75715e>// Prints &#39;El número es 24
+</span></span></span></code></pre></div><h3 id=vale-ya-de-teoría-vamos>Vale ya de teoría! Vamos</h3><p>Después de esta pequeña introducción a la programación funcional seguro que has visto que la has usado más de una vez, a lo mejor sin darte cuenta.</p><p>Estoy convencido de que lo has hecho, y si no deberías.</p><p>Como decía al principio, <a href=https://twitter.com/felixgomezlopez>@felixgomexlopez</a> me habló de una librería PHP que nos da herramientas para trabajar de forma más cómoda con programación funcional en PHP.</p><p>Esta librería es <a href=https://github.com/Lambdish/phunctional>Phunctional</a> y se instala de una forma tan simple como:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ composer require Lambdish/phunctional
+</span></span></code></pre></div><p>Nos aporta en muchos casos funcionalidades ya presentes de alguna forma en PHP pero de forma que homogeniza la forma de pasar parámetros.</p><p>Ya hablé hace en unos años en una <a href="https://docs.google.com/presentation/d/1C7eEtWsiawZA0X0Vm1N-KE5QFxaHX6Y45DK50uL9lJ0/edit#slide=id.g1d60cdcfc8_0_36"><em>lightning</em> en un PHPVigo</a> de las vergüenzas de PHP, con respecto a algunas de las funciones de manejo de <em>arrays</em>, por ejemplo</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=display:flex><span><span style=color:#a6e22e>array_map</span> ( <span style=color:#a6e22e>callable</span> $callback , <span style=color:#66d9ef>array</span> $array1 [, <span style=color:#66d9ef>array</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#f92672>...</span> ] ) <span style=color:#f92672>:</span> <span style=color:#66d9ef>array</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>array_reduce</span> ( <span style=color:#66d9ef>array</span> $array , <span style=color:#a6e22e>callable</span> $callback [, <span style=color:#a6e22e>mixed</span> $initial <span style=color:#f92672>=</span> <span style=color:#66d9ef>NULL</span> ] ) <span style=color:#f92672>:</span> <span style=color:#a6e22e>mixed</span>
+</span></span></code></pre></div><p>Que como veis, no mantiene una consistencia en el orden de los parámetros.</p><p>Por lo contrario, Lambdish\Phunctional si la mantiene</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=display:flex><span><span style=color:#a6e22e>Lambdish\Phunctional\map</span>( <span style=color:#a6e22e>callable</span> $fn, $coll ) <span style=color:#f92672>:</span> <span style=color:#66d9ef>array</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>Lambdish\Phunctional\reduce</span>( <span style=color:#a6e22e>callable</span> $fn, $coll, $initial <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span> ) <span style=color:#f92672>:</span> <span style=color:#66d9ef>array</span>
+</span></span></code></pre></div><p>Sólo por esto vale la pena usarlo 😂</p><p>Ya en serio nos provee de mogollón de funciones chulas que nos simplifican la vida, por ejemplo:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=display:flex><span><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>use</span> <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>Lambdish\Phunctional\group_by</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>group_by</span>(<span style=color:#e6db74>&#39;strlen&#39;</span>, [<span style=color:#e6db74>&#39;manzana&#39;</span>, <span style=color:#e6db74>&#39;patata&#39;</span>, <span style=color:#e6db74>&#39;melón&#39;</span>, <span style=color:#e6db74>&#39;jamón&#39;</span>, <span style=color:#e6db74>&#39;fresa&#39;</span>, <span style=color:#e6db74>&#39;mandarina&#39;</span>]); 
+</span></span><span style=display:flex><span><span style=color:#75715e>// [5 =&gt; [&#39;melón&#39;, &#39;jamón&#39;, &#39;fresa&#39;], 6 =&gt; [&#39;patata&#39;], 7 =&gt; [&#39;manzana&#39;], 9 =&gt; [&#39;mandarina&#39;]
+</span></span></span></code></pre></div><p>Que nos devuelve un nuevo array con los elementos agrupados por el valor resultado de aplicar a cada elemento la función, en este caso <code>strlen</code></p><p>También podemos encadenar varias funciones:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=display:flex><span><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>use</span> <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>Lambdish\Phunctional\do_if</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>use</span> <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>Lambdish\Phunctional\each</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>each</span>(
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>do_if</span>(
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>function</span> ($item) {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>print</span> $item <span style=color:#f92672>.</span> <span style=color:#a6e22e>PHP_EOL</span>;
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>    [
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>function</span>($item) { <span style=color:#66d9ef>return</span> $item <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>10</span>;  },
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>function</span>($item) { <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>is_numeric</span>($item) <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>!</span><span style=color:#a6e22e>is_string</span>($item); }
+</span></span><span style=display:flex><span>    ]),
+</span></span><span style=display:flex><span>    [ <span style=color:#ae81ff>11</span>, <span style=color:#ae81ff>3</span>, <span style=color:#e6db74>&#39;14&#39;</span>, <span style=color:#e6db74>&#39;a&#39;</span>, <span style=color:#ae81ff>40</span>]    
+</span></span><span style=display:flex><span>);
+</span></span></code></pre></div><p>En este caso, recorremos el <em>array</em> y aplicamos a cada elemento <code>do_if</code> que lo que hace es ejecutar la primera función si el resultado de todas las funciones indicadas en el <em>array</em> es <code>true</code></p><p>Como veis las posibilidades son muchas sobre todo para trabajar con <em>Colecciones</em> (<em>arrays</em>, <em>objectos</em> o <em>generadores</em>).</p><p>No voy a hacer una descripción de cada función una a una, porque no tiene demasiado sentido ya que tenéis la documentación completa de todas las funciones disponibles en <a href=https://github.com/Lambdish/phunctional/blob/master/docs/docs.md>https://github.com/Lambdish/phunctional/blob/master/docs/docs.md</a> y el objetivo de este post es dar a conocer un poco la programación funcional en PHP y esta fantástica librería.</p><p>P.D. Uno de los principales contribuidores del proyecto es <a href=https://twitter.com/rafaoe>Rafa Gómez</a>, al que he tenido el placer de conocer en persona en la
+<a href=/2019/09/26/pulpocon-19/>PulpoCon 19</a></p></div></div><aside class=post__nav-wrapper><div class=wrapper-1200><div class="post-nav post-nav--prev"><a class=post-nav__link href="/2019/12/05/tu-propio-v-model-en-un-componente-vue/?ref=footer"><div class=post-nav__cover><img alt=.NextPage.Title src=/2019/12/05/tu-propio-v-model-en-un-componente-vue/vmodel-256302_hue3e183c5fa902cd4ae789f3e908b1fee_227600_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Tu propio v-model en un componente Vue (The right...</div></a></div><div class=blog-link><a class=btn href=blog>All Blog posts</a></div><div class="post-nav post-nav--next"><a class=post-nav__link href="/2019/11/01/php-reflection/?ref=footer"><div class=post-nav__cover><img alt=.PrevPage.Title class=post-nav__cover src=/2019/11/01/php-reflection/php-reflection-949215_hue3e183c5fa902cd4ae789f3e908b1fee_237174_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>PHP Reflection: Anotaciones, PHPDoc y mucho más</div></a></div></div></aside><aside class=post__comments><div class=wrapper-1200><div id=disqus_thread>To show the comments is mandatory accept cookie policy.</div></div></aside></article></div><footer class=web-footer><div class=wrapper-1200><div class=web-footer__left><div class=me><div class=me__avatar><img alt="Sergio Carracedo" src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_170x170_fit_q75_box.jpg></div><div class=me__titles><h1>Sergio Carracedo</h1><h2>Senior Fullstack developer.</h2><h3>Formula 1, cats, good conversations and small details lover.</h3></div></div></div><div class=web-footer__right><nav role=main class=menu><ul><li class=menu__item><a href>Home</a></li><li class=menu__item><a href=blog>Blog</a></li></ul></nav><div class=social><a class=social__link href=http://www.linkedin.com/in/sergiocarracedo target=_blank title=LinkedIn style=animation-delay:2s><i class="fab fa-linkedin"></i></a>
+<a class=social__link href=mailto:hi+blog@sergiocarracedo.es target=_blank title=Email style=animation-delay:1.9333333333333333s><i class="fas fa-envelope"></i></a>
+<a class=social__link href=https://github.com/sergiocarracedo target=_blank title=GitHub style=animation-delay:1.8666666666666667s><i class="fab fa-github"></i></a>
+<a class=social__link href=https://www.drupal.org/u/sergiocarracedo target=_blank title=Drupal style=animation-delay:1.8s><i class="fab fa-drupal"></i></a>
+<a class=social__link href=https://www.twitter.com/sergiocarracedo target=_blank title=Twitter style=animation-delay:1.7333333333333334s><i class="fab fa-twitter"></i></a>
+<a class=social__link href=http://www.last.fm/user/gasman40 target=_blank title=Last.fm style=animation-delay:1.6666666666666667s><i class="fab fa-lastfm"></i></a>
+<a class=social__link href=http://sergiocarracedo.tumblr.com/ target=_blank title=Tumblr style=animation-delay:1.6s><i class="fab fa-tumblr"></i></a></div></div></div></footer><script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459072-1"></script>
+<script>function runGA(){function e(){dataLayer.push(arguments)}e("js",new Date),e("config","UA-133459072-1")}</script><script>function runDisqus(){(function(){var e=document,t=e.createElement("script");t.src="https://sergiocarracedo.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()}</script><script src=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js></script>
+<script>window.addEventListener("load",function(){window.cookieconsent.initialise({palette:{popup:{background:"#004262",text:"#fff"},button:{background:"#8ec760",text:"#ffffff"}},type:"opt-out",content:{message:"Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",allow:"Ok, continua",deny:"Nada de cookies",link:"Saber más",href:"cookies"},onStatusChange:function(e){e=="allow"&&runCookiesAllowed()},onInitialise:function(e){e=="allow"&&runCookiesAllowed()}})})</script><script>addEventListener("scroll",e=>{let t=document.getElementsByTagName("body")[0];t&&window.scrollY>10?t.classList.add("not-in-top"):t.classList.remove("not-in-top")});function runCookiesAllowed(){runGA(),runDisqus()}</script></body></html>

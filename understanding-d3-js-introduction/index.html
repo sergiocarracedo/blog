@@ -1,427 +1,72 @@
-
-<!DOCTYPE html>
-<html lang="en" class="loading">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sergio Carracedo - Understanding d3.js - A simple line chart</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="keywords" content="Sergio Carracedo,"> 
-    <meta name="description" content="Sergio Carracedo personal Blog,Before starting is important to say that d3.js is not a chart library is a library for making chart,"> 
-    <meta name="author" content="Sergio Carracedo"> 
-    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    
-<link rel="stylesheet" href="/css/sergiocarracedo.css">
-
-    <meta name="description" content="Before starting is important to say that d3.js is not a chart library is a library for making charts, if you are expecting to pass the data to the library and set 4, 5,… 10 params and get the chart to">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Understanding d3.js - A simple line chart">
-<meta property="og:url" content="https://sergiocarracedo.es/understanding-d3-js-introduction/index.html">
-<meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="Before starting is important to say that d3.js is not a chart library is a library for making charts, if you are expecting to pass the data to the library and set 4, 5,… 10 params and get the chart to">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://sergiocarracedo.es/images/2021/d3js_intro.jpg">
-<meta property="article:published_time" content="2021-04-19T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-09-09T06:54:31.714Z">
-<meta property="article:author" content="Sergio Carracedo">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/d3js_intro.jpg">
-
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script>
-      function runGA() {
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-133459072-1', 'auto');
-        ga('send', 'pageview');
-      }
-
-      function runDisqus() {
-        /*var disqus_config = function () {
-          this.page.url = 'https://sergiocarracedo.es/';
-          this.page.identifier = 'sergiocarracedo';
-        }*/
-        (function() { // DON'T EDIT BELOW THIS LINE
-          var d = document, s = d.createElement('script');
-          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      }
-
-      function runCookiesAllowed() {
-        runGA();
-        runDisqus();
-      }
-    </script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 6.0.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
-
-<body>
-    <div id="single">
-    <div id="top">
-  <div class="bar" style="width: 0;"></div>
-  <div class="container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 col-sm-3">
-        <a class="back-to-home" href="/">
-          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
-          <h4>
-            Sergio Carracedo
-          </h4>
-        </a>
-      </div>
-      <div class="hidden-xs hidden-lxs col-sm-6">
-        <h3 class="subtitle">Understanding d3.js - A simple line chart</h3>
-      </div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-    <div class="section">
-        <div class="article container-fluid-1200">
-  <div class="grid-row">
-    <div class="main col-xs-12">
-      <h1 class="title">
-        Understanding d3.js - A simple line chart
-      </h1>
-      <div class="stuff">
-        <span>April 19, 2021</span>
-      </div>
-
-      
-      <div class="article-image">
-        <img src="/images/2021/header_d3js_intro.jpg" width="1200" height="400">
-      </div>
-      
-      <div class="content markdown">
-        <p>Before starting is important to say that <strong>d3.js is not a chart library is a library for making charts</strong>, if you are expecting to pass the data to the library and set 4, 5,… 10 params and get the chart to render, d3.js is not your library.</p>
-<p><a target="_blank" rel="noopener" href="https://d3js.org/">d3.js</a> is more than that, is a very flexible library to manage data (data-driven documents) and create the representation of that data (not only charts). <strong>d3.js</strong> provides you the different pieces to create your customized data visualizations (for example charts)</p>
-<p>Let’s start creating a simple line chart:</p>
-<p><img src="/images/2021/d3.js/line-chart.png"></p>
-<h1 id="Scales-domain-and-range"><a href="#Scales-domain-and-range" class="headerlink" title="Scales, domain, and range"></a>Scales, domain, and range</h1><p>Simplifying, there are two pieces in the chart: Axis and line. Let’s talk about the axis.<br>In the example the chart we have two axes: X and Y, but we can have more or less, depending on the chart type.</p>
-<p>Axis is one of the reference lines of a coordinate system, every single point represents a value in the coordinate system and also a position in the canvas which is displaying the chart.</p>
-<p>In our example, in the y-axis the ‘1’ value of the chart is drawn in the position 31px from the axis start, but in SVG or canvas the origin of the coordinate system start on the top left corner, and ‘y’ grows in the direction to monitor bottom. Then to print the 1 value in our chart we must use 319 - 31 (288) as y position.<br><img src="/images/2021/d3.js/line-chart-axis.png"></p>
-<p>That’s complicated, and can be even more, if the relation between screen coordinates and chart coordinates aren’t lineal, for example, a logarithmic chart.</p>
-<p><strong>d3.js</strong> brings us a component to help us to abstract the conversion between screen coordinates and chart coordinates:</p>
-<h2 id="d3-scale"><a href="#d3-scale" class="headerlink" title="d3-scale"></a>d3-scale</h2><p><a target="_blank" rel="noopener" href="https://github.com/d3/d3-scale"><strong>d3-scale</strong></a> is our component.<br>There are a lot of different types of scales: Continuous (Linear, Power, log, identity, time, radial), Sequential, Ordinal, etc…  For our example chart, we will use Linear.</p>
-<p>Before continuing with <em>scale</em> I’m going to introduce 2 important concepts: <strong>domain</strong> and <strong>range</strong></p>
-<p><strong>Domain</strong> is the complete set of values chart can use, in our case is all the values between 0 and 10</p>
-<p><strong>Range</strong> is the coordinates (in the screen) where the chart can draw, in this case from 0 to 319</p>
-<p>Putting all together: </p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xScale = d3.scaleLinear().domain([<span class="number">0</span>, <span class="number">10</span>]).range([<span class="number">319</span>, <span class="number">0</span>]) </span><br></pre></td></tr></tbody></table></figure>
-<blockquote>
-<p>Note the range is between <code>319</code> and <code>0</code> not between <code>0</code> and <code>319</code></p>
-</blockquote>
-<p>This returns a function that links the values in the chart (domain), and the values in the ‘canvas’ (range)</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xScale(<span class="number">0</span>) <span class="comment">// 319</span></span><br><span class="line">xScale(<span class="number">5</span>) <span class="comment">// 159.5</span></span><br><span class="line">xScale(<span class="number">10</span>) <span class="comment">// 0</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>Scale also provides some methods for do extra actions, for example, if you want to get the value in the chart from the ‘canvas’ coordinates (the typical use case is getting the chart value in the mouse position) we can use</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xScale.invert(<span class="number">159.5</span>) <span class="comment">// 5</span></span><br></pre></td></tr></tbody></table></figure>
-
-<blockquote>
-<p>Probably you are thinking the same as me the first time I see that: It’s a function that has methods? WTF!. If you want you can go farther but in swallow, if the function has arguments returns the ‘main’ value, if not returns an object of functions.</p>
-</blockquote>
-<p>We can do the same for the y-axis:</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> yScale = d3.scaleLinear().domain([<span class="number">0</span>, <span class="number">20</span>]).range([<span class="number">0</span>, <span class="number">700</span>]) </span><br></pre></td></tr></tbody></table></figure>
-
-<p>Ok, we have all the tools to manage the data and the canvas, now we must render the data and the axis</p>
-<h1 id="Rendering-the-chart"><a href="#Rendering-the-chart" class="headerlink" title="Rendering the chart"></a>Rendering the chart</h1><p><strong>d3.js</strong> can render charts in <strong>SVG</strong> and <strong>Canvas</strong> but we will focus on the SVG rendering because is fast enough for most charts and makes easy interaction and styling.<br>To render our line chart, first, we must prepare our placeholder.</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'chart'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>For our comfort I’m going to define the chart margins and the width and height. The margins are necessary to render the axis, because the size of the chart refers to the draw area. </p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> margin = { <span class="attr">top</span>: <span class="number">10</span>, <span class="attr">right</span>: <span class="number">10</span>, <span class="attr">bottom</span>: <span class="number">50</span>, <span class="attr">left</span>: <span class="number">50</span> }</span><br><span class="line"><span class="keyword">const</span> width = <span class="number">1280</span> - margin.left - margin.right</span><br><span class="line"><span class="keyword">const</span> height = <span class="number">420</span> - margin.top - margin.bottom</span><br><span class="line"><span class="keyword">const</span> n = <span class="number">20</span> <span class="comment">// Number of points in x axis</span></span><br><span class="line"><span class="keyword">const</span> maxY = <span class="number">10</span> <span class="comment">// Max y value</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>Now we will use <em>d3</em> to add our SVG chart</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> svg = d3</span><br><span class="line">    .select(<span class="string">'.chart'</span>)</span><br><span class="line">    .append(<span class="string">'svg'</span>)</span><br><span class="line">    .attr(<span class="string">'width'</span>, width + margin.left + margin.right)</span><br><span class="line">    .attr(<span class="string">'height'</span>, height + margin.top + margin.bottom)</span><br></pre></td></tr></tbody></table></figure>
-<p>Line by line:</p>
-<ul>
-<li><code>.select('.chart')</code> selects the DOM element previously we defined</li>
-<li><code>.append('svg')</code> appends a <code>&lt;svg&gt;</code> element to the <code>&lt;div class='chart'&gt;</code></li>
-<li><code>.attr('width', width + margin.left + margin.right)</code> adds an <code>width</code> attribute to the <code>&lt;svg&gt;</code> element</li>
-<li><code>.attr('height', height + margin.top + margin.bottom)</code> adds an <code>hight</code> attribute to the <code>&lt;svg&gt;</code> element</li>
-</ul>
-<p>We defined the scales above, but we will do it again, now using our variables to make the chart more reusable</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> xScale = d3.scaleLinear().domain([<span class="number">0</span>, n - <span class="number">1</span>]).range([<span class="number">0</span>, width])</span><br><span class="line"><span class="keyword">const</span> yScale = d3.scaleLinear().domain([<span class="number">0</span>, maxY]).range([height, <span class="number">0</span>])</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="Rendering-the-x-axis"><a href="#Rendering-the-x-axis" class="headerlink" title="Rendering the x-axis"></a>Rendering the x-axis</h3><p>To render the X axis we will create a new SVG group that holds the axis</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">svg</span><br><span class="line">.append(<span class="string">'g'</span>)</span><br><span class="line">.attr(<span class="string">'class'</span>, <span class="string">'x axis'</span>)</span><br><span class="line">.attr(<span class="string">'transform'</span>, <span class="string">'translate('</span> + margin.left + <span class="string">','</span> + (height + margin.top) + <span class="string">')'</span>)</span><br><span class="line">.call(d3.axisBottom(xScale))</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Line by line:</p>
-<ul>
-<li><code>.append('g')</code> appends the new group for the axis</li>
-<li><code>.attr('class', 'axis x-axis')</code> adds 2 classes to the group (this allows us to style it using CSS)</li>
-<li><code>.attr('transform', 'translate(' + margin.left + ',' + height + ')')</code> moves the axis group bellow the chart draw area and gives space</li>
-<li><code>.call(d3.axisBottom(xScale))</code> call the <code>d3.axisBottom</code> function. This function is in charge of rendering the axis, the <em>axisBottom</em> means that the ticks of the axis will be rendered bellow the axis line. There are 3 more functions: <code>d3.axisTop</code>, <code>d3.axisLeft</code>, <code>d3.axisRight</code> to render the axis in different orientations.</li>
-</ul>
-<blockquote>
-<p>About the <a target="_blank" rel="noopener" href="https://github.com/d3/d3-selection/blob/v2.0.0/README.md#selection_call"><code>call</code></a> method: This method call the function passed as argument and uses as first argument for the function of the selected element. In this case is the same as execute: <code>d3.axisBottom(xScale)(svg.select('.xaxis'))</code> (Remember that d3.axisBottom returns a function). The advantage of using <code>call</code> is you can concatenate methods because call returns the selection, not the result of the function</p>
-</blockquote>
-<p>After that we can see our x-axis <span class="github-emoji"><span>🎉</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
-<h3 id="Rendering-the-y-axis"><a href="#Rendering-the-y-axis" class="headerlink" title="Rendering the y-axis"></a>Rendering the y-axis</h3><p>Rendering the Y axis is almost the same as X axis:</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">svg</span><br><span class="line">  .append(<span class="string">'g'</span>)</span><br><span class="line">  .attr(<span class="string">'class'</span>, <span class="string">'y axis'</span>)</span><br><span class="line">  .attr(<span class="string">'transform'</span>, <span class="string">'translate('</span> + margin.left + <span class="string">','</span> + margin.top + <span class="string">')'</span>)</span><br><span class="line">  .call(d3.axisLeft(yScale))</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="Rendering-the-line"><a href="#Rendering-the-line" class="headerlink" title="Rendering the line"></a>Rendering the line</h2><p>Before do the chart rendering we need the data, in this case, we will use random values</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dataset = d3.range(n).map(<span class="function">(<span class="params">d</span>) =&gt;</span> {</span><br><span class="line">  <span class="keyword">return</span> { <span class="attr">x</span>: d, <span class="attr">y</span>: d3.randomUniform(yMax)() }</span><br><span class="line">})</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">[</span></span><br><span class="line"><span class="comment">  { x: 0, y: 2.679771859053788 },</span></span><br><span class="line"><span class="comment">  { x: 1, y: 5.447777017888336 },</span></span><br><span class="line"><span class="comment">  ...</span></span><br><span class="line"><span class="comment">  { x: 19, y: 0.083980807899251 }</span></span><br><span class="line"><span class="comment">]</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>Now we will create the line generator that is a function that returns a </p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> line = d3</span><br><span class="line">  .line()</span><br><span class="line">  .x(<span class="function">(<span class="params">d</span>) =&gt;</span> xScale(d.x))</span><br><span class="line">  .y(<span class="function">(<span class="params">d</span>) =&gt;</span> yScale(d.y))</span><br></pre></td></tr></tbody></table></figure>
-<p>Line by line:</p>
-<ul>
-<li><code>.line()</code> is the basic line generator</li>
-<li><code>.x((d) =&gt; xScale(d.x))</code> function that for every point in data set returns the x position in the draw area, this is the reason why we are using the scale function. <em>d</em> represent every dataset point</li>
-<li><code>.y((d) =&gt; xScale(d.y)</code> same as previous line but referred to y-axis</li>
-</ul>
-<p>We can also add an extra call to the line generator to configure the interpolation behavior, for example: <code>.curve(d3.curveMonotoneX)</code> that makes the curve softer. But for now, a simple interpolation (linear) is enough.</p>
-<p>Ok, now we have the line generator, and it’s time to draw the line in our chart.</p>
-<p>First, we add a SVG group for the line we will draw </p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> lineWrapper = svg</span><br><span class="line">  .append(<span class="string">'g'</span>)</span><br><span class="line">  .attr(<span class="string">'transform'</span>, <span class="string">'translate('</span> + margin.left + <span class="string">','</span> + margin.top + <span class="string">')'</span>);</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Line by line:</p>
-<ul>
-<li><code>.append('g')</code> appends a SVG group element (<code>g</code>) to the <code>svg</code> element. This group will contain the chart draw area</li>
-<li><code>.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')</code> set the transform attribute to move the group, this makes easy managing the draw, because we don’t need to take care of the real position, for the draw area the coordinate system starts on (0, 0)</li>
-</ul>
-<p>And the render the line</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lineWrapper</span><br><span class="line">  .append(<span class="string">'path'</span>)</span><br><span class="line">  .datum(dataset)</span><br><span class="line">  .attr(<span class="string">'class'</span>, <span class="string">'line'</span>)</span><br><span class="line">  .attr(<span class="string">'d'</span>, line)</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Line by line:</p>
-<ul>
-<li><code>.append('path')</code> appends a path element (to draw the line)</li>
-<li><code>.datum(dataset)</code> assigns the dataset to the path element (we will use it in the next lines)</li>
-<li><code>.attr('class', 'line')</code> add the class <code>line</code> to the path element to make asy the css styling</li>
-<li><code>.attr('d', line)</code> add the <code>d</code> attribute, to generate it class to the line generator passing the element, and the <code>datum</code></li>
-</ul>
-<blockquote>
-<p>We used <code>datum</code> because data is static, but d3 provides other methods to link dynamic data to the dom elements, but I will talk about that in the future</p>
-</blockquote>
-<p>And this is all for the moment. <em>d3</em> is a powerful tool but needs you to know some concepts before starting to create charts. The example we did in this post is very, very simple but I think is a good starting point.</p>
-<p>My idea is to write more post about <em>d3</em> going deeper into the current concept and how to configure and customize the current components (for example configure the axis, the labels, etc) </p>
-<iframe src="https://codesandbox.io/embed/sharp-water-bmk3t?fontsize=14&amp;hidenavigation=1&amp;theme=dark&amp;view=preview" width="100%" height="400px" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-nav">
-  <div class="container-fluid-1200">
-    <div class="grid-row">
-      <div class="next col-xs-6">
-        
-          <div class="nav-previous">
-            <a href="https://sergiocarracedo.es//tips-using-typescript-and-vue/" rel="prev" class="nav-cover">
-              <img src="/images/2021/teaser_vue-typescript-tips-rF4kuvgHhU-unsplash.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//tips-using-typescript-and-vue/" rel="prev" class="nav-text">
-              <i class="fa fa-arrow-left"></i> Tips using Typescript and Vue
-            </a>
-          </div>
-        
-      </div>
-      <div class="prev col-xs-6">
-        
-          <div class="nav-next">
-            <a href="https://sergiocarracedo.es//custom-svg-icon-set-management-with-vue/" rel="next" class="nav-cover">
-              <img src="/images/2021/teaser_svg-iconset.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//custom-svg-icon-set-management-with-vue/" rel="next" class="nav-text">
-              Custom SVG icon set management with Vue <i class="fa fa-arrow-right"></i>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-comments container-fluid-1200">
-    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
-</div>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides.
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div id="post-aboutme">
-  <div class="me container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 mb-5">
-        <div class="social">
-  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-linkedin"></i>
-  </a>
-  <a href="mailto:hi+blog@sergiocarracedo.es" class="social-link" title="hi+blog@sergiocarracedo.es">
-    <i class="fas fa-envelope"></i>
-  </a>
-
-  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-github"></i>
-  </a>
-  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-drupal"></i>
-  </a>
-
-
-  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-twitter"></i>
-  </a>
-  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
-    <i class="fab fa-lastfm"></i>
-  </a>
-  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
-    <i class="fab fa-tumblr"></i>
-  </a>
-</div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="claim container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <a href="/" class="back">
-          Home
-        </a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-    </div>
-
-
-</div>
-
-</body>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-
-<script src="/js/jquery.min.js"></script>
-<script src="/js/sergiocarracedo.js"></script>
-
-
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-      window.addEventListener("load", function(){
-        window.cookieconsent.initialise({
-          "palette": {
-            "popup": {
-              "background": "#004262",
-              "text": "#fff"
-            },
-            "button": {
-              "background": "#8ec760",
-              "text": "#ffffff"
-            }
-          },
-          "type": "opt-out",
-          "content": {
-            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
-            "allow": "Ok, continua",
-            "deny": "Nada de cookies",
-            "link": "Saber más",
-            "href": "https://sergiocarracedo.es/cookies.html",
-          },
-          "onStatusChange": function(status, chosenBefore) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          },
-          "onInitialise" : function(status) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          }
-        })
-      });
-    </script>
-
-
-</html>
+<!doctype html><html><head><meta charset=utf-8><meta content="IE=edge,chrome=1" http-equiv=x-ua-compatible><meta content="width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no" name=viewport><title>Sergio Carracedo | Understanding d3.js - A simple line chart</title><meta content="yes" name=apple-mobile-web-app-capable><meta content="black-translucent" name=apple-mobile-web-app-status-bar-style><meta content="Sergio Carracedo's personal page and blog" name=description><meta content="Sergio Carracedo" name=author><link href=favicon.png rel=icon><meta property="og:title" content="Understanding d3.js - A simple line chart"><meta property="og:description" content="Before starting is important to say that d3.js is not a chart library is a library for making charts, if you are expecting to pass the data to the library and set 4, 5,&mldr; 10 params and get the chart to render, d3.js is not your library.
+d3.js is more than that, is a very flexible library to manage data (data-driven documents) and create the representation of that data (not only charts)."><meta property="og:type" content="article"><meta property="og:url" content="/understanding-d3-js-introduction/"><meta property="og:image" content="/understanding-d3-js-introduction/d3js_intro_hufbf9b1725875b43438e7ca5fd499d15f_364192_1920x1080_fill_q75_box_center.jpg"><meta property="article:section" content="blog"><meta property="article:published_time" content="2021-04-19T00:00:00+00:00"><meta property="article:modified_time" content="2021-04-19T00:00:00+00:00"><link href=/scss/main.1fb71fa7ebb2d9065c28cbf3dd7ed45114596cf9b9be107e9d0ded933e45f4e1.css integrity="sha256-H7cfp+uy2QZcKMvz3X7UURRZbPm5vhB+nQ3tkz5F9OE=" rel=stylesheet><link href=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css rel=stylesheet type=text/css></head><body><header class=web-header><h2><a class=back-to-home href=/ title="Back to home"><i class="fas fa-home"></i><div class=back-to-home__content><span class=back-to-home__action>Back to home</span><div class=back-to-home__title><img alt="Sergio Carracedo" class=avatar src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_100x100_fit_q75_box.jpg><h4>Sergio Carracedo</h4></div></div></a></h2><div class=web-header__page-title>Understanding d3.js - A simple line chart</div></header><div class=main-content><article class="post post--single"><div class="post__main wrapper-1200"><aside class=post__metadata><time class=post__date datetime=2021-04-19><i class="far fa-calendar-alt"></i> Apr 19, 2021</time><div class=post__tags><a href=tags/d3 class=post__tag><span>d3</span></a>
+<a href=tags/js class=post__tag><span>js</span></a></div><span class=post__reading-time><i class="far fa-clock"></i> 7 minutes read</span></aside><header class=post__header><h1 class=post__title>Understanding d3.js - A simple line chart</h1></header><figure class=post__cover><img src=/understanding-d3-js-introduction/d3js_intro_hufbf9b1725875b43438e7ca5fd499d15f_364192_1200x400_fill_q75_box_center.jpg alt="Understanding d3.js - A simple line chart" width=1200 height=400></figure><div class=post__content><p>Before starting is important to say that <strong>d3.js is not a chart library is a library for making charts</strong>, if you are expecting to pass the data to the library and set 4, 5,&mldr; 10 params and get the chart to render, d3.js is not your library.</p><p><a href=https://d3js.org/>d3.js</a> is more than that, is a very flexible library to manage data (data-driven documents) and create the representation of that data (not only charts). <strong>d3.js</strong> provides you the different pieces to create your customized data visualizations (for example charts)</p><p>Let&rsquo;s start creating a simple line chart:</p><p><img src=line-chart.png alt></p><h1 id=scales-domain-and-range>Scales, domain, and range</h1><p>Simplifying, there are two pieces in the chart: Axis and line. Let&rsquo;s talk about the axis.
+In the example the chart we have two axes: X and Y, but we can have more or less, depending on the chart type.</p><p>Axis is one of the reference lines of a coordinate system, every single point represents a value in the coordinate system and also a position in the canvas which is displaying the chart.</p><p>In our example, in the y-axis the &lsquo;1&rsquo; value of the chart is drawn in the position 31px from the axis start, but in SVG or canvas the origin of the coordinate system start on the top left corner, and &lsquo;y&rsquo; grows in the direction to monitor bottom. Then to print the 1 value in our chart we must use 319 - 31 (288) as y position.
+<img src=line-chart-axis.png alt></p><p>That&rsquo;s complicated, and can be even more, if the relation between screen coordinates and chart coordinates aren&rsquo;t lineal, for example, a logarithmic chart.</p><p><strong>d3.js</strong> brings us a component to help us to abstract the conversion between screen coordinates and chart coordinates:</p><h2 id=d3-scale>d3-scale</h2><p><a href=https://github.com/d3/d3-scale><strong>d3-scale</strong></a> is our component.
+There are a lot of different types of scales: Continuous (Linear, Power, log, identity, time, radial), Sequential, Ordinal, etc&mldr; For our example chart, we will use Linear.</p><p>Before continuing with <em>scale</em> I&rsquo;m going to introduce 2 important concepts: <strong>domain</strong> and <strong>range</strong></p><p><strong>Domain</strong> is the complete set of values chart can use, in our case is all the values between 0 and 10</p><p><strong>Range</strong> is the coordinates (in the screen) where the chart can draw, in this case from 0 to 319</p><p>Putting all together:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>xScale</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>d3</span>.<span style=color:#a6e22e>scaleLinear</span>().<span style=color:#a6e22e>domain</span>([<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>10</span>]).<span style=color:#a6e22e>range</span>([<span style=color:#ae81ff>319</span>, <span style=color:#ae81ff>0</span>]) 
+</span></span></code></pre></div><blockquote><p>Note the range is between <code>319</code> and <code>0</code> not between <code>0</code> and <code>319</code></p></blockquote><p>This returns a function that links the values in the chart (domain), and the values in the &lsquo;canvas&rsquo; (range)</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#a6e22e>xScale</span>(<span style=color:#ae81ff>0</span>) <span style=color:#75715e>// 319
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>xScale</span>(<span style=color:#ae81ff>5</span>) <span style=color:#75715e>// 159.5
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>xScale</span>(<span style=color:#ae81ff>10</span>) <span style=color:#75715e>// 0
+</span></span></span></code></pre></div><p>Scale also provides some methods for do extra actions, for example, if you want to get the value in the chart from the &lsquo;canvas&rsquo; coordinates (the typical use case is getting the chart value in the mouse position) we can use</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#a6e22e>xScale</span>.<span style=color:#a6e22e>invert</span>(<span style=color:#ae81ff>159.5</span>) <span style=color:#75715e>// 5
+</span></span></span></code></pre></div><blockquote><p>Probably you are thinking the same as me the first time I see that: It&rsquo;s a function that has methods? WTF!. If you want you can go farther but in swallow, if the function has arguments returns the &lsquo;main&rsquo; value, if not returns an object of functions.</p></blockquote><p>We can do the same for the y-axis:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>yScale</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>d3</span>.<span style=color:#a6e22e>scaleLinear</span>().<span style=color:#a6e22e>domain</span>([<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>20</span>]).<span style=color:#a6e22e>range</span>([<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>700</span>]) 
+</span></span></code></pre></div><p>Ok, we have all the tools to manage the data and the canvas, now we must render the data and the axis</p><h1 id=rendering-the-chart>Rendering the chart</h1><p><strong>d3.js</strong> can render charts in <strong>SVG</strong> and <strong>Canvas</strong> but we will focus on the SVG rendering because is fast enough for most charts and makes easy interaction and styling.
+To render our line chart, first, we must prepare our placeholder.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>html</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>body</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;chart&#39;</span>&gt;&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>body</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>html</span>&gt;
+</span></span></code></pre></div><p>For our comfort I&rsquo;m going to define the chart margins and the width and height. The margins are necessary to render the axis, because the size of the chart refers to the draw area.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>margin</span> <span style=color:#f92672>=</span> { <span style=color:#a6e22e>top</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>10</span>, <span style=color:#a6e22e>right</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>10</span>, <span style=color:#a6e22e>bottom</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>50</span>, <span style=color:#a6e22e>left</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>50</span> }
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>width</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1280</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>left</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>right</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>height</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>420</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>top</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>bottom</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>n</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>20</span> <span style=color:#75715e>// Number of points in x axis
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>maxY</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span> <span style=color:#75715e>// Max y value
+</span></span></span></code></pre></div><p>Now we will use <em>d3</em> to add our SVG chart</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>svg</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>d3</span>
+</span></span><span style=display:flex><span>    .<span style=color:#a6e22e>select</span>(<span style=color:#e6db74>&#39;.chart&#39;</span>)
+</span></span><span style=display:flex><span>    .<span style=color:#a6e22e>append</span>(<span style=color:#e6db74>&#39;svg&#39;</span>)
+</span></span><span style=display:flex><span>    .<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;width&#39;</span>, <span style=color:#a6e22e>width</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>left</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>right</span>)
+</span></span><span style=display:flex><span>    .<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;height&#39;</span>, <span style=color:#a6e22e>height</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>top</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>bottom</span>)
+</span></span></code></pre></div><p>Line by line:</p><ul><li><code>.select('.chart')</code> selects the DOM element previously we defined</li><li><code>.append('svg')</code> appends a <code>&lt;svg></code> element to the <code>&lt;div class='chart'></code></li><li><code>.attr('width', width + margin.left + margin.right)</code> adds an <code>width</code> attribute to the <code>&lt;svg></code> element</li><li><code>.attr('height', height + margin.top + margin.bottom)</code> adds an <code>hight</code> attribute to the <code>&lt;svg></code> element</li></ul><p>We defined the scales above, but we will do it again, now using our variables to make the chart more reusable</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>xScale</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>d3</span>.<span style=color:#a6e22e>scaleLinear</span>().<span style=color:#a6e22e>domain</span>([<span style=color:#ae81ff>0</span>, <span style=color:#a6e22e>n</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>]).<span style=color:#a6e22e>range</span>([<span style=color:#ae81ff>0</span>, <span style=color:#a6e22e>width</span>])
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>yScale</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>d3</span>.<span style=color:#a6e22e>scaleLinear</span>().<span style=color:#a6e22e>domain</span>([<span style=color:#ae81ff>0</span>, <span style=color:#a6e22e>maxY</span>]).<span style=color:#a6e22e>range</span>([<span style=color:#a6e22e>height</span>, <span style=color:#ae81ff>0</span>])
+</span></span></code></pre></div><h3 id=rendering-the-x-axis>Rendering the x-axis</h3><p>To render the X axis we will create a new SVG group that holds the axis</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#a6e22e>svg</span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>append</span>(<span style=color:#e6db74>&#39;g&#39;</span>)
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;class&#39;</span>, <span style=color:#e6db74>&#39;x axis&#39;</span>)
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;transform&#39;</span>, <span style=color:#e6db74>&#39;translate(&#39;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>left</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;,&#39;</span> <span style=color:#f92672>+</span> (<span style=color:#a6e22e>height</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>top</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>)
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>call</span>(<span style=color:#a6e22e>d3</span>.<span style=color:#a6e22e>axisBottom</span>(<span style=color:#a6e22e>xScale</span>))
+</span></span></code></pre></div><p>Line by line:</p><ul><li><code>.append('g')</code> appends the new group for the axis</li><li><code>.attr('class', 'axis x-axis')</code> adds 2 classes to the group (this allows us to style it using CSS)</li><li><code>.attr('transform', 'translate(' + margin.left + ',' + height + ')')</code> moves the axis group bellow the chart draw area and gives space</li><li><code>.call(d3.axisBottom(xScale))</code> call the <code>d3.axisBottom</code> function. This function is in charge of rendering the axis, the <em>axisBottom</em> means that the ticks of the axis will be rendered bellow the axis line. There are 3 more functions: <code>d3.axisTop</code>, <code>d3.axisLeft</code>, <code>d3.axisRight</code> to render the axis in different orientations.</li></ul><blockquote><p>About the <a href=https://github.com/d3/d3-selection/blob/v2.0.0/README.md#selection_call><code>call</code></a> method: This method call the function passed as argument and uses as first argument for the function of the selected element. In this case is the same as execute: <code>d3.axisBottom(xScale)(svg.select('.xaxis'))</code> (Remember that d3.axisBottom returns a function). The advantage of using <code>call</code> is you can concatenate methods because call returns the selection, not the result of the function</p></blockquote><p>After that we can see our x-axis 🎉</p><h3 id=rendering-the-y-axis>Rendering the y-axis</h3><p>Rendering the Y axis is almost the same as X axis:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#a6e22e>svg</span>
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>append</span>(<span style=color:#e6db74>&#39;g&#39;</span>)
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;class&#39;</span>, <span style=color:#e6db74>&#39;y axis&#39;</span>)
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;transform&#39;</span>, <span style=color:#e6db74>&#39;translate(&#39;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>left</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;,&#39;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>top</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>)
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>call</span>(<span style=color:#a6e22e>d3</span>.<span style=color:#a6e22e>axisLeft</span>(<span style=color:#a6e22e>yScale</span>))
+</span></span></code></pre></div><h2 id=rendering-the-line>Rendering the line</h2><p>Before do the chart rendering we need the data, in this case, we will use random values</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>dataset</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>d3</span>.<span style=color:#a6e22e>range</span>(<span style=color:#a6e22e>n</span>).<span style=color:#a6e22e>map</span>((<span style=color:#a6e22e>d</span>) =&gt; {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> { <span style=color:#a6e22e>x</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>d</span>, <span style=color:#a6e22e>y</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>d3</span>.<span style=color:#a6e22e>randomUniform</span>(<span style=color:#a6e22e>yMax</span>)() }
+</span></span><span style=display:flex><span>})
+</span></span><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>[
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  { x: 0, y: 2.679771859053788 },
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  { x: 1, y: 5.447777017888336 },
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  ...
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  { x: 19, y: 0.083980807899251 }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>]
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span></code></pre></div><p>Now we will create the line generator that is a function that returns a</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>line</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>d3</span>
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>line</span>()
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>x</span>((<span style=color:#a6e22e>d</span>) =&gt; <span style=color:#a6e22e>xScale</span>(<span style=color:#a6e22e>d</span>.<span style=color:#a6e22e>x</span>))
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>y</span>((<span style=color:#a6e22e>d</span>) =&gt; <span style=color:#a6e22e>yScale</span>(<span style=color:#a6e22e>d</span>.<span style=color:#a6e22e>y</span>))
+</span></span></code></pre></div><p>Line by line:</p><ul><li><code>.line()</code> is the basic line generator</li><li><code>.x((d) => xScale(d.x))</code> function that for every point in data set returns the x position in the draw area, this is the reason why we are using the scale function. <em>d</em> represent every dataset point</li><li><code>.y((d) => xScale(d.y)</code> same as previous line but referred to y-axis</li></ul><p>We can also add an extra call to the line generator to configure the interpolation behavior, for example: <code>.curve(d3.curveMonotoneX)</code> that makes the curve softer. But for now, a simple interpolation (linear) is enough.</p><p>Ok, now we have the line generator, and it&rsquo;s time to draw the line in our chart.</p><p>First, we add a SVG group for the line we will draw</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>lineWrapper</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>svg</span>
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>append</span>(<span style=color:#e6db74>&#39;g&#39;</span>)
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;transform&#39;</span>, <span style=color:#e6db74>&#39;translate(&#39;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>left</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;,&#39;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>margin</span>.<span style=color:#a6e22e>top</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>);
+</span></span></code></pre></div><p>Line by line:</p><ul><li><code>.append('g')</code> appends a SVG group element (<code>g</code>) to the <code>svg</code> element. This group will contain the chart draw area</li><li><code>.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')</code> set the transform attribute to move the group, this makes easy managing the draw, because we don&rsquo;t need to take care of the real position, for the draw area the coordinate system starts on (0, 0)</li></ul><p>And the render the line</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#a6e22e>lineWrapper</span>
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>append</span>(<span style=color:#e6db74>&#39;path&#39;</span>)
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>datum</span>(<span style=color:#a6e22e>dataset</span>)
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;class&#39;</span>, <span style=color:#e6db74>&#39;line&#39;</span>)
+</span></span><span style=display:flex><span>  .<span style=color:#a6e22e>attr</span>(<span style=color:#e6db74>&#39;d&#39;</span>, <span style=color:#a6e22e>line</span>)
+</span></span></code></pre></div><p>Line by line:</p><ul><li><code>.append('path')</code> appends a path element (to draw the line)</li><li><code>.datum(dataset)</code> assigns the dataset to the path element (we will use it in the next lines)</li><li><code>.attr('class', 'line')</code> add the class <code>line</code> to the path element to make asy the css styling</li><li><code>.attr('d', line)</code> add the <code>d</code> attribute, to generate it class to the line generator passing the element, and the <code>datum</code></li></ul><blockquote><p>We used <code>datum</code> because data is static, but d3 provides other methods to link dynamic data to the dom elements, but I will talk about that in the future</p></blockquote><p>And this is all for the moment. <em>d3</em> is a powerful tool but needs you to know some concepts before starting to create charts. The example we did in this post is very, very simple but I think is a good starting point.</p><p>My idea is to write more post about <em>d3</em> going deeper into the current concept and how to configure and customize the current components (for example configure the axis, the labels, etc)
+<iframe frameborder=0 marginheight=0 marginwidth=0 width=100% height=400px type=text/html src="https://codesandbox.io/embed/sharp-water-bmk3t?fontsize=14&hidenavigation=1&theme=dark&view=preview"></iframe></p></div></div><aside class=post__nav-wrapper><div class=wrapper-1200><div class="post-nav post-nav--prev"><a class=post-nav__link href="/tips-using-typescript-and-vue/?ref=footer"><div class=post-nav__cover><img alt=.NextPage.Title src=/tips-using-typescript-and-vue/vue-typescript-tips-rF4kuvgHhU-unsplash_hue3e183c5fa902cd4ae789f3e908b1fee_215284_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Tips using Typescript and Vue</div></a></div><div class=blog-link><a class=btn href=blog>All Blog posts</a></div><div class="post-nav post-nav--next"><a class=post-nav__link href="/custom-svg-icon-set-management-with-vue/?ref=footer"><div class=post-nav__cover><img alt=.PrevPage.Title class=post-nav__cover src=/custom-svg-icon-set-management-with-vue/svg-iconset_hu19adf1a248ad14f55968af8b4f675360_99937_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Custom SVG icon set management with Vue</div></a></div></div></aside><aside class=post__comments><div class=wrapper-1200><div id=disqus_thread>To show the comments is mandatory accept cookie policy.</div></div></aside></article></div><footer class=web-footer><div class=wrapper-1200><div class=web-footer__left><div class=me><div class=me__avatar><img alt="Sergio Carracedo" src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_170x170_fit_q75_box.jpg></div><div class=me__titles><h1>Sergio Carracedo</h1><h2>Senior Fullstack developer.</h2><h3>Formula 1, cats, good conversations and small details lover.</h3></div></div></div><div class=web-footer__right><nav role=main class=menu><ul><li class=menu__item><a href>Home</a></li><li class=menu__item><a href=blog>Blog</a></li></ul></nav><div class=social><a class=social__link href=http://www.linkedin.com/in/sergiocarracedo target=_blank title=LinkedIn style=animation-delay:2s><i class="fab fa-linkedin"></i></a>
+<a class=social__link href=mailto:hi+blog@sergiocarracedo.es target=_blank title=Email style=animation-delay:1.9333333333333333s><i class="fas fa-envelope"></i></a>
+<a class=social__link href=https://github.com/sergiocarracedo target=_blank title=GitHub style=animation-delay:1.8666666666666667s><i class="fab fa-github"></i></a>
+<a class=social__link href=https://www.drupal.org/u/sergiocarracedo target=_blank title=Drupal style=animation-delay:1.8s><i class="fab fa-drupal"></i></a>
+<a class=social__link href=https://www.twitter.com/sergiocarracedo target=_blank title=Twitter style=animation-delay:1.7333333333333334s><i class="fab fa-twitter"></i></a>
+<a class=social__link href=http://www.last.fm/user/gasman40 target=_blank title=Last.fm style=animation-delay:1.6666666666666667s><i class="fab fa-lastfm"></i></a>
+<a class=social__link href=http://sergiocarracedo.tumblr.com/ target=_blank title=Tumblr style=animation-delay:1.6s><i class="fab fa-tumblr"></i></a></div></div></div></footer><script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459072-1"></script>
+<script>function runGA(){function e(){dataLayer.push(arguments)}e("js",new Date),e("config","UA-133459072-1")}</script><script>function runDisqus(){(function(){var e=document,t=e.createElement("script");t.src="https://sergiocarracedo.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()}</script><script src=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js></script>
+<script>window.addEventListener("load",function(){window.cookieconsent.initialise({palette:{popup:{background:"#004262",text:"#fff"},button:{background:"#8ec760",text:"#ffffff"}},type:"opt-out",content:{message:"Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",allow:"Ok, continua",deny:"Nada de cookies",link:"Saber más",href:"cookies"},onStatusChange:function(e){e=="allow"&&runCookiesAllowed()},onInitialise:function(e){e=="allow"&&runCookiesAllowed()}})})</script><script>addEventListener("scroll",e=>{let t=document.getElementsByTagName("body")[0];t&&window.scrollY>10?t.classList.add("not-in-top"):t.classList.remove("not-in-top")});function runCookiesAllowed(){runGA(),runDisqus()}</script></body></html>

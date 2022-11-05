@@ -1,369 +1,158 @@
-
-<!DOCTYPE html>
-<html lang="en" class="loading">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sergio Carracedo - Vue Composition API: How to split and reuse code</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="keywords" content="Sergio Carracedo,"> 
-    <meta name="description" content="Sergio Carracedo personal Blog,The Vue Composition API arrived at us in Nov 2018, 2 years ago, as a preview and become with some c,"> 
-    <meta name="author" content="Sergio Carracedo"> 
-    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    
-<link rel="stylesheet" href="/css/sergiocarracedo.css">
-
-    <meta name="description" content="The Vue Composition API arrived at us in Nov 2018, 2 years ago, as a preview and become with some controversial, because people believed composition API would replace the traditional Object API, but w">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Vue Composition API: How to split and reuse code">
-<meta property="og:url" content="https://sergiocarracedo.es/vue-composition-api-how-to-split-and-reuse-code/index.html">
-<meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="The Vue Composition API arrived at us in Nov 2018, 2 years ago, as a preview and become with some controversial, because people believed composition API would replace the traditional Object API, but w">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://sergiocarracedo.es/images/2021/vue-composition-api-3y1zF4hIPCg-unsplash.jpg">
-<meta property="article:published_time" content="2021-11-02T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-09-09T06:54:31.714Z">
-<meta property="article:author" content="Sergio Carracedo">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/vue-composition-api-3y1zF4hIPCg-unsplash.jpg">
-
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script>
-      function runGA() {
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-133459072-1', 'auto');
-        ga('send', 'pageview');
-      }
-
-      function runDisqus() {
-        /*var disqus_config = function () {
-          this.page.url = 'https://sergiocarracedo.es/';
-          this.page.identifier = 'sergiocarracedo';
-        }*/
-        (function() { // DON'T EDIT BELOW THIS LINE
-          var d = document, s = d.createElement('script');
-          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      }
-
-      function runCookiesAllowed() {
-        runGA();
-        runDisqus();
-      }
-    </script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 6.0.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
-
-<body>
-    <div id="single">
-    <div id="top">
-  <div class="bar" style="width: 0;"></div>
-  <div class="container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 col-sm-3">
-        <a class="back-to-home" href="/">
-          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
-          <h4>
-            Sergio Carracedo
-          </h4>
-        </a>
-      </div>
-      <div class="hidden-xs hidden-lxs col-sm-6">
-        <h3 class="subtitle">Vue Composition API: How to split and reuse code</h3>
-      </div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-    <div class="section">
-        <div class="article container-fluid-1200">
-  <div class="grid-row">
-    <div class="main col-xs-12">
-      <h1 class="title">
-        Vue Composition API: How to split and reuse code
-      </h1>
-      <div class="stuff">
-        <span>November 02, 2021</span>
-      </div>
-
-      
-      <div class="article-image">
-        <img src="/images/2021/header_vue-composition-api-3y1zF4hIPCg-unsplash.jpg" width="1200" height="400">
-      </div>
-      
-      <div class="content markdown">
-        <p>The Vue Composition API arrived at us in Nov 2018, 2 years ago, as a <a target="_blank" rel="noopener" href="https://medium.com/vue-mastery/evan-you-previews-vue-js-3-0-ab063dec3547">preview</a> and become with <a target="_blank" rel="noopener" href="https://dev.to/danielelkington/vue-s-darkest-day-3fgh">some controversial</a>, because people believed composition API would replace the traditional Object API, but would not.</p>
-<p>Anyway, after start to develop Vue apps using the composition API I don’t want to go back, maybe for very small components makes you write more code than with the Object API, but in most cases, you can take advantage of the composition API features.</p>
-<p>One of these features is code splitting, and by extension, code reusability.</p>
-<h1 id="Options-API"><a href="#Options-API" class="headerlink" title="Options API"></a>Options API</h1><p>With the Options API we could reuse code through the mixins. The mixins in Vue works like a kind of object composition. Your component will use all the data, methods, etc presents in the mixin, and you can rewrite it. Let see an example. </p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// Mixing</span><br><span class="line">export default {</span><br><span class="line">  props: {</span><br><span class="line">    color: String,</span><br><span class="line">    size: String</span><br><span class="line">  },</span><br><span class="line">  computed: {</span><br><span class="line">    colorClasses: () =&gt; {</span><br><span class="line">      return [`color-${this.color}`]</span><br><span class="line">    },</span><br><span class="line">    sizeClasses: () =&gt; {</span><br><span class="line">      return [`size-${this.size}`]</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>Imagine we have components we can colorate or change the size, then our mixin includes the properties and the way (computed) to get the classes to apply, the mixing above do exactly that.</p>
-<p>Now let write the component</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Component </span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div :class="['component-a', ...colorClasses, ...sizeClasses]"&gt;</span><br><span class="line">    ....</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import colorSizeMixin from '...'  </span><br><span class="line">export default {</span><br><span class="line">  mixins: { </span><br><span class="line">    colorSizeMixin </span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
-
-<p>This thing works, but only looking at the component file, it’s very hard to know from where we get the <code>colorClasses</code> and <code>sizeClasses</code>. You need to go to the mixin definition to know from where we are getting the values or which properties you could use in your component.</p>
-<p>Mixins have another limitation, mixin can’t adapt the behavior (in a simple way), I mean, you can’t change the mixin behavior passing to it a flag, in this example, for example, a list of valid colors to accept.</p>
-<h1 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h1><p>Let’s do the same with the composition API</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// useClasses.js</span></span><br><span class="line"><span class="keyword">import</span> { computed } <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (props) =&gt; {</span><br><span class="line">    <span class="keyword">const</span> colorClasses = computed(<span class="function">() =&gt;</span> [<span class="string">`color-<span class="subst">${props.color}</span>`</span>])</span><br><span class="line">    <span class="keyword">const</span> sizeClasses =  computed(<span class="function">() =&gt;</span> [<span class="string">`size-<span class="subst">${props.size}</span>`</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> {</span><br><span class="line">      colorClasses,</span><br><span class="line">      sizeClasses</span><br><span class="line">    }</span><br><span class="line">      </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// Component (Vue 3)</span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div :class="['component-a', ...colorClasses, ...sizeClasses]"&gt;</span><br><span class="line">    ....</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import { defineComponent } from 'vue'</span><br><span class="line">import useClasses from './useClasses.js'</span><br><span class="line"></span><br><span class="line">export default defineComponent({</span><br><span class="line">  props: {</span><br><span class="line">    color: String,</span><br><span class="line">    size: String</span><br><span class="line">  },</span><br><span class="line">  setup(props) {</span><br><span class="line">    const { colorClasses, sizeClasses } = useClasses(props)</span><br><span class="line">  </span><br><span class="line">    return {</span><br><span class="line">      colorClasses,</span><br><span class="line">      sizeClasses</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">})</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Now we have the same functionality, the <code>colorClasses</code> and <code>sizeClasses</code> can be reusable in another component as we had using mixins. </p>
-<p>Composition API has some advantages:</p>
-<ul>
-<li>It’s very easy to see from where the <code>colorClasses</code> and <code>sizeClasses</code> comes, and what input needs</li>
-<li>We don’t need to “import” or use all the methods as in the mixins, for example here we can only get the sizeClasses computed value (<code>const { sizeClasses } = useClasses(props)</code>) without any modification in the <code>useClasses.js</code></li>
-<li>We can parameterize the behavior, for example:</li>
-</ul>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// useClasses.js </span></span><br><span class="line"><span class="keyword">import</span> { computed } <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (props, allowedColors) =&gt; {</span><br><span class="line">    <span class="keyword">const</span> colorClasses = computed(<span class="function">() =&gt;</span>  allowedColors.indexOf(props.color) !== <span class="number">1</span> </span><br><span class="line">        ? [<span class="string">`color-<span class="subst">${props.color}</span>`</span>]</span><br><span class="line">        : []</span><br><span class="line">         </span><br><span class="line">    <span class="keyword">const</span> sizeClasses =  computed(<span class="function">() =&gt;</span> [<span class="string">`size-<span class="subst">${props.size}</span>`</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> {</span><br><span class="line">      colorClasses,</span><br><span class="line">      sizeClasses</span><br><span class="line">    }</span><br><span class="line">      </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Now we can pass to the <code>useClass</code> an array with all allowed colors that can be different in different components, with mixins that it’s hard to achieve.</p>
-<h2 id="Splitting-the-code"><a href="#Splitting-the-code" class="headerlink" title="Splitting the code"></a>Splitting the code</h2><p>Using this technique we can split our component’s code into different “uses” files, and if we put the related functionalities in the same “use” file we can reuse it. For example, we have a that needs to control the window scroll, we can write a “use” file like this:</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// useScroll.js</span></span><br><span class="line"><span class="keyword">import</span> { onBeforeUnmount, onMounted, Ref, ref } <span class="keyword">from</span> <span class="string">'@vue/composition-api'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> () =&gt; {</span><br><span class="line">  <span class="keyword">const</span> scrollY = ref(<span class="number">0</span>)</span><br><span class="line">  <span class="keyword">const</span> scrollX = ref(<span class="number">0</span>)</span><br><span class="line">  <span class="comment">// Before update the reactive values we store it in a local variable</span></span><br><span class="line">  <span class="keyword">let</span> localX = <span class="number">0</span>  </span><br><span class="line">  <span class="keyword">let</span> localY = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> onScroll = <span class="function">(<span class="params">e</span>) =&gt;</span> {</span><br><span class="line">    localX = <span class="built_in">window</span>.scrollX</span><br><span class="line">    localY = <span class="built_in">window</span>.scrollY</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">//We only update reactive values every 100 to avoid a update it too much</span></span><br><span class="line">  <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> {</span><br><span class="line">    <span class="keyword">if</span> (localX !== scrollX.value) {</span><br><span class="line">      scrollX.value = localX</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> (localY !== scrollY.value) {</span><br><span class="line">      scrollY.value = localY</span><br><span class="line">    }</span><br><span class="line">  }, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">  onMounted(<span class="function">() =&gt;</span> {</span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">'scroll'</span>, onScroll)</span><br><span class="line">  })</span><br><span class="line"></span><br><span class="line">  onBeforeUnmount(<span class="function">() =&gt;</span> {</span><br><span class="line">    <span class="built_in">window</span>.removeEventListener(<span class="string">'scroll'</span>, onScroll)</span><br><span class="line">  })</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> {</span><br><span class="line">    scrollX, scrollY</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Note that we can set the scroll position directly to the <code>scrollX</code> and <code>scrollY</code> but we want to avoid triggering the re-render of the component several times, and we store the values in a local variable, and every 100ms we dump the values to the reactive variables.</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Tarektouati/vue-use-web">vue-use-web</a> is a library inspired on that.</p>
-<h3 id="Some-tips-passing-values-to-the-“use”-files"><a href="#Some-tips-passing-values-to-the-“use”-files" class="headerlink" title="Some tips passing values to the “use” files"></a>Some tips passing values to the “use” files</h3><p>In the example file <code>useClasses.js</code> I passed the component <code>props</code>, which means we pass all props, this is not very good, because the component using the “use” file must pass the necessary properties, and this couldn’t happen.</p>
-<p>It’s better to define in the “use” signature the params we need. This is the previous code rewrite using this.</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// useClasses.js</span></span><br><span class="line"><span class="keyword">import</span> { computed } <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (color, size) =&gt; {</span><br><span class="line">    <span class="keyword">const</span> colorClasses = computed(<span class="function">() =&gt;</span> [<span class="string">`color-<span class="subst">${color}</span>`</span>])</span><br><span class="line">    <span class="keyword">const</span> sizeClasses =  computed(<span class="function">() =&gt;</span> [<span class="string">`size-<span class="subst">${size}</span>`</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> {</span><br><span class="line">      colorClasses,</span><br><span class="line">      sizeClasses</span><br><span class="line">    }</span><br><span class="line">      </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>And in the component</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"> <span class="keyword">const</span> { colorClasses, sizeClasses } = useClasses(props.color, props.size)</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
-<p>You probably realized, that now the computed variables inside the use file will never be updated event if the property changes. That’s because the prop.color is a string and is passed as copy not as reference.</p>
-<p>To solve that, we must pass the properties through a function:</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"> <span class="keyword">const</span> { colorClasses, sizeClasses } = useClasses(<span class="function">() =&gt;</span> props.color, <span class="function">() =&gt;</span>  props.size)</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
-
-<p>And change our “use” file, adding the <code>()</code> to call the wrapper function and get the “live” value of the property </p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// useClasses.js</span></span><br><span class="line"><span class="keyword">import</span> { computed } <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (color, size) =&gt; {</span><br><span class="line">    <span class="keyword">const</span> colorClasses = computed(<span class="function">() =&gt;</span> [<span class="string">`color-<span class="subst">${color()}</span>`</span>])</span><br><span class="line">    <span class="keyword">const</span> sizeClasses =  computed(<span class="function">() =&gt;</span> [<span class="string">`size-<span class="subst">${size()}</span>`</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> {</span><br><span class="line">      colorClasses,</span><br><span class="line">      sizeClasses</span><br><span class="line">    }</span><br><span class="line">      </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>As personal opinion I being using Composition API for a long time, even in Vue 2.x, and I prefer it over Options API because I feel the code is better, easier to read, easier to reuse, and could be code non-related with Vue, I mean you can write all the logic without use anything related with Vue and after all the “calculations” put the results in a reactive variable, so this code could be used in other frameworks.</p>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-nav">
-  <div class="container-fluid-1200">
-    <div class="grid-row">
-      <div class="next col-xs-6">
-        
-          <div class="nav-previous">
-            <a href="https://sergiocarracedo.es//integration-tests-in-golang-with-dockertest/" rel="prev" class="nav-cover">
-              <img src="/images/2021/teaser_dockertest-pexels-miguel-3785927.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//integration-tests-in-golang-with-dockertest/" rel="prev" class="nav-text">
-              <i class="fa fa-arrow-left"></i> Integration tests in Golang with dockertest 
-            </a>
-          </div>
-        
-      </div>
-      <div class="prev col-xs-6">
-        
-          <div class="nav-next">
-            <a href="https://sergiocarracedo.es//database-migrations-in-golang/" rel="next" class="nav-cover">
-              <img src="/images/2021/teaser_go-migrate-pexels-james-wheeler-1598075.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//database-migrations-in-golang/" rel="next" class="nav-text">
-              Database migrations in Golang. <i class="fa fa-arrow-right"></i>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-comments container-fluid-1200">
-    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
-</div>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides.
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div id="post-aboutme">
-  <div class="me container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 mb-5">
-        <div class="social">
-  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-linkedin"></i>
-  </a>
-  <a href="mailto:hi+blog@sergiocarracedo.es" class="social-link" title="hi+blog@sergiocarracedo.es">
-    <i class="fas fa-envelope"></i>
-  </a>
-
-  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-github"></i>
-  </a>
-  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-drupal"></i>
-  </a>
-
-
-  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-twitter"></i>
-  </a>
-  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
-    <i class="fab fa-lastfm"></i>
-  </a>
-  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
-    <i class="fab fa-tumblr"></i>
-  </a>
-</div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="claim container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <a href="/" class="back">
-          Home
-        </a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-    </div>
-
-
-</div>
-
-</body>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-
-<script src="/js/jquery.min.js"></script>
-<script src="/js/sergiocarracedo.js"></script>
-
-
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-      window.addEventListener("load", function(){
-        window.cookieconsent.initialise({
-          "palette": {
-            "popup": {
-              "background": "#004262",
-              "text": "#fff"
-            },
-            "button": {
-              "background": "#8ec760",
-              "text": "#ffffff"
-            }
-          },
-          "type": "opt-out",
-          "content": {
-            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
-            "allow": "Ok, continua",
-            "deny": "Nada de cookies",
-            "link": "Saber más",
-            "href": "https://sergiocarracedo.es/cookies.html",
-          },
-          "onStatusChange": function(status, chosenBefore) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          },
-          "onInitialise" : function(status) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          }
-        })
-      });
-    </script>
-
-
-</html>
+<!doctype html><html><head><meta charset=utf-8><meta content="IE=edge,chrome=1" http-equiv=x-ua-compatible><meta content="width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no" name=viewport><title>Sergio Carracedo | Vue Composition API: How to split and reuse code</title><meta content="yes" name=apple-mobile-web-app-capable><meta content="black-translucent" name=apple-mobile-web-app-status-bar-style><meta content="Sergio Carracedo's personal page and blog" name=description><meta content="Sergio Carracedo" name=author><link href=favicon.png rel=icon><meta property="og:title" content="Vue Composition API: How to split and reuse code"><meta property="og:description" content="The Vue Composition API arrived at us in Nov 2018, 2 years ago, as a preview and become with some controversial, because people believed composition API would replace the traditional Object API, but would not.
+Anyway, after start to develop Vue apps using the composition API I don&rsquo;t want to go back, maybe for very small components makes you write more code than with the Object API, but in most cases, you can take advantage of the composition API features."><meta property="og:type" content="article"><meta property="og:url" content="/vue-composition-api-how-to-split-and-reuse-code/"><meta property="og:image" content="/vue-composition-api-how-to-split-and-reuse-code/vue-composition-api-3y1zF4hIPCg-unsplash_hue3e183c5fa902cd4ae789f3e908b1fee_585022_1920x1080_fill_q75_box_center.jpg"><meta property="article:section" content="blog"><meta property="article:published_time" content="2021-11-02T00:00:00+00:00"><meta property="article:modified_time" content="2021-11-02T00:00:00+00:00"><link href=/scss/main.1fb71fa7ebb2d9065c28cbf3dd7ed45114596cf9b9be107e9d0ded933e45f4e1.css integrity="sha256-H7cfp+uy2QZcKMvz3X7UURRZbPm5vhB+nQ3tkz5F9OE=" rel=stylesheet><link href=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css rel=stylesheet type=text/css></head><body><header class=web-header><h2><a class=back-to-home href=/ title="Back to home"><i class="fas fa-home"></i><div class=back-to-home__content><span class=back-to-home__action>Back to home</span><div class=back-to-home__title><img alt="Sergio Carracedo" class=avatar src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_100x100_fit_q75_box.jpg><h4>Sergio Carracedo</h4></div></div></a></h2><div class=web-header__page-title>Vue Composition API: How to split and reuse code</div></header><div class=main-content><article class="post post--single"><div class="post__main wrapper-1200"><aside class=post__metadata><time class=post__date datetime=2021-11-02><i class="far fa-calendar-alt"></i> Nov 2, 2021</time><div class=post__tags><a href=tags/vue class=post__tag><span>vue</span></a></div><span class=post__reading-time><i class="far fa-clock"></i> 6 minutes read</span></aside><header class=post__header><h1 class=post__title>Vue Composition API: How to split and reuse code</h1></header><figure class=post__cover><img src=/vue-composition-api-how-to-split-and-reuse-code/vue-composition-api-3y1zF4hIPCg-unsplash_hue3e183c5fa902cd4ae789f3e908b1fee_585022_1200x400_fill_q75_box_center.jpg alt="Vue Composition API: How to split and reuse code" width=1200 height=400></figure><div class=post__content><p>The Vue Composition API arrived at us in Nov 2018, 2 years ago, as a <a href=https://medium.com/vue-mastery/evan-you-previews-vue-js-3-0-ab063dec3547>preview</a> and become with <a href=https://dev.to/danielelkington/vue-s-darkest-day-3fgh>some controversial</a>, because people believed composition API would replace the traditional Object API, but would not.</p><p>Anyway, after start to develop Vue apps using the composition API I don&rsquo;t want to go back, maybe for very small components makes you write more code than with the Object API, but in most cases, you can take advantage of the composition API features.</p><p>One of these features is code splitting, and by extension, code reusability.</p><h1 id=options-api>Options API</h1><p>With the Options API we could reuse code through the mixins. The mixins in Vue works like a kind of object composition. Your component will use all the data, methods, etc presents in the mixin, and you can rewrite it. Let see an example.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-vue data-lang=vue><span style=display:flex><span><span style=color:#75715e>// Mixing
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> String,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>size</span><span style=color:#f92672>:</span> String
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>computed</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>colorClasses</span><span style=color:#f92672>:</span> () =&gt; {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> [<span style=color:#e6db74>`color-</span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>color</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>]
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>sizeClasses</span><span style=color:#f92672>:</span> () =&gt; {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> [<span style=color:#e6db74>`size-</span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>size</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>]
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Imagine we have components we can colorate or change the size, then our mixin includes the properties and the way (computed) to get the classes to apply, the mixing above do exactly that.</p><p>Now let write the component</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-vue data-lang=vue><span style=display:flex><span><span style=color:#75715e>// Component 
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>&lt;<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#f92672>:</span><span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[&#39;component-a&#39;, ...colorClasses, ...sizeClasses]&#34;</span>&gt;
+</span></span><span style=display:flex><span>    ....
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>colorSizeMixin</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;...&#39;</span>  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mixins</span><span style=color:#f92672>:</span> { 
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>colorSizeMixin</span> 
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><p>This thing works, but only looking at the component file, it&rsquo;s very hard to know from where we get the <code>colorClasses</code> and <code>sizeClasses</code>. You need to go to the mixin definition to know from where we are getting the values or which properties you could use in your component.</p><p>Mixins have another limitation, mixin can&rsquo;t adapt the behavior (in a simple way), I mean, you can&rsquo;t change the mixin behavior passing to it a flag, in this example, for example, a list of valid colors to accept.</p><h1 id=composition-api>Composition API</h1><p>Let&rsquo;s do the same with the composition API</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#75715e>// useClasses.js
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>computed</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;vue&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> (<span style=color:#a6e22e>props</span>) =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>colorClasses</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>computed</span>(() =&gt; [<span style=color:#e6db74>`color-</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>color</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>])
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>sizeClasses</span> <span style=color:#f92672>=</span>  <span style=color:#a6e22e>computed</span>(() =&gt; [<span style=color:#e6db74>`size-</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>size</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>])
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>colorClasses</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>sizeClasses</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-vue data-lang=vue><span style=display:flex><span><span style=color:#75715e>// Component (Vue 3)
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>&lt;<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#f92672>:</span><span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[&#39;component-a&#39;, ...colorClasses, ...sizeClasses]&#34;</span>&gt;
+</span></span><span style=display:flex><span>    ....
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>defineComponent</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;vue&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>useClasses</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./useClasses.js&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#a6e22e>defineComponent</span>({
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> String,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>size</span><span style=color:#f92672>:</span> String
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>setup</span>(<span style=color:#a6e22e>props</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> { <span style=color:#a6e22e>colorClasses</span>, <span style=color:#a6e22e>sizeClasses</span> } <span style=color:#f92672>=</span> <span style=color:#a6e22e>useClasses</span>(<span style=color:#a6e22e>props</span>)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>colorClasses</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>sizeClasses</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>})
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><p>Now we have the same functionality, the <code>colorClasses</code> and <code>sizeClasses</code> can be reusable in another component as we had using mixins.</p><p>Composition API has some advantages:</p><ul><li>It&rsquo;s very easy to see from where the <code>colorClasses</code> and <code>sizeClasses</code> comes, and what input needs</li><li>We don&rsquo;t need to &ldquo;import&rdquo; or use all the methods as in the mixins, for example here we can only get the sizeClasses computed value (<code>const { sizeClasses } = useClasses(props)</code>) without any modification in the <code>useClasses.js</code></li><li>We can parameterize the behavior, for example:</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#75715e>// useClasses.js 
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>computed</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;vue&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> (<span style=color:#a6e22e>props</span>, <span style=color:#a6e22e>allowedColors</span>) =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>colorClasses</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>computed</span>(() =&gt;  <span style=color:#a6e22e>allowedColors</span>.<span style=color:#a6e22e>indexOf</span>(<span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>color</span>) <span style=color:#f92672>!==</span> <span style=color:#ae81ff>1</span> 
+</span></span><span style=display:flex><span>        <span style=color:#f92672>?</span> [<span style=color:#e6db74>`color-</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>color</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>]
+</span></span><span style=display:flex><span>        <span style=color:#f92672>:</span> []
+</span></span><span style=display:flex><span>         
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>sizeClasses</span> <span style=color:#f92672>=</span>  <span style=color:#a6e22e>computed</span>(() =&gt; [<span style=color:#e6db74>`size-</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>size</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>])
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>colorClasses</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>sizeClasses</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Now we can pass to the <code>useClass</code> an array with all allowed colors that can be different in different components, with mixins that it&rsquo;s hard to achieve.</p><h2 id=splitting-the-code>Splitting the code</h2><p>Using this technique we can split our component&rsquo;s code into different &ldquo;uses&rdquo; files, and if we put the related functionalities in the same &ldquo;use&rdquo; file we can reuse it. For example, we have a that needs to control the window scroll, we can write a &ldquo;use&rdquo; file like this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#75715e>// useScroll.js
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>onBeforeUnmount</span>, <span style=color:#a6e22e>onMounted</span>, <span style=color:#a6e22e>Ref</span>, <span style=color:#a6e22e>ref</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;@vue/composition-api&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> () =&gt; {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>scrollY</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>ref</span>(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>scrollX</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>ref</span>(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// Before update the reactive values we store it in a local variable
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>localX</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>localY</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>onScroll</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>e</span>) =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>localX</span> <span style=color:#f92672>=</span> window.<span style=color:#a6e22e>scrollX</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>localY</span> <span style=color:#f92672>=</span> window.<span style=color:#a6e22e>scrollY</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>//We only update reactive values every 100 to avoid a update it too much
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#a6e22e>setInterval</span>(() =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>localX</span> <span style=color:#f92672>!==</span> <span style=color:#a6e22e>scrollX</span>.<span style=color:#a6e22e>value</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>scrollX</span>.<span style=color:#a6e22e>value</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>localX</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>localY</span> <span style=color:#f92672>!==</span> <span style=color:#a6e22e>scrollY</span>.<span style=color:#a6e22e>value</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>scrollY</span>.<span style=color:#a6e22e>value</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>localY</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }, <span style=color:#ae81ff>100</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>onMounted</span>(() =&gt; {
+</span></span><span style=display:flex><span>    window.<span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#39;scroll&#39;</span>, <span style=color:#a6e22e>onScroll</span>)
+</span></span><span style=display:flex><span>  })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>onBeforeUnmount</span>(() =&gt; {
+</span></span><span style=display:flex><span>    window.<span style=color:#a6e22e>removeEventListener</span>(<span style=color:#e6db74>&#39;scroll&#39;</span>, <span style=color:#a6e22e>onScroll</span>)
+</span></span><span style=display:flex><span>  })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>scrollX</span>, <span style=color:#a6e22e>scrollY</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Note that we can set the scroll position directly to the <code>scrollX</code> and <code>scrollY</code> but we want to avoid triggering the re-render of the component several times, and we store the values in a local variable, and every 100ms we dump the values to the reactive variables.</p><p><a href=https://github.com/Tarektouati/vue-use-web>vue-use-web</a> is a library inspired on that.</p><h3 id=some-tips-passing-values-to-the-use-files>Some tips passing values to the &ldquo;use&rdquo; files</h3><p>In the example file <code>useClasses.js</code> I passed the component <code>props</code>, which means we pass all props, this is not very good, because the component using the &ldquo;use&rdquo; file must pass the necessary properties, and this couldn&rsquo;t happen.</p><p>It&rsquo;s better to define in the &ldquo;use&rdquo; signature the params we need. This is the previous code rewrite using this.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#75715e>// useClasses.js
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>computed</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;vue&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> (<span style=color:#a6e22e>color</span>, <span style=color:#a6e22e>size</span>) =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>colorClasses</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>computed</span>(() =&gt; [<span style=color:#e6db74>`color-</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>color</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>])
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>sizeClasses</span> <span style=color:#f92672>=</span>  <span style=color:#a6e22e>computed</span>(() =&gt; [<span style=color:#e6db74>`size-</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>size</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>])
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>colorClasses</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>sizeClasses</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>And in the component</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>...
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>const</span> { <span style=color:#a6e22e>colorClasses</span>, <span style=color:#a6e22e>sizeClasses</span> } <span style=color:#f92672>=</span> <span style=color:#a6e22e>useClasses</span>(<span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>color</span>, <span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>size</span>)
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>You probably realized, that now the computed variables inside the use file will never be updated event if the property changes. That&rsquo;s because the prop.color is a string and is passed as copy not as reference.</p><p>To solve that, we must pass the properties through a function:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>...
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>const</span> { <span style=color:#a6e22e>colorClasses</span>, <span style=color:#a6e22e>sizeClasses</span> } <span style=color:#f92672>=</span> <span style=color:#a6e22e>useClasses</span>(() =&gt; <span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>color</span>, () =&gt;  <span style=color:#a6e22e>props</span>.<span style=color:#a6e22e>size</span>)
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>And change our &ldquo;use&rdquo; file, adding the <code>()</code> to call the wrapper function and get the &ldquo;live&rdquo; value of the property</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#75715e>// useClasses.js
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>computed</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;vue&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> (<span style=color:#a6e22e>color</span>, <span style=color:#a6e22e>size</span>) =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>colorClasses</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>computed</span>(() =&gt; [<span style=color:#e6db74>`color-</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>color</span>()<span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>])
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>sizeClasses</span> <span style=color:#f92672>=</span>  <span style=color:#a6e22e>computed</span>(() =&gt; [<span style=color:#e6db74>`size-</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>size</span>()<span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>])
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>colorClasses</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>sizeClasses</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>As personal opinion I being using Composition API for a long time, even in Vue 2.x, and I prefer it over Options API because I feel the code is better, easier to read, easier to reuse, and could be code non-related with Vue, I mean you can write all the logic without use anything related with Vue and after all the &ldquo;calculations&rdquo; put the results in a reactive variable, so this code could be used in other frameworks.</p></div></div><aside class=post__nav-wrapper><div class=wrapper-1200><div class="post-nav post-nav--prev"><a class=post-nav__link href="/integration-tests-in-golang-with-dockertest/?ref=footer"><div class=post-nav__cover><img alt=.NextPage.Title src=/integration-tests-in-golang-with-dockertest/dockertest-pexels-miguel-3785927_hue3e183c5fa902cd4ae789f3e908b1fee_305531_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Integration tests in Golang with dockertest</div></a></div><div class=blog-link><a class=btn href=blog>All Blog posts</a></div><div class="post-nav post-nav--next"><a class=post-nav__link href="/database-migrations-in-golang/?ref=footer"><div class=post-nav__cover><img alt=.PrevPage.Title class=post-nav__cover src=/database-migrations-in-golang/go-migrate-pexels-james-wheeler-1598075_hue3e183c5fa902cd4ae789f3e908b1fee_456451_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Database migrations in Golang.</div></a></div></div></aside><aside class=post__comments><div class=wrapper-1200><div id=disqus_thread>To show the comments is mandatory accept cookie policy.</div></div></aside></article></div><footer class=web-footer><div class=wrapper-1200><div class=web-footer__left><div class=me><div class=me__avatar><img alt="Sergio Carracedo" src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_170x170_fit_q75_box.jpg></div><div class=me__titles><h1>Sergio Carracedo</h1><h2>Senior Fullstack developer.</h2><h3>Formula 1, cats, good conversations and small details lover.</h3></div></div></div><div class=web-footer__right><nav role=main class=menu><ul><li class=menu__item><a href>Home</a></li><li class=menu__item><a href=blog>Blog</a></li></ul></nav><div class=social><a class=social__link href=http://www.linkedin.com/in/sergiocarracedo target=_blank title=LinkedIn style=animation-delay:2s><i class="fab fa-linkedin"></i></a>
+<a class=social__link href=mailto:hi+blog@sergiocarracedo.es target=_blank title=Email style=animation-delay:1.9333333333333333s><i class="fas fa-envelope"></i></a>
+<a class=social__link href=https://github.com/sergiocarracedo target=_blank title=GitHub style=animation-delay:1.8666666666666667s><i class="fab fa-github"></i></a>
+<a class=social__link href=https://www.drupal.org/u/sergiocarracedo target=_blank title=Drupal style=animation-delay:1.8s><i class="fab fa-drupal"></i></a>
+<a class=social__link href=https://www.twitter.com/sergiocarracedo target=_blank title=Twitter style=animation-delay:1.7333333333333334s><i class="fab fa-twitter"></i></a>
+<a class=social__link href=http://www.last.fm/user/gasman40 target=_blank title=Last.fm style=animation-delay:1.6666666666666667s><i class="fab fa-lastfm"></i></a>
+<a class=social__link href=http://sergiocarracedo.tumblr.com/ target=_blank title=Tumblr style=animation-delay:1.6s><i class="fab fa-tumblr"></i></a></div></div></div></footer><script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459072-1"></script>
+<script>function runGA(){function e(){dataLayer.push(arguments)}e("js",new Date),e("config","UA-133459072-1")}</script><script>function runDisqus(){(function(){var e=document,t=e.createElement("script");t.src="https://sergiocarracedo.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()}</script><script src=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js></script>
+<script>window.addEventListener("load",function(){window.cookieconsent.initialise({palette:{popup:{background:"#004262",text:"#fff"},button:{background:"#8ec760",text:"#ffffff"}},type:"opt-out",content:{message:"Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",allow:"Ok, continua",deny:"Nada de cookies",link:"Saber más",href:"cookies"},onStatusChange:function(e){e=="allow"&&runCookiesAllowed()},onInitialise:function(e){e=="allow"&&runCookiesAllowed()}})})</script><script>addEventListener("scroll",e=>{let t=document.getElementsByTagName("body")[0];t&&window.scrollY>10?t.classList.add("not-in-top"):t.classList.remove("not-in-top")});function runCookiesAllowed(){runGA(),runDisqus()}</script></body></html>

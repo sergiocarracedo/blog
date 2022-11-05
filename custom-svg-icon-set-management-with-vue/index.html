@@ -1,419 +1,60 @@
-
-<!DOCTYPE html>
-<html lang="en" class="loading">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sergio Carracedo - Custom SVG icon set management with Vue</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="keywords" content="Sergio Carracedo,"> 
-    <meta name="description" content="Sergio Carracedo personal Blog,Manage an icon set can seem a simple task but can be tricky.
-First, there a lot of ways to use an i,"> 
-    <meta name="author" content="Sergio Carracedo"> 
-    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    
-<link rel="stylesheet" href="/css/sergiocarracedo.css">
-
-    <meta name="description" content="Manage an icon set can seem a simple task but can be tricky. First, there a lot of ways to use an icon on a web page, all with pros and contras: Let’s use this SVG image created by Anu Rocks for all e">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Custom SVG icon set management with Vue">
-<meta property="og:url" content="https://sergiocarracedo.es/custom-svg-icon-set-management-with-vue/index.html">
-<meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="Manage an icon set can seem a simple task but can be tricky. First, there a lot of ways to use an icon on a web page, all with pros and contras: Let’s use this SVG image created by Anu Rocks for all e">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://sergiocarracedo.es/images/2021/svg-iconset.jpg">
-<meta property="article:published_time" content="2021-04-01T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-09-09T06:54:31.714Z">
-<meta property="article:author" content="Sergio Carracedo">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://sergiocarracedo.es/images/2021/svg-iconset.jpg">
-
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script>
-      function runGA() {
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-133459072-1', 'auto');
-        ga('send', 'pageview');
-      }
-
-      function runDisqus() {
-        /*var disqus_config = function () {
-          this.page.url = 'https://sergiocarracedo.es/';
-          this.page.identifier = 'sergiocarracedo';
-        }*/
-        (function() { // DON'T EDIT BELOW THIS LINE
-          var d = document, s = d.createElement('script');
-          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      }
-
-      function runCookiesAllowed() {
-        runGA();
-        runDisqus();
-      }
-    </script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 6.0.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
-
-<body>
-    <div id="single">
-    <div id="top">
-  <div class="bar" style="width: 0;"></div>
-  <div class="container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 col-sm-3">
-        <a class="back-to-home" href="/">
-          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
-          <h4>
-            Sergio Carracedo
-          </h4>
-        </a>
-      </div>
-      <div class="hidden-xs hidden-lxs col-sm-6">
-        <h3 class="subtitle">Custom SVG icon set management with Vue</h3>
-      </div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-    <div class="section">
-        <div class="article container-fluid-1200">
-  <div class="grid-row">
-    <div class="main col-xs-12">
-      <h1 class="title">
-        Custom SVG icon set management with Vue
-      </h1>
-      <div class="stuff">
-        <span>April 01, 2021</span>
-      </div>
-
-      
-      <div class="article-image">
-        <img src="/images/2021/header_svg-iconset.jpg" width="1200" height="400">
-      </div>
-      
-      <div class="content markdown">
-        <p>Manage an icon set can seem a simple task but can be tricky.</p>
-<p>First, there a lot of ways to use an icon on a web page, all with pros and contras:</p>
-<p>Let’s use this SVG image created by <a target="_blank" rel="noopener" href="https://freeicons.io/profile/730">Anu Rocks</a> for all examples.</p>
-<p><strong>We will assume our icon set is monochrome.</strong></p>
-<div style="background: #fff; display: block; padding: 10px; width: 25px; height: 25px; margin: auto;">
-
-<p><a target="_blank" rel="noopener" href="https://freeicons.io/common-ui-icons/battery-medium-icon-54110"><img src="/images/2021/svg-iconset/example.svg"></a></p>
-</div>
-
-
-<h2 id="lt-img-gt-tag"><a href="#lt-img-gt-tag" class="headerlink" title="<img> tag"></a>&lt;img&gt; tag</h2><p>The simplest way of adding an icon is using the <code>&lt;img&gt;</code> tag as the other images.</p>
-<p>Example: <code>&lt;img src="/i/example.svg" alt="Battery"&gt;</code></p>
-<blockquote>
-<p>You can also use the tag <code>&lt;object&gt;</code> with same result: <code>&lt;object type="image/svg+xml" data="/i/example.svg"&gt;&lt;/object&gt;</code></p>
-</blockquote>
-<h4 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages:"></a>Advantages:</h4><ul>
-<li>Simple method</li>
-<li>Image can be cached by the browser: if you use in multiple places, only need to download once</li>
-<li>Good usability using the <code>alt</code> attribute</li>
-</ul>
-<h4 id="Disadvantages"><a href="#Disadvantages" class="headerlink" title="Disadvantages:"></a>Disadvantages:</h4><ul>
-<li>Lost all SVG styling by CSS (Still using style over the image tag, but for example, you can’t change the color of the stroke or )</li>
-<li>Lost all the possibilities of the SVG’s DOM manipulation</li>
-</ul>
-<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><p>Another way to insert an icon on your page is creating an HTML placeholder and use the image as a background</p>
-<p>HTML:</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"icon icon-battery"</span> <span class="attr">aria-label</span>=<span class="string">"Battery"</span> <span class="attr">title</span>=<span class="string">"Battery"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
-
-<p>CSS:</p>
-<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.icon</span> {</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">    <span class="attribute">width</span>: .<span class="number">5em</span>; </span><br><span class="line">    <span class="attribute">height</span>: .<span class="number">5em</span>;</span><br><span class="line">}</span><br><span class="line"><span class="selector-class">.icon-battery</span> {</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">url</span>(<span class="string">/i/example.svg</span>) no-repeat center center;</span><br><span class="line">    <span class="attribute">background-size</span>: contain;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<blockquote>
-<p>Note the use of <code>.5em</code> as width and height to create a container width a size relative to container font size, <code>.5em</code> is better than 1em, because 1em uses the full size, but you can play with the value.</p>
-</blockquote>
-<p>This method is very similar to the previous one in terms of advantages and disadvantages.<br>You can also insert text into the <code>span</code> tag and  </p>
-<h2 id="Font"><a href="#Font" class="headerlink" title="Font"></a>Font</h2><p>This method requires some extra work to convert SVG to font. It could be done <a target="_blank" rel="noopener" href="https://glyphter.com/">online</a>: </p>
-<p>Once we have the icons as font, we must import the font</p>
-<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@font-face</span> {</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">'My icon set font'</span>;</span><br><span class="line">    <span class="attribute">font-style</span>: normal;</span><br><span class="line">    <span class="attribute">font-weight</span>: normal;</span><br><span class="line">    <span class="attribute">font-display</span>: auto;</span><br><span class="line">    <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">"../webfonts/my-icon-set.eot"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>To use the icons we can use the glyph associated with an icon, for example, our battery icon can be the <code>A</code></p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"font-family: 'My icon set font'"</span> <span class="attr">aria-label</span>=<span class="string">"Battery"</span>&gt;</span>A<span class="tag">&lt;/<span class="name">span</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
-
-<p>There is another way: use the <code>:before</code> pseudo selector and the <code>content</code> property in your CSS to insert the font glyph</p>
-<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.icon</span> {</span><br><span class="line"> <span class="attribute">font-family</span>: <span class="string">'My icon set font'</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.icon-batery</span>:before {</span><br><span class="line"> content: <span class="string">'A'</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"icon icon-battery"</span>  <span class="attr">aria-label</span>=<span class="string">"Battery"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="Advantages-1"><a href="#Advantages-1" class="headerlink" title="Advantages"></a>Advantages</h4><ul>
-<li>It’s very easy changing the icon color, the icon inherits the context color</li>
-<li>Font can be cached</li>
-</ul>
-<h4 id="Disadvantages-1"><a href="#Disadvantages-1" class="headerlink" title="Disadvantages"></a>Disadvantages</h4><ul>
-<li>Requires extra work to convert the icons to fonts</li>
-<li>Add a new icon requires to update the font</li>
-<li>No tree-shaking, unused icons still there</li>
-<li>Is confusing for screen readers, because we are inserting text</li>
-<li>Sometimes align with the regular text fonts isn’t good</li>
-</ul>
-<blockquote>
-<p>Note that is possible define a font using just SVG, but this method is not fully supported by commonly used browsers: <a target="_blank" rel="noopener" href="https://caniuse.com/svg-fonts">https://caniuse.com/svg-fonts</a> </p>
-</blockquote>
-<h2 id="Inline-SVG"><a href="#Inline-SVG" class="headerlink" title="Inline SVG"></a>Inline SVG</h2><p>This is my favorite method in most cases. The method consists in inserting the SVG markup in your HTML.</p>
-<p>In our example</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor  <span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">width</span>=<span class="string">"24"</span> <span class="attr">height</span>=<span class="string">"24"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 24 24"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">path</span> <span class="attr">fill-rule</span>=<span class="string">"evenodd"</span> <span class="attr">d</span>=<span class="string">"M17,5 C18.5976809,5 19.9036609,6.24891996 19.9949073,7.82372721 L20,8 L20,8.17 L20.1933113,8.24671351 C21.1458614,8.66012858 21.8418803,9.55339202 21.9763495,10.6214854 L21.9949073,10.8237272 L22,11 L22,13 C22,14.2181391 21.2716631,15.274045 20.201161,15.7433631 L20,15.822 L20,16 C20,17.5385075 18.8418794,18.8065215 17.3498634,18.9798168 L17.1762728,18.9949073 L17,19 L5,19 C3.40231912,19 2.09633912,17.75108 2.00509269,16.1762728 L2,16 L2,8 C2,6.40231912 3.24891996,5.09633912 4.82372721,5.00509269 L5,5 L17,5 Z M17,7 L5,7 C4.48716416,7 4.06449284,7.38604019 4.00672773,7.88337887 L4,8 L4,16 C4,16.5128358 4.38604019,16.9355072 4.88337887,16.9932723 L5,17 L17,17 C17.5128358,17 17.9355072,16.6139598 17.9932723,16.1166211 L18,16 L18,15 C18,14.5004355 18.3670085,14.0840077 18.8498945,14.0112465 L18.9632725,14.0006747 L19.075685,13.9972247 C19.5546159,13.9618905 19.9369487,13.5888432 19.9929352,13.1192658 L20,13 L20,11 C20,10.4871642 19.6139598,10.0644928 19.1166211,10.0067277 L18.8833789,9.99327227 C18.424297,9.93995063 18.0600494,9.57570299 18.0067277,9.11662113 L18,9 L18,8 C18,7.48716416 17.6139598,7.06449284 17.1166211,7.00672773 L17,7 Z M11,9 C11.5522847,9 12,9.44771525 12,10 L12,14 C12,14.5522847 11.5522847,15 11,15 L7,15 C6.44771525,15 6,14.5522847 6,14 L6,10 C6,9.44771525 6.44771525,9 7,9 L11,9 Z"</span> <span class="attr">fill</span>=<span class="string">"currentColor"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
-
-<blockquote>
-<p>Note the use of <code>currentColor</code> for the fill attribute to inherit the fill color from the CSS context (color)</p>
-</blockquote>
-<h4 id="Advantages-2"><a href="#Advantages-2" class="headerlink" title="Advantages"></a>Advantages</h4><ul>
-<li>It’s very easy changing the icon color, the icon inherits the context color</li>
-<li>Even, if your icon is not monochrome you can change the color of every single path.</li>
-<li>Can manipulate SVG elements independently</li>
-<li>Icons can be animated (not only a doing a transform of the full icon, but you can also manipulate every path independently)</li>
-<li></li>
-</ul>
-<h4 id="Disadvantages-2"><a href="#Disadvantages-2" class="headerlink" title="Disadvantages"></a>Disadvantages</h4><ul>
-<li>Non-cachable. If the icons appear in several places you must insert the full code.</li>
-<li>In static sites adds a lot of “bytes” to the HTML.</li>
-<li>A change in your icon, require to find and replace on all icon occurrences.</li>
-</ul>
-<h2 id="Encapsulated-inline-SVG"><a href="#Encapsulated-inline-SVG" class="headerlink" title="Encapsulated inline SVG"></a>Encapsulated inline SVG</h2><p>We can improve the previous method using Vue (or another framework: React, Angular, etc, or just using web components). The idea is encapsulated every single icon in a Vue component:</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">:width</span>=<span class="string">"size"</span> <span class="attr">:height</span>=<span class="string">"size"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 24 24"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">path</span> <span class="attr">fill-rule</span>=<span class="string">"evenodd"</span> <span class="attr">d</span>=<span class="string">"M17,5 C18.5976809,5 19.9036609,6.24891996 19.9949073,7.82372721 L20,8 L20,8.17 L20.1933113,8.24671351 C21.1458614,8.66012858 21.8418803,9.55339202 21.9763495,10.6214854 L21.9949073,10.8237272 L22,11 L22,13 C22,14.2181391 21.2716631,15.274045 20.201161,15.7433631 L20,15.822 L20,16 C20,17.5385075 18.8418794,18.8065215 17.3498634,18.9798168 L17.1762728,18.9949073 L17,19 L5,19 C3.40231912,19 2.09633912,17.75108 2.00509269,16.1762728 L2,16 L2,8 C2,6.40231912 3.24891996,5.09633912 4.82372721,5.00509269 L5,5 L17,5 Z M17,7 L5,7 C4.48716416,7 4.06449284,7.38604019 4.00672773,7.88337887 L4,8 L4,16 C4,16.5128358 4.38604019,16.9355072 4.88337887,16.9932723 L5,17 L17,17 C17.5128358,17 17.9355072,16.6139598 17.9932723,16.1166211 L18,16 L18,15 C18,14.5004355 18.3670085,14.0840077 18.8498945,14.0112465 L18.9632725,14.0006747 L19.075685,13.9972247 C19.5546159,13.9618905 19.9369487,13.5888432 19.9929352,13.1192658 L20,13 L20,11 C20,10.4871642 19.6139598,10.0644928 19.1166211,10.0067277 L18.8833789,9.99327227 C18.424297,9.93995063 18.0600494,9.57570299 18.0067277,9.11662113 L18,9 L18,8 C18,7.48716416 17.6139598,7.06449284 17.1166211,7.00672773 L17,7 Z M11,9 C11.5522847,9 12,9.44771525 12,10 L12,14 C12,14.5522847 11.5522847,15 11,15 L7,15 C6.44771525,15 6,14.5522847 6,14 L6,10 C6,9.44771525 6.44771525,9 7,9 L11,9 Z"</span> <span class="attr">fill</span>=<span class="string">"currentColor"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> {</span></span><br><span class="line"><span class="javascript">  name: <span class="string">'battery-icon'</span>,</span></span><br><span class="line">  props: {</span><br><span class="line"><span class="javascript">    size: [<span class="built_in">String</span>, <span class="built_in">Number</span>]</span></span><br><span class="line">  }</span><br><span class="line">})</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>I added the <code>size</code> property to make the icon resizable without need CSS, and as you know icon aspect ratio you only need one dimension.<br>If the icon aspect ratio weren’t 1:1, you only need to do the math in the component:</p>
-<p>For example a icon with a 16:10 aspect ratio (Using height as the base dimension):</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg xmlns="http://www.w3.org/2000/svg" :width="size * 15 / 24" :height="size" viewBox="0 0 24 15"&gt;</span><br></pre></td></tr></tbody></table></figure>
-
-<p>You must create a component for every icon, and insert in your page is simple, just insert the component</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor <span class="tag">&lt;<span class="name">battery-icon</span> <span class="attr">size</span>=<span class="string">"11"</span>&gt;</span> 50%</span><br></pre></td></tr></tbody></table></figure>
-
-<p>With this method, you can encapsulate the icon markup, and his logic (for example you can add a property to set the color of the bar in the battery icon, or even the bar size, creating a dynamic icon)</p>
-<p>If your page is not an SSR page you skip the cache disadvantage because your icon markup is not repeated in your code (but it’s in the browser memory)</p>
-<p>Also, the disadvantage of replacing all the occurrences is fixed with this method.</p>
-<p>Using this method, unused icons don’t are bundled in the build because your bundler (for example <em>webpack</em>) do the threeshaking before build.</p>
-<p>One nice example of project using this method is <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/vue-material-design-icons">https://www.npmjs.com/package/vue-material-design-icons</a>, a Vue wrapper for the great project <a target="_blank" rel="noopener" href="https://materialdesignicons.com/">https://materialdesignicons.com/</a></p>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-nav">
-  <div class="container-fluid-1200">
-    <div class="grid-row">
-      <div class="next col-xs-6">
-        
-          <div class="nav-previous">
-            <a href="https://sergiocarracedo.es//understanding-d3-js-introduction/" rel="prev" class="nav-cover">
-              <img src="/images/2021/teaser_d3js_intro.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//understanding-d3-js-introduction/" rel="prev" class="nav-text">
-              <i class="fa fa-arrow-left"></i> Understanding d3.js - A simple line chart
-            </a>
-          </div>
-        
-      </div>
-      <div class="prev col-xs-6">
-        
-          <div class="nav-next">
-            <a href="https://sergiocarracedo.es//azure-static-web-apps/" rel="next" class="nav-cover">
-              <img src="/images/2021/teaser_azureSWA.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//azure-static-web-apps/" rel="next" class="nav-text">
-              Deploying a static website in Azure Static Web Apps <i class="fa fa-arrow-right"></i>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-comments container-fluid-1200">
-    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
-</div>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides.
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div id="post-aboutme">
-  <div class="me container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 mb-5">
-        <div class="social">
-  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-linkedin"></i>
-  </a>
-  <a href="mailto:hi+blog@sergiocarracedo.es" class="social-link" title="hi+blog@sergiocarracedo.es">
-    <i class="fas fa-envelope"></i>
-  </a>
-
-  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-github"></i>
-  </a>
-  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-drupal"></i>
-  </a>
-
-
-  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-twitter"></i>
-  </a>
-  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
-    <i class="fab fa-lastfm"></i>
-  </a>
-  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
-    <i class="fab fa-tumblr"></i>
-  </a>
-</div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="claim container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <a href="/" class="back">
-          Home
-        </a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-    </div>
-
-
-</div>
-
-</body>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-
-<script src="/js/jquery.min.js"></script>
-<script src="/js/sergiocarracedo.js"></script>
-
-
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-      window.addEventListener("load", function(){
-        window.cookieconsent.initialise({
-          "palette": {
-            "popup": {
-              "background": "#004262",
-              "text": "#fff"
-            },
-            "button": {
-              "background": "#8ec760",
-              "text": "#ffffff"
-            }
-          },
-          "type": "opt-out",
-          "content": {
-            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
-            "allow": "Ok, continua",
-            "deny": "Nada de cookies",
-            "link": "Saber más",
-            "href": "https://sergiocarracedo.es/cookies.html",
-          },
-          "onStatusChange": function(status, chosenBefore) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          },
-          "onInitialise" : function(status) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          }
-        })
-      });
-    </script>
-
-
-</html>
+<!doctype html><html><head><meta charset=utf-8><meta content="IE=edge,chrome=1" http-equiv=x-ua-compatible><meta content="width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no" name=viewport><title>Sergio Carracedo | Custom SVG icon set management with Vue</title><meta content="yes" name=apple-mobile-web-app-capable><meta content="black-translucent" name=apple-mobile-web-app-status-bar-style><meta content="Sergio Carracedo's personal page and blog" name=description><meta content="Sergio Carracedo" name=author><link href=favicon.png rel=icon><meta property="og:title" content="Custom SVG icon set management with Vue"><meta property="og:description" content="Manage an icon set can seem a simple task but can be tricky.
+First, there a lot of ways to use an icon on a web page, all with pros and contras:
+Let&rsquo;s use this SVG image created by Anu Rocks for all examples.
+We will assume our icon set is monochrome.
+<img> tag The simplest way of adding an icon is using the <img> tag as the other images."><meta property="og:type" content="article"><meta property="og:url" content="/custom-svg-icon-set-management-with-vue/"><meta property="og:image" content="/custom-svg-icon-set-management-with-vue/svg-iconset_hu19adf1a248ad14f55968af8b4f675360_99937_1920x1080_fill_q75_box_center.jpg"><meta property="article:section" content="blog"><meta property="article:published_time" content="2021-04-01T00:00:00+00:00"><meta property="article:modified_time" content="2021-04-01T00:00:00+00:00"><link href=/scss/main.1fb71fa7ebb2d9065c28cbf3dd7ed45114596cf9b9be107e9d0ded933e45f4e1.css integrity="sha256-H7cfp+uy2QZcKMvz3X7UURRZbPm5vhB+nQ3tkz5F9OE=" rel=stylesheet><link href=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css rel=stylesheet type=text/css></head><body><header class=web-header><h2><a class=back-to-home href=/ title="Back to home"><i class="fas fa-home"></i><div class=back-to-home__content><span class=back-to-home__action>Back to home</span><div class=back-to-home__title><img alt="Sergio Carracedo" class=avatar src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_100x100_fit_q75_box.jpg><h4>Sergio Carracedo</h4></div></div></a></h2><div class=web-header__page-title>Custom SVG icon set management with Vue</div></header><div class=main-content><article class="post post--single"><div class="post__main wrapper-1200"><aside class=post__metadata><time class=post__date datetime=2021-04-01><i class="far fa-calendar-alt"></i> Apr 1, 2021</time><div class=post__tags><a href=tags/svg class=post__tag><span>svg</span></a>
+<a href=tags/ui class=post__tag><span>ui</span></a></div><span class=post__reading-time><i class="far fa-clock"></i> 6 minutes read</span></aside><header class=post__header><h1 class=post__title>Custom SVG icon set management with Vue</h1></header><figure class=post__cover><img src=/custom-svg-icon-set-management-with-vue/svg-iconset_hu19adf1a248ad14f55968af8b4f675360_99937_1200x400_fill_q75_box_center.jpg alt="Custom SVG icon set management with Vue" width=1200 height=400></figure><div class=post__content><p>Manage an icon set can seem a simple task but can be tricky.</p><p>First, there a lot of ways to use an icon on a web page, all with pros and contras:</p><p>Let&rsquo;s use this SVG image created by <a href=https://freeicons.io/profile/730>Anu Rocks</a> for all examples.</p><p><strong>We will assume our icon set is monochrome.</strong></p><p><a href=https://freeicons.io/common-ui-icons/battery-medium-icon-54110><img src=example.svg alt></a></p><h2 id=img-tag>&lt;img> tag</h2><p>The simplest way of adding an icon is using the <code>&lt;img></code> tag as the other images.</p><p>Example: <code>&lt;img src="/i/example.svg" alt="Battery"></code></p><blockquote><p>You can also use the tag <code>&lt;object></code> with same result: <code>&lt;object type="image/svg+xml" data="/i/example.svg">&lt;/object></code></p></blockquote><h4 id=advantages>Advantages:</h4><ul><li>Simple method</li><li>Image can be cached by the browser: if you use in multiple places, only need to download once</li><li>Good usability using the <code>alt</code> attribute</li></ul><h4 id=disadvantages>Disadvantages:</h4><ul><li>Lost all SVG styling by CSS (Still using style over the image tag, but for example, you can&rsquo;t change the color of the stroke or )</li><li>Lost all the possibilities of the SVG&rsquo;s DOM manipulation</li></ul><h2 id=css>CSS</h2><p>Another way to insert an icon on your page is creating an HTML placeholder and use the image as a background</p><p>HTML:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>Lorem ipsum dolor &lt;<span style=color:#f92672>span</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;icon icon-battery&#34;</span> <span style=color:#a6e22e>aria-label</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Battery&#34;</span> <span style=color:#a6e22e>title</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Battery&#34;</span>&gt;&lt;/<span style=color:#f92672>span</span>&gt; 50%
+</span></span></code></pre></div><p>CSS:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>icon</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>inline-block</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>width</span>: <span style=color:#ae81ff>.5</span><span style=color:#66d9ef>em</span>; 
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>height</span>: <span style=color:#ae81ff>.5</span><span style=color:#66d9ef>em</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>icon-battery</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>background</span>: url(<span style=color:#e6db74>/i/example.svg</span>) <span style=color:#66d9ef>no-repeat</span> <span style=color:#66d9ef>center</span> <span style=color:#66d9ef>center</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>background-size</span>: <span style=color:#66d9ef>contain</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><blockquote><p>Note the use of <code>.5em</code> as width and height to create a container width a size relative to container font size, <code>.5em</code> is better than 1em, because 1em uses the full size, but you can play with the value.</p></blockquote><p>This method is very similar to the previous one in terms of advantages and disadvantages.
+You can also insert text into the <code>span</code> tag and</p><h2 id=font>Font</h2><p>This method requires some extra work to convert SVG to font. It could be done <a href=https://glyphter.com/>online</a>:</p><p>Once we have the icons as font, we must import the font</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span>@<span style=color:#66d9ef>font-face</span> {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>font-family</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;My icon set font&#39;</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>font-style</span><span style=color:#f92672>:</span> <span style=color:#f92672>normal</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>font-weight</span><span style=color:#f92672>:</span> <span style=color:#f92672>normal</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>font-display</span><span style=color:#f92672>:</span> <span style=color:#f92672>auto</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>src</span><span style=color:#f92672>:</span> <span style=color:#f92672>url</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;../webfonts/my-icon-set.eot&#34;</span><span style=color:#f92672>);</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>To use the icons we can use the glyph associated with an icon, for example, our battery icon can be the <code>A</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>Lorem ipsum dolor &lt;<span style=color:#f92672>span</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;font-family: &#39;My icon set font&#39;&#34;</span> <span style=color:#a6e22e>aria-label</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Battery&#34;</span>&gt;A&lt;/<span style=color:#f92672>span</span>&gt; 50%
+</span></span></code></pre></div><p>There is another way: use the <code>:before</code> pseudo selector and the <code>content</code> property in your CSS to insert the font glyph</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>icon</span> {
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>font-family</span>: <span style=color:#e6db74>&#39;My icon set font&#39;</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>icon-batery</span>:<span style=color:#a6e22e>before</span> {
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>content</span>: <span style=color:#e6db74>&#39;A&#39;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>Lorem ipsum dolor &lt;<span style=color:#f92672>i</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;icon icon-battery&#34;</span>  <span style=color:#a6e22e>aria-label</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Battery&#34;</span>&gt;&lt;/<span style=color:#f92672>i</span>&gt; 50%
+</span></span></code></pre></div><h4 id=advantages-1>Advantages</h4><ul><li>It&rsquo;s very easy changing the icon color, the icon inherits the context color</li><li>Font can be cached</li></ul><h4 id=disadvantages-1>Disadvantages</h4><ul><li>Requires extra work to convert the icons to fonts</li><li>Add a new icon requires to update the font</li><li>No tree-shaking, unused icons still there</li><li>Is confusing for screen readers, because we are inserting text</li><li>Sometimes align with the regular text fonts isn&rsquo;t good</li></ul><blockquote><p>Note that is possible define a font using just SVG, but this method is not fully supported by commonly used browsers: <a href=https://caniuse.com/svg-fonts>https://caniuse.com/svg-fonts</a></p></blockquote><h2 id=inline-svg>Inline SVG</h2><p>This is my favorite method in most cases. The method consists in inserting the SVG markup in your HTML.</p><p>In our example</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>Lorem ipsum dolor  &lt;<span style=color:#f92672>svg</span> <span style=color:#a6e22e>xmlns</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://www.w3.org/2000/svg&#34;</span> <span style=color:#a6e22e>width</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;24&#34;</span> <span style=color:#a6e22e>height</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;24&#34;</span> <span style=color:#a6e22e>viewBox</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;0 0 24 24&#34;</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>path</span> <span style=color:#a6e22e>fill-rule</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;evenodd&#34;</span> <span style=color:#a6e22e>d</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;M17,5 C18.5976809,5 19.9036609,6.24891996 19.9949073,7.82372721 L20,8 L20,8.17 L20.1933113,8.24671351 C21.1458614,8.66012858 21.8418803,9.55339202 21.9763495,10.6214854 L21.9949073,10.8237272 L22,11 L22,13 C22,14.2181391 21.2716631,15.274045 20.201161,15.7433631 L20,15.822 L20,16 C20,17.5385075 18.8418794,18.8065215 17.3498634,18.9798168 L17.1762728,18.9949073 L17,19 L5,19 C3.40231912,19 2.09633912,17.75108 2.00509269,16.1762728 L2,16 L2,8 C2,6.40231912 3.24891996,5.09633912 4.82372721,5.00509269 L5,5 L17,5 Z M17,7 L5,7 C4.48716416,7 4.06449284,7.38604019 4.00672773,7.88337887 L4,8 L4,16 C4,16.5128358 4.38604019,16.9355072 4.88337887,16.9932723 L5,17 L17,17 C17.5128358,17 17.9355072,16.6139598 17.9932723,16.1166211 L18,16 L18,15 C18,14.5004355 18.3670085,14.0840077 18.8498945,14.0112465 L18.9632725,14.0006747 L19.075685,13.9972247 C19.5546159,13.9618905 19.9369487,13.5888432 19.9929352,13.1192658 L20,13 L20,11 C20,10.4871642 19.6139598,10.0644928 19.1166211,10.0067277 L18.8833789,9.99327227 C18.424297,9.93995063 18.0600494,9.57570299 18.0067277,9.11662113 L18,9 L18,8 C18,7.48716416 17.6139598,7.06449284 17.1166211,7.00672773 L17,7 Z M11,9 C11.5522847,9 12,9.44771525 12,10 L12,14 C12,14.5522847 11.5522847,15 11,15 L7,15 C6.44771525,15 6,14.5522847 6,14 L6,10 C6,9.44771525 6.44771525,9 7,9 L11,9 Z&#34;</span> <span style=color:#a6e22e>fill</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;currentColor&#34;</span>/&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>svg</span>&gt; 50%
+</span></span></code></pre></div><blockquote><p>Note the use of <code>currentColor</code> for the fill attribute to inherit the fill color from the CSS context (color)</p></blockquote><h4 id=advantages-2>Advantages</h4><ul><li>It&rsquo;s very easy changing the icon color, the icon inherits the context color</li><li>Even, if your icon is not monochrome you can change the color of every single path.</li><li>Can manipulate SVG elements independently</li><li>Icons can be animated (not only a doing a transform of the full icon, but you can also manipulate every path independently)</li><li></li></ul><h4 id=disadvantages-2>Disadvantages</h4><ul><li>Non-cachable. If the icons appear in several places you must insert the full code.</li><li>In static sites adds a lot of &ldquo;bytes&rdquo; to the HTML.</li><li>A change in your icon, require to find and replace on all icon occurrences.</li></ul><h2 id=encapsulated-inline-svg>Encapsulated inline SVG</h2><p>We can improve the previous method using Vue (or another framework: React, Angular, etc, or just using web components). The idea is encapsulated every single icon in a Vue component:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>svg</span> <span style=color:#a6e22e>xmlns</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://www.w3.org/2000/svg&#34;</span> <span style=color:#a6e22e>:width</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;size&#34;</span> <span style=color:#a6e22e>:height</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;size&#34;</span> <span style=color:#a6e22e>viewBox</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;0 0 24 24&#34;</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>path</span> <span style=color:#a6e22e>fill-rule</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;evenodd&#34;</span> <span style=color:#a6e22e>d</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;M17,5 C18.5976809,5 19.9036609,6.24891996 19.9949073,7.82372721 L20,8 L20,8.17 L20.1933113,8.24671351 C21.1458614,8.66012858 21.8418803,9.55339202 21.9763495,10.6214854 L21.9949073,10.8237272 L22,11 L22,13 C22,14.2181391 21.2716631,15.274045 20.201161,15.7433631 L20,15.822 L20,16 C20,17.5385075 18.8418794,18.8065215 17.3498634,18.9798168 L17.1762728,18.9949073 L17,19 L5,19 C3.40231912,19 2.09633912,17.75108 2.00509269,16.1762728 L2,16 L2,8 C2,6.40231912 3.24891996,5.09633912 4.82372721,5.00509269 L5,5 L17,5 Z M17,7 L5,7 C4.48716416,7 4.06449284,7.38604019 4.00672773,7.88337887 L4,8 L4,16 C4,16.5128358 4.38604019,16.9355072 4.88337887,16.9932723 L5,17 L17,17 C17.5128358,17 17.9355072,16.6139598 17.9932723,16.1166211 L18,16 L18,15 C18,14.5004355 18.3670085,14.0840077 18.8498945,14.0112465 L18.9632725,14.0006747 L19.075685,13.9972247 C19.5546159,13.9618905 19.9369487,13.5888432 19.9929352,13.1192658 L20,13 L20,11 C20,10.4871642 19.6139598,10.0644928 19.1166211,10.0067277 L18.8833789,9.99327227 C18.424297,9.93995063 18.0600494,9.57570299 18.0067277,9.11662113 L18,9 L18,8 C18,7.48716416 17.6139598,7.06449284 17.1166211,7.00672773 L17,7 Z M11,9 C11.5522847,9 12,9.44771525 12,10 L12,14 C12,14.5522847 11.5522847,15 11,15 L7,15 C6.44771525,15 6,14.5522847 6,14 L6,10 C6,9.44771525 6.44771525,9 7,9 L11,9 Z&#34;</span> <span style=color:#a6e22e>fill</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;currentColor&#34;</span>/&gt;
+</span></span><span style=display:flex><span>  &lt;/<span style=color:#f92672>svg</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;battery-icon&#39;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>size</span><span style=color:#f92672>:</span> [String, Number]
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>})
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><p>I added the <code>size</code> property to make the icon resizable without need CSS, and as you know icon aspect ratio you only need one dimension.
+If the icon aspect ratio weren&rsquo;t 1:1, you only need to do the math in the component:</p><p>For example a icon with a 16:10 aspect ratio (Using height as the base dimension):</p><pre tabindex=0><code>&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; :width=&#34;size * 15 / 24&#34; :height=&#34;size&#34; viewBox=&#34;0 0 24 15&#34;&gt;
+</code></pre><p>You must create a component for every icon, and insert in your page is simple, just insert the component</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>Lorem ipsum dolor &lt;<span style=color:#f92672>battery-icon</span> <span style=color:#a6e22e>size</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;11&#34;</span>&gt; 50%
+</span></span></code></pre></div><p>With this method, you can encapsulate the icon markup, and his logic (for example you can add a property to set the color of the bar in the battery icon, or even the bar size, creating a dynamic icon)</p><p>If your page is not an SSR page you skip the cache disadvantage because your icon markup is not repeated in your code (but it&rsquo;s in the browser memory)</p><p>Also, the disadvantage of replacing all the occurrences is fixed with this method.</p><p>Using this method, unused icons don&rsquo;t are bundled in the build because your bundler (for example <em>webpack</em>) do the threeshaking before build.</p><p>One nice example of project using this method is <a href=https://www.npmjs.com/package/vue-material-design-icons>https://www.npmjs.com/package/vue-material-design-icons</a>, a Vue wrapper for the great project <a href=https://materialdesignicons.com/>https://materialdesignicons.com/</a></p></div></div><aside class=post__nav-wrapper><div class=wrapper-1200><div class="post-nav post-nav--prev"><a class=post-nav__link href="/understanding-d3-js-introduction/?ref=footer"><div class=post-nav__cover><img alt=.NextPage.Title src=/understanding-d3-js-introduction/d3js_intro_hufbf9b1725875b43438e7ca5fd499d15f_364192_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Understanding d3.js - A simple line chart</div></a></div><div class=blog-link><a class=btn href=blog>All Blog posts</a></div><div class="post-nav post-nav--next"><a class=post-nav__link href="/azure-static-web-apps/?ref=footer"><div class=post-nav__cover><img alt=.PrevPage.Title class=post-nav__cover src=/azure-static-web-apps/azureSWA_huc4446046f0b9afb72b14493c67d0a605_60761_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Deploying a static website in Azure Static Web...</div></a></div></div></aside><aside class=post__comments><div class=wrapper-1200><div id=disqus_thread>To show the comments is mandatory accept cookie policy.</div></div></aside></article></div><footer class=web-footer><div class=wrapper-1200><div class=web-footer__left><div class=me><div class=me__avatar><img alt="Sergio Carracedo" src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_170x170_fit_q75_box.jpg></div><div class=me__titles><h1>Sergio Carracedo</h1><h2>Senior Fullstack developer.</h2><h3>Formula 1, cats, good conversations and small details lover.</h3></div></div></div><div class=web-footer__right><nav role=main class=menu><ul><li class=menu__item><a href>Home</a></li><li class=menu__item><a href=blog>Blog</a></li></ul></nav><div class=social><a class=social__link href=http://www.linkedin.com/in/sergiocarracedo target=_blank title=LinkedIn style=animation-delay:2s><i class="fab fa-linkedin"></i></a>
+<a class=social__link href=mailto:hi+blog@sergiocarracedo.es target=_blank title=Email style=animation-delay:1.9333333333333333s><i class="fas fa-envelope"></i></a>
+<a class=social__link href=https://github.com/sergiocarracedo target=_blank title=GitHub style=animation-delay:1.8666666666666667s><i class="fab fa-github"></i></a>
+<a class=social__link href=https://www.drupal.org/u/sergiocarracedo target=_blank title=Drupal style=animation-delay:1.8s><i class="fab fa-drupal"></i></a>
+<a class=social__link href=https://www.twitter.com/sergiocarracedo target=_blank title=Twitter style=animation-delay:1.7333333333333334s><i class="fab fa-twitter"></i></a>
+<a class=social__link href=http://www.last.fm/user/gasman40 target=_blank title=Last.fm style=animation-delay:1.6666666666666667s><i class="fab fa-lastfm"></i></a>
+<a class=social__link href=http://sergiocarracedo.tumblr.com/ target=_blank title=Tumblr style=animation-delay:1.6s><i class="fab fa-tumblr"></i></a></div></div></div></footer><script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459072-1"></script>
+<script>function runGA(){function e(){dataLayer.push(arguments)}e("js",new Date),e("config","UA-133459072-1")}</script><script>function runDisqus(){(function(){var e=document,t=e.createElement("script");t.src="https://sergiocarracedo.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()}</script><script src=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js></script>
+<script>window.addEventListener("load",function(){window.cookieconsent.initialise({palette:{popup:{background:"#004262",text:"#fff"},button:{background:"#8ec760",text:"#ffffff"}},type:"opt-out",content:{message:"Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",allow:"Ok, continua",deny:"Nada de cookies",link:"Saber más",href:"cookies"},onStatusChange:function(e){e=="allow"&&runCookiesAllowed()},onInitialise:function(e){e=="allow"&&runCookiesAllowed()}})})</script><script>addEventListener("scroll",e=>{let t=document.getElementsByTagName("body")[0];t&&window.scrollY>10?t.classList.add("not-in-top"):t.classList.remove("not-in-top")});function runCookiesAllowed(){runGA(),runDisqus()}</script></body></html>

@@ -1,352 +1,118 @@
-
-<!DOCTYPE html>
-<html lang="en" class="loading">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sergio Carracedo - Sharing variables between SCSS and Typescript</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="keywords" content="Sergio Carracedo,"> 
-    <meta name="description" content="Sergio Carracedo personal Blog,Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, if you hav,"> 
-    <meta name="author" content="Sergio Carracedo"> 
-    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    
-<link rel="stylesheet" href="/css/sergiocarracedo.css">
-
-    <meta name="description" content="Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, if you have a list of colors in your SCSS file and need to check the variable names in typescript to be sure is">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Sharing variables between SCSS and Typescript">
-<meta property="og:url" content="https://sergiocarracedo.es/2020/07/17/sharing-variables-between-scss-and-typescript/index.html">
-<meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, if you have a list of colors in your SCSS file and need to check the variable names in typescript to be sure is">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://sergiocarracedo.es/images/share-scss-variables-ts-3951901.jpg">
-<meta property="article:published_time" content="2020-07-17T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-09-09T06:54:31.714Z">
-<meta property="article:author" content="Sergio Carracedo">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://sergiocarracedo.es/images/share-scss-variables-ts-3951901.jpg">
-
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script>
-      function runGA() {
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-133459072-1', 'auto');
-        ga('send', 'pageview');
-      }
-
-      function runDisqus() {
-        /*var disqus_config = function () {
-          this.page.url = 'https://sergiocarracedo.es/';
-          this.page.identifier = 'sergiocarracedo';
-        }*/
-        (function() { // DON'T EDIT BELOW THIS LINE
-          var d = document, s = d.createElement('script');
-          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      }
-
-      function runCookiesAllowed() {
-        runGA();
-        runDisqus();
-      }
-    </script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 6.0.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
-
-<body>
-    <div id="single">
-    <div id="top">
-  <div class="bar" style="width: 0;"></div>
-  <div class="container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 col-sm-3">
-        <a class="back-to-home" href="/">
-          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
-          <h4>
-            Sergio Carracedo
-          </h4>
-        </a>
-      </div>
-      <div class="hidden-xs hidden-lxs col-sm-6">
-        <h3 class="subtitle">Sharing variables between SCSS and Typescript</h3>
-      </div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-    <div class="section">
-        <div class="article container-fluid-1200">
-  <div class="grid-row">
-    <div class="main col-xs-12">
-      <h1 class="title">
-        Sharing variables between SCSS and Typescript
-      </h1>
-      <div class="stuff">
-        <span>July 17, 2020</span>
-      </div>
-
-      
-      <div class="article-image">
-        <img src="/images/header_share-scss-variables-ts-3951901.jpg" width="1200" height="400">
-      </div>
-      
-      <div class="content markdown">
-        <p>Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, if you have a list of colors in your SCSS file and need to check the variable names in typescript to be sure is an available color.</p>
-<p>Imagine a Vue component have a property to set the background color: </p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">:class</span>=<span class="string">"['component', colorClass]"</span>&gt;</span></span><br><span class="line">    My component</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">const</span> availableColors = [<span class="string">'primary'</span>, <span class="string">'alert'</span>, <span class="string">'my-custom-color'</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> {</span></span><br><span class="line"><span class="javascript">  name: <span class="string">'my-component'</span>,</span></span><br><span class="line">  props: {</span><br><span class="line"><span class="javascript">    color: <span class="built_in">String</span></span></span><br><span class="line">  },</span><br><span class="line">  computed: {</span><br><span class="line">    colorClass () { </span><br><span class="line"><span class="javascript">      <span class="keyword">if</span> (availableColors.indexOf(<span class="built_in">this</span>.color) !== -<span class="number">1</span>) {</span></span><br><span class="line"><span class="javascript">        <span class="keyword">return</span> <span class="string">`color-<span class="subst">${<span class="built_in">this</span>.color}</span>`</span></span></span><br><span class="line">      } </span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> <span class="literal">null</span></span></span><br><span class="line">    }   </span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>In this component, if you set the property color, and the value is an available color, adds a class for that color, for example, if the color prop is <code>primary</code> adds the class <code>.color-primary</code>, but if the prop’s value is <code>red</code> doesn’t add any class related to color because <code>red</code> is not an available color.</p>
-<p>Bearing in mind that, we probably have a <em>scss</em> file where we define that classes, something like:</p>
-<figure class="highlight scss"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$primary</span>: <span class="number">#333</span>;</span><br><span class="line"><span class="variable">$alert</span>: <span class="number">#900</span>;</span><br><span class="line"><span class="variable">$custom</span>: <span class="number">#090</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.color-primary</span> {</span><br><span class="line">  <span class="attribute">background</span>: <span class="variable">$primary</span>;</span><br><span class="line">}</span><br><span class="line"><span class="selector-class">.color-alert</span> {</span><br><span class="line">  <span class="attribute">background</span>: <span class="variable">$alert</span>;</span><br><span class="line">}</span><br><span class="line"><span class="selector-class">.color-custom</span> {</span><br><span class="line">  <span class="attribute">background</span>: <span class="variable">$custom</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>We could improve this file to generate the classes programmaticaly using the power of SCSS:</p>
-<figure class="highlight scss"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// colors.scss</span></span><br><span class="line"><span class="variable">$colors</span>: (</span><br><span class="line">  <span class="string">'primary'</span>: <span class="string">'#333'</span>,</span><br><span class="line">  <span class="string">'alert'</span>: <span class="string">'#900'</span>,</span><br><span class="line">  <span class="string">'custom'</span>: <span class="string">'#090'</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">@each</span> <span class="variable">$name</span>, <span class="variable">$color</span> in <span class="variable">$colors</span> {</span><br><span class="line">  <span class="selector-class">.color-</span>#{<span class="variable">$name</span>} {</span><br><span class="line">     <span class="attribute">background</span>: <span class="variable">$color</span>;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>This way of generating the color classes allow us to simplify how we add a new color. We just should add the new color to <code>$colors</code> and we will have the color class</p>
-<figure class="highlight scss"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// colors.scss</span></span><br><span class="line"><span class="variable">$colors</span>: (</span><br><span class="line">  <span class="string">'primary'</span>: <span class="string">'#333'</span>,</span><br><span class="line">  <span class="string">'alert'</span>: <span class="string">'#900'</span>,</span><br><span class="line">  <span class="string">'custom'</span>: <span class="string">'#090'</span>,</span><br><span class="line">  <span class="string">'new-color'</span>: <span class="string">'#00a'</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">@each</span> <span class="variable">$name</span>, <span class="variable">$color</span> in <span class="variable">$colors</span> {</span><br><span class="line">  <span class="selector-class">.color-</span>#{<span class="variable">$name</span>} {</span><br><span class="line">     <span class="attribute">background</span>: <span class="variable">$color</span>;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>But if you remember in our component we had an array width the list of available colors, if we don’t add the new colors to component too, we can not use it <span class="github-emoji"><span>😔</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f614.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
-<p>But there is a way to only need to add colors in SCSS and also use the list in typescript: <code>:export</code>.</p>
-<p><code>:export</code> is brought to us by <em>Webpack’s scss loader</em> and allows us to make scss variable exposed to Javascript / Typescript.<br>We will add an <code>:export</code> stament to our <code>colors.scss</code> file</p>
-<figure class="highlight scss"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// colors.scss</span></span><br><span class="line"><span class="variable">$colors</span>: (</span><br><span class="line">  <span class="string">'primary'</span>: <span class="string">'#333'</span>,</span><br><span class="line">  <span class="string">'alert'</span>: <span class="string">'#900'</span>,</span><br><span class="line">  <span class="string">'custom'</span>: <span class="string">'#090'</span>,</span><br><span class="line">  <span class="string">'new-color'</span>: <span class="string">'#00a'</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">@each</span> <span class="variable">$name</span>, <span class="variable">$color</span> in <span class="variable">$colors</span> {</span><br><span class="line">  <span class="selector-class">.color-</span>#{<span class="variable">$name</span>} {</span><br><span class="line">     <span class="attribute">background</span>: <span class="variable">$color</span>;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">:export {</span><br><span class="line">  @each <span class="variable">$name</span>, <span class="variable">$color</span> in <span class="variable">$colors</span> {</span><br><span class="line">    #{<span class="variable">$name</span>}: <span class="variable">$color</span>                </span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<blockquote>
-<p>Notice we don’t need semicolon (;) or comma (,) at the end of each line. </p>
-</blockquote>
-<p>Then, we will refactor our compoment like this:</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">:class</span>=<span class="string">"['component', colorClass]"</span>&gt;</span></span><br><span class="line">    My component</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">import</span> availableColors <span class="keyword">from</span> <span class="string">'./colors.scss'</span></span></span><br><span class="line"></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> {</span></span><br><span class="line"><span class="javascript">  name: <span class="string">'my-component'</span>,</span></span><br><span class="line">  props: {</span><br><span class="line"><span class="javascript">    color: <span class="built_in">String</span></span></span><br><span class="line">  },</span><br><span class="line">  computed: {</span><br><span class="line">    colorClass () { </span><br><span class="line"><span class="javascript">      <span class="keyword">if</span> (availableColors.indexOf(<span class="built_in">this</span>.color) !== -<span class="number">1</span>) {</span></span><br><span class="line"><span class="javascript">        <span class="keyword">return</span> <span class="string">`color-<span class="subst">${<span class="built_in">this</span>.color}</span>`</span></span></span><br><span class="line">      } </span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> <span class="literal">null</span></span></span><br><span class="line">    }   </span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>But in Typescript we must declare the module to available its contents, we just add a <em>declaration</em> file (with the same name as scss file plus <code>.d.ts</code>)</p>
-<figure class="highlight typescript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// colors.scss.d.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> colors : <span class="built_in">any</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> colors</span><br></pre></td></tr></tbody></table></figure>
-
-<p>And now we only need to add a new color in one place (the scss file) and it will be available everywhere.</p>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-nav">
-  <div class="container-fluid-1200">
-    <div class="grid-row">
-      <div class="next col-xs-6">
-        
-          <div class="nav-previous">
-            <a href="https://sergiocarracedo.es//2020/07/22/export-and-import-vuex-state/" rel="prev" class="nav-cover">
-              <img src="/images/teaser_vuex-export-import.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//2020/07/22/export-and-import-vuex-state/" rel="prev" class="nav-text">
-              <i class="fa fa-arrow-left"></i> Export and import Vuex state
-            </a>
-          </div>
-        
-      </div>
-      <div class="prev col-xs-6">
-        
-          <div class="nav-next">
-            <a href="https://sergiocarracedo.es//2020/07/15/why-i-write-a-blog/" rel="next" class="nav-cover">
-              <img src="/images/teaser_why-i-write-a-blog-977931.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//2020/07/15/why-i-write-a-blog/" rel="next" class="nav-text">
-              Why I write a blog <i class="fa fa-arrow-right"></i>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-comments container-fluid-1200">
-    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
-</div>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides.
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div id="post-aboutme">
-  <div class="me container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 mb-5">
-        <div class="social">
-  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-linkedin"></i>
-  </a>
-  <a href="mailto:hi+blog@sergiocarracedo.es" class="social-link" title="hi+blog@sergiocarracedo.es">
-    <i class="fas fa-envelope"></i>
-  </a>
-
-  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-github"></i>
-  </a>
-  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-drupal"></i>
-  </a>
-
-
-  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-twitter"></i>
-  </a>
-  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
-    <i class="fab fa-lastfm"></i>
-  </a>
-  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
-    <i class="fab fa-tumblr"></i>
-  </a>
-</div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="claim container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <a href="/" class="back">
-          Home
-        </a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-    </div>
-
-
-</div>
-
-</body>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-
-<script src="/js/jquery.min.js"></script>
-<script src="/js/sergiocarracedo.js"></script>
-
-
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-      window.addEventListener("load", function(){
-        window.cookieconsent.initialise({
-          "palette": {
-            "popup": {
-              "background": "#004262",
-              "text": "#fff"
-            },
-            "button": {
-              "background": "#8ec760",
-              "text": "#ffffff"
-            }
-          },
-          "type": "opt-out",
-          "content": {
-            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
-            "allow": "Ok, continua",
-            "deny": "Nada de cookies",
-            "link": "Saber más",
-            "href": "https://sergiocarracedo.es/cookies.html",
-          },
-          "onStatusChange": function(status, chosenBefore) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          },
-          "onInitialise" : function(status) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          }
-        })
-      });
-    </script>
-
-
-</html>
+<!doctype html><html><head><meta charset=utf-8><meta content="IE=edge,chrome=1" http-equiv=x-ua-compatible><meta content="width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no" name=viewport><title>Sergio Carracedo | Sharing variables between SCSS and Typescript</title><meta content="yes" name=apple-mobile-web-app-capable><meta content="black-translucent" name=apple-mobile-web-app-status-bar-style><meta content="Sergio Carracedo's personal page and blog" name=description><meta content="Sergio Carracedo" name=author><link href=favicon.png rel=icon><meta property="og:title" content="Sharing variables between SCSS and Typescript"><meta property="og:description" content="Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, if you have a list of colors in your SCSS file and need to check the variable names in typescript to be sure is an available color.
+Imagine a Vue component have a property to set the background color:
+<template> <div :class=&#34;['component', colorClass]&#34;> My component </div> </template> <script> const availableColors = ['primary', 'alert', 'my-custom-color'] export default { name: 'my-component', props: { color: String }, computed: { colorClass () { if (availableColors."><meta property="og:type" content="article"><meta property="og:url" content="/2020/07/17/sharing-variables-between-scss-and-typescript/"><meta property="og:image" content="/2020/07/17/sharing-variables-between-scss-and-typescript/share-scss-variables-ts-3951901_hufa75e8a774373fea4b219c0d6396b012_234657_1920x1080_fill_q75_box_center.jpg"><meta property="article:section" content="blog"><meta property="article:published_time" content="2020-07-17T00:00:00+00:00"><meta property="article:modified_time" content="2020-07-17T00:00:00+00:00"><link href=/scss/main.1fb71fa7ebb2d9065c28cbf3dd7ed45114596cf9b9be107e9d0ded933e45f4e1.css integrity="sha256-H7cfp+uy2QZcKMvz3X7UURRZbPm5vhB+nQ3tkz5F9OE=" rel=stylesheet><link href=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css rel=stylesheet type=text/css></head><body><header class=web-header><h2><a class=back-to-home href=/ title="Back to home"><i class="fas fa-home"></i><div class=back-to-home__content><span class=back-to-home__action>Back to home</span><div class=back-to-home__title><img alt="Sergio Carracedo" class=avatar src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_100x100_fit_q75_box.jpg><h4>Sergio Carracedo</h4></div></div></a></h2><div class=web-header__page-title>Sharing variables between SCSS and Typescript</div></header><div class=main-content><article class="post post--single"><div class="post__main wrapper-1200"><aside class=post__metadata><time class=post__date datetime=2020-07-17><i class="far fa-calendar-alt"></i> Jul 17, 2020</time><div class=post__tags></div><span class=post__reading-time><i class="far fa-clock"></i> 3 minutes read</span></aside><header class=post__header><h1 class=post__title>Sharing variables between SCSS and Typescript</h1></header><figure class=post__cover><img src=/2020/07/17/sharing-variables-between-scss-and-typescript/share-scss-variables-ts-3951901_hufa75e8a774373fea4b219c0d6396b012_234657_1200x400_fill_q75_box_center.jpg alt="Sharing variables between SCSS and Typescript" width=1200 height=400></figure><div class=post__content><p>Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, if you have a list of colors in your SCSS file and need to check the variable names in typescript to be sure is an available color.</p><p>Imagine a Vue component have a property to set the background color:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>:class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[&#39;component&#39;, colorClass]&#34;</span>&gt;
+</span></span><span style=display:flex><span>    My component
+</span></span><span style=display:flex><span>  &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>availableColors</span> <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;primary&#39;</span>, <span style=color:#e6db74>&#39;alert&#39;</span>, <span style=color:#e6db74>&#39;my-custom-color&#39;</span>]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;my-component&#39;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> String
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>computed</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>colorClass</span> () { 
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>availableColors</span>.<span style=color:#a6e22e>indexOf</span>(<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>color</span>) <span style=color:#f92672>!==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>`color-</span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>color</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>
+</span></span><span style=display:flex><span>      } 
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>null</span>
+</span></span><span style=display:flex><span>    }   
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><p>In this component, if you set the property color, and the value is an available color, adds a class for that color, for example, if the color prop is <code>primary</code> adds the class <code>.color-primary</code>, but if the prop&rsquo;s value is <code>red</code> doesn&rsquo;t add any class related to color because <code>red</code> is not an available color.</p><p>Bearing in mind that, we probably have a <em>scss</em> file where we define that classes, something like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scss data-lang=scss><span style=display:flex><span>$primary<span style=color:#f92672>:</span> <span style=color:#ae81ff>#333</span>;
+</span></span><span style=display:flex><span>$alert<span style=color:#f92672>:</span> <span style=color:#ae81ff>#900</span>;
+</span></span><span style=display:flex><span>$custom<span style=color:#f92672>:</span> <span style=color:#ae81ff>#090</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>.color-primary</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>background</span><span style=color:#f92672>:</span> $primary;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#a6e22e>.color-alert</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>background</span><span style=color:#f92672>:</span> $alert;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#a6e22e>.color-custom</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>background</span><span style=color:#f92672>:</span> $custom;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>We could improve this file to generate the classes programmaticaly using the power of SCSS:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scss data-lang=scss><span style=display:flex><span><span style=color:#75715e>// colors.scss
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>$colors<span style=color:#f92672>:</span> (
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;primary&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#333&#39;</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;alert&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#900&#39;</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;custom&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#090&#39;</span>
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>@each</span> $name<span style=color:#f92672>,</span> $color <span style=color:#f92672>in</span> $colors {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>.color-</span><span style=color:#e6db74>#{</span>$name<span style=color:#e6db74>}</span> {
+</span></span><span style=display:flex><span>     <span style=color:#a6e22e>background</span><span style=color:#f92672>:</span> $color;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>This way of generating the color classes allow us to simplify how we add a new color. We just should add the new color to <code>$colors</code> and we will have the color class</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scss data-lang=scss><span style=display:flex><span><span style=color:#75715e>// colors.scss
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>$colors<span style=color:#f92672>:</span> (
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;primary&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#333&#39;</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;alert&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#900&#39;</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;custom&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#090&#39;</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;new-color&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#00a&#39;</span>
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>@each</span> $name<span style=color:#f92672>,</span> $color <span style=color:#f92672>in</span> $colors {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>.color-</span><span style=color:#e6db74>#{</span>$name<span style=color:#e6db74>}</span> {
+</span></span><span style=display:flex><span>     <span style=color:#a6e22e>background</span><span style=color:#f92672>:</span> $color;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>But if you remember in our component we had an array width the list of available colors, if we don&rsquo;t add the new colors to component too, we can not use it 😔</p><p>But there is a way to only need to add colors in SCSS and also use the list in typescript: <code>:export</code>.</p><p><code>:export</code> is brought to us by <em>Webpack&rsquo;s scss loader</em> and allows us to make scss variable exposed to Javascript / Typescript.
+We will add an <code>:export</code> stament to our <code>colors.scss</code> file</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scss data-lang=scss><span style=display:flex><span><span style=color:#75715e>// colors.scss
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>$colors<span style=color:#f92672>:</span> (
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;primary&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#333&#39;</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;alert&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#900&#39;</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;custom&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#090&#39;</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;new-color&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;#00a&#39;</span>
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>@each</span> $name<span style=color:#f92672>,</span> $color <span style=color:#f92672>in</span> $colors {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>.color-</span><span style=color:#e6db74>#{</span>$name<span style=color:#e6db74>}</span> {
+</span></span><span style=display:flex><span>     <span style=color:#a6e22e>background</span><span style=color:#f92672>:</span> $color;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>:export</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>@each</span> $name<span style=color:#f92672>,</span> $color <span style=color:#f92672>in</span> $colors {
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>#{</span>$name<span style=color:#e6db74>}</span><span style=color:#a6e22e>:</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#f92672>color</span>                
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><blockquote><p>Notice we don&rsquo;t need semicolon (;) or comma (,) at the end of each line.</p></blockquote><p>Then, we will refactor our compoment like this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>:class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[&#39;component&#39;, colorClass]&#34;</span>&gt;
+</span></span><span style=display:flex><span>    My component
+</span></span><span style=display:flex><span>  &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>availableColors</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./colors.scss&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;my-component&#39;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>color</span><span style=color:#f92672>:</span> String
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>computed</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>colorClass</span> () { 
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>availableColors</span>.<span style=color:#a6e22e>indexOf</span>(<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>color</span>) <span style=color:#f92672>!==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>`color-</span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>color</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>
+</span></span><span style=display:flex><span>      } 
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>null</span>
+</span></span><span style=display:flex><span>    }   
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><p>But in Typescript we must declare the module to available its contents, we just add a <em>declaration</em> file (with the same name as scss file plus <code>.d.ts</code>)</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#75715e>// colors.scss.d.ts
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>colors</span> : <span style=color:#66d9ef>any</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> <span style=color:#a6e22e>colors</span>
+</span></span></code></pre></div><p>And now we only need to add a new color in one place (the scss file) and it will be available everywhere.</p></div></div><aside class=post__nav-wrapper><div class=wrapper-1200><div class="post-nav post-nav--prev"><a class=post-nav__link href="/2020/07/22/export-and-import-vuex-state/?ref=footer"><div class=post-nav__cover><img alt=.NextPage.Title src=/2020/07/22/export-and-import-vuex-state/vuex-export-import_hu572ced97fab125389e90459af469f899_1014088_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Export and import Vuex state</div></a></div><div class=blog-link><a class=btn href=blog>All Blog posts</a></div><div class="post-nav post-nav--next"><a class=post-nav__link href="/2020/07/15/why-i-write-a-blog/?ref=footer"><div class=post-nav__cover><img alt=.PrevPage.Title class=post-nav__cover src=/2020/07/15/why-i-write-a-blog/why-i-write-a-blog-977931_hue459a279af89433c6bdba93315e8938c_354312_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Why I write a blog</div></a></div></div></aside><aside class=post__comments><div class=wrapper-1200><div id=disqus_thread>To show the comments is mandatory accept cookie policy.</div></div></aside></article></div><footer class=web-footer><div class=wrapper-1200><div class=web-footer__left><div class=me><div class=me__avatar><img alt="Sergio Carracedo" src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_170x170_fit_q75_box.jpg></div><div class=me__titles><h1>Sergio Carracedo</h1><h2>Senior Fullstack developer.</h2><h3>Formula 1, cats, good conversations and small details lover.</h3></div></div></div><div class=web-footer__right><nav role=main class=menu><ul><li class=menu__item><a href>Home</a></li><li class=menu__item><a href=blog>Blog</a></li></ul></nav><div class=social><a class=social__link href=http://www.linkedin.com/in/sergiocarracedo target=_blank title=LinkedIn style=animation-delay:2s><i class="fab fa-linkedin"></i></a>
+<a class=social__link href=mailto:hi+blog@sergiocarracedo.es target=_blank title=Email style=animation-delay:1.9333333333333333s><i class="fas fa-envelope"></i></a>
+<a class=social__link href=https://github.com/sergiocarracedo target=_blank title=GitHub style=animation-delay:1.8666666666666667s><i class="fab fa-github"></i></a>
+<a class=social__link href=https://www.drupal.org/u/sergiocarracedo target=_blank title=Drupal style=animation-delay:1.8s><i class="fab fa-drupal"></i></a>
+<a class=social__link href=https://www.twitter.com/sergiocarracedo target=_blank title=Twitter style=animation-delay:1.7333333333333334s><i class="fab fa-twitter"></i></a>
+<a class=social__link href=http://www.last.fm/user/gasman40 target=_blank title=Last.fm style=animation-delay:1.6666666666666667s><i class="fab fa-lastfm"></i></a>
+<a class=social__link href=http://sergiocarracedo.tumblr.com/ target=_blank title=Tumblr style=animation-delay:1.6s><i class="fab fa-tumblr"></i></a></div></div></div></footer><script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459072-1"></script>
+<script>function runGA(){function e(){dataLayer.push(arguments)}e("js",new Date),e("config","UA-133459072-1")}</script><script>function runDisqus(){(function(){var e=document,t=e.createElement("script");t.src="https://sergiocarracedo.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()}</script><script src=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js></script>
+<script>window.addEventListener("load",function(){window.cookieconsent.initialise({palette:{popup:{background:"#004262",text:"#fff"},button:{background:"#8ec760",text:"#ffffff"}},type:"opt-out",content:{message:"Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",allow:"Ok, continua",deny:"Nada de cookies",link:"Saber más",href:"cookies"},onStatusChange:function(e){e=="allow"&&runCookiesAllowed()},onInitialise:function(e){e=="allow"&&runCookiesAllowed()}})})</script><script>addEventListener("scroll",e=>{let t=document.getElementsByTagName("body")[0];t&&window.scrollY>10?t.classList.add("not-in-top"):t.classList.remove("not-in-top")});function runCookiesAllowed(){runGA(),runDisqus()}</script></body></html>

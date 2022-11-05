@@ -1,349 +1,105 @@
-
-<!DOCTYPE html>
-<html lang="en" class="loading">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sergio Carracedo - Tu propio v-model en un componente Vue (The right way)</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="keywords" content="Sergio Carracedo,"> 
-    <meta name="description" content="Sergio Carracedo personal Blog,Si has usado componentes de Vue (o incluso un input básico) habrás usado v-model para enlazar un va,"> 
-    <meta name="author" content="Sergio Carracedo"> 
-    <link rel="alternative" href="atom.xml" title="Sergio Carracedo" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    
-<link rel="stylesheet" href="/css/sergiocarracedo.css">
-
-    <meta name="description" content="Si has usado componentes de Vue (o incluso un input básico) habrás usado v-model para enlazar un valor en el componente padre y en el componente hijo. 123&lt;input v-model&#x3D;&quot;message&quot;&gt;&#x2F;&#x2F; o&lt;datepic">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Tu propio v-model en un componente Vue (The right way)">
-<meta property="og:url" content="https://sergiocarracedo.es/2019/12/05/tu-propio-v-model-en-un-componente-vue/index.html">
-<meta property="og:site_name" content="Sergio Carracedo">
-<meta property="og:description" content="Si has usado componentes de Vue (o incluso un input básico) habrás usado v-model para enlazar un valor en el componente padre y en el componente hijo. 123&lt;input v-model&#x3D;&quot;message&quot;&gt;&#x2F;&#x2F; o&lt;datepic">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://sergiocarracedo.es/images/vmodel-256302.jpg">
-<meta property="article:published_time" content="2019-12-05T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-09-09T06:54:31.710Z">
-<meta property="article:author" content="Sergio Carracedo">
-<meta property="article:tag" content="vue v-model js">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://sergiocarracedo.es/images/vmodel-256302.jpg">
-
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script>
-      function runGA() {
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-133459072-1', 'auto');
-        ga('send', 'pageview');
-      }
-
-      function runDisqus() {
-        /*var disqus_config = function () {
-          this.page.url = 'https://sergiocarracedo.es/';
-          this.page.identifier = 'sergiocarracedo';
-        }*/
-        (function() { // DON'T EDIT BELOW THIS LINE
-          var d = document, s = d.createElement('script');
-          s.src = 'https://sergiocarracedo.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      }
-
-      function runCookiesAllowed() {
-        runGA();
-        runDisqus();
-      }
-    </script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<meta name="generator" content="Hexo 6.0.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head>
-
-<body>
-    <div id="single">
-    <div id="top">
-  <div class="bar" style="width: 0;"></div>
-  <div class="container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 col-sm-3">
-        <a class="back-to-home" href="/">
-          <img src="/img/sergiocarracedo.jpg" alt="Sergio Carracedo" class="image-logo"/>
-          <h4>
-            Sergio Carracedo
-          </h4>
-        </a>
-      </div>
-      <div class="hidden-xs hidden-lxs col-sm-6">
-        <h3 class="subtitle">Tu propio v-model en un componente Vue (The right way)</h3>
-      </div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-    <div class="section">
-        <div class="article container-fluid-1200">
-  <div class="grid-row">
-    <div class="main col-xs-12">
-      <h1 class="title">
-        Tu propio v-model en un componente Vue (The right way)
-      </h1>
-      <div class="stuff">
-        <span>December 05, 2019</span>
-      </div>
-
-      
-      <div class="article-image">
-        <img src="/images/header_vmodel-256302.jpg" width="1200" height="400">
-      </div>
-      
-      <div class="content markdown">
-        <p>Si has usado componentes de Vue (o incluso un input básico) habrás usado <code>v-model</code> para enlazar un valor en el componente padre y en el componente hijo.</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;input v-model=<span class="string">"message"</span>&gt;</span><br><span class="line"><span class="comment">// o</span></span><br><span class="line">&lt;datepicker v-model=<span class="string">"date"</span>&gt;&lt;/datepicker&gt;</span><br></pre></td></tr></tbody></table></figure>
-<p>Si en el componente padre (aquel donde incluimos <em>datepicker</em>) modificamos el valor de <code>date</code> automáticamente se modificará el valor dentro del componente, de igual forma si el componente modifica el valor de <code>date</code> el valor se modificará en el padre. Esto lo que permite, por ejemplo, es que cuando en un campo input escribimos algo en el componente padre se pueda mostrar lo que escribimos usando <code>{{ date }}</code></p>
-<p>Pues bien, realmente <code>v-model</code> es la combinación de la <em>prop</em> <code>value</code> y el evento <code>input</code>, es decir para que nuestro componente disponga de su <code>v-model</code> debe tener un aspecto similar a este</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span>&gt;</span>Fecha: <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">"value"</span> @<span class="attr">change</span>=<span class="string">"$emit('input', value)"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> {</span></span><br><span class="line">  props: {</span><br><span class="line">    value: {</span><br><span class="line"><span class="javascript">      required: <span class="literal">true</span></span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-<h4 id="¿Y-ya-esta"><a href="#¿Y-ya-esta" class="headerlink" title="¿Y ya está?"></a>¿Y ya está?</h4><p>Pues no, no está. Si recuerdas, las propiedades de un componente deben ser inmutables (<a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow">One-way data flow</a>) desde el propio componente, y si te fijas metiéndolo dentro del <code>v-model</code> del <code>input</code> cada vez que se escriba algo en el, el valor de la propiedad cambiará, y esto (aunque funciona) genera un error como el siguiente en la consola:</p>
-<blockquote>
-<p>Error message: Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop’s value.  </p>
-</blockquote>
-<p>Para resolver esto nuestro componente debe usar una variable interna intermedia, que tome el valor de la propiedad de inicio y que cuando cambie emita el evento, también debemos tener en cuanta que cuando el valor de la propiedad cambie la variable local tome el nuevo valor.</p>
-<p>La forma más simple de hacerlo es con una variable interna, a la que llamaremos <code>localValue</code> y dos <strong><em><a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/computed.html#Computed-vs-Watched-Property">watchers</a></em></strong>, uno para emitir el evento <code>input</code> con el valor de <code>localValue</code> y otro para modificar el valor de <code>localValue</code> si el valor de <code>value</code> cambia desde el exterior.</p>
-<p>Y el componente nos quedará así:</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span>&gt;</span>Fecha: <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">"localValue"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> {</span></span><br><span class="line">  props: {</span><br><span class="line">    value: {</span><br><span class="line"><span class="javascript">      required: <span class="literal">true</span></span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  data () {</span><br><span class="line"><span class="javascript">    <span class="keyword">return</span> {</span></span><br><span class="line"><span class="javascript">      localValue: <span class="built_in">this</span>.value</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  watch: {</span><br><span class="line">     localValue (newValue) {</span><br><span class="line"><span class="javascript">       <span class="built_in">this</span>.$emit(<span class="string">'input'</span>, newValue)</span></span><br><span class="line">     },</span><br><span class="line">     value (newValue) {</span><br><span class="line"><span class="javascript">       <span class="built_in">this</span>.localValue = value</span></span><br><span class="line">     }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>Como ves eliminamos el <code>@change</code> para que el cambio en el <code>&lt;input&gt;</code> pase a ser controlado en uno de los <em>watchers</em>.</p>
-<p>A primera vista podría parecer que esto provocarían un bucle infinito, ya que al modificar <code>localValue</code> emitimos el evento que modifica el valor de <code>value</code> en el componente padre y este a su vez modifica de nuevo <code>localValue</code> repitiéndose otra vez, pero los <em>watchers</em> solo se ejecutan cuando el valor cambia, es decir como el valor de <code>localValue</code> y <code>value</code> coincide una vez emitido el evento <code>input</code> el segundo <em>watcher</em> no se dispara deteniendo el bucle.  </p>
-<p>Podemos hacerlo usando <strong>propiedades calculadas</strong> (<em>computed</em>), empleando los <em>getters</em> y <em>setters</em> de estas:</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">computed: {</span><br><span class="line">  computedValue: {</span><br><span class="line">    <span class="function"><span class="title">set</span>(<span class="params">value</span>)</span> {</span><br><span class="line">      <span class="built_in">this</span>.localValue = value</span><br><span class="line">    },</span><br><span class="line">    <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> {</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">this</span>.localValue</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
-<p>pero seguimos necesitando la variable <code>localValue</code> y el <em>watcher</em> de <code>value</code>, con lo cual para mi gusto, a parte de no ahorrar código, complicamos la legibilidad.</p>
-<p>De sencilla esta forma cumplimos con la regla de <a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow"><em>One-Way Data Flow</em></a> sin complicar demasiado el código.</p>
-<p>Como último apunte podríamos llevar esto a un <em>mixin</em>:</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// custom.vmodel.mixin.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> {</span><br><span class="line">  props: {</span><br><span class="line">    value: {}</span><br><span class="line">  },</span><br><span class="line">  data () {</span><br><span class="line">    <span class="keyword">return</span> {</span><br><span class="line">      localValue: <span class="built_in">this</span>.value</span><br><span class="line">    }</span><br><span class="line">  },  </span><br><span class="line">  watch: {</span><br><span class="line">     localValue (value) {</span><br><span class="line">           <span class="built_in">this</span>.$emit(<span class="string">'input'</span>, value)</span><br><span class="line">         },</span><br><span class="line">    value (value) {</span><br><span class="line">      <span class="built_in">this</span>.localValue = value</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>y solo lo tendríamos que importar en nuestro componente que quedaría así:</p>
-<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span>&gt;</span>Fecha: <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">"localValue"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">import</span> customvmodelMixin <span class="keyword">from</span> <span class="string">'./custom.vmodel.mixin.js'</span></span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> {</span></span><br><span class="line">  mixins: [customvmodelMixin]</span><br><span class="line">  props: {</span><br><span class="line"><span class="javascript">    <span class="comment">//Otras propiedades</span></span></span><br><span class="line">  },</span><br><span class="line">  data () {</span><br><span class="line"><span class="javascript">    <span class="keyword">return</span> {</span></span><br><span class="line"><span class="javascript">      <span class="comment">// Más variables</span></span></span><br><span class="line">    }</span><br><span class="line">  },  </span><br><span class="line">}</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-nav">
-  <div class="container-fluid-1200">
-    <div class="grid-row">
-      <div class="next col-xs-6">
-        
-          <div class="nav-previous">
-            <a href="https://sergiocarracedo.es//2019/12/11/simracing-mas-real-que-virtual/" rel="prev" class="nav-cover">
-              <img src="/images/teaser_simracing-12795.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//2019/12/11/simracing-mas-real-que-virtual/" rel="prev" class="nav-text">
-              <i class="fa fa-arrow-left"></i> Simracing: Muy real y mucho real
-            </a>
-          </div>
-        
-      </div>
-      <div class="prev col-xs-6">
-        
-          <div class="nav-next">
-            <a href="https://sergiocarracedo.es//2019/12/03/programacion-funcional-en-php/" rel="next" class="nav-cover">
-              <img src="/images/teaser_phunctional-33317.jpg">
-            </a>
-
-            <a href="https://sergiocarracedo.es//2019/12/03/programacion-funcional-en-php/" rel="next" class="nav-text">
-              Programación funcional en PHP: Un poco de teoría y Lambdish/phunctional <i class="fa fa-arrow-right"></i>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="post-comments container-fluid-1200">
-    <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
-</div>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides.
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div id="post-aboutme">
-  <div class="me container-fluid">
-    <div class="grid-row">
-      <div class="col-xs-12 mb-5">
-        <div class="social">
-  <a href="http://www.linkedin.com/in/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-linkedin"></i>
-  </a>
-  <a href="mailto:hi+blog@sergiocarracedo.es" class="social-link" title="hi+blog@sergiocarracedo.es">
-    <i class="fas fa-envelope"></i>
-  </a>
-
-  <a href="https://github.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-github"></i>
-  </a>
-  <a href="https://www.drupal.org/u/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-drupal"></i>
-  </a>
-
-
-  <a href="https://www.twitter.com/sergiocarracedo" class="social-link" target="_blank">
-    <i class="fab fa-twitter"></i>
-  </a>
-  <a href="http://www.last.fm/user/gasman40" class="social-link" target="_blank">
-    <i class="fab fa-lastfm"></i>
-  </a>
-  <a href="http://sergiocarracedo.tumblr.com/" class="social-link" target="_blank">
-    <i class="fab fa-tumblr"></i>
-  </a>
-</div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="claim container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <h3>Front-end and back-end developer.<br />#formula1, good conversations and small details lover.</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-fluid-1440">
-    <div class="grid-row">
-      <div class="col-xs-12">
-        <a href="/" class="back">
-          Home
-        </a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-    </div>
-
-
-</div>
-
-</body>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-
-<script src="/js/jquery.min.js"></script>
-<script src="/js/sergiocarracedo.js"></script>
-
-
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css" rel="stylesheet">
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-      window.addEventListener("load", function(){
-        window.cookieconsent.initialise({
-          "palette": {
-            "popup": {
-              "background": "#004262",
-              "text": "#fff"
-            },
-            "button": {
-              "background": "#8ec760",
-              "text": "#ffffff"
-            }
-          },
-          "type": "opt-out",
-          "content": {
-            "message": "Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",
-            "allow": "Ok, continua",
-            "deny": "Nada de cookies",
-            "link": "Saber más",
-            "href": "https://sergiocarracedo.es/cookies.html",
-          },
-          "onStatusChange": function(status, chosenBefore) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          },
-          "onInitialise" : function(status) {
-            if (status == 'allow') {
-               runCookiesAllowed()
-            }
-          }
-        })
-      });
-    </script>
-
-
-</html>
+<!doctype html><html><head><meta charset=utf-8><meta content="IE=edge,chrome=1" http-equiv=x-ua-compatible><meta content="width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no" name=viewport><title>Sergio Carracedo | Tu propio v-model en un componente Vue (The right way)</title><meta content="yes" name=apple-mobile-web-app-capable><meta content="black-translucent" name=apple-mobile-web-app-status-bar-style><meta content="Sergio Carracedo's personal page and blog" name=description><meta content="Sergio Carracedo" name=author><link href=favicon.png rel=icon><meta property="og:title" content="Tu propio v-model en un componente Vue (The right way)"><meta property="og:description" content="Si has usado componentes de Vue (o incluso un input básico) habrás usado v-model para enlazar un valor en el componente padre y en el componente hijo.
+<input v-model=&#34;message&#34;> // o <datepicker v-model=&#34;date&#34;></datepicker> Si en el componente padre (aquel donde incluimos datepicker) modificamos el valor de date automáticamente se modificará el valor dentro del componente, de igual forma si el componente modifica el valor de date el valor se modificará en el padre."><meta property="og:type" content="article"><meta property="og:url" content="/2019/12/05/tu-propio-v-model-en-un-componente-vue/"><meta property="og:image" content="/2019/12/05/tu-propio-v-model-en-un-componente-vue/vmodel-256302_hue3e183c5fa902cd4ae789f3e908b1fee_227600_1920x1080_fill_q75_box_center.jpg"><meta property="article:section" content="blog"><meta property="article:published_time" content="2019-12-05T00:00:00+00:00"><meta property="article:modified_time" content="2019-12-05T00:00:00+00:00"><link href=/scss/main.1fb71fa7ebb2d9065c28cbf3dd7ed45114596cf9b9be107e9d0ded933e45f4e1.css integrity="sha256-H7cfp+uy2QZcKMvz3X7UURRZbPm5vhB+nQ3tkz5F9OE=" rel=stylesheet><link href=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css rel=stylesheet type=text/css></head><body><header class=web-header><h2><a class=back-to-home href=/ title="Back to home"><i class="fas fa-home"></i><div class=back-to-home__content><span class=back-to-home__action>Back to home</span><div class=back-to-home__title><img alt="Sergio Carracedo" class=avatar src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_100x100_fit_q75_box.jpg><h4>Sergio Carracedo</h4></div></div></a></h2><div class=web-header__page-title>Tu propio v-model en un componente Vue (The right way)</div></header><div class=main-content><article class="post post--single"><div class="post__main wrapper-1200"><aside class=post__metadata><time class=post__date datetime=2019-12-05><i class="far fa-calendar-alt"></i> Dec 5, 2019</time><div class=post__tags><a href=tags/vue class=post__tag><span>vue</span></a>
+<a href=tags/js class=post__tag><span>js</span></a></div><span class=post__reading-time><i class="far fa-clock"></i> 4 minutes read</span></aside><header class=post__header><h1 class=post__title>Tu propio v-model en un componente Vue (The right way)</h1></header><figure class=post__cover><img src=/2019/12/05/tu-propio-v-model-en-un-componente-vue/vmodel-256302_hue3e183c5fa902cd4ae789f3e908b1fee_227600_1200x400_fill_q75_box_center.jpg alt="Tu propio v-model en un componente Vue (The right way)" width=1200 height=400></figure><div class=post__content><p>Si has usado componentes de Vue (o incluso un input básico) habrás usado <code>v-model</code> para enlazar un valor en el componente padre y en el componente hijo.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#f92672>&lt;</span><span style=color:#a6e22e>input</span> <span style=color:#a6e22e>v</span><span style=color:#f92672>-</span><span style=color:#a6e22e>model</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message&#34;</span><span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// o
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>&lt;</span><span style=color:#a6e22e>datepicker</span> <span style=color:#a6e22e>v</span><span style=color:#f92672>-</span><span style=color:#a6e22e>model</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;date&#34;</span><span style=color:#f92672>&gt;&lt;</span><span style=color:#960050;background-color:#1e0010>/datepicker&gt;</span>
+</span></span></code></pre></div><p>Si en el componente padre (aquel donde incluimos <em>datepicker</em>) modificamos el valor de <code>date</code> automáticamente se modificará el valor dentro del componente, de igual forma si el componente modifica el valor de <code>date</code> el valor se modificará en el padre. Esto lo que permite, por ejemplo, es que cuando en un campo input escribimos algo en el componente padre se pueda mostrar lo que escribimos usando <code>{% raw %}{{ date }}{% endraw %}</code></p><p>Pues bien, realmente <code>v-model</code> es la combinación de la <em>prop</em> <code>value</code> y el evento <code>input</code>, es decir para que nuestro componente disponga de su <code>v-model</code> debe tener un aspecto similar a este</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>label</span>&gt;Fecha: &lt;/<span style=color:#f92672>label</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>input</span> <span style=color:#a6e22e>v-model</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;value&#34;</span> <span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>change</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;$emit(&#39;input&#39;, value)&#34;</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>value</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>required</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><h4 id=y-ya-está>¿Y ya está?</h4><p>Pues no, no está. Si recuerdas, las propiedades de un componente deben ser inmutables (<a href=https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow>One-way data flow</a>) desde el propio componente, y si te fijas metiéndolo dentro del <code>v-model</code> del <code>input</code> cada vez que se escriba algo en el, el valor de la propiedad cambiará, y esto (aunque funciona) genera un error como el siguiente en la consola:</p><blockquote><p>Error message: Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop&rsquo;s value.</p></blockquote><p>Para resolver esto nuestro componente debe usar una variable interna intermedia, que tome el valor de la propiedad de inicio y que cuando cambie emita el evento, también debemos tener en cuanta que cuando el valor de la propiedad cambie la variable local tome el nuevo valor.</p><p>La forma más simple de hacerlo es con una variable interna, a la que llamaremos <code>localValue</code> y dos <strong><em><a href=https://vuejs.org/v2/guide/computed.html#Computed-vs-Watched-Property>watchers</a></em></strong>, uno para emitir el evento <code>input</code> con el valor de <code>localValue</code> y otro para modificar el valor de <code>localValue</code> si el valor de <code>value</code> cambia desde el exterior.</p><p>Y el componente nos quedará así:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>label</span>&gt;Fecha: &lt;/<span style=color:#f92672>label</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>input</span> <span style=color:#a6e22e>v-model</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;localValue&#34;</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>value</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>required</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>data</span> () {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>localValue</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>value</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>watch</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>     <span style=color:#a6e22e>localValue</span> (<span style=color:#a6e22e>newValue</span>) {
+</span></span><span style=display:flex><span>       <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>$emit</span>(<span style=color:#e6db74>&#39;input&#39;</span>, <span style=color:#a6e22e>newValue</span>)
+</span></span><span style=display:flex><span>     },
+</span></span><span style=display:flex><span>     <span style=color:#a6e22e>value</span> (<span style=color:#a6e22e>newValue</span>) {
+</span></span><span style=display:flex><span>       <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>localValue</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>value</span>
+</span></span><span style=display:flex><span>     }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div><p>Como ves eliminamos el <code>@change</code> para que el cambio en el <code>&lt;input></code> pase a ser controlado en uno de los <em>watchers</em>.</p><p>A primera vista podría parecer que esto provocarían un bucle infinito, ya que al modificar <code>localValue</code> emitimos el evento que modifica el valor de <code>value</code> en el componente padre y este a su vez modifica de nuevo <code>localValue</code> repitiéndose otra vez, pero los <em>watchers</em> solo se ejecutan cuando el valor cambia, es decir como el valor de <code>localValue</code> y <code>value</code> coincide una vez emitido el evento <code>input</code> el segundo <em>watcher</em> no se dispara deteniendo el bucle.</p><p>Podemos hacerlo usando <strong>propiedades calculadas</strong> (<em>computed</em>), empleando los <em>getters</em> y <em>setters</em> de estas:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>...
+</span></span><span style=display:flex><span><span style=color:#a6e22e>computed</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>computedValue</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>set</span>(<span style=color:#a6e22e>value</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>localValue</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>value</span>
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>get</span>() {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>localValue</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>pero seguimos necesitando la variable <code>localValue</code> y el <em>watcher</em> de <code>value</code>, con lo cual para mi gusto, a parte de no ahorrar código, complicamos la legibilidad.</p><p>De sencilla esta forma cumplimos con la regla de <a href=https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow><em>One-Way Data Flow</em></a> sin complicar demasiado el código.</p><p>Como último apunte podríamos llevar esto a un <em>mixin</em>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#75715e>// custom.vmodel.mixin.js
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>value</span><span style=color:#f92672>:</span> {}
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>data</span> () {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>localValue</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>value</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  },  
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>watch</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>     <span style=color:#a6e22e>localValue</span> (<span style=color:#a6e22e>value</span>) {
+</span></span><span style=display:flex><span>           <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>$emit</span>(<span style=color:#e6db74>&#39;input&#39;</span>, <span style=color:#a6e22e>value</span>)
+</span></span><span style=display:flex><span>         },
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>value</span> (<span style=color:#a6e22e>value</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>localValue</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>value</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>y solo lo tendríamos que importar en nuestro componente que quedaría así:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>label</span>&gt;Fecha: &lt;/<span style=color:#f92672>label</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>input</span> <span style=color:#a6e22e>v-model</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;localValue&#34;</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>template</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;<span style=color:#f92672>script</span>&gt;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>customvmodelMixin</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#39;./custom.vmodel.mixin.js&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mixins</span><span style=color:#f92672>:</span> [<span style=color:#a6e22e>customvmodelMixin</span>]
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>props</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>//Otras propiedades
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>data</span> () {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>      <span style=color:#75715e>// Más variables
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    }
+</span></span><span style=display:flex><span>  },  
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>script</span>&gt;
+</span></span></code></pre></div></div></div><aside class=post__nav-wrapper><div class=wrapper-1200><div class="post-nav post-nav--prev"><a class=post-nav__link href="/2019/12/11/simracing-mas-real-que-virtual/?ref=footer"><div class=post-nav__cover><img alt=.NextPage.Title src=/2019/12/11/simracing-mas-real-que-virtual/simracing-12795_hue3e183c5fa902cd4ae789f3e908b1fee_228164_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Simracing: Muy real y mucho real</div></a></div><div class=blog-link><a class=btn href=blog>All Blog posts</a></div><div class="post-nav post-nav--next"><a class=post-nav__link href="/2019/12/03/programacion-funcional-en-php/?ref=footer"><div class=post-nav__cover><img alt=.PrevPage.Title class=post-nav__cover src=/2019/12/03/programacion-funcional-en-php/phunctional-33317_hue3e183c5fa902cd4ae789f3e908b1fee_180059_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>Programación funcional en PHP: Un poco de teoría y...</div></a></div></div></aside><aside class=post__comments><div class=wrapper-1200><div id=disqus_thread>To show the comments is mandatory accept cookie policy.</div></div></aside></article></div><footer class=web-footer><div class=wrapper-1200><div class=web-footer__left><div class=me><div class=me__avatar><img alt="Sergio Carracedo" src=/i/sergiocarracedo_hu73b47473f776de3df6b6aad72862b165_186188_170x170_fit_q75_box.jpg></div><div class=me__titles><h1>Sergio Carracedo</h1><h2>Senior Fullstack developer.</h2><h3>Formula 1, cats, good conversations and small details lover.</h3></div></div></div><div class=web-footer__right><nav role=main class=menu><ul><li class=menu__item><a href>Home</a></li><li class=menu__item><a href=blog>Blog</a></li></ul></nav><div class=social><a class=social__link href=http://www.linkedin.com/in/sergiocarracedo target=_blank title=LinkedIn style=animation-delay:2s><i class="fab fa-linkedin"></i></a>
+<a class=social__link href=mailto:hi+blog@sergiocarracedo.es target=_blank title=Email style=animation-delay:1.9333333333333333s><i class="fas fa-envelope"></i></a>
+<a class=social__link href=https://github.com/sergiocarracedo target=_blank title=GitHub style=animation-delay:1.8666666666666667s><i class="fab fa-github"></i></a>
+<a class=social__link href=https://www.drupal.org/u/sergiocarracedo target=_blank title=Drupal style=animation-delay:1.8s><i class="fab fa-drupal"></i></a>
+<a class=social__link href=https://www.twitter.com/sergiocarracedo target=_blank title=Twitter style=animation-delay:1.7333333333333334s><i class="fab fa-twitter"></i></a>
+<a class=social__link href=http://www.last.fm/user/gasman40 target=_blank title=Last.fm style=animation-delay:1.6666666666666667s><i class="fab fa-lastfm"></i></a>
+<a class=social__link href=http://sergiocarracedo.tumblr.com/ target=_blank title=Tumblr style=animation-delay:1.6s><i class="fab fa-tumblr"></i></a></div></div></div></footer><script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459072-1"></script>
+<script>function runGA(){function e(){dataLayer.push(arguments)}e("js",new Date),e("config","UA-133459072-1")}</script><script>function runDisqus(){(function(){var e=document,t=e.createElement("script");t.src="https://sergiocarracedo.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()}</script><script src=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js></script>
+<script>window.addEventListener("load",function(){window.cookieconsent.initialise({palette:{popup:{background:"#004262",text:"#fff"},button:{background:"#8ec760",text:"#ffffff"}},type:"opt-out",content:{message:"Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",allow:"Ok, continua",deny:"Nada de cookies",link:"Saber más",href:"cookies"},onStatusChange:function(e){e=="allow"&&runCookiesAllowed()},onInitialise:function(e){e=="allow"&&runCookiesAllowed()}})})</script><script>addEventListener("scroll",e=>{let t=document.getElementsByTagName("body")[0];t&&window.scrollY>10?t.classList.add("not-in-top"):t.classList.remove("not-in-top")});function runCookiesAllowed(){runGA(),runDisqus()}</script></body></html>
