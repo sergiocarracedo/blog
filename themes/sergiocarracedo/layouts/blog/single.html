@@ -1,0 +1,38 @@
+{{ define "main" }}
+<article class="post post--single">
+  <div class="post__main wrapper-1200">
+   {{ partial "post-metadata.html" . }}
+
+    <header class="post__header">
+      <h1 class="post__title">
+        {{ .Title }}
+      </h1>
+    </header>
+
+    {{ $cover := .Resources.GetMatch .Params.cover }}
+    {{ if $cover }}
+    {{ $cover := ($cover.Fill "1200x400 Center")}}
+    <figure class="post__cover">
+      <img src="{{ $cover.RelPermalink }}" alt="{{ .Title }}" width="{{ $cover.Width }}" height="{{ $cover.Height }}"/>
+    </figure>
+    {{ end }}
+
+    <div class="post__content">
+      {{ .Content }}
+    </div>
+
+  </div>
+  <aside class="post__nav-wrapper">
+    <div class="wrapper-1200">
+      {{ partial "post-nav.html" .}}
+    </div>
+  </aside>
+
+
+  <aside class="post__comments">
+    <div class="wrapper-1200">
+      <div id="disqus_thread">To show the comments is mandatory accept cookie policy.</div>
+    </div>
+  </aside>
+</article>
+{{ end }}

@@ -1,0 +1,29 @@
+#baseURL: 'https:/sergiocarracedo.es/'
+languageCode: 'en-us'
+title: 'Sergio Carracedo'
+
+theme: 'sergiocarracedo'
+
+# Manage languages
+# For any more details, you can check the official documentation: https://gohugo.io/content-management/multilingual/
+languages:
+  en:
+    languageName: English
+    weight: 1
+
+# Enable global emoji support
+enableEmoji: true
+
+
+params:
+  keywords:
+  description: Sergio Carracedo's personal page and blog
+  author: Sergio Carracedo
+  GA: 'UA-133459072-1'
+  disqus: sergiocarracedo.disqus.com
+  favicon: 'favicon.png'
+  mainSections: ["posts"]
+
+permalinks:
+  '/2021': '/:slug'
+  '/2022': '/:slug'

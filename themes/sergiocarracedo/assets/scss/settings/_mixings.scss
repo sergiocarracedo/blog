@@ -1,0 +1,22 @@
+@mixin box-shadow($border-radius: 15px, $opacity: 0.35, $shadow-blur-radius: 40px) {
+  border-radius: $border-radius;
+  box-shadow: 0 0 $shadow-blur-radius rgba(18, 21, 26, $opacity);
+}
+
+@mixin parallelogram($angle: 20deg) {
+  transform: skewX(-$angle);
+  span {
+    display: block;
+    transform: skewX($angle);
+  }
+}
+
+@mixin link() {
+  color: var(--primary-color);
+  text-decoration: underline 0.1em var(--secondary-color);
+  transition: all .2s ease-in-out;
+
+  &:hover {
+    text-decoration-color: transparent;
+  }
+}

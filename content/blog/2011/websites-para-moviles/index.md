@@ -1,0 +1,17 @@
+---
+title: "Websites para móviles"
+date: 2011-04-29
+url: 2011/04/29/websites-para-moviles/
+cover: table-1100252_1920.jpg
+---
+Existe un gran debate acerca de que soluciones usar cuando adaptemos un website a móviles. Por lo normal, usar CSS (style sheets) como solución, nos ayuda a crear distintas visualizaciones sobre diferentes dispositivos móviles, pero no todos los fabricantes siguen los [estándares](http://www.w3.org/TR/css-mobile/). El resultado sobre algunos en ellos puede ser impredecible.
+
+Hay diversidad de tipos de móviles. En algunos solo se puede visualizar los elementos gráficos más esenciales, como las webs de principios de la década. En otros, como los smartphones, pueden mostrar mejor el contenido web e incluso tener más funciones, ejecutar jQuery Mobile, etc. Aunque alguno de ellos, por ejemplo iPhone, no funciona, ni funcionará tecnología Flash. Para sacar el máximo partido a un website, proponemos dos opciones:  
+
+### A) Crear un website que funcione en la mayoría de los móviles
+
+Podemos hacer que nuestro site funcione sobre casi todos los dispositivos móviles recortando los servicios y opciones, haciendo una maquetación más suelta, sin márgenes, etc. De esta manera, nos aseguraremos de que nuestro website se ajustará al tamaño de nuestro iPhone, Android o iPad, etc. Por otro lado, al navegar desde un ordenador de sobremesa, nuestro website puede parecer extremadamente minimalista, sin opciones, simple. Aun estando bien diseñado gráficamente, puede parecer mal organizado. Al usuario le costará navegar y entender que está viendo, frustrándose y creando una imagen negativa del sitio. Además, a la hora de desarrollar un sitie tan compatible, suma unos costes, que muchas veces compensa crear otro sitio independiente para los móviles. Con este problema nos hemos encontrado muchas veces para hacer funcionar bien en el navegadores de sobremesa como Microsoft Explorer. Mejor crear una css exclusiva para él que limitar las opciones de otras como Safari, Firefox o Chrome.  
+
+### b) Crear un sitio específico para móviles, paralelo a nuestro website
+
+De esta manera tendremos la seguridad de que nuestro sitio va a funcionar perfectamente, tanto en el escritorio como el dispositivo móvil. Podemos simplificar la navegación, cambiar la estructura y organizar mejor el contenido que se muestre en el móvil. Podremos también desarrollar código más simple. En definitiva, el resultado será más predecible, tendremos más controlados los bugs. Como en todo en la vida, tiene una parte buena y otra mala. En este caso, la mala, es que obligará a mantener dos sitios en vez de uno. A _priori_ no parece gran cosa, pero seguro que cambiaremos de idea con proyectos de dimensiones considerables y varios idiomas. Si no se tiene bien controlado podemos encontrarnos con problemas de actualización, entre los contenidos de los dos sitios. También puede obligarnos a sacrificar ciertas características que aporten los dispositivos de gama, alta por miedo a que no funcionen en los de gama baja. No se puede tener todo.   En fin, la decisión del método a seguir, dependerá de los usuarios a los que irá dirigido el sitio. Si nuestro público tiene poder adquisitivo, tendrán móviles de gama alta y podremos ofrecerles lo máximo en prestaciones web. Por el contrario, si el poder adquisitivo es bajo, evidentemente los móviles serán de baja gama y tendremos que pensar en recortar posibilidades para que la aplicación corra perfectamente en todos ellos y así llegar al máximo de público.

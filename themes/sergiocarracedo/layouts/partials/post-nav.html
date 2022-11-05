@@ -1,0 +1,39 @@
+<div class="post-nav post-nav--prev">
+  {{ if .NextPage }}
+  <a class="post-nav__link" href="{{ .NextPage.Permalink }}?ref=footer">
+    <div class="post-nav__cover">
+      {{ $cover := .NextPage.Resources.GetMatch .NextPage.Params.cover }}
+      {{ if $cover }}
+      {{ $cover := ($cover.Fill "200x120 Center")}}
+      <img alt=".NextPage.Title" src="{{ $cover.RelPermalink }}">
+      {{ end }}
+    </div>
+    <div class="post-nav__title">
+      {{ .NextPage.Title | truncate 50 "..."}}
+    </div>
+  </a>
+  {{ end }}
+</div>
+
+<div class="blog-link">
+  <a class="btn" href="{{ "blog" | absURL }}">
+    All Blog posts
+  </a>
+</div>
+
+<div class="post-nav post-nav--next">
+  {{ if .PrevPage }}
+  <a class="post-nav__link" href="{{ .PrevPage.Permalink }}?ref=footer">
+    <div class="post-nav__cover">
+      {{ $cover := .PrevPage.Resources.GetMatch .PrevPage.Params.cover }}
+      {{ if $cover }}
+      {{ $cover := ($cover.Fill "200x120 Center")}}
+      <img alt=".PrevPage.Title" class="post-nav__cover" src="{{ $cover.RelPermalink }}">
+      {{ end }}
+    </div>
+    <div class="post-nav__title">
+      {{ .PrevPage.Title | truncate 50 "..." }}
+    </div>
+  </a>
+  {{ end }}
+</div>

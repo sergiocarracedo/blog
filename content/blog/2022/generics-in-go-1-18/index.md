@@ -1,0 +1,152 @@
+---
+title: 'Generics in Golang 1.18'
+date: 2022-02-28
+url: generics-in-golang-1.18/
+cover: go-generics-4016522.jpg
+tags:
+- golang
+---
+At the moment of writing this post Go 1.18 wasn't released  (the latest version for 1.18 is the [Release Candidate 1](https://groups.google.com/g/golang-announce/c/QHL1fTc352o/m/5sE6moURBwAJ)), but we can still play using the [playground](https://go.dev/play/) (enabling the dev branch) or installing the RC
+
+```bash
+go install golang.org/dl/go1.18rc1@latest
+go1.18rc1 download
+```
+One of the most interesting novelties is the _generics_ in a similar way we have in other languages (C#, Java, Typescript, etc...). Generics allow us as developers, for example, to create a function that works with different types. The classical example Go uses in its blog to explain [why generics](https://go.dev/blog/why-generics) (highly recommended), is a function that does some operation over an array, for example, reverse the array. Now we must write the same function for different types, ex: int, float, string, etc
+
+```golang
+func ReverseInts(s []int) {
+    first := 0
+    last := len(s) - 1
+    for first < last {
+        s[first], s[last] = s[last], s[first]
+        first++
+        last--
+    }    
+}
+func ReverseStrings(s []string) {
+    first := 0
+    last := len(s) - 1
+    for first < last {
+        s[first], s[last] = s[last], s[first]
+        first++
+        last--
+    }    
+}
+...
+```
+
+As you see the code inside the function is exactly the same for both types, only the changes the types in signature. That is not nice because we should maintain the same logic in 2, 3, or more different places.
+
+How we can achieve it using generics: adding a new element to the signature between brackets *[_typeName_ _constraint_]* and using this `T` definition as the argument Type 
+Like in this example:
+```golang
+func Reverse[T any] (s []T) {
+    first := 0
+    last := len(s) - 1
+    for first < last {
+        s[first], s[last] = s[last], s[first]
+        first++
+        last--
+    }    
+}
+
+Reverse[int]([]int{1, 2, 3, 4})
+Reverse[string]([]string{"1", "2", "3", "4"})
+``` 
+[Try it on playground](https://go.dev/play/p/0IrUF_f54bK?v=gotip)
+
+
+Note you can have multiple generics in the same function even the return type can be typed: `func [T any, U  any](arg0 T) U`
+
+## Constraints
+In the examples above we are using `any` as a constraint that means all the types can be used with the function, but in most of the cases we will need to limit the types we can use the function, 
+
+The next simpler constraint is the union type:
+
+The union type is a list of possible types: `int | float64`. In our previous example, trying to `Reverse` an array of strings will return the error `string does not implement int`. That means Go is not comparing the types themselves, is comparing the interface of the types, and that is important for the next type of constraint.
+
+Imagine we want to create a function to get the minimum value in the array, we could write something like:
+
+```golang
+// Not this function only works for positive numbers. but it's for example pourpouse
+func Max[T any](values []T) T {
+  var max T 
+  for _, v := range values {
+     if v > max {
+        max = v
+     }
+  }
+  return max
+}
+a := []int{1, 2, 3, 4, 5}
+fmt.Println("Max:", Max[int](a))
+```
+If we run above we will get the error `invalid operation: v > max (type parameter T is not comparable with >)`. That is because not all the types represented by `any` implement the operator > and are not comparable.
+
+We can solve this using `func Max[T int|string](values []T) T` as signature, but there is a better way: using the `constraints` package (in the moment of writting this it was removed from the standard library and moved to )(exp/constrains](https://pkg.go.dev/golang.org/x/exp/constraints) https://go-review.googlesource.com/c/go/+/382460/)
+
+So we can so
+```golang
+import "golang.org/x/exp/constraints"
+func Max[T constraints.Ordered](values []T) T {
+....
+}
+```
+
+## Type approximation
+
+Is very common in Go creating custom types from a "primitive" type
+```golang
+type MyString = string
+```
+
+The problem with generics is that `MyString` is not the same type as `string`, so `func [T string|int]MyFunc(arg T)` will not work with `MyString`.
+
+The way to solve it is the `type aproximation`: that is a type that underlying is the type specified. Let's see it with an example: `~string` represent any type that is a pure `string` or is string underlying as our `MyString`
+
+[More info in the Go spec](https://tip.golang.org/ref/spec#Interface_types)
+
+## Generic Structs
+Go also supports generics in Structs:
+```golang
+type MyGenericStruct[T string | int, U constraints.Ordered] struct {
+	id    T
+	value U
+}
+
+// So this works and makes sense
+c := MyGenericStruct[int, string]{1, "2"}
+d := MyGenericStruct[string, int]{"c", 2}
+```
+That means we can use generics in methods (but in a limited way), we can use generic in the receiver, but not in the method, this was [pushed to go 1.19]
+```golang
+// Works
+func (m MyGenericStruct[T, U]) GetValue() U {
+	return m.value
+}
+
+// Doesn't Work
+func (m MyGenericStruct[T, U]) [A any]GetValueAndAdd(add A) U {
+	return m.value + add
+}
+```
+
+For the methods, we could use generics defined in the struct as a roundabout, but I think is not very elegant
+```golang
+type MyGenericStruct[T string | int, U constraints.Ordered, A any] struct {
+	id    T
+	value U
+}
+func (m MyGenericStruct[T, U]) [A any]GetValueAndAdd(add A) U {
+    return m.value + add
+}
+```
+
+# any
+The new keyword `any` we used above it's just an alias of `interface{}`, and we could use it in any place we were using interface{}, ex: `map[string]any`
+
+# Summarizing
+In my opinion, generics in Go 1.18 are a big improvement in terms of flexibility creating reusable logic independent of the types but keeping the language robust.
+_Union types_ are only allowed in the constraints so there is no ambiguity in the types as in other languages inside the function.
+

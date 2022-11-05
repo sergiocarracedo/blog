@@ -1,0 +1,25 @@
+.post.post--single {
+  & .post {
+    &__title {
+      max-width: 900px;
+    }
+
+    &__cover {
+      padding: 0;
+      margin: 0 0 3em 0;
+    }
+
+    &__metadata,
+    &__header {
+      @media screen and (min-width: 768px) {
+        padding: 0 30px;
+      }
+    }
+
+    &__comments {
+      padding: 50px 0;
+      background: var(--primary-color);
+      color: var(--contrast-text-color);
+    }
+  }
+}

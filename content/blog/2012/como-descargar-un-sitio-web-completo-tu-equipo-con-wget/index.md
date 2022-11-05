@@ -1,0 +1,15 @@
+---
+title: "Como descargar un sitio web completo a tu equipo con wget"
+url: 2012/04/17/como-descargar-un-sitio-web-completo-tu-equipo-con-wget/
+date: 2012-04-17
+cover: pexels-photo-270456.jpeg
+---
+Hace unos días me surgió la necesidad de descargar un sitio web completo a mi disco duro como copia y referencia. Conocía la existencia de algunas herramientas como Httrack, una aplicación multiplataforma (Windows, OSX, Linux) que nos permite descargar un sitio web completo al disco duro modificando incluso los enlaces para que sea perfectamente navegable sin conexión. Pero los usuarios de linux tenemos una alternativa más simple pero igual de potente wget wget es un comando que nos permite descargar cualquier contenido en la red a nuestro equipo, normalmente se emplea para descargar ficheros sueltos: html, imágenes, vídeos, etc... pero con los parámetros adecuados puede descargar un sitio web completo 
+```
+wget --mirror -p --convert-links -P ./DIRECTORIO-LOCAL URL-WEB-A-DESCARGAR
+```
+  
+Con este simple código descargaremos el sito web completo a nuestro disco duro y los enlaces serán reescritos para permitir la navegación local 
+Más información:
+* http://www.thegeekstuff.com/2009/09/the-ultimate-wget-download-guide-with-15-awesome-examples/ 
+* http://jamsubuntu.blogspot.com.es/2009/02/using-wget-to-download-entire-websites.html

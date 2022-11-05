@@ -1,0 +1,7 @@
+<div class="social">
+  {{ range $index, $el := site.Data.social }}
+    <a class="social__link" href="{{ $el.url }}" target="_blank" title="{{ $el.name }}" style="animation-delay: {{ sub 2 (div $index 15.0) }}s">
+      <i class="{{ $el.icon}}"></i>
+    </a>
+  {{ end }}
+</div>

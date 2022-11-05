@@ -1,0 +1,32 @@
+{{ define "top" }}
+ {{ partial "home/hero.html" }}
+{{ end }}
+
+{{ define "main" }}
+<div class="home">
+  <div class="wrapper-1200">
+    <section class="home-posts">
+      <header class="home-posts__header">
+        <h3 class="home-posts__title">
+          <a href="{{ "blog" | absURL }}">
+             Recent blog posts
+          </a>
+        </h3>
+      </header>
+      {{ $pages := (where .Site.Pages "Section" "in" "blog") }}
+      {{.Content}}
+
+      {{ range first 5 .Paginator.Pages}}
+        {{ partial "post-teaser.html" . }}
+      {{ end }}
+
+
+      <footer class="home-posts__all">
+        <a href="{{ "blog" | absURL }}#post-5" class="btn">
+          <span>View all blog posts</span>
+        </a>
+      </footer>
+    </section>
+  </div>
+</div>
+{{ end }}

@@ -1,0 +1,35 @@
+<article class="post post--teaser">
+  <div class="post__aside">
+    <div class="post__cover">
+      {{ $image := .Resources.GetMatch .Params.cover }}
+      {{ if $image }}
+        <a class="post__link" href="{{ .RelPermalink }}">
+          {{ $image := $image.Fill "500x250"}}
+          {{ with $image }}
+              <img src="{{ .RelPermalink}}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ .Title }}"/>
+          {{ end }}
+        </a>
+      {{ end }}
+    </div>
+  </div>
+
+  <div class="post__main">
+    {{ partial "post-metadata.html" . }}
+    <header>
+      <h3 class="post__title">
+        <a class="post__link" href="{{ .RelPermalink }}">
+          {{ .Title }}
+        </a>
+      </h3>
+    </header>
+
+
+    <a href="{{ .RelPermalink }}"class="post__summary">
+      <p>{{ .Summary | safeHTML | truncate 100 }}</p>
+    </a>
+
+    <a href="{{ .RelPermalink }}"class="post__read-more">
+      Read more
+    </a>
+  </div>
+</article>

@@ -1,0 +1,79 @@
+{{ if $.Site.Params.GA }}
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459072-1"></script>
+<script>
+function runGA () {
+  function gtag () {dataLayer.push(arguments)}
+
+  gtag('js', new Date())
+  gtag('config', '{{ $.Site.Params.GA }}')
+}
+</script>
+{{ end }}
+
+{{ if $.Site.Params.Disqus }}
+<script>
+function runDisqus () {
+  (function () { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script')
+    s.src = 'https://{{ $.Site.Params.disqus }}/embed.js'
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s)
+  })()
+}
+</script>
+{{ end }}
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+<script>
+window.addEventListener('load', function () {
+  window.cookieconsent.initialise({
+    'palette': {
+      'popup': {
+        'background': '#004262',
+        'text': '#fff'
+      },
+      'button': {
+        'background': '#8ec760',
+        'text': '#ffffff'
+      }
+    },
+    'type': 'opt-out',
+    'content': {
+      'message': 'Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.',
+      'allow': 'Ok, continua',
+      'deny': 'Nada de cookies',
+      'link': 'Saber más',
+      'href': '{{ "cookies" | absURL }}'
+    },
+    'onStatusChange': function (status, chosenBefore) {
+      if (status == 'allow') {
+        runCookiesAllowed()
+      }
+    },
+    'onInitialise': function (status) {
+      if (status == 'allow') {
+        runCookiesAllowed()
+      }
+    }
+  })
+})
+</script>
+
+
+<script>
+
+addEventListener('scroll', (event) => {
+  let body = document.getElementsByTagName('body')[0]
+  if (body && window.scrollY > 10) {
+    body.classList.add('not-in-top')
+  } else {
+    body.classList.remove('not-in-top')
+  }
+})
+
+function runCookiesAllowed () {
+  runGA()
+  runDisqus()
+}
+</script>

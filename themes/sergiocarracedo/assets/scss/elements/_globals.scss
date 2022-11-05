@@ -1,0 +1,25 @@
+body {
+  font-family: $primary-font;
+  font-size: 20px;
+  background: var(--bg);
+  background-attachment: fixed;
+  color: var(--text-color);
+
+  &:not(.home) {
+    padding-top: 100px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+p {
+  line-height: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: 0.01em;
+}
+

@@ -1,0 +1,16 @@
+{{ $avatar := resources.Get "i/sergiocarracedo.jpg" }}
+{{ $avatar := $avatar.Fit "170x170" }}
+<div class="me">
+  <div class="me__avatar">
+    <img alt="Sergio Carracedo" src="{{ $avatar.RelPermalink }}"/>
+  </div>
+  <div class="me__titles">
+    <h1>Sergio Carracedo</h1>
+    <h2>
+      Senior Fullstack developer.
+    </h2>
+    <h3>
+      Formula 1, cats, good conversations and small details lover.
+    </h3>
+  </div>
+</div>

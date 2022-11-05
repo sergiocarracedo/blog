@@ -1,0 +1,20 @@
+.post {
+  &__cover,
+  &__content {
+    img {
+      @include box-shadow(20px);
+      overflow: hidden;
+    }
+  }
+
+  &__title {
+    font-family: $impact-font;
+    font-weight: 500;
+    font-size: 60px;
+    margin-bottom: 30px;
+
+    @media screen and (max-width: 400px) {
+      font-size: 40px;
+    }
+  }
+}

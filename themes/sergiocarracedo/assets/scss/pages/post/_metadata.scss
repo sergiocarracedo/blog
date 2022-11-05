@@ -1,0 +1,52 @@
+.post {
+  &__metadata {
+    display: flex;
+    flex-flow: wrap;
+  }
+
+  &__tags {
+    display: flex;
+  }
+
+  &__tag {
+    margin: 5px 5px;
+    background: linear-gradient(to right, #{$primary-color} 0%, #{$primary-color} 100%);
+    color: $white;
+    padding: 3px 20px 5px 20px;
+    line-height: 1em;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all .2s ease-in-out;
+    @include parallelogram();
+
+    &:hover {
+      background: var(--green-gradient)
+    }
+  }
+
+  &__tags {
+    margin-right: 20px;
+  }
+
+  &__reading-time {
+    font-size: 0.8em;
+  }
+
+  &__date {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    gap: 7px;
+
+    i {
+      font-size: 0.6em;
+    }
+  }
+
+  &__reading-time {
+    color: var(--light-text-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+}

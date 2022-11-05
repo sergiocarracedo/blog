@@ -1,0 +1,59 @@
+.me {
+  &__avatar {
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
+    position: relative;
+    padding: 0 20px;
+
+    img {
+      border-radius: 9999px;
+      border: 10px solid rgba($white, .5);
+      @media screen and (max-width: 767px) {
+        border-width: 5px;
+        width: 130px;
+
+      }
+    }
+  }
+
+  &__titles {
+    padding: 0 15px;
+    color: $white;
+
+    clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
+
+    h1, h2, h3 {
+      line-height: 1.3em;
+    }
+
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 3px;
+      font-family: $hand-font;
+
+      @media screen and (max-width: 500px) {
+        font-size: 40px;
+      }
+    }
+
+    h2, h3 {
+      color: rgba($white, 1);
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 2px;
+      @media screen and (max-width: 500px) {
+        font-size: 1rem;
+      }
+    }
+
+    h3 {
+      font-size: 1rem;
+      font-style: italic;
+
+      @media screen and (max-width: 500px) {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

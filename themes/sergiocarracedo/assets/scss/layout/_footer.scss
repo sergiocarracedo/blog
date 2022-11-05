@@ -1,0 +1,52 @@
+.web-footer {
+  background: url(/i/bg.jpg) repeat;
+  background-size: cover;
+  padding: 40px 20px;
+
+  .wrapper-1200 {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+  }
+
+  &__right,
+  &__left {
+    margin: 10px 0;
+    flex: 1;
+    flex-basis: 300px;
+  }
+
+  &__right {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-flow: column;
+
+    .menu {
+      margin-bottom: 30px;
+    }
+  }
+
+  .me {
+    &__avatar {
+      img {
+        width: 60px;
+        border-width: 5px
+      }
+    }
+
+    &__titles {
+      h1 {
+        font-size: 40px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      h3 {
+        font-size: 16px;
+      }
+    }
+  }
+}

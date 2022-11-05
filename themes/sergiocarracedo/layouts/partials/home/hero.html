@@ -1,0 +1,27 @@
+<section class="home-hero">
+  <div class="wrapper-1200">
+    <header class="home-hero__header">
+      {{ partial "me.html"}}
+    </header>
+
+    {{ partial "social" }}
+
+    <aside class="skills">
+      {{ $skills := site.Data.skills }}
+      {{ range $index, $element := $skills }}
+      <span class="skill" style="{{ if $element.color }}background-color: {{ $element.color }};{{ end }}{{ if $element.textColor }}color: {{ $element.textColor }};{{ end }}; animation-delay: {{ add 1.8 (div $index 40.0) }}s">
+        <span>
+          {{ if $element.icon}}
+            <i class="{{ .icon }}"></i>
+          {{ end }}{{ $element.name }}
+        </span>
+      </span>
+      {{ end }}
+      <!--      <% for(var i in site.data.skills.skills) { %>-->
+<!--      <span class="chip" style="background-color: <%- site.data.skills.skills[i].color %>; color: <%- site.data.skills.skills[i].textColor%>">-->
+<!--              <i class="<%- site.data.skills.skills[i].icon %>"></i> <%- site.data.skills.skills[i].name %>-->
+<!--            </span>-->
+<!--      <% } %>-->
+    </aside>
+  </div>
+</section>

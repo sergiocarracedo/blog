@@ -1,0 +1,95 @@
+---
+title: Simplifying the use of custom a Vue v-model
+date: 2021-05-10
+url: vue-use-model-helpers/
+cover: use-model-josh-riemer-OH5BRdggi2w-unsplash.jpg
+tags:
+- vue
+---
+
+One year ago I wrote a post about how to manage your
+[custom v-model in your component]({{< ref "blog/2019/tu-propio-v-model-en-un-componente-vue" >}})
+(_Spanish_).
+
+The problem still being the same, if you try to mutate the value of the property into the component you will get this error message:
+
+> Error message: Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop’s value.
+
+That is normal, because the correct way of update a property value in the parent component is __emit__ an event, for example: `emit('input', newValue)`.
+
+I think the most convenient way to manage this situation is to create a local copy of the property in the component and observe its changes, and then emit the event, we also must observe property changes to keep the local copy updated if the parent component changes the property value.
+
+This requires writting repetitive code for every single property (remember that in Vue 2.x we can use the `.sync` modifier to make other properties distinct of `value` 2-way bound)
+
+To simplify my life (and yours) I created and published in *npmjs* a package that takes advantage of **Vue composition API** to make the code more reusable.
+
+> The package is [vue-use-model-helpers](https://www.npmjs.com/package/vue-use-model-helpers)
+
+### IMPORTANT
+The package works on both **Vue 2.x** and **Vue 3**, the way of using it is the same, but you must use the correct package version.
+
+For Vue 2.x:
+```bash
+npm i vue-use-model-helper@2.x --save 
+# or 
+yarn add vue-use-model-helper@2.x
+```
+
+For Vue 3:
+```bash
+npm i vue-use-model-helper@3.x --save 
+# or 
+yarn add vue-use-model-helper@3.x
+```
+
+
+## Usage
+
+This package encapsulates the logic of creating the local property's copy, the watchers to observe the property and the local value, and the event dispatch.
+
+In your components must import the `useLocalModel` helper function:
+
+```ts
+import { useLocalModel } from 'content/blog/2021/vue-use-model-helpers/index'
+```
+
+Then you must pass an array with the names of the properties you want to manage because, yes, in Vue 2.x the helper can manage `.sync`. You don't need to take care of the event name, the helper can recognize the property type and emits the correct event. 
+
+The helper returns a copy of every property with the name `local + [property name capitalized]` as a `ref`.
+
+You can use destructuring to get the copies: ```const { localValue, localUsername } = useLocalModel(['value', 'username'])```
+
+Putting all together:
+
+```ts
+import { useLocalModel } from 'content/blog/2021/vue-use-model-helpers/index'
+
+export default defineComponent({
+  ...
+    props
+:
+{
+  value: String,
+    username
+:
+  String
+}
+,
+setup(props)
+{
+
+  const { localValue, localUsername } = useLocalModel(['value', 'username'])
+
+  return {
+    localValue, localUsername
+  }
+}
+...
+})
+```
+
+If, for example, you are using the `localValue` in an input in your component, every single time the user updates the input, the helper emits the event on behalf of you.
+
+I think this helpers package simplifies the component readability and allow you to write less repetitive code.
+
+[Any comments](https://github.com/sergiocarracedo/vue-use-model-helpers/issues) to improve the package are highly welcome!

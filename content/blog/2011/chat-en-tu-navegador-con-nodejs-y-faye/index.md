@@ -1,0 +1,61 @@
+---
+title: "Chat en tu navegador con node.js y Faye"
+date: 2011-07-12
+url: 2011/07/12/chat-en-tu-navegador-con-nodejs-y-faye/
+cover: chat_en_tu_navegador_con_node.js_y_faye.jpg
+---
+Siguiendo con los posts sobre **faye**, vamos a realizar un ejemplo práctico y muy vistoso, vamos a realizar un sencillo pero funcional  **chat** web en este post.
+
+Lo primero es crear el servidor node: Solo tenemos que incluir la extensión de **faye** para **node** 
+```
+ var Faye = require('./faye/faye-node.js'); var fayeServer = new Faye.NodeAdapter({&nbsp; mount: &nbsp; &nbsp;'/'}); fayeServer.listen(8888);
+```
+
+A este fichero lo llamaremos _node.js_, ahora desde _bash_ lanzamos el servidor que acabamos de crear: `$ node node.js` 
+Y ya tenemos nuestro "_servidor de chat"_ corriendo, preparado para funcionar En el lado cliente creamos un sencillo html y un script para gestionar el chat:
+
+```
+<script type="text/javascript" src="<a href="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script><script">https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></scri...</a> type="text/javascript" src="faye/faye-browser-min.js"></script> <script type="text/javascript">// <![CDATA[
+$(function() {
+  var client = new Faye.Client('<a href="http://localhost:8888/'">http://localhost:8888/'</a>);
+  var nick = "";
+   
+  client.subscribe('/chat', function(message) {
+    $("#chat").append("<div><strong>"+message.nick+"</strong>: "+message.text+"</div>")
+ 
+});
+ 
+$(".nick form").submit(function() {
+  nick=$(".nick input[name=nick]").val();
+  $(".nick").hide();
+  $(".chatMessage").show();
+  return false;
+})
+ 
+$(".chatMessage form").submit(function() {
+  text = $(".chatMessage input[name=message]").val();
+  client.publish('/chat', {
+    nick : nick,
+    text: text
+  });
+  return false;
+  })
+});
+ 
+></script>
+
+<div class="nick">
+  <form action="#" enctype="multipart/form-data" method="POST">
+    <label>Tu nick:</label>&nbsp; <input name="nick" type="text" /> 
+    <input type="submit" value="Entrar al chat!!" />
+  </form>
+</div>
+ 
+<div class="chatMessage" style="display: none;">
+  <form action="#" enctype="multipart/form-data" method="POST">
+    <label>Tu mensaje:</label>&nbsp; <input name="message" type="text" /> 
+    <input type="submit" value="Enviar" />
+  </form>
+</div>
+
+```

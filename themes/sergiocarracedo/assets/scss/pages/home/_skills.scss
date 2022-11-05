@@ -1,0 +1,22 @@
+.skills {
+
+}
+
+.skill {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 16px;
+  background: #333;
+  color: $white;
+  margin: 5px;
+  @include parallelogram();
+
+  animation: .6s 1 skill-in backwards;
+}
+
+@keyframes skill-in {
+  from {
+    opacity: 0;
+    transform: skewX(0);
+  }
+}

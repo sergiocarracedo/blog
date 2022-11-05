@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+{{ partial "head.html" . }}
+
+{{ $bodyClass := "" }}
+{{ if or (eq .Kind "home" ) (eq .Kind "404") }}
+{{ $bodyClass = "home" }}
+{{ end }}
+<body class="{{ $bodyClass }}">
+{{ block "top" . }}
+{{ partial "header.html" . }}
+{{ end }}
+<div class="main-content">
+  {{ block "main" . }}{{ end }}
+</div>
+{{ partial "footer.html" . }}
+{{ partial "script.html" . }}
+</body>
+</html>

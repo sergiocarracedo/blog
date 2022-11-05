@@ -1,0 +1,139 @@
+[
+  {
+    "icon": "fab fa-js",
+    "name": "TypeScript",
+    "color": "#007acc",
+    "textColor": "white"
+  },
+  {
+    "name": "JS",
+    "icon": "fab fa-js",
+    "color": "#F0DB4F",
+    "textColor": "black"
+  },
+  {
+    "name": "Vue",
+    "icon": "fab fa-vuejs",
+    "color": "#41B883",
+    "textColor": "white"
+  },
+  {
+    "name": "Golang",
+    "color": "#29BEB0",
+    "textColor": "white"
+  },
+  {
+    "name": "Node.js",
+    "color": "#68A063",
+    "icon": "fab fa-node-js"
+  },
+  {
+    "name": "PHP",
+    "color": "#787CB5",
+    "textColor": "white",
+    "icon": "fab fa-php"
+  },
+  {
+    "name": "Symfony",
+    "icon": "fab fa-symfony",
+    "textColor": "white",
+    "color": "#333"
+  },
+  {
+    "name": "Drupal",
+    "color": "#53B0EB",
+    "textColor": "white",
+    "icon": "fab fa-drupal"
+  },
+  {
+    "name": "Linux",
+    "icon": "fab fa-linux",
+    "color": "#f99"
+  },
+  {
+    "name": "Sass",
+    "icon": "fab fa-sass",
+    "color": "#c69"
+  },
+  {
+    "name": "k8s",
+    "icon": "fas fa-sitemap"
+  },
+  {
+    "name": "Docker",
+    "icon": "fas fa-tasks"
+  },
+  {
+    "name": "GitHub Actions",
+    "icon": "fas fa-rocket"
+  },
+  {
+    "name": "Postgres",
+    "icon": "fas fa-database"
+  },
+  {
+    "name": "MySQL",
+    "icon": "fas fa-database"
+  },
+  {
+    "name": "jQuery",
+    "icon": "fab fa-js"
+  },
+  {
+    "name": "CSS3",
+    "icon": "fab fa-css3-alt"
+  },
+  {
+    "name": "HTML5",
+    "icon": "fab fa-html5"
+  },
+  {
+    "name": "Git",
+    "icon": "fab fa-git"
+  },
+  {
+    "name": "Deployer",
+    "icon": "fab fa-telegram-plane"
+  },
+  {
+    "name": "Ansible",
+    "icon": "fas fa-server"
+  },
+  {
+    "name": "Prestashop",
+    "icon": "fas fa-shopping-cart"
+  },
+  {
+    "name": "Drupal commerce",
+    "icon": "fas fa-shopping-cart"
+  },
+  {
+    "name": "Electron.js"
+  },
+  {
+    "name": "Nuxt.js"
+  },
+  {
+    "name": "Open Source"
+  },
+  {
+    "name": "Talks",
+    "icon": "fas fa-chalkboard-teacher"
+  },
+  {
+    "name": "Less",
+    "icon": "fab fa-less"
+  },
+  {
+    "name": "Node.js",
+    "icon": "fab fa-node-js"
+  },
+  {
+    "name": "CSS Grid Layout",
+    "icon": "fas fa-grip-horizontal"
+  },
+  {
+    "name": "Data Visualization",
+    "icon": "fas fa-grip-horizontal"
+  }
+]

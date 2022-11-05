@@ -1,0 +1,41 @@
+.pagination {
+  background: var(--light-primary-color);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 1.5em;
+  font-family: $impact-font;
+  padding: 40px 50px;
+
+  .page-link {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 5px 15px;
+    display: block;
+    cursor: pointer;
+    clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+  }
+
+  .page-item {
+    &:not(.active):not(.disabled) {
+      .page-link:hover {
+        background: var(--green-gradient);
+        color: $white;
+      }
+    }
+    &.disabled {
+      display: none;
+      opacity: 0.5;
+    }
+
+    &.active {
+      background: var(--green-gradient);
+      .page-link {
+        color: $white;
+      }
+      clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+    }
+  }
+
+
+}

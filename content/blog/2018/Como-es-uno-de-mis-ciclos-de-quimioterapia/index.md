@@ -1,0 +1,75 @@
+---
+title: Como es uno de mis "ciclos" de quimioterapia
+url: 2018/12/20/Como-es-uno-de-mis-ciclos-de-quimioterapia/
+date: 2018-12-20 10:34:37
+cover: bomba_quimioterapia.jpg
+---
+
+> Antes de nada aclarar que lo que cuento esta basado en mi experiencia personal, no pretende ser ni una referencia, ni consejos para otras personas.
+
+Como ya comenté en la anterior entrada, cada vez que te "ponen" el tratamiento de quimioterapia se le denomina ciclo, en mi caso es cada 21 días.
+
+Os voy a contar cómo es uno de mis ciclos.
+
+En primer paso es acudir temprano 8:00-8:40 al hospital de día, allí te hacen una extracción de sangre para un análisis marcado por la oncóloga como urgente, en este análisis se "mide":
+
+* Plaquetas
+* Leucocitos
+* Bilirrubina
+* Urea sen sangre
+* Na/K en sangre
+* ...
+
+
+Estos resultados le van a indicar a la oncóloga si puedes recibir el ciclo de quimio, si hay algo fuera de orden, por ejemplo, los leucocitos bajos no se puede poner y se aplazaría una semana.
+
+Sobre una hora, hora y media después, tengo la cita de consulta con la oncóloga (la hora es estimada por que todos tenemos cita a la misma hora y depende de si llegaron los resultados del análisis del laboratorio).
+
+Está cita es para revisar la analítica recién hecha, ver qué tal están los efectos secundarios del anterior ciclo y si todo está ok, programar el tratamiento de quimioterapia y también me dan la cita para el siguiente ciclo. 
+
+Programar el tratamiento de ese día consiste en una hoja de medicación, donde además de indicar los medicamentos y quimios a poner en vía intravenosa, indica el caudal y el tiempo. 
+
+Con la hoja de tratamiento paso a la enfermera que me confirma las citas en el sistema informático y pide las quimios a farmacia del hospital.
+
+Las quimios se preparan generalmente en el momento y personalizadas para cada paciente, en función del peso, área corporal, etc.
+
+Pasas a la sala de espera de nuevo hasta que estén las quimios preparadas.
+
+Una vez llegan las quimios al hospital de día me pasan y me sientan en un sillón (o en mis últimos ciclos me pasan a una cama ya que me están poniendo un tratamiento intratecal que requiere un pinchazo en la columna). Me canalizan la vía central (**reservorio**).
+
+El reservorio es una especie de cámara que previamente me han implantado en lado derecho la zona superior de las costillas bajo la piel y conectada a una vena "gorda". En mi caso es muy parecido a esto https://www.angiodynamics.com/products/20/Smart-Port-CT-Injectable-Port/
+
+La quimio se administra mediante una especie de caudalímetro. Esa maquinita como la de la imagen de la cabecera. A mí es algo que siempre me había llamado la atención al ver a gente recibiendo quimioterapia y no sabia lo que era, hasta ahora que me ha tocado ser parte :joy:.
+
+Esta maquina lo "único" que hace es regular el caudal del tratamiento (que suele venir diluido en suero fisiológico), la enfermera programa el caudal y el tiempo de administración. 
+ 
+Entre quimio y quimio se hace lo que se llama un "lavado" que consiste en poner suero fisiológico para diluir las quimios.
+
+Algunas "quimios" requieren de premedicacion, es decir medicamentos para prepararte para la quimio, con por ejemplo: Paracetamol, Ondasentron (para evitar las náuseas) y otros.
+
+En mi caso la parte de ciclo que se pone en el hospital de día **dura algo más de 7 horas**, sobre todo por el Rituximab que tiene que pasar con un caudal bajo (va variando cada 30 minutos iniciándolo en 100ml/h hasta 400ml/h subiendo en tramos de 100ml/h) para evitar reacciones adversas (subidas de tensión, etc...) que dura sobre 4 horas.
+
+Entre quimio y quimio se hace un "lavado" con suero fisiológico.
+
+Algunas de las "quimios" (vincristina, andrimicina y ciclofosmamida) son [vesicantes](https://es.wikipedia.org/wiki/Sustancia_vesicante), es decir provocan ampollas si entran en contacto con la piel, por ese cuando estás con ellas no te puedes mover de la silla/cama para evitar el riesgo de que se suelte la vía y la sustancia caiga en la piel.
+
+Sobre la [vincristina](https://es.wikipedia.org/wiki/Vincristina) un dato "curioso", según la wikipedia __Su margen de seguridad es muy estrecho; la dosis de máxima efectividad está muy próxima a la tóxica letal.__ lo que te deja bastante tranquilo :joy:
+
+Parte del ciclo también son medicamentos que tomas por otras vías, en mi caso la prednisona, un corticoide (antiinflamatorio) cuya administración es en pastillas vía oral pero que ya tomo en casa en los siguientes días.
+
+Estás quimios provocan una deterioro del sistema inmunológico, suele ser en la siguiente semana ya que es el periodo en el cual se renueva el sistema inmunológico. Para mejorar su recuperación me tengo que pinchar en el abdomen (vía subcutánea) unas inyecciones de Zarzio ([Filgrastim](https://en.wikipedia.org/wiki/Filgrastim)), un medicamento que pone a funcionar la médula ósea (donde se producen los leucocitos). Esto me provoca dolor de huesos, como cuando tienes una gripe a lo bestia pero sin los otros síntomas. Y no debo estar en contacto con niños ni embarazadas (ellos tienen el sistema inmune trabajando fortalecido y pueden contagiar sin ellos tener síntomas), ni en sitios con mucha gente.
+
+Los efectos secundarios de las quimios varían según la persona, en mi caso, no son demasiado "graves", y son llevables aunque molestos, por ejemplo:
+
+* Piel muy seca
+* Caída del pelo (parcialmente, en la cabeza no lo he perdido todo y el que queda es más débil y claro)
+* Facilidad para tener heridas o que tarden más en curar (debido al descenso de plaquetas)
+* Llagas o heridas en la boca
+* Sabor metálico
+* Cansancio general
+* Dolor de espalda / cuello
+* Aumento desmedido del apetito (Provocado por la Prednisona)
+* Perdida de sensibilidad en las manos (Provocado por la Vincristina)
+* Y algunos más leves...
+
+

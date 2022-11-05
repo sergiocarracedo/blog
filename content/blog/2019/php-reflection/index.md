@@ -1,0 +1,158 @@
+---
+title: "PHP Reflection: Anotaciones, PHPDoc y mucho más"
+date: 2019-11-01
+url: 2019/11/01/php-reflection/
+cover: php-reflection-949215.jpg
+---
+La [reflexíón en PHP](https://www.php.net/manual/es/intro.reflection.php) es algo que nunca he usado, y que posiblemente no usaré más allá de curiosear su funcionamiento como en este _post_ (como otras muchas veces es posible que me trague estas palabras :smile:), y creo que la mayoría de vosotros tampoco ha usado.
+
+Esta este conjunto de clases está con nosotros desde PHP 5.0, es decir desde julio de 2004 (hace ahora más de 15 años :sweat:) y nos proveen un sistema para hacer ingeniería inversa de clases, interfaces, métodos, propiedades, generadores, incluso extensiones del lenguaje.
+
+Para obtener información de cada una de las partes de nuestro código debemos usar una de las clases definidas:
+
+* `ReflectionFunction`: Para obtener información de una función.
+* `ReflectionGenerator`: Para obtener información de un generador.
+* `ReflectionExtension` y `ReflectionZendExtension`: Para obtener información de una extensión.
+* `ReflectionClass` y `ReflectionObject`: Para obtener información de una clase y un objecto instanciado respectivamente.
+
+Vamos a centrarnos en `ReflectionClass` y veamos una clase muy sencilla
+
+```php
+define('DEFAULT_RADIUS', 20);
+
+interface Shape {
+    public function area():float;
+}
+
+/**
+* Clase que representa un Circulo
+*/
+final class Circle implements Shape
+{
+    // Constante PI
+    const PI = 3.1415;
+
+    /**
+    * Radio del circulo
+    */
+    private $radius;
+
+
+    /**
+    * @param $radius Radio del circulo
+    */
+    public function __construct(float $radius = DEFAULT_RADIUS){
+        $this->radius = $radius;
+    }
+
+
+    /*
+    Devuelve el radio del circulo    
+    */
+    public function area(): float {
+        return pow($this->r, 2) * $this->PI;
+    }
+}
+```
+
+Para obtener información de esta clase en primer lugar debemos instanciar `ReflectionClass` pasando el nombre de la clase a "investigar" en el constructor
+
+```php
+$reflection = new ReflectionClass(Circle::class);
+```
+Y usando los métodos de esta clase podremos obtener distintos datos de la clase, por si queremos obtener la lista de todos los métodos.
+
+```php
+var_dump($refection->getMethods());
+```
+```
+array(2) {
+  [0]=> object(ReflectionMethod)#2 (2) {
+    ["name"]=> string(11) "__construct"
+    ["class"]=> string(6) "Circle"
+  }
+  [1]=> object(ReflectionMethod)#3 (2) {
+    ["name"]=> string(4) "area"
+    ["class"]=> string(6) "Circle"
+  }
+}
+```
+Como vemos nos devuelve un `array` de instancias de la clase `ReflectionMethod` que a vez también nos devolverá información sobre la cada método, por ejemplo le pedimos que nos de la lista de párametros del primer método de la lista (en este caso el constructor)
+
+```php 
+var_dump($reflection->getMethods()[0]->getParameters());
+```
+```
+array(1) {
+  [0]=> object(ReflectionParameter)#2 (1) {
+    ["name"]=> string(6) "radius"
+  }
+}
+```
+De nuevo tenemos otro `array` pero en este caso de instancias de `ReflectionParameter`. Sigamos jugando, Vamos a consultar: 
+* el tipo de dato del parámetro
+* si tiene un valor por defecto
+* si es opcional (esta petición puede ser un poco redundante, ya que si tiene valor por defecto es obviamente un parámetro opcional)
+* si tiene valor por defecto que nos diga si este está asignado por una constante (y su nombre).
+
+
+```php 
+$parameter = $reflection->getMethods()[0]->getParameters()[0];
+
+var_dump((string)$parameter->getType());
+// string(5) "float"
+
+var_dump($parameter->getDefaultValue());
+// int(20)
+
+var_dump($parameter->isOptional());
+// bool(true)
+
+var_dump($parameter->getDefaultValueConstantName());
+// string(14) "DEFAULT_RADIUS"
+```
+
+Como veis podemos obtener una información exhaustiva de la clase, métodos, parámetros, etc. Cosas como por ejemplo en que línea empieza (`getStartLine()`) o acaba (`getEndLine()`) la definición de la clase o el nombre del fichero (`getFileName()`). 
+
+Recomiendo echar un vistazo a la lista completa de métodos disponibles: https://www.php.net/manual/es/class.reflectionclass.php
+
+## Los comentarios: PHPDoc y las anotaciones
+Entre esa lista de métodos que nos devuelven información de la clase (o función o método) está `getDocComment` que nos devuelve el **comentario de documentación** del elemento, :warning: y ojo que lo he puesto en negrita por que nos devuelve exactamente eso, no nos va a devolver cualquier comentario.
+
+PHP considera que un bloque de comentario es de documentación cuando comienza por `/**` 
+
+ Veamos un ejemplo:
+
+
+```php 
+// Comentarios de documentación del constructor
+var_dump($reflection->getMethods()[0]->getDocComment());
+// string(49) "/**
+//    * @param $radius Radio del circulo
+//    */"
+
+
+// Comentarios de documentación del método area()
+var_dump($reflection->getMethods()[0]->getDocComment());
+// bool(false)
+```
+
+Si os fijáis en el método `area` el bloque de comentario comienza por `/*` en lugar de `/**` y el método lo ignora.
+
+Como os podéis imaginar este método es el que ha permitido la creación de "cosas" como [PHPDoc](https://www.phpdoc.org/) o traer las anotaciones como tienen de forma nativa otros lenguajes, pero tened en cuenta que el método `getDocComment` devuelve el comentario tal cual, no lo interpreta o _parsea_, ahí es donde entran en juego las clases como [doctrine/annotations](https://github.com/doctrine/annotations) que se encargan de realizar dicho _parseo_.
+
+
+Como curiosidad indicar que hay varias propuestas de RFC para llevar las anotaciones de forma nativa al intérprete del lenguaje, algunas de ellas bastante longevas, que aún siguen en _Draft_ y no han sido votadas para llevarlas realmente al intérprete.
+
+* https://wiki.php.net/rfc/annotations
+* https://wiki.php.net/rfc/attributes 
+* https://wiki.php.net/rfc/annotations_v2
+
+En resumen, las clases de _reflexión_ son útiles y muy interesantes, pero como decía al principio, y a riesgo de tragarme mis palabras, son algo que la mayoría, posiblemente, nunca use en un proyecto real, aunque nunca se sabe y siempre es bueno conocer las herramientas que nos da el lenguaje.
+
+
+
+ 
+
+
+

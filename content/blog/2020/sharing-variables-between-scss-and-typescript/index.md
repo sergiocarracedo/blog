@@ -1,0 +1,163 @@
+---
+title: Sharing variables between SCSS and Typescript 
+date: 2020-07-17
+url: 2020/07/17/sharing-variables-between-scss-and-typescript/
+tags:
+cover: share-scss-variables-ts-3951901.jpg
+---
+
+Sometimes you need to share variables between CSS (or SCSS) and Typescript, for example, if you have a list of colors in your SCSS file and need to check the variable names in typescript to be sure is an available color.
+
+Imagine a Vue component have a property to set the background color: 
+
+```html
+<template>
+  <div :class="['component', colorClass]">
+    My component
+  </div>
+</template>
+<script>
+const availableColors = ['primary', 'alert', 'my-custom-color']
+
+export default {
+  name: 'my-component',
+  props: {
+    color: String
+  },
+  computed: {
+    colorClass () { 
+      if (availableColors.indexOf(this.color) !== -1) {
+        return `color-${this.color}`
+      } 
+      return null
+    }   
+  }
+}
+</script>
+```
+
+In this component, if you set the property color, and the value is an available color, adds a class for that color, for example, if the color prop is `primary` adds the class `.color-primary`, but if the prop's value is `red` doesn't add any class related to color because `red` is not an available color.
+
+Bearing in mind that, we probably have a _scss_ file where we define that classes, something like:
+
+```scss
+$primary: #333;
+$alert: #900;
+$custom: #090;
+
+.color-primary {
+  background: $primary;
+}
+.color-alert {
+  background: $alert;
+}
+.color-custom {
+  background: $custom;
+}
+``` 
+
+We could improve this file to generate the classes programmaticaly using the power of SCSS:
+
+```scss
+// colors.scss
+$colors: (
+  'primary': '#333',
+  'alert': '#900',
+  'custom': '#090'
+);
+
+@each $name, $color in $colors {
+  .color-#{$name} {
+     background: $color;
+  }
+}
+```
+
+This way of generating the color classes allow us to simplify how we add a new color. We just should add the new color to `$colors` and we will have the color class
+
+```scss
+// colors.scss
+$colors: (
+  'primary': '#333',
+  'alert': '#900',
+  'custom': '#090',
+  'new-color': '#00a'
+);
+
+@each $name, $color in $colors {
+  .color-#{$name} {
+     background: $color;
+  }
+}
+```
+But if you remember in our component we had an array width the list of available colors, if we don't add the new colors to component too, we can not use it :pensive:
+
+But there is a way to only need to add colors in SCSS and also use the list in typescript: `:export`.
+
+`:export` is brought to us by _Webpack's scss loader_ and allows us to make scss variable exposed to Javascript / Typescript. 
+We will add an `:export` stament to our `colors.scss` file
+
+```scss
+// colors.scss
+$colors: (
+  'primary': '#333',
+  'alert': '#900',
+  'custom': '#090',
+  'new-color': '#00a'
+);
+
+@each $name, $color in $colors {
+  .color-#{$name} {
+     background: $color;
+  }
+}
+
+:export {
+  @each $name, $color in $colors {
+    #{$name}: $color                
+  }
+}
+```
+
+> Notice we don't need semicolon (;) or comma (,) at the end of each line. 
+
+Then, we will refactor our compoment like this:
+
+```html
+<template>
+  <div :class="['component', colorClass]">
+    My component
+  </div>
+</template>
+<script>
+import availableColors from './colors.scss'
+
+export default {
+  name: 'my-component',
+  props: {
+    color: String
+  },
+  computed: {
+    colorClass () { 
+      if (availableColors.indexOf(this.color) !== -1) {
+        return `color-${this.color}`
+      } 
+      return null
+    }   
+  }
+}
+</script>
+```
+
+But in Typescript we must declare the module to available its contents, we just add a _declaration_ file (with the same name as scss file plus `.d.ts`)
+
+```typescript
+// colors.scss.d.ts
+export const colors : any
+export default colors
+```
+
+And now we only need to add a new color in one place (the scss file) and it will be available everywhere.
+
+
+
