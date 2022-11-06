@@ -3,6 +3,13 @@
   background-size: cover;
   padding: 40px 20px;
   margin-bottom: 40px;
+  position: relative;
+
+  .theme-switch {
+    position: absolute;
+    top: 20px;
+    righT: 20px;
+  }
 
   .me {
     margin-bottom: 30px;

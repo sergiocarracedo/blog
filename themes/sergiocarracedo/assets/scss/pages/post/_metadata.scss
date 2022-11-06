@@ -19,6 +19,11 @@
     transition: all .2s ease-in-out;
     @include parallelogram();
 
+    @media screen and (max-width: 400px) {
+      font-size: 15px;
+    }
+
+
     &:hover {
       background: var(--green-gradient)
     }
@@ -37,6 +42,9 @@
     align-items: center;
     margin-right: 10px;
     gap: 7px;
+    @media screen and (max-width: 400px) {
+      font-size: 17px;
+    }
 
     i {
       font-size: 0.6em;

@@ -8,3 +8,14 @@
   --bg: radial-gradient(circle at right bottom, #e0e0e0, #{$white});
   --green-gradient: linear-gradient(to right, #{$primary-color} 0%, #{$secondary-color} 100%);
 }
+
+[data-theme="dark"] {
+  --text-color: #fff;
+  --light-text-color: #999;
+  --contrast-text-color: #000;
+  --primary-color: #{$secondary-color};
+  --light-primary-color: #{darken($primary-color, 18)};
+  --secondary-color: #{$primary-color};
+  --bg: radial-gradient(circle at right bottom, #000, #333);
+  --green-gradient: linear-gradient(to right, #{$primary-color} 0%, #{$secondary-color} 100%);
+}

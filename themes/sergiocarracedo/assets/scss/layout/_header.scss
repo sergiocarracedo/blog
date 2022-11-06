@@ -50,6 +50,13 @@
       font-size: 2rem;
     }
 
+    @media screen and (max-width: 500px) {
+     .back-to-home__action,
+     .back-to-home__title {
+       font-size: 1.5rem;
+     }
+    }
+
     &:hover {
       .back-to-home {
         &__action {
@@ -78,6 +85,13 @@
     @media screen and (min-width: 768px) {
       display: flex;
     }
+  }
+
+  .theme-switch {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
   }
 
 

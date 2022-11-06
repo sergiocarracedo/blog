@@ -1,0 +1,26 @@
+.theme-switch {
+  color: $white;
+  #theme-switch-light {
+    display: none;
+  }
+
+  #theme-switch-dark {
+    display: block;
+  }
+
+  &__theme {
+    cursor: pointer;
+  }
+}
+
+[data-theme="dark"] {
+  .theme-switch {
+    #theme-switch-dark {
+      display: none;
+    }
+
+    #theme-switch-light {
+      display: block;
+    }
+  }
+}

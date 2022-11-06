@@ -26,14 +26,6 @@
   {{ $style := $scss | resources.ToCSS | resources.Fingerprint }}
   <link href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}" rel="stylesheet">
 
-  <!--  <%- open_graph({-->
-  <!--  image: page.cover || '',-->
-  <!--  title: page.title,-->
-  <!--  description: page.description,-->
-  <!--  twitter_card: 'summary_large_image',-->
-  <!--  twitter_image: (config.url + url_for(page.cover || ''))-->
-  <!--  }) %>-->
-
   <link href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" rel="stylesheet"
         type="text/css"/>
 </head>

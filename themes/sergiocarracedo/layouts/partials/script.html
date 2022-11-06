@@ -79,3 +79,7 @@ function runCookiesAllowed () {
   runDisqus()
 }
 </script>
+
+{{ $themeJs := resources.Get "js/theme.js" }}
+{{ $js := $themeJs |resources.Fingerprint }}
+<script integrity="{{ $js.Data.Integrity }}" src="{{ $js.Permalink }}"></script>

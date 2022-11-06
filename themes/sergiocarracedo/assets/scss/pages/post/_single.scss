@@ -18,8 +18,8 @@
 
     &__comments {
       padding: 50px 0;
-      background: var(--primary-color);
-      color: var(--contrast-text-color);
+      background: $primary-color;
+      color: $white;
     }
   }
 }

@@ -1,7 +1,11 @@
+
 .post__content {
+  font-size: 16px;
   margin-bottom: 60px;
+
   @media screen and (min-width: 768px) {
     padding: 0 30px;
+    font-size: 20px;
   }
 
   iframe {
@@ -21,12 +25,12 @@
   }
 
   $sizes: (
-          h1: 39px,
-          h2: 32px,
-          h3: 28px,
-          h4: 25px,
-          h5: 21px,
-          h6: 19px
+          h1: 1.95em,
+          h2: 1.6em,
+          h3: 1.4em,
+          h4: 1.25em,
+          h5: 1.05em,
+          h6: 0.9em
   );
 
   @each $tag, $size in $sizes {
@@ -81,15 +85,6 @@
     background: transparent;
     padding: 0;
     overflow: visible;
-
-    //.gutter {
-    //  pre {
-    //    color: #666;
-    //    font-size: 0.9rem;
-    //    text-align: right;
-    //    padding-right: 20px;
-    //  }
-    //}
 
     table {
       margin: 0;
@@ -179,6 +174,11 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 15px 20px;
+    color: #333;
+
+    a {
+      color: $primary-color;
+    }
 
     p:last-child {
       margin: 0;
