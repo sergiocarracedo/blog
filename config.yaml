@@ -24,7 +24,7 @@ params:
   favicon: 'favicon.png'
   mainSections: ["posts"]
   images:
-    - 'cover.jpg'
+    - '/i/cover.jpg'
 
 permalinks:
   '/2021': '/:slug'
