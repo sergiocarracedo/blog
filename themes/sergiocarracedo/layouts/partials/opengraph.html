@@ -9,8 +9,12 @@
 {{ $cover := $images.GetMatch $.Params.cover }}
 {{ $cover := $cover.Fill "1920x1080 Center"}}
 <meta property="og:image" content="{{ $cover.Permalink }}" />
+<meta name="twitter:image" content="{{ $cover.Permalink }}"></meta>
 {{- else -}}
-{{- with $.Site.Params.images }}<meta property="og:image" content="{{ index . 0 | absURL }}"/>{{ end -}}
+  {{- with $.Site.Params.images }}
+    <meta property="og:image" content="{{ index . 0 | absURL }}"/>
+    <meta name="twitter:image" content="{{ index . 0 | absURL }}"></meta>
+  {{ end -}}
 {{- end -}}
 
 {{- if .IsPage }}
@@ -39,3 +43,7 @@
 
 {{- /* Facebook Page Admin ID for Domain Insights */}}
 {{- with .Site.Social.facebook_admin }}<meta property="fb:admins" content="{{ . }}" />{{ end }}
+
+<meta name="twitter:card" content="summary_large_image"></meta>
+
+
