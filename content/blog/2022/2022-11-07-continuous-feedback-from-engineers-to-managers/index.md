@@ -1,0 +1,71 @@
+---
+title: "Giving (Negative) Feedback From Engineers to Managers"
+date: 2022-11-08
+url: /negative-feedback-from-engineers-to-managers
+cover: jon-tyson-82ZEOTntP8g-unsplash.jpg
+tags:
+- management
+---
+A couple of weeks ago my friend Miguel Garcia Lorenzo releases this quite interesting post [about the continuous feedback from the engineering managers](https://www.linkedin.com/pulse/engineering-manager-continuous-feedback-miguel-garcia-lorenzo).
+
+I agree with all the contents of the posts, but I want to add some comments or ideas from the engineer's point of view (it's more about the point of view of a non-manager person).
+
+It's obvious not all people have the same personality, priorities, and communication skills, and the comments I will write in the next lines don't apply to all people.
+
+As the mentioned post says, feedback is quite important in organizations, it's a tool to improve and to know in detail the current situation.
+
+As Miguel says in his post, the feedback has to be constructive, and I believe that should be both ways, the engineer can complain about something (that is feedback too) but it should be constructive. 
+
+But, what about  **the feedback of the feedback**, **what is the reaction** of the manager or company **to a negative feedback**
+
+## The reaction to the feedback
+
+For me, this is the key thing of the feedback: what does it happen when the message is not positive?
+
+By default, most of us will not give negative feedback without knowing the response or reaction, this is a natural behavior, just a way to protect ourselves. 
+
+I want to introduce the concept of _level of negativity_: it's the "value" a person set to a message, for example, in general terms, saying that the delivery will be delayed because of you is more negative (higher level) than just saying you are not happy with the coffee.
+
+Every person assign different levels of negativity to the same situation, and that is related to how the person perceive
+ the possible bad response to the "negative thing to tell".
+If the level of negativity is higher, I think is less likely for the person to give feedback to the manager, and this is something the managers can handle it creating the correct feedback environment (I'm going to do deep in that a few lines later)
+
+It's important to say that not all the negative feedback is to complain, negative feedback can also be, for example:
+* A delay in the delivery
+* You don't feel comfortable with some technical decisions (that doesn't mean they should do what you want, but is good to express it) 
+* You are not sleeping well, or changes in your life can affect you and your motivation. 
+* Ask salary review
+* etc.
+
+There are things that you can expect a negative response (but not necessarily), or you are not comfortable saying.
+
+The main question is how the manager will handle this feedback: As Miguel mentioned **honesty is key**, maybe your feedback is the feedback you should give, but the company or the manager cannot do anything about it, or is just expected from the company, the manager must be honest and tell you, the worse thing the manager can do it's just getting your feedback and ignore it.
+
+We agree, feedback is necessary, but I think is the responsibility of the managers to create the correct environment to make it easy to give negative feedback.
+
+## The environment for feedback
+* **Continuous**: to have the possibility of giving feedback should be normal, and recurrent in the time thing. If an engineer needs to force a meeting to say something negative, the possibilities of not doing it are high. We can achieve that with regular all-hands, 1-on-1, informal talks drinking coffee, etc.
+  No one likes to say "we need to talk", that is a bad way to start a feedback conversation.
+* **Natural**: the feedback, positive and negative in general should be something natural, I think even the manager should ask for negative feedback, but do it naturally, without forcing anyone to say something negative it that moment.
+* **Honesty**: As I mentioned before, is key.
+* **Consistent and reasoned**: The *perceived* response to the feedback should be the same or similar in all the cases, if the engineer asks for a salary review, and it's rejected, but a teammate do the same, and it's accepted, the first engineer need to know why the result is different. Maybe KPI are not satisfied, the engineer should know it
+* **No revenge**: Bad consequences of giving negative feedback will do that person will not do more negative feedback, and probably the whole team will follow this person not doing it as well".  
+
+I strongly believe those points make a better environment for negative (and positive) feedback, some of them seem trivial or very basic but are not at all.
+
+Obviously, giving a negative feedback shouldn't be a festival of bad words, saying bad things about teammates or complaining without giving a constructive message, we, the engineers, have our own responsibilities in giving feedback
+
+## The engineer feedback's responsibilities
+* **Constructive**: The objective of giving (negative) feedback is to improve or change things, your feedback should be always constructive.
+* **Respectful**: You can say the same without losing respect for anyone.
+* **Concise**: You need to be clear explaining the key points of your feedback, mainly the negative one
+* **Honest**: Being honest is key here as well.
+* **Open to hearing**: feedback is not a monologue, you should be open to hearing and to dialog.
+
+In general it's simple: negative (and positive) feedback should be assertive and honest
+
+Giving feedback is teamwork, managers should create the correct environment and the engineers should be brave and be able to express "negative" things too.
+
+All of us have a responsibility in how we do the feedback, as an engineer you can't think is just a manager's responsibility to "extract" the feedback from you, and as a manager, you can't think the engineer will give you feedback just because of the reasons.
+
+My experience is overall very good. In the companies I worked in the last 10 years this environment was nice and it was easy to give feedback (positive or negative), but not always it was the same before that and outside the IT sector, it was even harder.

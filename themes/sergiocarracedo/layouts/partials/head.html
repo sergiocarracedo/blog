@@ -17,7 +17,7 @@
   <meta content="{{ $.Site.Params.author }}" name="author">
   {{ end }}
   {{ if $.Site.Params.favicon }}
-  <link href="{{ $.Site.Params.favicon }}" rel="icon">
+  <link href="{{ $.Site.Params.favicon | relURL }}" rel="icon">
   {{ end }}
   {{ partial "opengraph.html" . }}
 
