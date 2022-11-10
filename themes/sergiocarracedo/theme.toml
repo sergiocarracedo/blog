@@ -3,11 +3,11 @@ license = "MIT"
 licenselink = ""
 description = ""
 homepage = "https://sergiocarracedo.es/"
-tags:
+tags = []
 features = []
 
 min_version = "0.83.0"
 
-author:
+[author]
   name = "Sergio Carracedo"
   homepage = "https://sergiocarracedo.es"
