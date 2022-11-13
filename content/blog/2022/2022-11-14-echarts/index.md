@@ -87,7 +87,7 @@ This feature makes ECharts very different from other chart solution as they use 
 ## Basic example
 
 Let's do a simple example, a bar chart
-{{< iframe "https://codesandbox.io/embed/practical-christian-lm8dmx?fontsize=14&hidenavigation=1&module=%2Fsrc%2Fexample_1.js&theme=dark" "100%" 400 >}}
+{{< iframe "https://codesandbox.io/embed/practical-christian-lm8dmx?fontsize=14&view=preview&hidenavigation=1&module=%2Fsrc%2Fexample_1.js&theme=dark" "100%" 400 >}}
 
 You can compare how to create a similar chart in d3.js [here](https://d3-graph-gallery.com/graph/barplot_basic.html)
 
@@ -100,14 +100,14 @@ Creating a chart is simple (check the code) as fill a js plain object, maybe you
 The representation type (chart) type is defined by the series, so we can mix different visualization types in the same chart. 
 Let's see an example.
 
-{{< iframe "https://codesandbox.io/embed/echarts-examples-lm8dmx?fontsize=14&hidenavigation=1&initialpath=%2Fexample_2.html&module=%2Fsrc%2Fexample_2.js&theme=dark" "100%" 400 >}}
+{{< iframe "https://codesandbox.io/embed/echarts-examples-lm8dmx?fontsize=14&view=preview&hidenavigation=1&initialpath=%2Fexample_2.html&module=%2Fsrc%2Fexample_2.js&theme=dark" "100%" 400 >}}
 
 Series could share the axis, but in the example, we added a new axis with a different scale and units.
 
 ### Animations example
 ECharts gives you the possibility of transforming a series type into another using animation, it's easy as changing the Echart's options object and ECharts will do the animation for you
 
-{{< iframe "https://codesandbox.io/embed/echarts-examples-lm8dmx?fontsize=14&hidenavigation=1&initialpath=%2Fexample_3.html&module=%2Fsrc%2Fexample_3.js&theme=dark" "100%" 400 >}}
+{{< iframe "https://codesandbox.io/embed/echarts-examples-lm8dmx?fontsize=14&view=preview&hidenavigation=1&initialpath=%2Fexample_3.html&module=%2Fsrc%2Fexample_3.js&theme=dark" "100%" 400 >}}
 
 
 ## Custom series
