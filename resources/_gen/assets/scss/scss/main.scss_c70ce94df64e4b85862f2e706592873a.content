@@ -4832,18 +4832,26 @@ readers do not read off random characters that represent icons */
     color: white;
     align-items: center;
     padding-right: 200px;
+    padding-left: 30px;
     justify-content: center;
     opacity: 0;
     transition: all .2s ease-in-out;
-    display: none; }
+    display: none;
+    overflow: hidden; }
+    .web-header__page-title span {
+      display: block;
+      overflow: hidden;
+      padding: 4px 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%; }
     @media screen and (min-width: 768px) {
       .web-header__page-title {
         display: flex; } }
   .web-header .theme-switch {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    flex: 1; }
+    justify-content: flex-end; }
 
 .not-in-top .web-header__page-title {
   opacity: 1; }
