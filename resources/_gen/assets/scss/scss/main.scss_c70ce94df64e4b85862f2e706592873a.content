@@ -5217,6 +5217,8 @@ img {
     transition: all .2s ease-in-out; }
     .post__content a:hover {
       text-decoration-color: transparent; }
+  .post__content img {
+    margin: auto; }
   .post__content h1, .post__content h2, .post__content h3, .post__content h4, .post__content h5, .post__content h6 {
     font-family: "Rozha One"; }
   .post__content h1 {
@@ -5261,7 +5263,8 @@ img {
   .post__content .highlight {
     background: transparent;
     padding: 0;
-    overflow: visible; }
+    overflow: visible;
+    margin-top: -1.6rem; }
     .post__content .highlight table {
       margin: 0;
       width: auto; }
