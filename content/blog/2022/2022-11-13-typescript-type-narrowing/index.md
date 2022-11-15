@@ -1,6 +1,6 @@
 ---
 title: "Typescript type narrowing, type guards and  type predicates ([var] is [type])"
-date: 2022-11-13
+date: 2022-11-15
 url: typescript-type-narrowing/
 cover: jakob-braun-HTGrBFwlYLA-unsplash.jpg
 tags:
