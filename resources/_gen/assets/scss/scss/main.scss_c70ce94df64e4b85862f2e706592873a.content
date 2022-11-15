@@ -5293,8 +5293,7 @@ img {
   .post__content code, .post__content pre {
     font-family: "Source Code Pro", monospace; }
   .post__content code {
-    background: rgba(99, 99, 99, 0.07);
-    color: #ef459c;
+    color: var(--primary-color);
     padding: 1px 2px;
     border-radius: 2px;
     word-wrap: break-word; }
@@ -5304,6 +5303,9 @@ img {
     margin: 1.6rem 0;
     border-radius: 15px;
     box-shadow: 0 0 40px rgba(18, 21, 26, 0.35); }
+    .post__content pre > code {
+      background: rgba(99, 99, 99, 0.07);
+      color: var(--secondary-color); }
     .post__content pre::-webkit-scrollbar {
       width: 10px;
       padding: 0 2px;

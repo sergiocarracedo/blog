@@ -13,7 +13,7 @@ One useful feature in Typescript is _union types_, for example `string | number 
 
 Let's see a simple example, imagine we have a function to uppercase a value that can be `number`, `string`, or just `null`, into the function we need to handle the different cases, but at the same time Typescript can understand the types and reduce value type to the correct type in each code's branch.
 
-```typescript
+```
 function uppercase(value: string | number | null ): string { // Here value's type is string | number | null
   if (value === null) {
     console.log(value) // Here value's type is null
@@ -33,13 +33,14 @@ You can check it by yourself by hovering `value` across the code in the [Typescr
 Note type narrowing is not to reduce the types to just one type, in our example line 2 (`if (value === null)`) makes sure the value is `null`, but a guard like `if (value)` only removes the possibility of being `null`, so after this guard `value`'s type is `number | string`
 
 # Why type narrowing
-When a value can have multiple possible types (union type), it's important to handle the values in the correct way to avoid runtime errors, a simple function like the example, in vanilla javascript:
+When a value can have multiple possible types (union type), it's important to handle the values in the correct way to avoid runtime errors, a simple function like the example,:
 ```js
 function uppercase(value) {
   return value.toUpperCase() 
 }
 ```
-is completely valid, but can fail on runtime if the value is a number or null, but using Typescript gives you the possibility of writing better code as it "forces" you to write code to handle the case of different types.
+is completely valid in vanilla Javascript, but can fail on runtime if the value is a number or null. 
+Using Typescript gives you the possibility of writing better code as it "forces" you to write code to handle the case for each type and that is when do type narrowing.
 
 # Type guards
 As I mentioned, type guards are a way of doing type narrowing setting a condition that the typescript compiler can evaluate and unequivocally reduce the types the variable can be.
