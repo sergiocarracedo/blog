@@ -4832,18 +4832,26 @@ readers do not read off random characters that represent icons */
     color: white;
     align-items: center;
     padding-right: 200px;
+    padding-left: 30px;
     justify-content: center;
     opacity: 0;
     transition: all .2s ease-in-out;
-    display: none; }
+    display: none;
+    overflow: hidden; }
+    .web-header__page-title span {
+      display: block;
+      overflow: hidden;
+      padding: 4px 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%; }
     @media screen and (min-width: 768px) {
       .web-header__page-title {
         display: flex; } }
   .web-header .theme-switch {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    flex: 1; }
+    justify-content: flex-end; }
 
 .not-in-top .web-header__page-title {
   opacity: 1; }
@@ -5217,6 +5225,8 @@ img {
     transition: all .2s ease-in-out; }
     .post__content a:hover {
       text-decoration-color: transparent; }
+  .post__content img {
+    margin: auto; }
   .post__content h1, .post__content h2, .post__content h3, .post__content h4, .post__content h5, .post__content h6 {
     font-family: "Rozha One"; }
   .post__content h1 {
@@ -5261,7 +5271,8 @@ img {
   .post__content .highlight {
     background: transparent;
     padding: 0;
-    overflow: visible; }
+    overflow: visible;
+    margin-top: -1.6rem; }
     .post__content .highlight table {
       margin: 0;
       width: auto; }
@@ -5282,8 +5293,7 @@ img {
   .post__content code, .post__content pre {
     font-family: "Source Code Pro", monospace; }
   .post__content code {
-    background: rgba(99, 99, 99, 0.07);
-    color: #ef459c;
+    color: var(--primary-color);
     padding: 1px 2px;
     border-radius: 2px;
     word-wrap: break-word; }
@@ -5293,6 +5303,9 @@ img {
     margin: 1.6rem 0;
     border-radius: 15px;
     box-shadow: 0 0 40px rgba(18, 21, 26, 0.35); }
+    .post__content pre > code {
+      background: rgba(99, 99, 99, 0.07);
+      color: var(--secondary-color); }
     .post__content pre::-webkit-scrollbar {
       width: 10px;
       padding: 0 2px;
