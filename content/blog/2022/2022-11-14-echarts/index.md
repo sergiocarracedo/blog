@@ -1,6 +1,6 @@
 ---
 title: "Using charts in the frontend: Echarts with examples"
-date: 2022-11-10
+date: 2022-11-22
 url: /using-charts-frontend-Echarts-with-examples
 cover: pexels-lukas-590022.jpg
 tags:
