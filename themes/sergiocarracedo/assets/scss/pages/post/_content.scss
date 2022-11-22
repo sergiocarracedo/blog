@@ -20,6 +20,9 @@
 
   }
 
+  img {
+    margin: auto;
+  }
   h1, h2, h3, h4, h5, h6 {
     font-family: $impact-font;
   }
@@ -85,6 +88,7 @@
     background: transparent;
     padding: 0;
     overflow: visible;
+    margin-top: -1.6rem;
 
     table {
       margin: 0;
@@ -122,8 +126,7 @@
   }
 
   code {
-    background: rgba(99, 99, 99, 0.07);
-    color: #ef459c;
+    color: var(--primary-color);
     padding: 1px 2px;
     border-radius: 2px;
     word-wrap: break-word;
@@ -132,6 +135,11 @@
   pre {
     scrollbar-color: $white transparent;
     scrollbar-width: thin;
+
+    > code {
+      background: rgba(99, 99, 99, 0.07);
+      color: var(--secondary-color);
+    }
 
     &::-webkit-scrollbar {
       width: 10px;
