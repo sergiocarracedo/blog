@@ -2,7 +2,7 @@
 title: "Typescript typing challenges and type utilities"
 date: 2022-11-30
 url: /typescript-typing-challenges-and-type-utilities
-cover:
+cover: pexels-david-buchi-1070345.jpg
 tags:
 - typescript
 - js
