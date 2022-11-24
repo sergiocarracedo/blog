@@ -14,7 +14,6 @@ languages:
 # Enable global emoji support
 enableEmoji: true
 
-
 params:
   keywords:
   description: Sergio Carracedo's personal page and blog
