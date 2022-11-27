@@ -2,7 +2,7 @@
 title: "The different tech roles in the frontend"
 date: 2022-12-06
 url: tech-roles-in-the-frontend
-cover:
+cover: kelsey-weinkauf-QRIdZ1P1DF4-unsplash.jpg
 tags:
  - frontend
 ---
