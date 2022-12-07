@@ -2,15 +2,17 @@
 title: "The different tech roles in the frontend"
 date: 2022-12-06
 url: tech-roles-in-the-frontend
-cover: kelsey-weinkauf-QRIdZ1P1DF4-unsplash.jpg
+cover: pexels-pixabay-207896.jpg
 tags:
  - frontend
 ---
-15-20 years ago, web application developers had the knowledge and the technical skills necessary to create an application: HTML, CSS, JS, _[Insert here your favorite backend language]_, Web Server management, MySQL / Postgres, etc. 
+15-20 years ago, web application developers had the knowledge and the technical skills necessary to create an application: HTML, CSS, JS, PHP/Python/ASP, Web Server management, MySQL/Postgres, etc. 
 
 With time the web applications became more complex with bigger requirements. New technologies, frameworks, and paradigms bounce into the development and pushed developers to specialize in some areas arising new roles from this specialization.
 
-Nowadays, the equivalent roles common roles for a web application that cover the exposed tasks/skills and the typical requirements are Designer, Frontend developer, Backend developer, DevOps, and we could add even more: Data engineer, Data scientist, etc. but I want to focus this post in the first three roles: **Designer**, **Frontend developer**, **Backend developer**
+Nowadays, the equivalent common roles for a web application that cover the exposed tasks/skills and the typical requirements are: Designer, Frontend developer, Backend developer, DevOps and in a data-oriented company: Data engineer, Data scientist, etc. 
+
+I want to focus this post in the first three roles: **Designer**, **Frontend developer**, **Backend developer**
 
 You can think I made a mistake because the title of the post says _tech roles_, and I added the designer's role, well, for me, it's a technical role, maybe it's diffuse, but they are the nearest role to the application's user, and they are a bridge between the users (and product) and the frontend team(s). 
 
@@ -21,7 +23,7 @@ Let me represent the roles or the teams by the distance to the application user 
 Let me do **some simplifications** to explain this order: **design team** takes care of the first thing the user sees on an application: the visuals, **frontend team** is in charge of implementing those visuals and the user interaction, **backend** manages the user interactions with the data and implements the business logic, and **devops** creates the context (servers, databases, networking) for everything to work.
 
 
-## Frontend role interfaces and borders
+# Frontend role interfaces and borders
 To define the frontend role (or team) responsibilities, let's start defining the borders, I'm going to do it on the right side of the chart: the backend. The natural interface between the frontend and the backend is a contract: an API. It could be a REST HTTP API, gRPC API, GraphQL API, etc. but commonly, in a web app the border is the network. This border seems a hard border, but we'll see that it's not as hard as you might think.
 
 After defining the right border, let's do the same with the left border, the one with the design. This is typically a static design of the elements, layouts, and screens of the application, a Figma document, or something similar.
@@ -29,7 +31,7 @@ After defining the right border, let's do the same with the left border, the one
 > This still being a simplification, I'm aware there are other tools, ways to define the visual and functional requirements, etc.
 
 
-## Frontend responsibilities
+# Frontend responsibilities
 Knowing the borders, let's define the high-level responsibilities of in the frontend team:
 
 * Convert design to HTML/CSS
@@ -48,34 +50,33 @@ The frontend **visuals and interactions** takes the responsibility of converting
 
 ![Frontend split](frontend-split.png)
 
-We can go even further and create more specific groups:
+We could go even further and create more specialized groups inside the _frontend visuals_ and inside _frontend internals_ groups, but the logic behind I exposing is the same. It's important to say that the borders are not hard, and that is good as permits mobility, spread, and improvement.
 
-![Frontend split more groups](frontend-split-2.png)
+## Roles segmentation, granularity, and overlapping
+Going back to the _simple_ scenario, we had a single role: _frontend developer_, but now, considering the previous grouping, we can define different roles in our frontend team, roles that cover the skills and responsibilities of multiple groups.
 
-The borders here are not hard, and that is good as permits mobility, spread, and improvement.
+This role segmentation **makes it easy to find people that fit better on a role**. As wider is the role as harder to find a person to cover the role with all the skills necessary for the position, and it's not about reducing the position's requirements, it's that the same position (ex: Frontend developer), today usually requires more knowledge than 5 years ago. 
 
+For example, if the company needs and specialist in css/svg animation, I think makes no sense to require knowledge in GraphQL for this position, if the person knows it, then perfect, but if not she/he can learn it.
 
-### Roles segmentation, granularity, and overlapping
-Going back to the previous scenario, we had a single role: _frontend developer_, but now, considering the previous grouping, we can define different roles in our frontend team, roles that cover the skills and responsibilities of multiple groups.
-
-This role segmentation **makes it easy to find people that fit better on a role**. As wider is the role as harder to find a person to cover the role with all the skills necessary for the position, and it's not about reducing the position's requirements, it's that the same position (ex: Frontend developer), today usually requires more knowledge than 5 years ago. For example, if the company needs and specialist in css/svg animation, I think makes no sense to require knowledge in GraphQL for this position, if the person knows it, perfect, but if not we can learn, but the important it's she/he can fit in the position and start to share the knowledge about animation.
+It's important that she/he fit in the position in the beginning and start to share the knowledge about animation, she/he can expand her/his knowledge to the next areas later, making the on-boarding and adaptation process smoother.
 
 Just another example, usually (not a general rule) the people that came from a frontend boot camp have more skills and feel more comfortable in the visual roles than in the roles nearer to the backend. **Should we discard that talent just because it doesn't cover all the _frontend skills_?** I don't think so, as they get more experience, they will spread the knowledge areas and get tasks from other roles.
 
 
-### Mobility between roles
+## Mobility between roles
 An advantage of not having hard borders between these roles makes easy mobility. The developers can start to be involved in new roles, increasing their knowledge organically, for example, a _visual's role_ developer could need to change a use case, solve a bug fix, or implement a small feature, but still be in its comfort bubble, just increasing it a bit at a time and after some time can start to do more and more tasks on the internals and the opposite, a developer in the internals group can do a task in the visuals. 
 
 Another advantage is that the areas of overlapping make it easy to understand and empathize with others' tasks and understanding what I could do to make the other's work easy.
 
 
-### Overlapping roles
+## Overlapping roles
 In this situation of narrow and diffuse role definitions, to have developer skills that overlap with another one's skills it's not an issue it's an advantage, they can split the tasks, work together and share knowledge in the areas they don't overlap.   
 
 ![Overlap](overlap.png)
 
 
-## Breaking the borders
+# Breaking the borders
 But, we still have hard borders, **why don't break them?**
 
 All I mentioned before about mobility, overlapping, and specialization apply to the borders with the design and the backend, obviously we can do this deep looking and segmentation in the roles for design and the backend.
