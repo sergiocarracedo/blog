@@ -120,9 +120,9 @@ console.log('sourceObject l1_1.l2_3.l3_3', sourceObject.l1_1.l2_3.l3_3)
 
 Oh, oh, functions are not copied using that method, then, what could we do? The solution is to iterate every nested property in the object and use, for example, the spread operator method. It's hard and dirty work.
 
-# Loadash to the rescue
+# Lodash to the rescue
 
-[Lodash](https://lodash.com/) is a modular utility library that adds many funcionalities, and one of them is [`cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep) that do exactily we need: clone (deep) an object through nested properties, keeping all value types, even functions.
+[Lodash](https://lodash.com/) is a modular utility library that adds many funcionalities, and one of them is [`cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep) which does exactly what we need to clone (deep) an object through nested properties, keeping all value types, even functions.
 
 ```js
 import { cloneDeep } from 'lodash'
@@ -141,7 +141,7 @@ console.log('sourceObject l1_1.l2_3.l3_3', sourceObject.l1_1.l2_3.l3_3)
 # Performance
 We’ll copy the source object 10.000 times using each method to compare the time elapsed. Compare memory usage is no sense because `Object.assign` and Spread Operator method is not copying nested property by value.
 
-Results in my browser are following:
+The results in my browser are the following:
 
 * Object.assign clone elapsed time: **4ms**
 * Spread operator clone elapsed time: **22ms**
@@ -149,9 +149,9 @@ Results in my browser are following:
 * Lodash clone elapsed time: **92ms**
 
 
-As you can see, if you only need to do a shallow clone `Object.assign` is faster solution, and if you only need to clone values in nested properties (not functions or symbols), `JSON.parse(JSON.stringify())` could be a faster solution. But if you want make sure that all values are copied you must use _lodash_ or a similar solution.
- 
-Test it yourself in codesandbox!
+As you can see, if you only need to do a shallow clone `Object.assign` is the faster solution, and if you only need to clone values in nested properties (not functions or symbols), `JSON.parse(JSON.stringify())` could be a faster solution. But if you want to make sure that all values are copied you must use _lodash_ or a similar solution.
+
+Get your own results by trying it in codesandbox!
 
 [![Edit romantic-shannon-epf1o](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/romantic-shannon-epf1o?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
 
