@@ -2,7 +2,7 @@
 title: "Typescript enums, const enums and readonly maps"
 date: 2022-12-25
 url: /typescript-enums
-cover:
+cover: delila-ziebart-b0GSCFJ-Gzg-unsplash.jpg
 tags:
 - typescript
 ---
@@ -64,7 +64,9 @@ After defining an _enum_ you can use it as a type, **with limitations***, for ex
 function handleResponse(responseCode: HttpResponseStatus)
 ```
 
-> (*) The main limitation is you can assign any number to a numeric-enum type and that is intended (https://github.com/Microsoft/TypeScript/issues/26362#issuecomment-412198938). For example `handleResponse(123)` is valid, even if the value 123 is not a value in the enum `HttpResponseStatus`. This doesn't happen with string-enums
+> (*) The main limitation is you can assign any number to a numeric-enum type and that is intended (https://github.com/Microsoft/TypeScript/issues/26362#issuecomment-412198938). 
+ 
+For example `handleResponse(123)` is valid, even if the value 123 is not a value in the enum `HttpResponseStatus`. This doesn't happen with string-enums
 
 Now you know the enum basics, let go deeper
 
