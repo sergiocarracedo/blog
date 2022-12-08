@@ -8,20 +8,13 @@ tags:
 cover: karen-lau-tRR3w-S2A3Y-unsplash.jpg
 ---
 
-Cloning objects in _Javascript_ (and in other language) is a tricky task. JS doesn't store the object value in your variable or in your constant, instead, store a pointer to the object value (the object reference).
+Cloning objects in _Javascript_ (and in other languages) is a tricky task. JS doesn’t store the object value in your variable or in your constant, instead, stores a pointer to the object value (the object reference).
 
-Even when you passes an object to a function or method, you are passing this object by reference, not the value.
+Even when you pass an object to a function or method, you are passing this object by reference, not the value.
 
-This picture perfectly shows the difference.
+If you pass (or copy) an object by reference and then change any property, the ‘source’ object’s property also changes.
 
-<div class='center-img'>
-  ![By reference and by value](/images/pass-by-reference-vs-pass-by-value-animation.gif) 
-</div>
-
-As you can see, if you pass (or copy) an object by reference and then change any property, the 'source' object's property also changes.
-
-In any example I'll use the object below
-
+In any example, I’ll use the object below
 ```js
 const sourceObject = {
   l1_1: {
@@ -37,7 +30,7 @@ const sourceObject = {
 ```
 
 # 'Standard' cloning
-We'll use a '_standard_' cloning by assign the source value to other constant
+We’ll use a '_standard_' cloning by assigning the source value to another constant
 
 ```js
 const copiedObject = sourceObject
@@ -55,7 +48,7 @@ console.log('sourceObject', sourceObject.l1_2)
 ```
 [![Edit practical-violet-dki61](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/practical-violet-dki61?fontsize=14&hidenavigation=1&theme=dark)
 
-As I said before, when I change property `l1_2` on cloned object, the value also changes on the source object.
+As I said before, when I change the property `l1_2` on the cloned object, the value also changes on the source object.
 
 Using this strategy, you are not copying the object at all.
 
@@ -85,22 +78,22 @@ console.log('sourceObject l1_1.l2_1', sourceObject.l1_1.l2_1)
 ```
 [![Edit sleepy-rain-1gtsb](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/sleepy-rain-1gtsb?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
 
-Now property `l2_1` is copied by value, we can change it and original object `l2_1` keeps original value, but if when I changed `l1_1.l2_1` (2th depth property) we get the same as the first attempt. 
 
-Spread operator do a _shallow copy_ of the object. Only first level depth properties are copied by value, the nested ones keeps copying by reference.
+Now the property `l2_1` is copied by value, we can change it, and the original object `l2_1` keeps its original value, but if when I changed `l1_1.l2_1` (2th depth property) we get the same as the first attempt.
+
+The spread operator does a _shallow copy_ of the object. Only first-level depth properties are copied by value, the nested ones keep copying by reference.
 
 # Using `Object.assign`
- 
-Like _spread operator_, just do a _shallow copy_, then I will not create the example, trust me, you will get the same result.
- 
+
+Like the _spread operator_, do a shallow copy, then I will not create the example, trust me, you will get the same result. 
 ```js
 const clonedObject = Object.assign({}, sourceObject)
 ```
 
 # Using `JSON.parse` and `JSON.stringify`
-This is a simple and fast way to deep clone an object, the point is convert the object to string with `JSON.stringify` and then get an object from the string using `JSON.parse`
+This is a simple and fast way to deep clone an object, the point is to convert the object to a string `JSON.stringify` and then get an object from the string using `JSON.parse`
 
-Lets do it
+Let's do it
 
 ```js
 const clonedObject = JSON.parse(JSON.stringify(sourceObject))
@@ -125,7 +118,7 @@ console.log('sourceObject l1_1.l2_3.l3_3', sourceObject.l1_1.l2_3.l3_3)
 
 [![Edit xenodochial-frost-q8k71](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/xenodochial-frost-q8k71?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
 
-Oh, oh, functions are not copied using that method, then, what could  we do? The solution is iterate every nested property in the object and use, for example, the spread operator method. Hard and dirty work.
+Oh, oh, functions are not copied using that method, then, what could we do? The solution is to iterate every nested property in the object and use, for example, the spread operator method. It's hard and dirty work.
 
 # Loadash to the rescue
 
@@ -146,7 +139,7 @@ console.log('sourceObject l1_1.l2_3.l3_3', sourceObject.l1_1.l2_3.l3_3)
 
 
 # Performance
-We'll copy source object 10.000 times using each method to compare time elapsed. Compare memory usage is no sense because `Object.assign` and _Spread Operator_ method are not copying nested property by value.
+We’ll copy the source object 10.000 times using each method to compare the time elapsed. Compare memory usage is no sense because `Object.assign` and Spread Operator method is not copying nested property by value.
 
 Results in my browser are following:
 
@@ -158,11 +151,9 @@ Results in my browser are following:
 
 As you can see, if you only need to do a shallow clone `Object.assign` is faster solution, and if you only need to clone values in nested properties (not functions or symbols), `JSON.parse(JSON.stringify())` could be a faster solution. But if you want make sure that all values are copied you must use _lodash_ or a similar solution.
  
-Test yourself in codesandbox!
+Test it yourself in codesandbox!
 
 [![Edit romantic-shannon-epf1o](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/romantic-shannon-epf1o?expanddevtools=1&fontsize=14&hidenavigation=1&theme=dark)
-
-
 
 <small>
 Header picture: <a style="background-color:black;color:white;text-decoration:none;padding:4px 6px;font-family:-apple-system, BlinkMacSystemFont, &quot;San Francisco&quot;, &quot;Helvetica Neue&quot;, Helvetica, Ubuntu, Roboto, Noto, &quot;Segoe UI&quot;, Arial, sans-serif;font-size:12px;font-weight:bold;line-height:1.2;display:inline-block;border-radius:3px" href="https://unsplash.com/@pic_parlance?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Karen Lau"><span style="display:inline-block;padding:2px 3px"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-2px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path></svg></span><span style="display:inline-block;padding:2px 3px">Karen Lau</span></a>
