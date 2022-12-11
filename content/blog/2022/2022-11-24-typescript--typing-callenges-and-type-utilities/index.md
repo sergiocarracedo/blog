@@ -40,8 +40,8 @@ This simple solution requires knowledge about [keyof type operator](https://www.
 
 ## Hardcode typing
 The previous example is simple, it's more complex than the typical types you can use in the day-to-day but still simple.
-When you continue advancing in the exercises they became more and more complex, and they will require all your knowledge about how the types work in Typescript, that is what I call _hardcore typing_, squeezing the type system at the maximum to get the results you want.
-f
+When you continue advancing in the exercises they became more and more complex, and they will require all your knowledge about how the types work in Typescript, that is what I call _hardcore typing_, squeezing the type system at the maximum to get the results you want. It's worth it to try this challenges get a strong typing knowledge and how to apply them in the real world.
+
 # Type utilities
 If you check the challenges' code, especially the tests, you will find lines like:
 ```typescript
