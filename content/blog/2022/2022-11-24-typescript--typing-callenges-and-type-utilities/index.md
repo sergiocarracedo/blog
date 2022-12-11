@@ -1,6 +1,6 @@
 ---
 title: "Typescript typing challenges and type utilities"
-date: 2022-11-30
+date: 2022-12-12
 url: /typescript-typing-challenges-and-type-utilities
 cover: pexels-david-buchi-1070345.jpg
 tags:
@@ -39,9 +39,9 @@ The explanation is that we are creating the type `MyReadonly` that receives a ge
 This simple solution requires knowledge about [keyof type operator](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html), [mapped types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html), [mapping modifiers](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers), etc... So it's quite useful to improve your typing skills using real challenges.
 
 ## Hardcode typing
-The previous example is simple, it's more complex than the typical types you can use in day-to-day but still simple.
+The previous example is simple, it's more complex than the typical types you can use in the day-to-day but still simple.
 When you continue advancing in the exercises they became more and more complex, and they will require all your knowledge about how the types work in Typescript, that is what I call _hardcore typing_, squeezing the type system at the maximum to get the results you want.
-
+f
 # Type utilities
 If you check the challenges' code, especially the tests, you will find lines like:
 ```typescript
@@ -65,12 +65,12 @@ Let's see a couple of them
 ## TS Toolbelt 
 https://github.com/millsp/ts-toolbelt
 
-It's a collection of more than 200+ type utilities, they describe them selves as the lodash of the type system. Basically, it  abstracts the complex type checks.
+It's a collection of more than 200+ type utilities, they describe themselves as the _lodash_ of the type system. It abstracts the complex type checks.
 
 ## Utility types
 https://github.com/piotrwitek/utility-types
 
-Another type's library that describes itself as the lodash of types :smile:. it's not big as TS Toolbelt but includes commonly used types. For example `DeepPartial` works like the native `Partial` but does it recursively.
+Another type's library that describes itself again as the _lodash_ of types :smile:. it's not big as TS Toolbelt but includes commonly used types. For example `DeepPartial` works like the native `Partial` but does it recursively.
 
 This library provides also "real" type guards, I mean functions that do type narrowing and validates a variable on runtime.
 
