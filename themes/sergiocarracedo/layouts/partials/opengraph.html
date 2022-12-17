@@ -8,8 +8,8 @@
 
 {{ $cover := $images.GetMatch $.Params.cover }}
 {{ $cover := $cover.Fill "1920x1080 Center"}}
-<meta property="og:image" content="{{ $cover.Permalink }}" />
-<meta name="twitter:image" content="{{ $cover.Permalink }}"></meta>
+<meta property="og:image" content="{{ $cover.Permalink | absURL }}" />
+<meta name="twitter:image" content="{{ $cover.Permalink | absURL }}"></meta>
 {{- else -}}
   {{- with $.Site.Params.images }}
     <meta property="og:image" content="{{ index . 0 | absURL }}"/>
