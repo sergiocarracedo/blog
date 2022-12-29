@@ -4912,6 +4912,9 @@ p {
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.01em; }
 
+em {
+  font-style: italic; }
+
 img {
   display: block;
   max-width: 100%;
@@ -5230,6 +5233,8 @@ img {
   .post__content h1, .post__content h2, .post__content h3, .post__content h4, .post__content h5, .post__content h6 {
     font-family: "Rozha One"; }
   .post__content h1 {
+    text-decoration: underline 0.1em var(--secondary-color); }
+  .post__content h1 {
     font-size: 1.95em; }
   .post__content h2 {
     font-size: 1.6em; }
@@ -5255,6 +5260,8 @@ img {
     .post__content ul li {
       list-style: disc;
       line-height: 1.6em; }
+      .post__content ul li ul {
+        margin-bottom: 0; }
   .post__content iframe {
     margin-bottom: 30px; }
   .post__content pre, .post__content .highlight {
