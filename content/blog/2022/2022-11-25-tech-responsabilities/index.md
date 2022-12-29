@@ -1,6 +1,6 @@
 ---
 title: "Frontend team roles and skills, breaking the borders"
-date: 2022-12-20
+date: 2022-12-28
 url: tech-roles-in-the-frontend
 cover: pexels-pixabay-207896.jpg
 tags:
