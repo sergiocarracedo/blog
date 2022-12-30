@@ -1,4 +1,4 @@
-#baseURL: 'https:/sergiocarracedo.es/'
+baseURL: 'https://sergiocarracedo.es/'
 languageCode: 'en-us'
 title: 'Sergio Carracedo'
 
@@ -13,7 +13,6 @@ languages:
 
 # Enable global emoji support
 enableEmoji: true
-
 
 params:
   keywords:
