@@ -25,13 +25,16 @@ I also started to support the group VigoJUG, and I know it, it's a language I no
 But the most remarkable community event I participated as co-organizer it was the #pulpoCon22 (https://2022.pulpocon.es/), a three-day event with workshops, side events, talks, and a lot of networking. You can [read a nice summary](https://es.linkedin.com/pulse/una-historia-sobre-la-pulpocon22-rolando-caldas-s%C3%A1nchez?trk=public_post_feed-article-content) written by Rolando Caldas, other co-organizer of the event.
 
 # Post and Talks
-The year's beginning I was very busy and I didn't have time to write as posts as I would like, only 6 posts, and the same happened to the talks. But fortunately, in the last quarter I could prepare 2 talks and do them: 
+The year's beginning I was very busy and I didn't have time to write as posts as I would like, only 6 posts, and the same happened to the talks. But fortunately, in the last quarter I was able to change that trend and I could prepare 2 talks and do them: 
 
 * one about the _**Composition API**_ in Vue that I did privately for the frontend team of a company
 * the other is a talks about _**UI Components**_.
 
 This talk was hosted by Nextail and publicly streamed live on Twitch. You can watch it on YouTube :smile: 
 {{< youtube oXgJ5cmOGQk >}}
+
+I also started to publish posts on [DZone](https://dzone.com/users/4846267/sergiocarracedo.html), and just when the year ended they pushed one of my articles to the front page.
+
 
 # Open source
 I continue use the project I created 2 years ago (https://github.com/sergiocarracedo/vue-use-model-helpers) and thinking in the ways to improve it.
