@@ -1,6 +1,6 @@
 ---
 title: "Typescript enums, const enums and readonly maps"
-date: 2022-12-25
+date: 2023-01-29
 url: /typescript-enums
 cover: delila-ziebart-b0GSCFJ-Gzg-unsplash.jpg
 tags:
