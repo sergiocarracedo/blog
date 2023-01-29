@@ -198,7 +198,7 @@ function someFunction(status: HttpResponseStatusEnum)
 ```
 
 # Summary
-As you red, there several ways to achieve the same or similar behavior, and now you have information enough to decide which solution use depending on the use case, if you are worried about the bundle size the code output maybe it's the moment to start to use another solution, Typescript documentation recommends the _object with as const_ solution, but if you don't need the enum values' names you can use the const enum or just the union type.
+As you read, there several ways to achieve the same or similar behavior, and now you have information enough to decide which solution use depending on the use case, if you are worried about the bundle size the code output maybe it's the moment to start to use another solution, Typescript documentation recommends the _object with as const_ solution, but if you don't need the enum values' names you can use the const enum or just the union type.
 
 > In modern TypeScript, you may not need an enum when an object with `as const` could suffice (from https://www.typescriptlang.org/docs/handbook/enums.html#objects-vs-enums)
 
