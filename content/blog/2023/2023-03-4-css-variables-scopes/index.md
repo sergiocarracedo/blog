@@ -1,6 +1,6 @@
 ---
 title: "CSS variables scoping to create and theme flexible ui components"
-date: 2023-03-06
+date: 2023-03-05
 url: /css-variables-scoping
 cover: pexels-pixabay-50996.jpg
 tags:
