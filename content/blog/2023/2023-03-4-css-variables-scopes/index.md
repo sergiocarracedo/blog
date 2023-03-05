@@ -170,7 +170,7 @@ In CSS the elements can use more than a class, so that means the element's CSS v
 </button>
 ```
 
-Both `ui-button--green'  and `ui-button--red` define the same `--bg-color` variable, What value will be applied to the element?
+Both `ui-button--green`  and `ui-button--red` define the same `--bg-color` variable, What value will be applied to the element?
 
 In cases like that the class order is the priority, so the last class applied overrides the value last and its value is applied, on the example the button will be red, but for `<button class="ui-button ui-button--red ui-button--green">` the button will be green
 
