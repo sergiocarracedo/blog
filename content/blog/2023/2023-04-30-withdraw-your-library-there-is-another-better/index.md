@@ -1,0 +1,41 @@
+---
+title: "Withdraw your library because there is another one better: It's something nice!"
+date: 2023-04-30
+url: /withdraw-your-library-there-is-another-better
+cover: unsplash_a2g3LM0cGFg.jpg
+tags:
+- oss
+- vue
+---
+In 2019 (almost 4 years ago) I wrote an article about how to handle a [custom v-model in Vue 2]({{< ref "blog/2019/tu-propio-v-model-en-un-componente-vue" >}}) (Spanish), in that article I explained how to create a custom v-model in Vue 2, the good practices synchronizing the prop and the internal status and how to avoid the warning message "_Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop’s value._"
+
+Summarizing, the strategy was to create a local variable that will be the one that will be modified by the input and that will emit the event to the parent component, and a watcher that will be in charge of modifying the local variable when the prop changes.
+
+A year and a half later when the composition API came to Vue2, and after bing bored with repeating the "same" code in each component to keep the status in sync, I decided to create a library to simplify this task, that is how [vue-use-model-helpers](https://www.npmjs.com/package/vue-use-model-helpers) was born.
+
+This library was very useful for me and the teams I worked on, and We used it in several personal and professional projects simplifying a lot of our work.
+
+When Vue 3 was released, I created a new version specific to this version, and I started to think about making the library compatible with Vue 2 and Vue 3 at the same time and improving the TypeScript support. To do that I found [vue-demi](https://github.com/vueuse/vue-demi) and in this process, I discovered [vue-use](https://github.com/vueuse/vueuse) and a really amazing library.
+
+This library includes the composable [useVModel](https://vueuse.org/core/useVModel/) that does the same that my library does but better.
+
+Even more, reading about the Vue compiler macros I found the macro [defineModels](https://vue-macros.sxzz.moe/macros/define-models.html) that uses vue-use under the hood and allows you to create a custom v-model in a very simple way. 
+
+So, 
+
+> I decided to deprecate my library and strongly recommend using vue-use instead.
+
+## What about the projects that are using vue-use-model-helpers?
+Nothing, they can still use it as before, but the migration to `useVModel` is quite simple, just replace the import and replace the `useModel` function with `useVModel` adding the options `{ passive: true }` and you will get the same behavior. 
+ 
+## Should I think that is a defeat?
+
+I don't think so. I think is a win for me: I learned a lot in the process of creating the library, we were using a lot and it was very helpful, we could use this behavior [almost a year before](https://github.com/vueuse/vueuse/commit/9aa2c3aa5d3aeeb09412e44ecedd038d5bc2439f) useVModel were released.
+
+And internally I feel quite nice that the community and widely adopted solution to this problem be very similar to the solution I designed and created. I feel proud of that.
+
+But as I mentioned, makes no sense to keep maintaining a library that is not necessary anymore, now it is time to move on and try (if it's possible) to contribute to vue-use (not only about `useVModel`), I love Vue composition API and composable, I feel them very useful and powerful.
+
+
+
+
