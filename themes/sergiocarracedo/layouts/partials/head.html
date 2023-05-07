@@ -21,6 +21,12 @@
   {{ end }}
   {{ partial "opengraph.html" . }}
 
+  {{ if .Params.canonicalUrl }}
+  <link rel="canonical" href="{{ .Params.canonicalUrl }}">
+  {{ else }}
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{ end }}
+
 
   {{ $scss := resources.Get "scss/main.scss" }}
   {{ $style := $scss | resources.ToCSS | resources.Fingerprint }}
