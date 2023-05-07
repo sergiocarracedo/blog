@@ -1,6 +1,6 @@
 ---
 title: "Front-End: Cache Strategies You Should Know"
-date: 2023-07-07
+date: 2023-05-07
 url: /front-end-cache-strategies-you-should-know
 cover: traffic_flow_but_using_a_tool_to_a_city_with_tron_legacy_style_S1538122565_St25_G7.5.jpeg
 canonicalUrl: https://dzone.com/articles/front-end-cache-strategies-you-should-know
