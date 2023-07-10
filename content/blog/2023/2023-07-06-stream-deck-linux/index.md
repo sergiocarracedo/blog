@@ -1,5 +1,5 @@
 ---
-title: "elgato Stream Ceck on Linux"
+title: "elgato Stream Deck on Linux"
 date: 2023-07-10
 url: /stream-deck-linux
 cover: cover.jpg
