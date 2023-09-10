@@ -1,7 +1,7 @@
 ---
-title: "Adios pulpoCon"
+title: "Hasta luego pulpoCon"
 date: 2023-09-10
-url: /bye-pulpocon
+url: /hasta-luego-pulpocon
 cover: cover.jpg
 tags:
   - community
@@ -10,19 +10,23 @@ tags:
 
 Acaba de terminar la tercera edición de la #pulpoCon, y no será la última, pero si la última en la que yo participe como organizador.
 
-Han sido 3 ediciones intensas en las que la conferencia a crecido en cuanto a asistentes, patrocinadores, ponentes, etc. Y esto no es gratis, require un esfuerzo y dedicación que yo no puedo alzanzar y mi situación personal no me permite mantener.
+Han sido 3 ediciones intensas en las que la conferencia ha crecido en cuanto a asistentes, patrocinadores, ponentes, etc. Y esto no es gratis, requiere un esfuerzo y dedicación que no puedo mantener. Siempre he pensado que lo que haces lo haces bien o no lo haces.
 
-Por eso, y aunque me da mucha pena, he decidido dejar de ser organizador la #pulpoCon, pero no os preocupéis, la conferencia seguirá, y seguirá creciendo, y seguirá siendo una de las mejores conferencias de desarrollo de software en España, el evento #gastroTech de referencia.
+Por eso, y aunque con no poca pena, he decidido dejar de ser organizador la #pulpoCon, pero no os preocupéis, la conferencia seguirá, y seguirá creciendo, y seguirá siendo una de las mejores conferencias de desarrollo de software en España, el evento #gastroTech de referencia.
 
-No quiero dejar de dar las más sinceras gracias a Rolando Caldas por permitirme estar estos años dentro de la organización y por todo el trabajo que hace para que la conferencia sea un éxito, sin ninguna duda el es el artifice de todo esto y sin su trabajo y esfuerzo nada de esto saldria adelante.
+No quiero ni puedo dejar de dar las más sinceras gracias a Rolando Caldas por permitirme compartir con él estos años dentro de la organización y por todo el trabajo que hace para que la conferencia sea un éxito, sin ninguna duda él es el artífice de que todo esto funcione y sin su trabajo y esfuerzo la conferencia no saldría adelante.
+
+También a todas y cada una de las personas que hacen esto posible: a todos los ponentes, muchos de ellos amigos, a los que he "liado" para que hagan una charla o workshop (a veces hasta dos), a los patrocinadores, porque hacen posible que la conferencia exista, y tenga el nivel que tiene, a los asistentes, que son los que hacen que todo esto tenga sentido, por supuesto a todos los voluntarios que nos ayudan a que todo salga bien durante los días del evento, y a muchos amigos que nos daban consejos y nos ayudaban a mejorar.
 
 ## ¿Por qué?
-Como comentaba anteriormente mi situación personal no me permite dedicarle el tiempo que se merece, y tampoco tengo las fuerzas y motivación necesarias para seguir adelante. Y un evento de este calibre necesita dar lo mejor de uno mismo para que salga adelante.
+Como comentaba anteriormente, no puedo dedicarle el tiempo que se merece, y sobre todo no tengo las fuerzas y motivación necesarias para seguir en el proyecto con la dedicación que merece, un evento de este calibre necesita dar lo mejor de uno mismo para que salga adelante y con el paso de las ediciones se ha vuelto cada vez más demandante, y más que lo hará porque estoy convencido de que la próxima edición será aún mejor y más grande.
 
 ## ¿Y ahora qué?
-Pues ahora toca descansar, y dedicarle tiempo a mi familia y a mis gatos, a mi trabajo y a mi mismo. Muchas veces es necesario dar uno o dos pasos atrás para recuperar fuerzas y poder seguir avanzando y este es uno de esos momentos.
+Pues ahora toca descansar, y dedicarle tiempo a mi familia y a mis gatos, a mi trabajo y a mí mismo. Es necesario dar uno o dos pasos atrás para recuperar fuerzas y poder seguir avanzando y este es uno de esos momentos.
 
-Estoy seguro que la conferencia será todo un éxito en las próximas ediciones, pero eso yo ya lo veré desde una posición distintas y como asistente la disfrutaré de una forma diferente a como la vivia hasta ahora.
+Estoy seguro de que la conferencia será todo un éxito en las próximas ediciones, pero eso yo ya lo veré desde una posición distinta.
+
+
 
 
 
