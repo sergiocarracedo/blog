@@ -1,0 +1,144 @@
+---
+title: "Find a item in lists in js: Performance of Set vs Array"
+date: 2023-09-04
+url: /js-lists-performance
+cover: pexels-chait-goli-2031758.jpg
+tags:
+  - js
+  - performance
+---
+
+In our apps, it's very common to store data in lists, for example, a list of users, a list of posts, a list of selected ids, etc, and also it's very common too need to check if a value is in the list or not.
+
+In most cases, we use simple arrays to store the data, and we use the `includes` method to check if a value is in the array or not. This works and if your list is not too big, or you only need to find one element once you will not notice any performance issue, imagine the following case:
+
+We have a list of users (`User[]`), this list is immutable
+```ts
+type User = {
+    id: number;
+    name: string;
+    email: string;
+    age: number;
+}
+```
+and we also have a list of the selected users ids (`number[]`), Now we should render the list of users (in the order are in the list) and add a different class to the selected users. We can do something like this:
+```ts
+users.map(user => {
+  const class = selectedUsersIds.includes(user.id) ? 'user--selected' : 'user'; 
+  return `<li class="${class}">${user.name}</li>`
+})
+```
+As you can see in the code we need to search `n` times in the `selectedUsersIds` array, where `n` is the number of users.
+
+If the list of users is big any performance issue will be noticeable. This is because the render function has a _Big O_ of **O(n²)**
+
+Obviously, the best to solve the possible performance issues is to reduce the _Big O_ of the function to O(log n) or O(n), but in some cases is not possible or is not worth it. 
+
+> If you want to know more about the Big O notation, I recommend you to read [this article](https://www.freecodecamp.org/news/big-o-notation-why-it-matters-and-why-it-doesnt-1674cfa8a23c/) 
+
+So let's try to use Set for that instead of Array.
+
+```ts
+const selectedUsersIdsSet = new Set(selectedUsersIds);
+users.map(user => {
+  const class = selectedUsersIdsSet.has(user.id) ? 'user--selected' : 'user'; 
+  return `<li class="${class}">${user.name}</li>`
+})
+```
+The _Big O_ of the function still being **O(n²)** (If you search about that you will find a lot of articles saying that the _Big O_ of `Set.has` is O(1), this is not completely true, but the performance is much better, and it can be considered O(1) for most cases)  https://stackoverflow.com/a/55057332
+
+
+## Real life examples
+Let's create code to test it, and to see the real performance difference between both solutions. For that, we will generate random `users` list and `selectedUserId` list with different sizes and measure the time to render the list of users. For that we will use [Timers](https://developer.mozilla.org/en-US/docs/Web/API/console#timers) in `console`.
+
+```js
+const sizes = [10000, 100000, 500000, 1000000];
+
+sizes.forEach((size) => {
+  const timeMock = `generate mock dataset for ${size}`;
+  // Random user list sorted randonly
+  console.time(timeMock);
+  const users = Array.from({ length: size }, (_, i) => ({
+    id: i,
+    name: `User ${i}`
+  })).sort((a, b) => 0.5 - Math.random());
+
+  // Random selected ids list sorted randonly
+  const selectedIds = Array.from({ length: size / 2 }, (_, i) =>
+    (i * 2)
+  ).sort((a, b) => 0.5 - Math.random());
+  console.timeEnd(timeMock);
+
+  console.log("+---------------------------+");
+  console.log(`| Size: ${size}             |`);
+  console.log("+---------------------------+");
+
+  // Array .includes
+  console.log("----------------- ARRAY ---------------");
+  const timeArray = `array: with ${size} elements`;
+  console.time(timeArray);
+  console.log(
+    users.map((user) => {
+      return selectedIds.includes(user.id);
+    }).lenght
+  );
+  console.timeEnd(timeArray);
+
+  console.log("----------------- SET ---------------");
+  // Convert array to set
+  const timeSetTotal = `set total: with ${size} elements`;
+  const timeArrayToSet = `array to set: with ${size} elements`;
+  const timeSet = `set: with ${size} elements`;
+
+  console.time(timeSetTotal);
+  console.time(timeArrayToSet);
+  const selectedIdsSet = new Set(selectedIds);
+  console.timeEnd(timeArrayToSet);
+
+  console.time(timeSet);
+  console.log(
+    users.map((user) => {
+      return selectedIdsSet.has(user.id);
+    }).length
+  );
+  console.timeEnd(timeSet);
+  console.timeEnd(timeSetTotal);
+  console.log();
+});
+```
+
+I ran this code in my computer just copying the code into the browser console:
+* Amd Ryzen 5 3600 6-Core Processor 3.59 GHz
+* Ubuntu 22.04
+* Chrome 115
+
+> Never copy code from the internet and paste it into the browser console, it can be dangerous. You can use codesandbox or similar to run the code in a safe environment. https://codesandbox.io/s/wandering-dream-xyyt2w?file=/src/index.mjs:0-1533 (In this case the results are not accurate because the code is running in a sandboxed environment). I invite you to write your own code to test it.
+
+In my tests the results where
+
+| Users     | Selected users | Array      | Set      |
+|-----------|----------------|------------|----------|
+| 10,000    | 5,000          | 4.427ms    | 0.656ms  |
+| 100,000   | 50,000         | 285.895ms  | 4.404ms  |
+| 500,000   | 250,000        | 7223.516ms | 32.631ms |
+| 1,000,000 | 500,000        | 28808.12ms | 66.270ms |
+
+As you can see the performance difference is huge, and it's more noticeable when the list is bigger. Under 100k items the difference can be acceptable and the user will not notice it, but over 100k items it cause lag in the UI degrading the user experience.
+
+## Why set is faster?
+
+Rather than array that stores the values in memory, Set uses a [Hashtable](https://www.freecodecamp.org/news/javascript-hash-table-associative-array-hashing-in-js/) that is intrinsically faster than an array to find a value, as as we mentioned the Big O average is O(1)
+
+## Should I replace my arrays with sets?
+
+**No, you should not**. Sets are not a replacement for arrays, they are different data structures with different purposes. For example:
+
+* Set only stores unique values, so if you need to store repeated values you should use an array
+* The order of items in a set is the insertion order, **you can't sort a set**,
+
+The things may you want to consider in your next project or task are:
+
+* Understand and know _Big O_ of your code and how it can affect to the performance. Think if your application will need to handle big amount of data (now or in the future) and evaluate if it's worth to use a different algorithm, data structure, etc that will reduce the _Big O_.
+* Try to use the types, object, classes, ec (like `Set`) the language gives to you in the use cases need it. For example if you have a list of unique values and the order doesn't matter, use `Set` instead of `Array`, it's faster and adding and removing items from a set is simpler than from an array.
+
+[Read more about Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Sethttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
