@@ -1,7 +1,7 @@
 ---
 title: "Typescript tips for legacy projects: Type only you need
 "
-date: 2023-09-12
+date: 2023-09-11
 url: /typescript-tips
 cover: pexels-flo-maderebner-869258.jpg
 tags:
