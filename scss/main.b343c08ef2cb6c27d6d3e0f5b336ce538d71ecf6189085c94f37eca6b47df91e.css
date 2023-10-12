@@ -5056,11 +5056,24 @@ img {
 [data-theme="dark"] .theme-switch #theme-switch-light {
   display: block; }
 
+.search-form__input {
+  height: 30px;
+  font-size: 16px;
+  border-radius: 3px;
+  padding: 2px 35px 2px 10px;
+  box-shadow: 0 0 0 1px #ccc;
+  border: 0; }
+
+.search-form__button {
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  transform: translateX(-42px); }
+
 .home-hero {
   background: url(/i/bg.jpg) no-repeat;
   background-size: cover;
   padding: 40px 20px;
-  margin-bottom: 40px;
   position: relative; }
   .home-hero .theme-switch {
     position: absolute;
@@ -5165,6 +5178,22 @@ img {
     opacity: 0;
     transform: skewX(0); } }
 
+.home-search {
+  background: var(--secondary-color);
+  padding: 35px 0;
+  margin-bottom: 35px; }
+  .home-search__content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    align-items: center; }
+    .home-search__content .search-form__input {
+      width: 400px;
+      font-size: 20px;
+      height: 40px;
+      max-width: 100%; }
+
 .home-posts {
   animation-delay: .3s;
   animation: 1s 1 backwards fade-in;
@@ -5181,6 +5210,11 @@ img {
       display: inline-block; }
       .home-posts__title a:hover {
         text-decoration-color: transparent; }
+  .home-posts__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px; }
   .home-posts__all {
     text-align: center; }
     .home-posts__all .btn {
@@ -5195,7 +5229,11 @@ img {
 .section {
   min-height: calc(100vh - 350px); }
   .section__header {
-    margin: 0 0 60px 0; }
+    margin: 0 0 60px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center; }
 
 .post__cover img, .post__content img {
   border-radius: 20px;
@@ -5557,6 +5595,18 @@ img {
       align-items: flex-end; }
     .post-nav--next:hover .post-nav__title:after {
       transform: translateX(10px); }
+
+.post__search-wrapper {
+  background: #97C57B;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+  color: #222;
+  padding: 50px 0; }
+  .post__search-wrapper > * {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap; }
 
 .page-not-found {
   min-height: 300px;

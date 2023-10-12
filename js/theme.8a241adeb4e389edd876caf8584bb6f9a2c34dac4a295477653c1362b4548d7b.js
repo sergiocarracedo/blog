@@ -27,6 +27,7 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
 }
 
 if (localStorage.getItem('theme')) {
-  console.log(localStorage.getItem('theme'))
   setTheme(localStorage.getItem('theme'))
 }
+
+
