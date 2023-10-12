@@ -83,3 +83,12 @@ function runCookiesAllowed () {
 {{ $themeJs := resources.Get "js/theme.js" }}
 {{ $js := $themeJs |resources.Fingerprint }}
 <script integrity="{{ $js.Data.Integrity }}" src="{{ $js.Permalink }}"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script>
+
+{{ $searchJs := resources.Get "js/search.js" }}
+{{ $js := $searchJs |resources.Fingerprint }}
+<script integrity="{{ $js.Data.Integrity }}" src="{{ $js.Permalink }}"></script>
+
+
+

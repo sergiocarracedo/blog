@@ -11,6 +11,7 @@
           <a href="{{ "blog" | absURL }}">
              Recent blog posts
           </a>
+          {{ partial "search-form.html" }}
         </h3>
       </header>
       {{ $pages := (where .Site.Pages "Section" "in" "blog") }}

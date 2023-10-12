@@ -1,0 +1,22 @@
+{{ define "main" }}
+<section class="section wrapper-1200">
+  <header class="section__header">
+    <h1 class="section__title page-title">
+      {{ .Title }}
+    </h1>
+  </header>
+
+  {{ if .Content }}
+  <div class="section__content">
+    {{ .Content }}
+  </div>
+  {{ end }}
+  <section class="section__posts">
+    {{ range $index, $post := (.Paginator 10).Pages }}
+    <a class="anchor" id="post-{{ $index }}"></a>
+    {{ partial "post-teaser.html" $post }}
+    {{ end }}
+  </section>
+</section>
+{{ template "_internal/pagination.html" . }}
+{{ end }}

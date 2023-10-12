@@ -6,7 +6,7 @@
         <a class="post__link" href="{{ .RelPermalink }}">
           {{ $image := $image.Fill "500x250 Center"}}
           {{ with $image }}
-              <img src="{{ .RelPermalink}}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ .Title }}"/>
+          <img src="{{ .RelPermalink}}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ .Title }}"/>
           {{ end }}
         </a>
       {{ end }}

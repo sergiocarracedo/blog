@@ -28,3 +28,4 @@ params:
 permalinks:
   '/2021': '/:slug'
   '/2022': '/:slug'
+  '/2023': '/:slug'
