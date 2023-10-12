@@ -1,4 +1,8 @@
-<form id="search" action='{{ with .GetPage "/search" }}{{.Permalink}}{{end}}' method="get">
+<form class="search-form" action='{{ "search" | absURL }}' method="get">
   <label hidden for="search-input">Search</label>
-  <input type="text" id="search-input" name="query" placeholder="Search">
+
+  <input type="text" id="search-input" name="query" placeholder="Search" class="search-form__input">
+  <button class="search-form__button">
+    <i class="fas fa-search"></i>
+  </button>
 </form>

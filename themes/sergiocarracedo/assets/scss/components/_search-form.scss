@@ -1,0 +1,17 @@
+.search-form {
+  &__input {
+    height: 30px;
+    font-size: 16px;
+    border-radius: 3px;
+    padding: 2px 35px 2px 10px;
+    box-shadow: 0 0 0 1px #ccc;
+    border: 0;
+  }
+
+  &__button {
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    transform: translateX(-42px);
+  }
+}

@@ -4,6 +4,11 @@
 
 {{ define "main" }}
 <div class="home">
+  <aside class="home-search">
+    <div class="wrapper-1200 home-search__content">
+      Search in the blog {{ partial "search-form.html" }}
+    </div>
+  </aside>
   <div class="wrapper-1200">
     <section class="home-posts">
       <header class="home-posts__header">
@@ -11,7 +16,6 @@
           <a href="{{ "blog" | absURL }}">
              Recent blog posts
           </a>
-          {{ partial "search-form.html" }}
         </h3>
       </header>
       {{ $pages := (where .Site.Pages "Section" "in" "blog") }}

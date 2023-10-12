@@ -4,6 +4,8 @@
     <h1 class="section__title page-title" id="search-title">
       {{ .Title }}
     </h1>
+
+    {{ partial "search-form.html" . }}
   </header>
 
   {{ if .Content }}

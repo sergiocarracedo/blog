@@ -3,6 +3,10 @@
 
   &__header {
     margin: 0 0 60px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
   }
 
   &__title {

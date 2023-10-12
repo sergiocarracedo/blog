@@ -22,12 +22,20 @@
     </div>
 
   </div>
+
+
   <aside class="post__nav-wrapper">
     <div class="wrapper-1200">
       {{ partial "post-nav.html" .}}
     </div>
   </aside>
 
+  <aside class="post__search-wrapper">
+    <div class="wrapper-1200">
+      Search in this blog:
+      {{ partial "search-form.html" .}}
+    </div>
+  </aside>
 
   <aside class="post__comments">
     <div class="wrapper-1200">

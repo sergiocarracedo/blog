@@ -6,16 +6,16 @@
     "textColor": "white"
   },
   {
-    "name": "JS",
-    "icon": "fab fa-js",
-    "color": "#F0DB4F",
-    "textColor": "black"
-  },
-  {
     "name": "Vue",
     "icon": "fab fa-vuejs",
     "color": "#41B883",
     "textColor": "white"
+  },
+  {
+    "name": "JS",
+    "icon": "fab fa-js",
+    "color": "#F0DB4F",
+    "textColor": "black"
   },
   {
     "name": "Golang",
@@ -26,6 +26,17 @@
     "name": "Node.js",
     "color": "#68A063",
     "icon": "fab fa-node-js"
+  },
+  {
+    "name": "Nuxt.js",
+    "color": "#41B883"
+  },
+  {
+    "name": "Data Visualization",
+    "icon": "fas fa-grip-horizontal"
+  },
+  {
+    "name": "e-charts"
   },
   {
     "name": "PHP",
@@ -110,9 +121,7 @@
   {
     "name": "Electron.js"
   },
-  {
-    "name": "Nuxt.js"
-  },
+
   {
     "name": "Open Source"
   },
@@ -125,15 +134,7 @@
     "icon": "fab fa-less"
   },
   {
-    "name": "Node.js",
-    "icon": "fab fa-node-js"
-  },
-  {
     "name": "CSS Grid Layout",
-    "icon": "fas fa-grip-horizontal"
-  },
-  {
-    "name": "Data Visualization",
     "icon": "fas fa-grip-horizontal"
   }
 ]
