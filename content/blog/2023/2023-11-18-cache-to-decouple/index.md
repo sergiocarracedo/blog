@@ -1,7 +1,7 @@
 ---
 title: "The advantage of using cache to decouple the frontend code"
 date: 2023-11-20
-url: /using-cache-to-deuple-frontend-code
+url: /using-cache-to-decouple-frontend-code
 cover: kimi-lee-Dsg--4yCqCI-unsplash.jpg
 tags:
     - typescript
