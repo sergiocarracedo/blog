@@ -12,13 +12,13 @@ tags:
 
 We can agree decoupling is a good practice that simplifies the code and the maintainability of the project. 
 
-A common way of decouple the code is to divide the responsibilities in different layers, for example a very common division: 
+A common way of decoupling the code is to divide the responsibilities into different layers, a very common division is: 
 
-- **the view layer**: in charge of render html and interact with the user
-- **the domain layer**: in charge of the business logic
-- **the infra layer**: in charge of getting the data from the backend and return it to the domain layer(here is very common to use the repository pattern, that is just a contract to get the data. The contract is unique but you can have multiple implementations, for example, one a REST API and another for a GraphQL API, you should be able to change the implementation without changing other pieces in the code)
+- **view layer**: in charge of render HTML and interacting with the user
+- **domain layer**: in charge of the business logic
+- **infra layer**: in charge of getting the data from the backend and returning it to the domain layer(here is very common to use the repository pattern, which is just a contract to get the data. The contract is unique but you can have multiple implementations, for example, one for a REST API and another for a GraphQL API, you should be able to change the implementation without changing other pieces in the code)
 
-Let's see a couple of example use cases where is very typical to put the performance over the decoupling. (Spoiler: we can have both)
+Let's see a couple of examples use cases where it is very typical to put the performance over the decoupling. (Spoiler: we can have both)
 
 Imagine, you have an endpoint that returns the list of products, and one of the fields is the `category_id`, the response can be something like this (I removed other fields to make a simple example)
 
@@ -159,8 +159,8 @@ All those processes are repeated in each page change (maybe partially in a SPA) 
 This caching strategy in low TTL is a very good solution to decouple the infra and the view:
  
 - Developers doesn't need to think about how to get the data to minimize the requests in the view layer. If you need the list of the categories in a sub-component you ask for it, don't need to about if another component is requesting the same data.
-- Avoids to maintain a global app state (stores)
-- Makes more natural to do multiple requests follow the contract in a repository patterns to get the data you need in the repository layer, and do the join in the infra layer.
+- Avoids maintaining a global app state (stores)
+- Makes more natural to do multiple requests follow the contract in a repository pattern to get the data you need in the repository layer, and do the join in the infra layer.
 - In general terms simplifies the code complexity.
 - No cache invalidation challenged (as the TTL is very low) (Maybe for some very specific use cases)
 
