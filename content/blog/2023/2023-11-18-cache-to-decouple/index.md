@@ -4,10 +4,10 @@ date: 2023-11-20
 url: /using-cache-to-decouple-frontend-code
 cover: kimi-lee-Dsg--4yCqCI-unsplash.jpg
 tags:
-    - typescript
-    - javascript
-    - infra
-    - frontend
+  - typescript
+  - javascript
+  - infra
+  - frontend
 ---
 
 We can agree decoupling is a good practice that simplifies the code and the maintainability of the project. 
