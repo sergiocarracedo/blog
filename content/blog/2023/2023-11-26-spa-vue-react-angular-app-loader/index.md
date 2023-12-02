@@ -118,8 +118,12 @@ Check an example in [code sandbox](https://codesandbox.io/p/devbox/keen-kilby-59
 
 > The mount code has a 5s delivery delay to let you appreciate the loader
 
+As you can see in the gif bellow, the loader is shown as soon as possible, as soon as the browser loads the html, and the loader is present until the app is mounted, and the user know something is happening.
 ![screen-capture.gif](screen-capture.gif)
 
+In terms of usability, not only in websites, in any app, (web, desktop, mobile, cli, etc) you must provide feedback to the user to let him/her know something is happening. It's very frustrating to wait for something without knowing if the app is frozen or not or if is doing something and the button just does not work.
+
+With this technique you can improve the user experience of your app with a simple change of a few bytes that don't increase the FCP time more than a few milliseconds. 
 
 
 
