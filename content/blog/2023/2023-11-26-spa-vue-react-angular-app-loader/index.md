@@ -1,6 +1,6 @@
 ---
 title: "SPA (Vue / React / Angular) app loader"
-date: 2023-11-29
+date: 2023-12-04
 url: /spa-vue-react-angular-app-loader
 cover: pexels-jeshoots-4956.jpg
 tags:
