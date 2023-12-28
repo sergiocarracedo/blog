@@ -1,0 +1,74 @@
+---
+title: "2023 in a Nutshell"
+date: 2023-12-31
+url: 2023-in-a-nutshell
+cover: pexels-engin-akyurt-13088176.jpg
+tags:
+ - lifestyle
+---
+2023 is over and I did in the last years is time to summarize it. For me, it's always an interesting exercise as I'm able to remember the challenges, achievements, and fails in the year and put things in context
+
+# Professional
+In December 2022 I joined a new company, Nextail, and after a year I think I can review the trip.
+
+I joined this company as Principal Frontend Engineer, my responsibility and duty was (and is) to identify the improvements needed in the frontend architecture and team organization to improve the delivery and keep growing the app.
+
+After a couple of hard months, I was able to present a proposal of the technical architecture and team organization to the company board and they gave me the green light.
+
+The new architecture is focused on simplifying the frontend for the developers and homogenizing the user experience:
+
+- providing common solutions to common problems
+- define code standards, naming conventions
+- create a useful and updated documentation 
+- a powerful and flexible UI components library
+- decouple views (UI) and business logic and infrastructure
+- migrate the frontend to a modern reactive and progressive frontend framework for the views (UI)
+
+The new team organization is focused in:
+
+- remove knowledge silos
+- promote mentoring
+- create a transversal knowledge of the application, which seems something obvious but before the frontend team was divided into modules, and the knowledge was limited to that module.
+- promote clean code and continuous improvement, being responsible and knowing technical debts
+- to have a dedicated manager for the frontend team, and we found one of the best managers I know: [Adrian Duran](https://www.linkedin.com/in/adrian-duran-barcala/) without his help and support I wasn't able to achieve all the goals we did 
+
+In my opinion (my biased point of view) we made a lot of improvements, achieving all the goals and creating in the team a mentality of improvement.
+
+As an anecdote that summarizes the change in the team's mentality: a few months ago a junior developer should add a new feature in a view. She reviewed the current code, and she proposed to refactor it a little bit as now we have new UI components and composables that provide this behavior and well-defined code standards. I'm very proud of that
+
+I'm sure 2024 will be a year full of challenges, and maybe changes, but I will still work hard to keep improving my professional skills and continue learning 
+ 
+
+# Community
+
+Regarding community 2023 was a year to pass the baton to others, I was very focused in professional changes and I haven't the necessary time to push hard in the community.
+
+This was my last participation in the PulpoCon as co-organizer, it was a hard decision, but I strongly believe is the best one for the conference and for me. I expose my reasons in this post: [Hasta luego pulpoCon]({{< ref "/blog/2023/2023-09-10-bye-pulpocon" >}})
+
+# Post and Talks
+Last year I promised myself to write more blog posts, as it's a way to learn, to share, and to improve, and I was able to do it. I wrote 11 posts vs 7 in 2022. 
+
+I continue publishing articles in [DZone](https://dzone.com/users/4846267/sergiocarracedo.html), and I collaborated with [Miguel Garcia Lorenzo](https://dzone.com/authors/miguelglor) and to intersting articles:
+
+- [Generative AI Models: Boosting Merchandising Analytics User Experience](https://dzone.com/articles/chatgpt-boosting-merchandising-user-experience) And article and a working proof of concept about how to use LLM (ChatGPT) to ask for business information in natural language and get the results in multiple formats: tabla, chart, etc. 
+  {{< youtube CdQzcEDeiYA >}}
+- [Front-End: Cache Strategies You Should Know](https://dzone.com/articles/front-end-cache-strategies-you-should-know)
+
+# Open source
+This year I ["withdraw" my project `vue-use-model-helpers`]({{< ref "/blog/2023/2023-04-30-withdraw-your-library-there-is-another-better" >}}) as a better initiative provides the same features. As I explain in the article, for me is an achievement as I was in the "correct" direction and I was able to find the same solution the community found.
+
+I also did a few minor PR to opensource projects to fix bugs, but nothing important
+
+
+# Personal / Learnings
+This year I learned:
+- how important is the people you work together
+- how motivation can make a difference both professional and personal.
+- how a good manager makes a difference
+
+I went skiing after 16 years, and it was very nice, I was able to enjoy my free time and rest while still pushing. I also visit 2 different countries: Andorra and France, now I could say I visit all the Iberian Peninsula :joy:
+
+> :tada: Happy 2024!! :tada:
+
+
+
