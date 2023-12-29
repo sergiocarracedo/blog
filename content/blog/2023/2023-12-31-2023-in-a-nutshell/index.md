@@ -9,7 +9,7 @@ tags:
 2023 is over and I did in the last years is time to summarize it. For me, it's always an interesting exercise as I'm able to remember the challenges, achievements, and fails in the year and put things in context
 
 # Professional
-In December 2022 I joined a new company, Nextail, and after a year I think I can review the trip.
+In December 2022 I joined a new company, Nextail, and after a year I think I can review the journey.
 
 I joined this company as Principal Frontend Engineer, my responsibility and duty was (and is) to identify the improvements needed in the frontend architecture and team organization to improve the delivery and keep growing the app.
 
