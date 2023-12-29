@@ -1,6 +1,6 @@
 ---
 title: "2023 in a Nutshell"
-date: 2023-12-31
+date: 2023-12-29
 url: 2023-in-a-nutshell
 cover: pexels-engin-akyurt-13088176.jpg
 tags:
