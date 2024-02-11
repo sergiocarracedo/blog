@@ -2,7 +2,7 @@
 title: "UI components library (Chapter I): Why and to create one? Characteristics of a good UI library"
 date: 2024-02-11
 url: /ui-components-library-i-why-and-to-create-one
-cover: sen-rgP93cPsVEc-unsplash.jpg
+cover: OIG2.jpeg
 tags:
   - ui
   - frontend
@@ -14,13 +14,19 @@ tags:
 > This is the first post of a series about why and how to create a UI components library. I'm going to focus on the code examples in Vue.js, but the concepts are valid for any other framework like React, Angular, LitElements, etc. 
 > In this first post I'm going to talk about the component of why you should (or should not) create a UI components library, but first let's define what is a UI components library.
 
-## What is a UI components library and what is a design system?
+## What is a UI components library?
 
-A UI components library is a set of reusable components that can be used to build a user interface. These components can be used in different projects and applications. A component wraps app behavior, visual behavior, and presentation. Typically the components represents the visual style of the company or the product.
+A UI components library is a set of reusable components that can be used to build a user interface. These components can be used in different projects and applications. A component wraps app behavior, visual behavior, and presentation. Typically, the components represents the visual style of the company or the product.
 
 An example of this is the [Material Design](https://material.io/design) library, which is Google's design system, and it's used in all Google's products and services (and as is open source anyone can create apps with the same visual style).
 
-A design system is a set of rules and guidelines that define how an application or web and all its elements should look like, and how they should behave. It can ensure the consistency of the application and the quality. A design system is a concept over the UI components (and UI components library), as those rules apply to the components (and usually define some of them), but also apply to the whole application defining a visual language (the typography, the colors, the spacing, layout, etc). 
+**A components library contains the building blocks of the UI of an application.** 
+
+### What is a design system?
+
+You will find this concept usually related to UI components library, but they are not the same. **A design system is a set of rules and guidelines that define how an application or web and all its elements should look like, and how they should behave**. It can ensure the consistency of the application and the quality. 
+
+A design system is a concept over the UI components (and UI components library), as those rules apply to the components (and usually define some of them), but also apply to the whole application defining a visual language (the typography, the colors, the spacing, layout, etc).
 
 ## Advantages of using a UI components library
 I think that using a UI components library is something that doesn't need discussion, it's a must in most cases. But let's see some advantages of using a UI components library.
@@ -36,7 +42,7 @@ In a few words, a UI components library can save you a lot of time and effort an
 
 After the previous section, we can agree that a UI library is a good idea, but why create a new one? There a lot of UI libraries available (even for free), and most are very good and very complete. So, why create a new one?
 
-There is no correct answer to this question, maybe the best one is: "It depends". And even if you make a decision today, it can change in the future when the project scope or requirement changes.
+**There is no correct answer to this question**, maybe the best one is: "It depends". And even if you make a decision today, it can change in the future when the project scope or requirement changes.
 
 Let's see some reasons to create a new UI library:
 
