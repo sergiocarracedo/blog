@@ -1,6 +1,6 @@
 ---
 title: "UI components library (Chapter I): Why and to create one? Characteristics of a good UI library"
-date: 2024-02-11
+date: 2024-02-12
 url: /ui-components-library-i-why-and-to-create-one
 cover: OIG2.jpeg
 tags:
@@ -124,3 +124,5 @@ A UI library is a set of reusable components that can be used to build a user in
 You can use a third-party library, but in some cases, you need to create a new one, in this case, you need to pay the price in the early stages and have a more experienced frontend and design team
 
 In the next chapter of this series. I will go deeper in the interfaces of the components and how to define them to ensure the flexibility and adaptability of the components.
+
+[Chapter II: Component anatomy and interfaces]({{< ref "/blog/2024/2024-02-11-ui-components-library-2" >}})
