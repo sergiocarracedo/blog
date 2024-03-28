@@ -20,11 +20,20 @@ Before to create a components library, it's important to understand the anatomy 
 
 ## Anatomy of a component
 
-A component is a reusable piece of code that encapsulates a part of the user interface. That includes the visual part (HTML, CSS) and the behavior (JavaScript). The behavior includes the logic and the interaction with the user, managing events, emitting events, getting data, etc. 
+A component is a reusable piece of software that encapsulates some parts of the user interface. 
+
+A component it's similar to a function, or an object. All of them get some input and returns some output. The function (if it is not pure) or the object it will use another values like the internal state and the environment to execute the action changing the output, but basically we can think in a function black box that gets some inputs and produced some outputs. 
+
+If we take a look inside the black box, probably that function will use another functions to do part of the work.
+
+![img.png](function.png)
+
+The same happens with a component. A component is a black box that gets some inputs (props, events) and produced some outputs (rendered HTML, events, etc). Inside the component, we can have another components, and the component can maintain an internal state and/or could use values from the environment (like the global state store, the router, etc).
 
 
 
-The behavior is usually implemented with a framework like Vue.js, React, Angular, etc.
+
+
 
 
 
