@@ -1,6 +1,6 @@
 ---
 title: "Typescript enums: Replacing them with const and union types"
-date: 2024-03-28
+date: 2024-04-01
 url: /typescript-enums-ii
 cover: _081fe03f-6eb1-40ef-9ed6-75f25067b0ad.jpeg
 tags:
