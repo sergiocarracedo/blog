@@ -125,4 +125,4 @@ You can use a third-party library, but in some cases, you need to create a new o
 
 In the next chapter of this series. I will go deeper in the interfaces of the components and how to define them to ensure the flexibility and adaptability of the components.
 
-[Chapter II: Component anatomy and interfaces]({{< ref "/blog/2024/2024-02-11-ui-components-library-2" >}})
+[Chapter II: Components anatomy and interfaces]({{< ref "/blog/2024/2024-02-11-ui-components-library-2" >}})
