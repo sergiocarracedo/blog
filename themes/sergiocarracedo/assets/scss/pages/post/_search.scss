@@ -1,6 +1,6 @@
 .post__search-wrapper {
   @include background-diagonal(var(--primary-color), var(--secondary-color-10));
-  color: #222;
+  color: var(--contrast-text-color);
   padding: 50px 0;
 
   > * {

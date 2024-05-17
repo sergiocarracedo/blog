@@ -7,7 +7,7 @@
 
 
   &__tag {
-    background: linear-gradient(to right, #{$primary-color} 0%, #{$primary-color} 100%);
+    background: $primary-color;
     color: $white;
     padding: 3px 20px 5px 20px;
     line-height: 1em;
@@ -22,7 +22,8 @@
 
 
     &:hover {
-      background: var(--green-gradient)
+      background: $secondary-color;
+      color: $black;
     }
     &:last-of-type {
         margin-right: 10px;

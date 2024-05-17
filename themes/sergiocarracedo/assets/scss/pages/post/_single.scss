@@ -2,6 +2,7 @@
   & .post {
     &__title {
       max-width: 900px;
+      color: var(--primary-color);
     }
 
     &__cover {
@@ -14,6 +15,10 @@
       @media screen and (min-width: 768px) {
         padding: 0 30px;
       }
+    }
+
+    &__metadata {
+      margin-bottom: 5px;
     }
 
     &__comments {

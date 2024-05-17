@@ -1,10 +1,13 @@
-<header class="web-header background-paper-secondary">
+<header class="web-header background-paper-secondary {{if eq .mode "home"}}web-header--home{{end}}">
   <h2>
-    <a class="back-to-home" href="/" title="Back to home">
-
-      <i class="fas fa-home"></i>
-      <div class="back-to-home__content">
-        <span class="back-to-home__action">Back to home</span>
+    {{if ne .mode "home"}}
+      <a class="back-to-home" href="/" title="Back to home">
+        <i class="fas fa-home"></i>
+        <div class="back-to-home__content">
+          <span class="back-to-home__action">Back to home</span>
+    {{else}}
+      <div class="web-header__title">
+    {{end}}
         <div class="back-to-home__title">
           {{ $avatar := resources.Get "i/sergiocarracedo.jpg" }}
           {{ $avatar := $avatar.Fit "100x100" }}
@@ -13,12 +16,19 @@
             Sergio Carracedo
           </h4>
         </div>
+    {{if ne .mode "home"}}
+        </div>
+      </a>
+    {{else}}
       </div>
-    </a>
+    {{end}}
   </h2>
 
+
   <div class="web-header__page-title">
-    <span>{{ .Title }}</span>
+    {{ if ne .mode "home" }}
+    <span>{{ .context.Title }}</span>
+    {{ end }}
   </div>
 
   {{ partial "theme-switch.html" }}

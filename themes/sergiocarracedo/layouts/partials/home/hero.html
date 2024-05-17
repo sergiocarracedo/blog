@@ -1,9 +1,8 @@
 <section class="home-hero background-paper-secondary">
-  {{ partial "theme-switch.html" }}
   <div class="wrapper-1200">
     <header class="home-hero__header">
       {{ $showSocial := true }}
-      {{ partial "me.html" $showSocial }}
+      {{ partial "me.html" (dict "showSocial" $showSocial)}}
     </header>
 
     <aside class="skills">

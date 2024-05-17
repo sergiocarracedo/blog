@@ -2,3 +2,28 @@
 @import "skills";
 @import "search";
 @import "posts";
+
+body.home {
+  .web-header {
+    transform: translateY(-100px);
+    transition: transform  .5s ease-in-out, opacity .5s ease-in-out;
+    transition-delay: 0s;
+
+    .theme-switch {
+      transform: translateY(100px);
+      transition: transform  .5s ease-in-out;
+    }
+  }
+
+  &.not-in-top {
+    .web-header {
+      transition-delay: 0.2s;
+      transform: translateY(0);
+
+      .theme-switch {
+        transform: translateY(0);
+        transition: transform .5s ease-in-out;
+      }
+    }
+  }
+}

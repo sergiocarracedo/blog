@@ -8,7 +8,7 @@
 {{ end }}
 <body class="{{ $bodyClass }}">
 {{ block "top" . }}
-{{ partial "header.html" . }}
+{{ partial "header.html" (dict "context" . ) }}
 {{ end }}
 <div class="main-content">
   {{ block "main" . }}{{ end }}

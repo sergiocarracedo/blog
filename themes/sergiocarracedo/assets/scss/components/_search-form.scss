@@ -4,6 +4,7 @@
   --shadow-height: 3px;
   --border-color: var(--secondary-color);
   --button-transform: translate(-42px, 2px) scale(0.8);
+  max-width: 100%;
 
   &--dark {
     --border-color: var(--primary-color);
@@ -12,12 +13,13 @@
   &--l {
     --height: 40px;
     --font-size: 20px;
-    --shadow-height: 6px;
+    --shadow-height: 4px;
     --button-transform: translate(-48px, 0) scale(1);
   }
 
   &__input {
     height: var(--height);
+    max-width: 100%;
     font-size: var(--font-size);
     border-radius: 5px;
     padding: 2px 35px 2px 10px;
@@ -25,8 +27,6 @@
     border: 1px solid var(--border-color);
     font-family: var(--font-family);
   }
-
-
 
   &__button {
     -webkit-appearance: none;

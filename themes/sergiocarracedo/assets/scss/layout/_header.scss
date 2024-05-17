@@ -1,7 +1,4 @@
 .web-header {
-  padding: 10px 20px;
-  z-index: 2;
-
   & {
     --title-color: #{$primary-color};
   }
@@ -9,6 +6,11 @@
   [data-theme="dark"] & {
     --title-color: $white;
   }
+
+
+  padding: 10px 20px;
+  z-index: 2;
+  border-bottom: 3px solid var(--primary-color);
 
   @media screen  {
     position: fixed;
@@ -25,6 +27,18 @@
 
   display: flex;
   gap: 20px;
+
+
+  .back-to-home__title,
+  &__web-title {
+    display: flex;
+    gap: 15px;
+    opacity: 1;
+    align-items: center;
+    font-family: $hand-font;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+  }
 
   .back-to-home {
     display: flex;
@@ -51,12 +65,7 @@
     &__title {
       transition: all .3s ease-in-out;
       clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
-      display: flex;
-      gap: 15px;
-      opacity: 1;
-      align-items: center;
-      font-family: $hand-font;
-      font-size: 1.4rem;
+
     }
 
     @media screen and (max-width: 500px) {
@@ -82,7 +91,7 @@
 
   &__page-title {
     flex: 1;
-    color:  var(--title-color);
+    color: var(--title-color);
     align-items: center;
     padding-right: 200px;
     padding-left: 30px;

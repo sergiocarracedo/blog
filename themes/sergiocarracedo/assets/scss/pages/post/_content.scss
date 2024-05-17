@@ -203,7 +203,8 @@
     color: var(--primary-color);
 
     a {
-      color: $primary-color;
+      color: var(--primary-color);
+      text-decoration: underline 0.1em var(--text-color);
     }
 
     p:last-child {

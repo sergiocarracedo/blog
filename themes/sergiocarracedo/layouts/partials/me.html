@@ -12,7 +12,6 @@
     <h3>
       Always learning, cats, good conversations and small details lover.
     </h3>
-    {{.Params.showSocial }}
-    {{ if .Params.showSocial }}{{ partial "social" }}{{ end }}
+    {{ if .showSocial }}{{ partial "social" }}{{ end }}
   </div>
 </div>

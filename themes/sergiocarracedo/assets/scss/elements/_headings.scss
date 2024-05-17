@@ -1,8 +1,11 @@
 .page-title {
   font-family: $impact-font;
   font-size: 3.2rem;
-  background: var(--green-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--primary-color);
   display: inline-block;
+
+  &::selection {
+    background: var(--primary-color);
+    color: var(--contrast-text-color) !important;
+  }
 }

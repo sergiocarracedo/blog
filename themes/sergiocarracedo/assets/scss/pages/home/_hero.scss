@@ -15,14 +15,8 @@
     padding: 40px 20px;
   }
 
-  .theme-switch {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-
   .me {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 
     @media screen and (min-width: 768px) {
       display: flex;
@@ -71,16 +65,12 @@
 
       h3 {
         animation-delay: .6s;
+        margin-bottom: 20px;
       }
     }
   }
 
   .social {
-    text-align: center;
-    padding: 0 0 20px 0;
-    @media screen and (min-width: 767px) {
-      padding: 0 20px 30px 20px;
-    }
     backface-visibility: visible !important;
 
     &__link {
