@@ -32,6 +32,15 @@
     "color": "#41B883"
   },
   {
+    "name": "Vitest"
+  },
+  {
+    "name": "Vite"
+  },
+  {
+    "name": "Clean architectures"
+  },
+  {
     "name": "Data Visualization",
     "icon": "fas fa-grip-horizontal"
   },
@@ -51,20 +60,9 @@
     "color": "#333"
   },
   {
-    "name": "Drupal",
-    "color": "#53B0EB",
-    "textColor": "white",
-    "icon": "fab fa-drupal"
-  },
-  {
     "name": "Linux",
     "icon": "fab fa-linux",
     "color": "#f99"
-  },
-  {
-    "name": "Sass",
-    "icon": "fab fa-sass",
-    "color": "#c69"
   },
   {
     "name": "k8s",
@@ -87,10 +85,6 @@
     "icon": "fas fa-database"
   },
   {
-    "name": "jQuery",
-    "icon": "fab fa-js"
-  },
-  {
     "name": "CSS3",
     "icon": "fab fa-css3-alt"
   },
@@ -99,42 +93,10 @@
     "icon": "fab fa-html5"
   },
   {
-    "name": "Git",
-    "icon": "fab fa-git"
-  },
-  {
-    "name": "Deployer",
-    "icon": "fab fa-telegram-plane"
-  },
-  {
-    "name": "Ansible",
-    "icon": "fas fa-server"
-  },
-  {
-    "name": "Prestashop",
-    "icon": "fas fa-shopping-cart"
-  },
-  {
-    "name": "Drupal commerce",
-    "icon": "fas fa-shopping-cart"
-  },
-  {
-    "name": "Electron.js"
-  },
-
-  {
     "name": "Open Source"
   },
   {
     "name": "Talks",
     "icon": "fas fa-chalkboard-teacher"
-  },
-  {
-    "name": "Less",
-    "icon": "fab fa-less"
-  },
-  {
-    "name": "CSS Grid Layout",
-    "icon": "fas fa-grip-horizontal"
   }
 ]
