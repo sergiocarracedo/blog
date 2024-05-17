@@ -3,7 +3,7 @@
     <div class="post__cover">
       {{ $image := .Resources.GetMatch .Params.cover }}
       {{ if $image }}
-        <a class="post__link" href="{{ .RelPermalink }}">
+        <a class="post__link btn btn--img" href="{{ .RelPermalink }}" >
           {{ $image := $image.Fill "500x250 Center"}}
           {{ with $image }}
           <img src="{{ .RelPermalink}}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ .Title }}"/>
@@ -28,7 +28,7 @@
       <p>{{ .Summary | safeHTML | truncate 100 }}</p>
     </a>
 
-    <a href="{{ .RelPermalink }}"class="post__read-more">
+    <a href="{{ .RelPermalink }}" class="post__read-more btn">
       Read more
     </a>
   </div>

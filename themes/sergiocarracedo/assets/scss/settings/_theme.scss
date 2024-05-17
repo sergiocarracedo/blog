@@ -3,10 +3,12 @@
   --light-text-color: #666;
   --contrast-text-color: #fff;
   --primary-color: #{$primary-color};
+  --primary-color-10: #{rgba($primary-color, .1)};
   --light-primary-color: #{lighten($primary-color, 68)};
   --secondary-color: #{$secondary-color};
-  --bg: radial-gradient(circle at right bottom, #e0e0e0, #{$white});
-  --green-gradient: linear-gradient(to right, #{$primary-color} 0%, #{$secondary-color} 100%);
+  --secondary-color-10: #{rgba($secondary-color, .1)};
+  --bg: #e0e0e0;
+  --green-gradient: #{$primary-color};
 }
 
 [data-theme="dark"] {
@@ -14,8 +16,10 @@
   --light-text-color: #999;
   --contrast-text-color: #000;
   --primary-color: #{$secondary-color};
+  --primary-color-10: #{rgba($secondary-color, .1)};
   --light-primary-color: #{darken($primary-color, 18)};
   --secondary-color: #{$primary-color};
-  --bg: radial-gradient(circle at right bottom, #000, #333);
-  --green-gradient: linear-gradient(to right, #{$primary-color} 0%, #{$secondary-color} 100%);
+  --secondary-color-10: #{rgba($primary-color, .1)};
+  --bg: #{$black};
+  --green-gradient: #{$secondary-color};
 }

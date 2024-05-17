@@ -6,13 +6,11 @@
   </time>
 
   {{ $tags := .Params.tags }}
-  <div class="post__tags">
-    {{ range $tags }}
-    <a href="{{ printf "tags/%s" . | absURL }}" class="post__tag">
+  {{ range $tags }}
+  <a href="{{ printf "tags/%s" . | absURL }}" class="post__tag">
     <span>{{ . }}</span>
-    </a>
-    {{ end }}
-  </div>
+  </a>
+  {{ end }}
 
   <span class="post__reading-time">
     <i class="far fa-clock"></i> {{ .ReadingTime }} {{ cond (eq .ReadingTime 1) "minute" "minutes" }} read

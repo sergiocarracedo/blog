@@ -1,6 +1,12 @@
 .web-footer {
-  background: url(/i/bg.jpg) repeat;
-  background-size: cover;
+  & {
+    --title-color: $black;
+  }
+
+  [data-theme="dark"] & {
+    --title-color: $white;
+  }
+
   padding: 40px 20px;
 
   .wrapper-1200 {
@@ -23,6 +29,11 @@
     flex-flow: column;
 
     .menu {
+      &__item {
+        a {
+          color: var(--title-color);
+        }
+      }
       margin-bottom: 30px;
     }
   }
@@ -42,6 +53,9 @@
         @media screen and (max-width: 500px) {
           font-size: 30px;
         }
+      }
+      h2, h3 {
+        color: var(--title-color);
       }
 
       h2 {

@@ -2,12 +2,13 @@ body {
   font-family: $primary-font;
   font-size: 20px;
   background: var(--bg);
-  background-attachment: fixed;
   color: var(--text-color);
 
   &:not(.home) {
     padding-top: 100px;
   }
+
+  @include background-paper(var(--bg), var(--primary-color-10));
 }
 
 * {

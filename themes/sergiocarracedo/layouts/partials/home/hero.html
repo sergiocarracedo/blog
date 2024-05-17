@@ -1,16 +1,15 @@
-<section class="home-hero">
+<section class="home-hero background-paper-secondary">
   {{ partial "theme-switch.html" }}
   <div class="wrapper-1200">
     <header class="home-hero__header">
-      {{ partial "me.html"}}
+      {{ $showSocial := true }}
+      {{ partial "me.html" $showSocial }}
     </header>
-
-    {{ partial "social" }}
 
     <aside class="skills">
       {{ $skills := site.Data.skills }}
       {{ range $index, $element := $skills }}
-      <span class="skill" style="{{ if $element.color }}background-color: {{ $element.color }};{{ end }}{{ if $element.textColor }}color: {{ $element.textColor }};{{ end }}; animation-delay: {{ add 1.8 (div $index 40.0) }}s">
+      <span class="skill {{ if gt $index 10 }}skill--secondary{{end}}" style="{{ if $element.color }}background-color: {{ $element.color }};{{ end }}{{ if $element.textColor }}color: {{ $element.textColor }};{{ end }}; animation-delay: {{ add .8 (div $index 40.0) }}s">
         <span>
           {{ if $element.icon}}
             <i class="{{ .icon }}"></i>

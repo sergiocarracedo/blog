@@ -2,11 +2,15 @@
   &__avatar {
     clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
     position: relative;
-    padding: 0 20px;
+
+
+    @media screen and (min-width: 768px) {
+      padding: 0 20px;
+    }
 
     img {
       border-radius: 9999px;
-      border: 10px solid rgba($white, .5);
+      border: 10px solid var(--primary-color);
       @media screen and (max-width: 767px) {
         border-width: 5px;
         width: 130px;
@@ -16,8 +20,11 @@
   }
 
   &__titles {
-    padding: 0 15px;
-    color: $white;
+    color: var(--primary-color);
+
+    @media screen and (min-width: 768px) {
+      padding: 0 15px;
+    }
 
     clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
 

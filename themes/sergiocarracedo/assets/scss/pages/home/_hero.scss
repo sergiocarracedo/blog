@@ -1,13 +1,24 @@
 .home-hero {
-  background: url(/i/bg.jpg) no-repeat;
-  background-size: cover;
-  padding: 40px 20px;
+  & {
+    --title-color: $black;
+    --line-color: var(--primary-color);
+  }
+
+  [data-theme="dark"] & {
+    --title-color: $white;
+  }
+
+  padding: 20px 0;
   position: relative;
+
+  @media screen and (min-width: 768px) {
+    padding: 40px 20px;
+  }
 
   .theme-switch {
     position: absolute;
     top: 20px;
-    righT: 20px;
+    right: 20px;
   }
 
   .me {
@@ -25,7 +36,7 @@
           content: '';
           position: absolute;
           display: block;
-          background: rgba($white, .5);
+          background: var(--line-color);
           width: 2px;
           top: 0;
           bottom: 0;
@@ -46,30 +57,38 @@
 
     &__titles {
       h1, h2, h3 {
+        color: var(--title-color);
         animation: 1s 1 backwards titles-slide-in;
       }
 
       h1 {
-        animation-delay: .8s;
+        animation-delay: .1s;
       }
 
       h2 {
-        animation-delay: .9s;
+        animation-delay: .5s;
       }
 
       h3 {
-        animation-delay: 1s;
+        animation-delay: .6s;
       }
     }
   }
 
   .social {
     text-align: center;
-    padding: 0 20px 30px 20px;
+    padding: 0 0 20px 0;
+    @media screen and (min-width: 767px) {
+      padding: 0 20px 30px 20px;
+    }
     backface-visibility: visible !important;
 
     &__link {
       animation: 1s 1 backwards social-in;
+
+      @media screen and (max-width: 767px) {
+        margin: 3px 0;
+      }
     }
   }
 }

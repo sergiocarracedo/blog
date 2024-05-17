@@ -1,4 +1,8 @@
-@mixin box-shadow($border-radius: 15px, $opacity: 0.35, $shadow-blur-radius: 40px) {
+@mixin block($border-radius: 5px, $opacity: 0.35, $shadow-blur-radius: 40px) {
+  border-radius: $border-radius;
+}
+
+@mixin box-shadow($border-radius: 5px, $opacity: 0.35, $shadow-blur-radius: 40px) {
   border-radius: $border-radius;
   box-shadow: 0 0 $shadow-blur-radius rgba(18, 21, 26, $opacity);
 }
@@ -19,4 +23,17 @@
   &:hover {
     text-decoration-color: transparent;
   }
+}
+
+@mixin background-paper($bg-color, $lines-color) {
+  background-color: $bg-color;
+  background-image:  linear-gradient($lines-color 2px, transparent 2px), linear-gradient(90deg, $lines-color 2px, transparent 2px), linear-gradient($lines-color 1px, transparent 1px), linear-gradient(90deg, $lines-color 1px, $bg-color 1px);
+  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+}
+
+@mixin background-diagonal($bg-color, $lines-color) {
+  background-color: $bg-color;
+  background-size: 10px 10px;
+  background-image: repeating-linear-gradient(45deg, $lines-color 0, $lines-color 1px, $bg-color 0, $bg-color 50%);
 }

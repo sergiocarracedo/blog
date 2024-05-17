@@ -2,8 +2,14 @@
   &__cover,
   &__content {
     img {
-      @include box-shadow(20px);
+      border-radius: 5px;
       overflow: hidden;
+    }
+  }
+
+  &__content {
+    img {
+      box-shadow: var(--primary-color) 0 7px 0 0;
     }
   }
 

@@ -14,6 +14,12 @@
         margin-bottom: 10px;
       }
 
+      &__cover {
+        .btn {
+          width: 100%
+        }
+      }
+
       &__aside {
         flex-shrink: 1;
         flex-grow: 1;
@@ -25,17 +31,6 @@
         padding-top: 15px;
         flex: 1;
         flex-basis: 300px;
-      }
-
-      &__cover {
-        img {
-          width: 100%;
-          transition: all .3s ease-in-out;
-
-          &:hover {
-            @include box-shadow(20px, 0.3, 10px);
-          }
-        }
       }
 
       &__title {
@@ -59,22 +54,6 @@
         color: var(--text-color);
         text-decoration: none;
       }
-
-      &__read-more {
-        padding: 4px 20px;
-        text-decoration: none;
-        background: var(--green-gradient);
-        color: $white;
-        font-size: 1rem;
-        transition: all .2s ease-in-out;
-        clip-path: polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%);
-
-        &:hover {
-          padding: 4px 10px;
-          clip-path: polygon(0 0%, 100% 0%, 100% 100%, 0% 100%);
-        }
-      }
-
     }
   }
 }
