@@ -31,17 +31,18 @@
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: $impact-font;
+    text-decoration: underline 0.1em var(--secondary-color);
   }
 
-
   h1, h2 {
-    text-decoration: underline 0.1em var(--secondary-color);
+    font-weight: bold;
   }
   h2 {
     color: var(--primary-color);
   }
   h3 {
     color: var(--primary-color);
+    text-decoration: underline 0.1em var(--secondary-color);
   }
 
   $sizes: (
@@ -60,7 +61,7 @@
   }
 
   > h1, > h2, > h3, > h4, > h5, > h6 {
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-bottom: 0.8rem;
 
     &:first-child {
@@ -80,6 +81,7 @@
     li {
       list-style: disc;
       line-height: 1.6em;
+      margin-bottom: 0.5em;
       ul {
         margin-bottom: 0;
       }
