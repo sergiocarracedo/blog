@@ -93,12 +93,12 @@ This "architecture" works, but have some issues can create serious problems in t
 
 * **The data structure is coupled to the backend data**: All the data flows from the backend to the view using the same interfaces, if the backend changes just the name of a property we need to follow the data flow in our code until the view changes it in all the places.
 * **The title string includes an emoji to allow users to visualize when a menu item is only for staff users**: That information is also provided in the `is_staff` property, if we want to expose a menu item to the regular users we need to change it in 2 places, and that is never a good idea.
-* **Visuals are defined in the backend**: The name of the icon to use is defined in the backend. Unless the icon is would be an app (backend + frontend(S)) global oncept it is not a good idea to pass that value front the backend.
+* **Visuals are defined in the backend**: The name of the icon to use is defined in the backend. Unless the icon would be an app (backend + frontend) global concept it is not a good idea to pass that value front the backend.
 * **No domain**: there is no domain, or at least no explicit one. Logic is applied in the view (that it is not bad *per se*, but if the logic is related to the business rules, it must live in the domain)
 
 ### The problem
 
-Because different reasons the company decided to create a new version of the backend. This new backend (called v2) will not be retro-compatible with the legacy one, but it will represent semantically the same entities.
+Because of different reasons the company decided to create a new version of the backend. This new backend (called v2) will not be retro-compatible with the legacy one, but it will represent semantically the same entities.
 
 The menu endpoint will return the same menu (it will provide more features) but the new endpoint response structure is completely different:
 
@@ -177,7 +177,7 @@ The menu endpoint will return the same menu (it will provide more features) but 
     ...
 ]
 ```
-The new backend endpoint returns the menu items and its parent menu data in the same row. The structure is flat (no nested items). Another difference is the `is_staff`, still there, but it's an specific value for `menuItemStateId` property. No icon name, but now we have an internalId as a semantic unique id.
+The new backend endpoint returns the menu items and its parent menu data in the same row. The structure is flat (no nested items). Another difference is the `is_staff`, is still there, but it’s a specific value for the `menuItemStateId` property. No icon name, but now we have an `internalId` as a semantic unique id.
 
 #### Things can become harder
 
@@ -275,13 +275,13 @@ Remember, **the repository implementation (adapter) is the one that knows the "e
 * How to **handle errors, retries**, etc
 * How to cache the data
 
-But again, the domain NEVER should not about that.
+But again, the domain NEVER should not know about that.
 
-For example, the domain **must not know** that to get to get items available only for staff users we need to pass the `menuItemStateId` param with the value`1`. 
+For example, the domain **must not know** that to get items available only for staff users we need to pass the `menuItemStateId` param with the value`1`. 
 
 `menuItemStateId` is an implementation detail. it only makes sense in repository implementation, not in the domain, the domain should know about the `onlyForStaff` meaning and the adapter should know how to get that information from the backend. 
 
-In this case (for backend v2) we need to pass a query param called `menuItemStateId` with the value `1` to get the staff-only items, but that is different for the legacy backend. Or for another backend that can use a different value for that filter, but the argument that represents what we want still the same: `onlyForStaff`.
+In this case (for backend v2) we need to pass a query param called `menuItemStateId` with the value `1` to get the staff-only items, but that is different for the legacy backend. Or for another backend that can use a different value for that filter, but the argument that represents what we want is still the same: `onlyForStaff`.
 
 From the point of view of the layers on the right side the port's line in the workflow (Image above) do not matter how the data is retrieved, the only thing that matters is the data is returned as a domain entity. That is our contract.
 
@@ -326,7 +326,7 @@ class LegacyMenuRepo implements MenuRepo {
 ```
 Things to put focus on:
 
-* 1️⃣: the method that receives the states argument is not used in the code: This is because the backend does not accept any filter, the legacy backend does the filtering using the backend context. But it ensures will only return the items the user can have access to.
+* 1️⃣: the method that receives the states' argument is not used in the code: This is because the backend does not accept any filter, the legacy backend does the filtering using the backend context. But it ensures will only return the items the user can have access to.
 * 2️⃣: Those map functions are in charge of providing the correct icon and image, now the backend does not provide that information, so our repository implementation should provide it. Remember **the repository implementation (adapter) is the one that knows all the external internals** and for the images the adapter knows that if the id is "x" should return the image "y" and the icon "z"
 * 3️⃣: The `mapState` function behavior is similar to 2️⃣ but in this case, the backend returns a number that represents the state, the adapter should know how to map that number to the domain state, and that function can be reversed to know with the state should be sent to the backend.
 
