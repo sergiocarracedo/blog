@@ -5389,13 +5389,15 @@ body.home.not-in-top .web-header {
   .post__content img {
     margin: auto; }
   .post__content h1, .post__content h2, .post__content h3, .post__content h4, .post__content h5, .post__content h6 {
-    font-family: "iA Writer Mono"; }
-  .post__content h1, .post__content h2 {
+    font-family: "iA Writer Mono";
     text-decoration: underline 0.1em var(--secondary-color); }
+  .post__content h1, .post__content h2 {
+    font-weight: bold; }
   .post__content h2 {
     color: var(--primary-color); }
   .post__content h3 {
-    color: var(--primary-color); }
+    color: var(--primary-color);
+    text-decoration: underline 0.1em var(--secondary-color); }
   .post__content h1 {
     font-size: 1.8em; }
   .post__content h2 {
@@ -5409,7 +5411,7 @@ body.home.not-in-top .web-header {
   .post__content h6 {
     font-size: 0.9em; }
   .post__content > h1, .post__content > h2, .post__content > h3, .post__content > h4, .post__content > h5, .post__content > h6 {
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-bottom: 0.8rem; }
     .post__content > h1:first-child, .post__content > h2:first-child, .post__content > h3:first-child, .post__content > h4:first-child, .post__content > h5:first-child, .post__content > h6:first-child {
       margin-top: 0; }
@@ -5421,7 +5423,8 @@ body.home.not-in-top .web-header {
     padding-left: 20px; }
     .post__content ul li {
       list-style: disc;
-      line-height: 1.6em; }
+      line-height: 1.6em;
+      margin-bottom: 0.5em; }
       .post__content ul li ul {
         margin-bottom: 0; }
   .post__content iframe {
