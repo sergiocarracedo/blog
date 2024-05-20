@@ -354,6 +354,7 @@ textarea {
   --contrast-text-color: #fff;
   --primary-color: #213b4a;
   --primary-color-10: rgba(33, 59, 74, 0.1);
+  --primary-color-50: rgba(33, 59, 74, 0.5);
   --light-primary-color: #d8e6ee;
   --secondary-color: #90c6be;
   --secondary-color-10: rgba(144, 198, 190, 0.1);
@@ -366,6 +367,7 @@ textarea {
   --contrast-text-color: #000;
   --primary-color: #90c6be;
   --primary-color-10: rgba(144, 198, 190, 0.1);
+  --primary-color-50: rgba(144, 198, 190, 0.5);
   --light-primary-color: #05080b;
   --secondary-color: #213b4a;
   --secondary-color-10: rgba(33, 59, 74, 0.1);
@@ -5382,7 +5384,8 @@ body.home.not-in-top .web-header {
     white-space: pre-wrap;
     word-break: break-all;
     color: var(--primary-color);
-    text-decoration: underline 0.1em var(--secondary-color);
+    font-weight: bold;
+    text-decoration: underline 0.2em var(--primary-color-50);
     transition: all .2s ease-in-out; }
     .post__content a:hover {
       text-decoration-color: transparent; }
@@ -5625,7 +5628,7 @@ body.home.not-in-top .web-header {
         transition: all .3s ease-in-out;
         display: block;
         color: var(--primary-color);
-        text-decoration: underline 0.1em var(--secondary-color); }
+        text-decoration: underline 0.1em var(--primary-color-50); }
         .post--teaser .post__title .post__link:hover {
           text-decoration-color: transparent; }
     .post--teaser .post__summary {
