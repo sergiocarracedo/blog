@@ -47,7 +47,7 @@
           display: block;
 
           color: var(--primary-color);
-          text-decoration: underline 0.1em var(--secondary-color);
+          text-decoration: underline 0.1em var(--primary-color-50);
 
           &:hover {
             text-decoration-color: transparent;

@@ -4,6 +4,7 @@
   --contrast-text-color: #fff;
   --primary-color: #{$primary-color};
   --primary-color-10: #{rgba($primary-color, .1)};
+  --primary-color-50: #{rgba($primary-color, .5)};
   --light-primary-color: #{lighten($primary-color, 68)};
   --secondary-color: #{$secondary-color};
   --secondary-color-10: #{rgba($secondary-color, .1)};
@@ -17,6 +18,7 @@
   --contrast-text-color: #000;
   --primary-color: #{$secondary-color};
   --primary-color-10: #{rgba($secondary-color, .1)};
+  --primary-color-50: #{rgba($secondary-color, .5)};
   --light-primary-color: #{darken($primary-color, 18)};
   --secondary-color: #{$primary-color};
   --secondary-color-10: #{rgba($primary-color, .1)};

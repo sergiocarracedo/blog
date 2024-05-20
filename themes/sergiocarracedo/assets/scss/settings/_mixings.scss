@@ -17,7 +17,8 @@
 
 @mixin link() {
   color: var(--primary-color);
-  text-decoration: underline 0.1em var(--secondary-color);
+  font-weight: bold;
+  text-decoration: underline 0.2em var(--primary-color-50);
   transition: all .2s ease-in-out;
 
   &:hover {
