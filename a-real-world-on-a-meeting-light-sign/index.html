@@ -1,0 +1,244 @@
+<!doctype html><html><head><meta charset=UTF-8><meta content="IE=edge,chrome=1" http-equiv=X-UA-Compatible><meta content="width=device-width,minimum-scale=1" name=viewport><title>Sergio Carracedo | A real-world "on a meeting" light sign</title>
+<meta content="yes" name=apple-mobile-web-app-capable><meta content="black-translucent" name=apple-mobile-web-app-status-bar-style><meta content="Sergio Carracedo's personal page and blog" name=description><meta content="Sergio Carracedo" name=author><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><meta name=msapplication-TileColor content="#da532c"><meta name=theme-color content="#ffffff"><meta property="og:title" content='A real-world "on a meeting" light sign'><meta property="og:description" content="Me and my wife work remotely and we do it in the same room, but there is a problem: the meetings, and obviously, working remotely we have, let&rsquo;s say, more than we would like, and is not always easy to know when the other is in a meeting.
+I decided to find a solution to make it visible when someone is in a meeting simply, only with a sight.
+The solution: Put a light sign on the working room&rsquo;s wall and turn it on when I am in a meet and off when I am not, simple."><meta property="og:type" content="article"><meta property="og:url" content="https://sergiocarracedo.es/a-real-world-on-a-meeting-light-sign/"><meta property="og:image" content="https://sergiocarracedo.es/a-real-world-on-a-meeting-light-sign/IMG_20240518_172824_hu715756c4e198731ed48a21bae2f1c770_42841_1920x1080_fill_q75_box_center.jpg"><meta name=twitter:image content="https://sergiocarracedo.es/a-real-world-on-a-meeting-light-sign/IMG_20240518_172824_hu715756c4e198731ed48a21bae2f1c770_42841_1920x1080_fill_q75_box_center.jpg"></meta><meta property="article:section" content="blog">
+<meta property="article:published_time" content="2024-06-16T00:00:00+00:00"><meta property="article:modified_time" content="2024-06-16T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"></meta>
+<link rel=canonical href=https://sergiocarracedo.es/a-real-world-on-a-meeting-light-sign/><link href=https://sergiocarracedo.es/scss/main.1559a03561830d7de305f4c9f989ccda247f022d321e21b0e121c745373917ff.css integrity="sha256-FVmgNWGDDX3jBfTJ+YnM2iR/Ai0yHiGw4SHHRTc5F/8=" rel=stylesheet><link href=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css rel=stylesheet type=text/css></head><body><header class="web-header background-paper-secondary"><h2><a class=back-to-home href=/ title="Back to home"><i class="fas fa-home"></i><div class=back-to-home__content><span class=back-to-home__action>Back to home</span><div class=back-to-home__title><img alt="Sergio Carracedo" class=avatar src=/i/sergiocarracedo_hu6caa808ff324b89bfea4b9d7d1c850ee_80590_100x100_fit_q75_box.jpg><h4>Sergio Carracedo</h4></div></div></a></h2><div class=web-header__page-title><span>A real-world "on a meeting" light sign</span></div><div class=theme-switch><i class="theme-switch__theme fas fa-sun" id=theme-switch-light title="Switch to light theme"></i>
+<i class="theme-switch__theme fas fa-moon" id=theme-switch-dark title="Switch to dark theme"></i></div></header><div class=main-content><article class="post post--single"><div class="post__main wrapper-1200"><aside class=post__metadata><time class=post__date datetime=2024-06-16><i class="far fa-calendar-alt"></i> Jun 16, 2024
+</time><a href=https://sergiocarracedo.es/tags/hardware class=post__tag><span>hardware</span>
+</a><a href=https://sergiocarracedo.es/tags/work-setup class=post__tag><span>work-setup</span>
+</a><a href=https://sergiocarracedo.es/tags/golang class=post__tag><span>golang</span>
+</a><span class=post__reading-time><i class="far fa-clock"></i> 6 minutes read</span></aside><header class=post__header><h1 class=post__title>A real-world "on a meeting" light sign</h1></header><figure class=post__cover><img src=/a-real-world-on-a-meeting-light-sign/IMG_20240518_172824_hu715756c4e198731ed48a21bae2f1c770_42841_1200x400_fill_q75_box_center.jpg alt='A real-world "on a meeting" light sign' width=1200 height=400></figure><div class=post__content><p>Me and my wife work remotely and we do it in the same room, but there is a problem: the meetings, and
+obviously, working remotely we have, let&rsquo;s say, more than we would like, and is not always easy to know when the other
+is in a meeting.</p><p>I decided to find a solution to make it visible when someone is in a meeting simply, only with a sight.</p><p>The solution: Put a light sign on the working room&rsquo;s wall and turn it on when I am in a meet and off when I am not,
+simple. :)</p><h2 id=the-light-sign>The light sign</h2><p>I found a cheap <a href=https://www.aliexpress.com/item/1005005879624670.html>neon-like sign</a> on an online store and I order
+it. This light sign is powered via USB and controlled manually with a switch button, so that I could control it
+automatically.
+The neon-like is just a shaped LED strip, so I ordered
+a <a href=https://www.aliexpress.com/item/1005006762010047.html>wifi led controler</a> (and a power supply), to replace the light
+sign&rsquo;s controller, and now we can control the light via wifi using Tuya&rsquo;s app.</p><p>We solved the hardware side, now we must solve how to detect when I am in a meet</p><h2 id=detecting-when-i-am-in-a-meet>Detecting when I am in a meet</h2><p>I guess there are a lot of ways to detect when you are in meeting, but I decided to use the webcam, then the solution
+works with any meet application: Zoom, Google meet, discord, slack, etc</p><p>Doing a simple search I found that on Linux (if the kernel uses modules, which is common) you can execute:</p><pre tabindex=0><code>$ lsmod | grep uvcvideo
+</code></pre><p>And get something like:</p><pre tabindex=0><code>uvcvideo 139264 0
+videobuf2_vmalloc 20480 1 uvcvideo
+uvc 12288 1 uvcvideo
+</code></pre><p>The <code>uvcvideo</code> module is the one we are interested on (the first line), in that line, the first number means the module
+size in bytes (we can ignore it) and the second means the number of instances of the module in use, in our case: <code>0</code>
+means webcam not in use <code>1</code> implies webcam in use.</p><p>Then we can create an script or a program to check this value and turn on or off the wifi controller, but before seeing
+the
+code:</p><h2 id=using-home-assistant-to-control-the-light>Using Home Assistant to control the light</h2><p>I am a big fan of <a href=https://www.home-assistant.io/>Home Assistant</a>, as is a very flexible way of managing home
+automation
+using devices of multiple brands.
+This is the reason why I decided to use it, instead of fighting with the wifi controller maker&rsquo;s API (if available), I
+will delegate that to Home Assistant, as you can find integrations for a lot of makers standardizing the way we control
+the light</p><p>The next thing I did was to create a virtual switch in Home Assistant, this will allow me to store the webcam&rsquo;s usage
+status in Home Assistant and then trigger a scene to turn on or off the light.</p><blockquote><p>Go to <code>Settings</code> > <code>Devices & services</code> > <code>Helpers</code> tab > Click on <code>Create helper</code> > Select <code>toogle</code></p></blockquote><p>Doing that instead of changing the light status directly, allows us to be more flexible and create better automation,
+for example to also turn on another light or <em>pause the vacuum cleaner when you are in a meetings to reduce ambient
+noise</em>.</p><p>After that we need to create an access token for the Home assistant&rsquo;s API</p><blockquote><p>Click over your username > <code>Security</code> tab > Click on <code>Create token</code></p></blockquote><p>Those are the automation I create:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>alias</span>: <span style=color:#ae81ff>Turn On meeting light</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>trigger</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>platform</span>: <span style=color:#ae81ff>state</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>entity_id</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>input_boolean.on_a_meet</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>to</span>: <span style=color:#e6db74>&#34;on&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>for</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>hours</span>: <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>minutes</span>: <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>seconds</span>: <span style=color:#ae81ff>6</span> <span style=color:#75715e># I added a minimum time to avoid false positives </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>condition</span>: [ ]
+</span></span><span style=display:flex><span><span style=color:#f92672>action</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>type</span>: <span style=color:#ae81ff>turn_on</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>device_id</span>: <span style=color:#75715e>#the light device id</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>entity_id</span>: <span style=color:#75715e>#the light entity id</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>domain</span>: <span style=color:#ae81ff>light</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>brightness_pct</span>: <span style=color:#ae81ff>11</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>mode</span>: <span style=color:#ae81ff>single</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>alias</span>: <span style=color:#ae81ff>Turn Off meet light</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>trigger</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>platform</span>: <span style=color:#ae81ff>state</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>entity_id</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>input_boolean.on_a_meet</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>to</span>: <span style=color:#e6db74>&#34;off&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>condition</span>: [ ]
+</span></span><span style=display:flex><span><span style=color:#f92672>action</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>type</span>: <span style=color:#ae81ff>turn_off</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>device_id</span>: <span style=color:#75715e>#the light device id</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>entity_id</span>: <span style=color:#75715e>#the light entity id</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>domain</span>: <span style=color:#ae81ff>light</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>mode</span>: <span style=color:#ae81ff>single</span>
+</span></span></code></pre></div><p>With that, we can create a program to check the webcam&rsquo;s status and send it to Home Assistant</p><h2 id=the-observer>The observer</h2><p>I created a program written in Go to check the <code>uvcvideo</code> module status and send the changes to Home Assistant</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;bufio&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;bytes&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;context&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;encoding/json&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;errors&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;log&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;log/syslog&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;net/http&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;os&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;strconv&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;strings&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;time&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>prevState</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>bool</span> <span style=color:#75715e>// nil = unknown, true = active, false = inactive
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getEnv</span>(<span style=color:#a6e22e>key</span>, <span style=color:#a6e22e>fallback</span> <span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>value</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>LookupEnv</span>(<span style=color:#a6e22e>key</span>); <span style=color:#a6e22e>ok</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>value</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fallback</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>logError</span>(<span style=color:#a6e22e>e</span> <span style=color:#66d9ef>error</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>e</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>e</span>.<span style=color:#a6e22e>Error</span>())
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>Default</span>().<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>e</span>.<span style=color:#a6e22e>Error</span>())
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>updateHassStatus</span>(<span style=color:#a6e22e>ctx</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Context</span>, <span style=color:#a6e22e>status</span> <span style=color:#66d9ef>bool</span>) (<span style=color:#a6e22e>err</span> <span style=color:#66d9ef>error</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>host</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>getEnv</span>(<span style=color:#e6db74>&#34;ON_A_MEET_HASS_SERVER&#34;</span>, <span style=color:#e6db74>&#34;http://192.168.0.104:8123&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>token</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Getenv</span>(<span style=color:#e6db74>&#34;ON_A_MEET_HASS_TOKEN&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>entityID</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>getEnv</span>(<span style=color:#e6db74>&#34;ON_A_MEET_ENTITY_ID&#34;</span>, <span style=color:#e6db74>&#34;input_boolean.on_a_meet&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>posturl</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Sprintf</span>(<span style=color:#e6db74>&#34;%s/%s/%s&#34;</span>, <span style=color:#a6e22e>host</span>, <span style=color:#e6db74>&#34;api/states&#34;</span>, <span style=color:#a6e22e>entityID</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>state</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>&#34;on&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> !<span style=color:#a6e22e>status</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>state</span> = <span style=color:#e6db74>&#34;off&#34;</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Body</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>State</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;state&#34;`</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>body</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Body</span>{<span style=color:#a6e22e>State</span>: <span style=color:#a6e22e>state</span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>bodyBytes</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>body</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>r</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;POST&#34;</span>, <span style=color:#a6e22e>posturl</span>, <span style=color:#a6e22e>bytes</span>.<span style=color:#a6e22e>NewBuffer</span>(<span style=color:#a6e22e>bodyBytes</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Header</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#e6db74>&#34;Content-Type&#34;</span>, <span style=color:#e6db74>&#34;application/json&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Header</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#e6db74>&#34;Authorization&#34;</span>, <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Sprintf</span>(<span style=color:#e6db74>&#34;Bearer %s&#34;</span>, <span style=color:#a6e22e>token</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>client</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Client</span>{}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>res</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>client</span>.<span style=color:#a6e22e>Do</span>(<span style=color:#a6e22e>r</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>Body</span>.<span style=color:#a6e22e>Close</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>ModuleMeta</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Name</span>   <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Size</span>   <span style=color:#66d9ef>int64</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>UsedBy</span> []<span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>InUse</span>  <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getModuleMeta</span>(<span style=color:#a6e22e>name</span> <span style=color:#66d9ef>string</span>) (<span style=color:#a6e22e>meta</span> <span style=color:#a6e22e>ModuleMeta</span>, <span style=color:#a6e22e>err</span> <span style=color:#66d9ef>error</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>file</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Open</span>(<span style=color:#e6db74>&#34;/proc/modules&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>Close</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>scanner</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>bufio</span>.<span style=color:#a6e22e>NewScanner</span>(<span style=color:#a6e22e>file</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>scanner</span>.<span style=color:#a6e22e>Scan</span>() {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>Split</span>(<span style=color:#a6e22e>scanner</span>.<span style=color:#a6e22e>Text</span>(), <span style=color:#e6db74>&#34; &#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>==</span> <span style=color:#a6e22e>name</span> {
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>size</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>strconv</span>.<span style=color:#a6e22e>ParseInt</span>(<span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>1</span>], <span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>64</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>ModuleMeta</span>{}, <span style=color:#a6e22e>err</span>
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>ModuleMeta</span>{
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>Name</span>:   <span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>Size</span>:   <span style=color:#a6e22e>size</span>,
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>UsedBy</span>: <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>Split</span>(<span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>3</span>], <span style=color:#e6db74>&#34;,&#34;</span>),
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>InUse</span>:  <span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>2</span>] <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;0&#34;</span>,
+</span></span><span style=display:flex><span>			}, <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>err</span> = <span style=color:#a6e22e>errors</span>.<span style=color:#a6e22e>New</span>(<span style=color:#e6db74>&#34;module not found&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>loopCheckState</span>(<span style=color:#a6e22e>ctx</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Context</span>) (<span style=color:#a6e22e>err</span> <span style=color:#66d9ef>error</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>meta</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>getModuleMeta</span>(<span style=color:#e6db74>&#34;uvcvideo&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>prevState</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span> <span style=color:#f92672>||</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>prevState</span> <span style=color:#f92672>!=</span> <span style=color:#a6e22e>meta</span>.<span style=color:#a6e22e>InUse</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>Default</span>().<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Module %s status changed to: %t\n&#34;</span>, <span style=color:#a6e22e>meta</span>.<span style=color:#a6e22e>Name</span>, <span style=color:#a6e22e>meta</span>.<span style=color:#a6e22e>InUse</span>)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>prevState</span> = <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>meta</span>.<span style=color:#a6e22e>InUse</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>err</span> = <span style=color:#a6e22e>updateHassStatus</span>(<span style=color:#a6e22e>ctx</span>, <span style=color:#a6e22e>meta</span>.<span style=color:#a6e22e>InUse</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>logWriter</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>syslog</span>.<span style=color:#a6e22e>New</span>(<span style=color:#a6e22e>syslog</span>.<span style=color:#a6e22e>LOG_SYSLOG</span>, <span style=color:#e6db74>&#34;on-a-meet&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>Fatalln</span>(<span style=color:#e6db74>&#34;Unable to set logfile:&#34;</span>, <span style=color:#a6e22e>err</span>.<span style=color:#a6e22e>Error</span>())
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>SetOutput</span>(<span style=color:#a6e22e>logWriter</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ctx</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>TODO</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>Default</span>().<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Starting on-a-meet script&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>err</span> = <span style=color:#a6e22e>loopCheckState</span>(<span style=color:#a6e22e>ctx</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>logError</span>(<span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Duration</span>(<span style=color:#ae81ff>1</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>))
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>A very simple program, only mentions that instead of using <code>lsusb</code> I read <code>/proc/modules</code> to get the same data</p><h2 id=running-the-program-as-a-user-service>Running the program as a user service</h2><p>To run the program when the computer starts up, the best way is to convert it into a service.</p><p>You only need to create a file, for example <code>on-a-meet.service</code> with the following content</p><pre tabindex=0><code>[Unit]
+Description=&#34;On A Meet Service&#34;
+
+[Service]
+Type=simple
+ExecStart= Path/to/your/compiled/script
+Restart=on-failure
+StandardOutput=file:%h/log_file
+
+[Install]
+WantedBy=default.target
+</code></pre><p>Then</p><ol><li><p>copy it <code>/etc/systemd/user</code> (as root user)</p></li><li><p>Run <code>systemctl --user edit on-a-meet.service</code> and add the following (with the correct values for your case)</p><pre tabindex=0><code>[Service]
+Environment=&#34;ON_A_MEET_HASS_SERVER=&#34;
+Environment=&#34;ON_A_MEET_ENTITY_ID=&#34;
+Environment=&#34;ON_A_MEET_HASS_TOKEN=&#34;
+</code></pre><p>To set the environment variables the service will need</p></li><li><p>Run <code>systemctl --user daemon-reload</code> (as your user)</p></li><li><p>Run <code>systemctl --user start on-a-meet.service</code></p></li><li><p>Run <code>systemctl --global enable on-a-meet.service</code> (as root)</p></li></ol><p>And that&rsquo;s all!!! After that, you will get a visual notification when your camera is active</p><h2 id=see-it-in-action>See it in action</h2><div style=position:relative;padding-bottom:56.25%;height:0;overflow:hidden><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading=eager referrerpolicy=strict-origin-when-cross-origin src="https://www.youtube.com/embed/1Uizew2_PVQ?autoplay=0&controls=1&end=0&loop=0&mute=0&start=0" style=position:absolute;top:0;left:0;width:100%;height:100%;border:0 title="YouTube video"></iframe></div><h2 id=the-next-steps>The next steps</h2><ul><li>I would like to turn on the light sign when at least one computer in the room is using the webcam, I think just adding
+the script to the other computers and tuning up a bit the Home Assistant&rsquo;s scenes would be easy</li><li>Add OSX support, unfortunately, I will use a Mac because the work, then I will need to find out how to check when the
+camera
+is active on OSX</li><li>Understand why the module says is in use for a second when the camera is not in use, causing false positives</li></ul><p>Comments, ideas, or feedback is welcomed!!</p></div></div><aside class=post__nav-wrapper><div class=wrapper-1200><div class="post-nav post-nav--prev"></div><div class=blog-link><a class="btn btn--outlined" href=https://sergiocarracedo.es/blog>All Blog posts</a></div><div class="post-nav post-nav--next"><a class=post-nav__link href="https://sergiocarracedo.es/hexagonal-architecture-frontend/?ref=footer"><div class="post-nav__cover btn btn--img btn--hover-parent"><img alt=.PrevPage.Title class=post-nav__cover src=/hexagonal-architecture-frontend/shaah-shahidh--subrrYxv8A-unsplash_hu5459c0360c2b0cb7a147d2df0eb350ca_1060781_200x120_fill_q75_box_center.jpg></div><div class=post-nav__title>A real case: why hexagonal architecture,...</div></a></div></div></aside><aside class=post__search-wrapper><div class=wrapper-1200>Search in this blog:<form class="search-form search-form--dark search-form--l" action=https://sergiocarracedo.es/search method=get><label hidden for=search-input>Search</label>
+<input type=text id=search-input name=query placeholder=Search class=search-form__input>
+<button class=search-form__button>
+<i class="fas fa-search"></i></button></form></div></aside><aside class=post__comments><div class=wrapper-1200><div id=disqus_thread>To show the comments is mandatory accept cookie policy.</div></div></aside></article></div><footer class="web-footer background-paper-secondary"><div class=wrapper-1200><div class=web-footer__left><div class=me><div class=me__avatar><img alt="Sergio Carracedo" src=/i/sergiocarracedo_hu6caa808ff324b89bfea4b9d7d1c850ee_80590_170x170_fit_q75_box.jpg></div><div class=me__titles><h1>Sergio Carracedo</h1><h2>Senior Fullstack developer.</h2><h3>Always learning, cats, good conversations and small details lover.</h3></div></div></div><div class=web-footer__right><nav role=main class=menu><ul><li class=menu__item><a href=https://sergiocarracedo.es/>Home</a></li><li class=menu__item><a href=https://sergiocarracedo.es/blog>Blog</a></li></ul></nav><div class=social><a class=social__link href=http://www.linkedin.com/in/sergiocarracedo target=_blank title=LinkedIn style=animation-delay:2s><i class="fab fa-linkedin"></i>
+</a><a class=social__link href=mailto:hi+blog@sergiocarracedo.es target=_blank title=Email style=animation-delay:1.9333333333333333s><i class="fas fa-envelope"></i>
+</a><a class=social__link href=https://github.com/sergiocarracedo target=_blank title=GitHub style=animation-delay:1.8666666666666667s><i class="fab fa-github"></i>
+</a><a class=social__link href=https://www.drupal.org/u/sergiocarracedo target=_blank title=Drupal style=animation-delay:1.8s><i class="fab fa-drupal"></i>
+</a><a class=social__link href=https://www.twitter.com/sergiocarracedo target=_blank title=Twitter style=animation-delay:1.7333333333333334s><i class="fab fa-twitter"></i>
+</a><a class=social__link href=http://www.last.fm/user/gasman40 target=_blank title=Last.fm style=animation-delay:1.6666666666666667s><i class="fab fa-lastfm"></i>
+</a><a class=social__link href=http://sergiocarracedo.tumblr.com/ target=_blank title=Tumblr style=animation-delay:1.6s><i class="fab fa-tumblr"></i></a></div></div></div></footer><script async src="https://www.googletagmanager.com/gtag/js?id=G-87X78TXEGE"></script><script>function runGA(){window.dataLayer=window.dataLayer||[];function e(){dataLayer.push(arguments)}e("js",new Date),e("config","G-87X78TXEGE")}</script><script>function runDisqus(){(function(){var e=document,t=e.createElement("script");t.src="https://sergiocarracedo.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()}</script><script src=//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js></script><script>window.addEventListener("load",function(){window.cookieconsent.initialise({palette:{popup:{background:"#004262",text:"#fff"},button:{background:"#8ec760",text:"#ffffff"}},type:"opt-out",content:{message:"Este sitio usa cookies propias y de terceros para mejorar la experiencia de usuario y esas cosas.",allow:"Ok, continua",deny:"Nada de cookies",link:"Saber más",href:"https://sergiocarracedo.es/cookies"},onStatusChange:function(e){e=="allow"&&runCookiesAllowed()},onInitialise:function(e){e=="allow"&&runCookiesAllowed()}})})</script><script>addEventListener("scroll",e=>{let t=document.getElementsByTagName("body")[0];t&&window.scrollY>10?t.classList.add("not-in-top"):t.classList.remove("not-in-top")});function runCookiesAllowed(){runGA(),runDisqus()}</script><script integrity="sha256-iiQa3rTjie3Ydsr4WEu2+aLDTaxKKVR3ZTwTYrRUjXs=" src=https://sergiocarracedo.es/js/theme.8a241adeb4e389edd876caf8584bb6f9a2c34dac4a295477653c1362b4548d7b.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js></script><script integrity="sha256-LVPRt2Ca+MpOY1KztdII4jRv+U0kJBcBZEvwhZr2a4Y=" src=https://sergiocarracedo.es/js/search.2d53d1b7609af8ca4e6352b3b5d208e2346ff94d24241701644bf0859af66b86.js></script></body></html>
