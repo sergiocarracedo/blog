@@ -1,6 +1,6 @@
 ---
 title: "A real-world \"on a meeting\" light sign"
-date: 2024-06-17
+date: 2024-06-16
 cover: IMG_20240518_172824.jpg
 url: /a-real-world-on-a-meeting-light-sign
 tags:
