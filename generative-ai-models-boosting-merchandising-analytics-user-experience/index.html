@@ -31,17 +31,17 @@ I wrote it in collaboration with <a href=https://www.linkedin.com/in/mgarlorenzo
 </span></span></code></pre></div><p>And this is how we decide which component show.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-vue data-lang=vue><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;chat-messages&#34;</span>&gt;
 </span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>template</span> <span style=color:#f92672>v-for</span><span style=color:#e6db74>=&#34;(message, index) in messages&#34; </span><span style=color:#f92672>:key</span><span style=color:#e6db74>=&#34;index&#34;</span>&gt;          
 </span></span><span style=display:flex><span>	&lt;<span style=color:#f92672>q-chat-message</span>
-</span></span><span style=display:flex><span>      <span style=color:#f92672>v-if</span><span style=color:#e6db74>=&#34;message.type === &#39;text&#39;&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      :avatar=&#34;message.avatar&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      :name=&#34;message.name&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      :sent=&#34;message.sent&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      :text=&#34;message.text&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    /&gt;    
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &lt;div class=&#34;chart&#34; v-if=&#34;message.type === &#39;chart&#39;&#34;&gt;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &lt;v-chart :option=&#34;message.options&#34; autoresize class=&#34;chart&#34;/&gt;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &lt;/div&gt;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &lt;div class=&#34;table-wrapper&#34;  v-if=&#34;message.type === &#39;table-data&#39;&#34;</span>&gt;
-</span></span><span style=display:flex><span>	  &lt;<span style=color:#f92672>q-table</span> <span style=color:#f92672>:columns</span><span style=color:#e6db74>=&#34;getTableCols(message.data)&#34;</span> <span style=color:#f92672>:rows</span><span style=color:#e6db74>=&#34;message.data&#34;</span> <span style=color:#a6e22e>dense</span>&gt;<span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>/q-table&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>v-if</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.type === &#39;text&#39;&#34;</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>:avatar</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.avatar&#34;</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>:name</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.name&#34;</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>:sent</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.sent&#34;</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>:text</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.text&#34;</span>
+</span></span><span style=display:flex><span>    /&gt;    
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;chart&#34;</span> <span style=color:#f92672>v-if</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.type === &#39;chart&#39;&#34;</span>&gt;
+</span></span><span style=display:flex><span>      &lt;<span style=color:#f92672>v-chart</span> <span style=color:#f92672>:option</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.options&#34;</span> <span style=color:#a6e22e>autoresize</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;chart&#34;</span>/&gt;
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;table-wrapper&#34;</span>  <span style=color:#f92672>v-if</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.type === &#39;table-data&#39;&#34;</span>&gt;
+</span></span><span style=display:flex><span>	  &lt;<span style=color:#f92672>q-table</span> <span style=color:#f92672>:columns</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;getTableCols(message.data)&#34;</span> <span style=color:#f92672>:rows</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message.data&#34;</span> <span style=color:#a6e22e>dense</span>&gt;&lt;/<span style=color:#f92672>q-table</span>&gt;
 </span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
 </span></span><span style=display:flex><span>  &lt;/<span style=color:#f92672>template</span>&gt;
 </span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
