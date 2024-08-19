@@ -6,7 +6,7 @@ url: /circular-dependencies
 tags:
   - javascript
   - typescript
-  - clear code  
+  - clean code
 ---
 Circular imports (or circular dependencies, or cycle dependencies, but not the same as circular references) are easy to have in your code base, and more when the code grows. It can impact in the bundle generation or cause issues (for example in HMR) and you should avoid them because they are a symptom of an incorrect architecture or code organization and is a big code smell.
 
