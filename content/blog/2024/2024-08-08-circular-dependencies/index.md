@@ -1,6 +1,6 @@
 ---
 title: "Detecting circular dependencies in Javascript projects"
-date: 2024-08-10
+date: 2024-08-19
 cover: pexels-miriam-alonso-7585854.jpg
 url: /circular-dependencies
 tags:
