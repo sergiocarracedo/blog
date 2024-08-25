@@ -1,7 +1,7 @@
 ---
 title: "Are you using semicolons in JS/TS? Maybe is time to remove them"
-date: 2024-08-19
-cover: 
+date: 2024-08-25
+cover: pexels-karolina-grabowska-4021799.jpg
 url: /no-more-js-semicolons
 tags:
   - javascript
@@ -101,7 +101,10 @@ Check yourself, open the [Typescript playground](https://www.typescriptlang.org/
 
 
 ## Conclusion
-I think there are good arguments in both positions, and I guess the most conventional and extended position is to use semicolons, but I wanted to provide a different point of view about it, and I feel very comfortable not using them, but I have not big issues working with our without semicolons, it's not a blocking or an annoying thing
+I think there are good arguments in both positions, and I guess the most conventional and extended position is to use semicolons in JS, but in TS seems very extended to don't use them. I think both positions are valid, but maybe you can spend a few minutes to think about that and what do you prefer. 
 
-I don´t want to create a flame, flames are unuseful, just to know the different opinions.
+I feel very comfortable not using them, but in any case I have not big issues working with or without semicolons, it's not a blocking or an annoying thing.
+
+I don´t want to create a flame, flames are unuseful, just to know the different opinions. 
+
 What do you use and/or prefer? Please let me know in the comments
