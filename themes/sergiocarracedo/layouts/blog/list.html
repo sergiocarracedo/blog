@@ -1,10 +1,17 @@
 {{ define "main" }}
+{{ $pages := (where .Site.Pages "Section" "in" "blog") }}
 <section class="section wrapper-1200">
   <header class="section__header">
     <h1 class="section__title page-title">
-      {{ .Title }}
+      {{ .Title }} <small>[{{ len ($pages) }} posts]</small>
     </h1>
+    <hr class="break"/>
+    <aside class="section__aside">
+      {{ partial "years.html" . }}
+    </aside>
   </header>
+
+
 
   {{ if .Content }}
   <div class="section__content">

@@ -13,7 +13,7 @@
     {{ if $cover }}
     {{ $cover := ($cover.Fill "1200x400 Center")}}
     <figure class="post__cover">
-      <img src="{{ $cover.RelPermalink }}" alt="{{ .Title }}" width="{{ $cover.Width }}" height="{{ $cover.Height }}"/>
+      <img alt="{{ .Title }}" height="{{ $cover.Height }}" src="{{ $cover.RelPermalink }}" width="{{ $cover.Width }}"/>
     </figure>
     {{ end }}
 
@@ -28,12 +28,16 @@
     <div class="wrapper-1200">
       {{ partial "post-nav.html" .}}
     </div>
+
+    <div class="wrapper-1200 post__nav-years">
+      {{ partial "years" . }}
+    </div>
+
   </aside>
 
   <aside class="post__search-wrapper">
     <div class="wrapper-1200">
-      Search in this blog:
-      {{ partial "search-form.html" .}}
+      {{ partial "search-block.html" .}}
     </div>
   </aside>
 

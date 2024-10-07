@@ -1,0 +1,3 @@
+{{ $pages := (where .Site.Pages "Section" "in" "blog") }}
+Search in <strong>{{len ($pages)}}</strong> blog posts:
+{{ partial "search-form.html" .}}

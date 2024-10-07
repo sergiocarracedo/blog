@@ -1,5 +1,6 @@
 ---
 title: About me
+exclude: true
 ---
 I discovered computers when I was child in a moment the home computers started to be more common. My first computer was
 an [Amstrad CPC 464](https://en.wikipedia.org/wiki/Amstrad_CPC) with a green-screen, in that moment I understood and

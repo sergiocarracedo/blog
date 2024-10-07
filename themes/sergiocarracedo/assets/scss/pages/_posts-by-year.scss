@@ -1,0 +1,42 @@
+.posts-by-year {
+  $first-col-width: 200px;
+  $breakpoint: 500px;
+
+  margin-bottom: 40px;
+
+  &__title {
+    margin-bottom: 7px;
+    font-weight: bold;
+
+    text-align: right;
+    font-size: 1.1em;
+
+    @media screen and (min-width: $breakpoint) {
+      width: $first-col-width;
+    }
+  }
+
+  &__posts {
+  }
+
+  &__post {
+    margin-bottom: 7px;
+    line-height: 1.1em;
+
+    @media screen and (min-width: $breakpoint) {
+      display: flex;
+      gap: 10px;
+      &-date {
+        flex-basis: $first-col-width;
+        flex-shrink: 0;
+        text-align: right;
+      }
+    }
+
+    @media screen and (max-width: $breakpoint - 1) {
+      margin-bottom: 15px;
+    }
+
+  }
+
+}

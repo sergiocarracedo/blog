@@ -1,5 +1,6 @@
 ---
 title: Cookies
+exclude: true
 ---
 
 Esta web, como otras muchas, utiliza cookies que permitirán mejorar su experiencia como usuario y en cumplimiento de la

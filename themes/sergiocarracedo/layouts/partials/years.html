@@ -1,0 +1,7 @@
+<ul class="years">
+  {{ range (where (where .Site.Pages "Section" "in" "blog") "Params.exclude" "eq" nil).GroupByDate "2006" }}
+  <li>
+    <a class="link" href="{{ "blog/by-year" | absURL }}#{{ .Key }}">{{ .Key }}</a>
+  </li>
+  {{ end }}
+</ul>
