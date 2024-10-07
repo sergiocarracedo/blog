@@ -8,4 +8,9 @@
     background: var(--primary-color);
     color: var(--contrast-text-color) !important;
   }
+
+  @media screen and (max-width: 768px){
+    font-size: 2rem;
+
+  }
 }
