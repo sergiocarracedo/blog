@@ -5016,12 +5016,22 @@ img {
   .page-title::selection {
     background: var(--primary-color);
     color: var(--contrast-text-color) !important; }
-
+  @media screen and (max-width: 768px) {
+    .page-title {
+      font-size: 2rem; } }
 .background-paper-secondary {
   background-color: var(--secondary-color);
   background-image: linear-gradient(var(--primary-color-10) 2px, transparent 2px), linear-gradient(90deg, var(--primary-color-10) 2px, transparent 2px), linear-gradient(var(--primary-color-10) 1px, transparent 1px), linear-gradient(90deg, var(--primary-color-10) 1px, var(--secondary-color) 1px);
   background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px; }
+
+.link {
+  transition: all .3s ease-in-out;
+  display: block;
+  color: var(--primary-color);
+  text-decoration: underline 0.1em var(--primary-color-50); }
+  .link:hover {
+    text-decoration-color: transparent; }
 
 .social__link {
   background: white;
@@ -5162,6 +5172,14 @@ img {
     background: transparent;
     border: 0;
     transform: var(--button-transform); }
+
+.years {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-direction: row; }
+  .years a {
+    font-size: 0.9em; }
 
 .home-hero {
   padding: 20px 0;
@@ -5349,6 +5367,11 @@ body.home.not-in-top .web-header {
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center; }
+  .section__title small {
+    font-size: 0.6em; }
+  .section .break {
+    flex-basis: 100%;
+    height: 0; }
 
 .post__cover img, .post__content img {
   border-radius: 5px;
@@ -5669,6 +5692,12 @@ body.home.not-in-top .web-header {
     .post__nav-wrapper .wrapper-1200 > * {
       flex: 1; }
 
+.post__nav-years {
+  padding-top: 20px;
+  text-align: center; }
+  .post__nav-years .years {
+    justify-content: center; }
+
 .blog-link {
   align-items: center;
   justify-content: center;
@@ -5741,3 +5770,28 @@ body.home.not-in-top .web-header {
   text-align: center; }
   .page-not-found h2 {
     margin-bottom: 20px; }
+
+.posts-by-year {
+  margin-bottom: 40px; }
+  .posts-by-year__title {
+    margin-bottom: 7px;
+    font-weight: bold;
+    text-align: right;
+    font-size: 1.1em; }
+    @media screen and (min-width: 500px) {
+      .posts-by-year__title {
+        width: 200px; } }
+  .posts-by-year__post {
+    margin-bottom: 7px;
+    line-height: 1.1em; }
+    @media screen and (min-width: 500px) {
+      .posts-by-year__post {
+        display: flex;
+        gap: 10px; }
+        .posts-by-year__post-date {
+          flex-basis: 200px;
+          flex-shrink: 0;
+          text-align: right; } }
+    @media screen and (max-width: 499px) {
+      .posts-by-year__post {
+        margin-bottom: 15px; } }
