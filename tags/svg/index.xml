@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Svg on Sergio Carracedo</title><link>https://sergiocarracedo.es/tags/svg/</link><description>Recent content in Svg on Sergio Carracedo</description><generator>Hugo</generator><language>en</language><lastBuildDate>Thu, 01 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://sergiocarracedo.es/tags/svg/index.xml" rel="self" type="application/rss+xml"/><item><title>Custom SVG icon set management with Vue</title><link>https://sergiocarracedo.es/custom-svg-icon-set-management-with-vue/</link><pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/custom-svg-icon-set-management-with-vue/</guid><description>Manage an icon set can seem a simple task but can be tricky.
-First, there a lot of ways to use an icon on a web page, all with pros and contras:
-Let&amp;rsquo;s use this SVG image created by Anu Rocks for all examples.
-We will assume our icon set is monochrome.
-&amp;lt;img&amp;gt; tag The simplest way of adding an icon is using the &amp;lt;img&amp;gt; tag as the other images.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Svg on Sergio Carracedo</title><link>https://sergiocarracedo.es/tags/svg/</link><description>Recent content in Svg on Sergio Carracedo</description><generator>Hugo</generator><language>en</language><lastBuildDate>Thu, 01 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://sergiocarracedo.es/tags/svg/index.xml" rel="self" type="application/rss+xml"/><item><title>Custom SVG icon set management with Vue</title><link>https://sergiocarracedo.es/custom-svg-icon-set-management-with-vue/</link><pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/custom-svg-icon-set-management-with-vue/</guid><description>&lt;p>Manage an icon set can seem a simple task but can be tricky.&lt;/p>
+&lt;p>First, there a lot of ways to use an icon on a web page, all with pros and contras:&lt;/p>
+&lt;p>Let&amp;rsquo;s use this SVG image created by &lt;a href="https://freeicons.io/profile/730">Anu Rocks&lt;/a> for all examples.&lt;/p>
+&lt;p>&lt;strong>We will assume our icon set is monochrome.&lt;/strong>&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;a href="https://freeicons.io/common-ui-icons/battery-medium-icon-54110">&lt;img src="https://sergiocarracedo.es/custom-svg-icon-set-management-with-vue/example.svg">&lt;/a>&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;h2 id="img-tag">&amp;lt;img&amp;gt; tag&lt;/h2>
+&lt;p>The simplest way of adding an icon is using the &lt;code>&amp;lt;img&amp;gt;&lt;/code> tag as the other images.&lt;/p></description></item></channel></rss>
