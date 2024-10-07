@@ -24,7 +24,7 @@
   }
 
   &:active {
-    background-color: rgb(255, 56, 86);
+    background-color: var(--btn-bg-color);
     box-shadow: var(--btn-shadow-color) 0 0 0 0;
     transform: translateY(5px);
     transition: all .2s ease-in-out;
