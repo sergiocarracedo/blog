@@ -4980,7 +4980,7 @@ img {
   .btn:hover {
     box-shadow: var(--btn-shadow-color) 0 4px 0 0; }
   .btn:active {
-    background-color: #ff3856;
+    background-color: var(--btn-bg-color);
     box-shadow: var(--btn-shadow-color) 0 0 0 0;
     transform: translateY(5px);
     transition: all .2s ease-in-out; }
