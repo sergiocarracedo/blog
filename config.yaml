@@ -1,5 +1,6 @@
 baseURL: 'https://sergiocarracedo.es/'
 languageCode: 'en-us'
+defaultContentLanguage: 'en'
 title: 'Sergio Carracedo'
 
 theme: 'sergiocarracedo'
@@ -9,6 +10,7 @@ theme: 'sergiocarracedo'
 languages:
   en:
     languageName: English
+    languageCode: en-us
     weight: 1
 
 # Enable global emoji support

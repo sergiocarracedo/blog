@@ -6,7 +6,7 @@
         <a class="post__link btn btn--img" href="{{ .RelPermalink }}" >
           {{ $image := $image.Fill "500x250 Center"}}
           {{ with $image }}
-          <img src="{{ .RelPermalink}}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ .Title }}"/>
+          <img alt="{{ .Title }}" height="{{ .Height }}" src="{{ .RelPermalink}}" width="{{ .Width }}"/>
           {{ end }}
         </a>
       {{ end }}
@@ -24,11 +24,11 @@
     </header>
 
 
-    <a href="{{ .RelPermalink }}"class="post__summary">
+    <a aria-label="{{ .Summary | plainify | truncate 40 }}" class="post__summary" href="{{ .RelPermalink }}">
       <p>{{ .Summary | safeHTML | truncate 100 }}</p>
     </a>
 
-    <a href="{{ .RelPermalink }}" class="post__read-more btn">
+    <a class="post__read-more btn" href="{{ .RelPermalink }}" title="{{ .Title | plainify }}">
       Read more
     </a>
   </div>

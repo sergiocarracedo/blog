@@ -24,6 +24,10 @@
   <link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon">
   <meta content="#da532c" name="msapplication-TileColor">
   <meta content="#ffffff" name="theme-color">
+  <link crossorigin href="https://fonts.googleapis.com/css2?family=Rozha+One:wght@400;500;600;700&display=swap" rel="preconnect">
+  <link crossorigin href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;500;600;700&display=swap" rel="preconnect">
+  <link crossorigin href="https://fonts.googleapis.com/css2?family=Allura:wght@400;500;600;700&display=swap" rel="preconnect">
+
 
   {{ end }}
   {{ partial "opengraph.html" . }}
@@ -36,9 +40,9 @@
 
 
   {{ $scss := resources.Get "scss/main.scss" }}
-  {{ $style := $scss | toCSS | resources.Fingerprint }}
-  <link href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}" rel="stylesheet">
+  {{ $style := $scss | toCSS | resources.Minify | resources.Fingerprint  }}
+  <link href="{{ $style.Permalink  }}" integrity="{{ $style.Data.Integrity }}" rel="stylesheet preconnect">
 
-  <link href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" rel="stylesheet"
-        type="text/css"/>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css"  rel="stylesheet preload"
+         type="text/css"/>
 </head>

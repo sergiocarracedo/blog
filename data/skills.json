@@ -9,7 +9,7 @@
     "name": "Vue",
     "icon": "fab fa-vuejs",
     "color": "#41B883",
-    "textColor": "white"
+    "textColor": "black"
   },
   {
     "name": "JS",
@@ -20,16 +20,18 @@
   {
     "name": "Golang",
     "color": "#29BEB0",
-    "textColor": "white"
+    "textColor": "black"
   },
   {
     "name": "Node.js",
     "color": "#68A063",
-    "icon": "fab fa-node-js"
+    "icon": "fab fa-node-js",
+    "textColor": "black"
   },
   {
     "name": "Nuxt.js",
-    "color": "#41B883"
+    "color": "#41B883",
+    "textColor": "black"
   },
   {
     "name": "Vitest"
@@ -50,7 +52,7 @@
   {
     "name": "PHP",
     "color": "#787CB5",
-    "textColor": "white",
+    "textColor": "black",
     "icon": "fab fa-php"
   },
   {
@@ -62,7 +64,8 @@
   {
     "name": "Linux",
     "icon": "fab fa-linux",
-    "color": "#f99"
+    "color": "#f99",
+    "textColor": "black"
   },
   {
     "name": "k8s",
