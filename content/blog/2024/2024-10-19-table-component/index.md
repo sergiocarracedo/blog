@@ -1,7 +1,7 @@
 ---
 title: "Lessons I learned creating a table component (part I)"
 date: 2024-10-19
-cover: pexels-ezz7-678289.jpg
+cover: pexels-pixabay-210607.jpg
 url: /creating-a-table-component-i
 tags:  
   - table
