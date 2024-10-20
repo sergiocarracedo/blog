@@ -5425,22 +5425,37 @@ body.home.not-in-top .web-header {
     color: var(--primary-color);
     text-decoration: underline 0.1em var(--secondary-color); }
   .post__content h1 {
-    font-size: 1.8em; }
+    font-size: 1.8em;
+    margin-bottom: 1.44em;
+    margin-top: 2.88em; }
   .post__content h2 {
-    font-size: 1.6em; }
+    font-size: 1.6em;
+    margin-bottom: 1.28em;
+    margin-top: 2.56em; }
   .post__content h3 {
-    font-size: 1.4em; }
+    font-size: 1.4em;
+    margin-bottom: 1.12em;
+    margin-top: 2.24em; }
   .post__content h4 {
-    font-size: 1.25em; }
+    font-size: 1.1em;
+    margin-bottom: 0.88em;
+    margin-top: 1.76em; }
   .post__content h5 {
-    font-size: 1.05em; }
+    font-size: 1.05em;
+    margin-bottom: 0.84em;
+    margin-top: 1.68em; }
   .post__content h6 {
-    font-size: 0.9em; }
-  .post__content > h1, .post__content > h2, .post__content > h3, .post__content > h4, .post__content > h5, .post__content > h6 {
-    margin-top: 3rem;
-    margin-bottom: 0.8rem; }
-    .post__content > h1:first-child, .post__content > h2:first-child, .post__content > h3:first-child, .post__content > h4:first-child, .post__content > h5:first-child, .post__content > h6:first-child {
-      margin-top: 0; }
+    font-size: 0.9em;
+    margin-bottom: 0.72em;
+    margin-top: 1.44em; }
+  .post__content > h1:first-child, .post__content > h2:first-child, .post__content > h3:first-child, .post__content > h4:first-child, .post__content > h5:first-child, .post__content > h6:first-child {
+    margin-top: 0; }
+  .post__content > h1:before {
+    content: '# '; }
+  .post__content > h2:before {
+    content: '## '; }
+  .post__content > h3:before {
+    content: '### '; }
   .post__content p {
     margin-bottom: 1.4em;
     line-height: 1.6em; }
