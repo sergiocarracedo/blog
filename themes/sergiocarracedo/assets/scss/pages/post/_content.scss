@@ -49,7 +49,7 @@
           h1: 1.8em,
           h2: 1.6em,
           h3: 1.4em,
-          h4: 1.25em,
+          h4: 1.1em,
           h5: 1.05em,
           h6: 0.9em
   );
@@ -57,17 +57,28 @@
   @each $tag, $size in $sizes {
     #{$tag} {
       font-size: $size;
+      margin-bottom: #{$size*0.8};
+      margin-top: #{$size*1.6};
     }
   }
 
   > h1, > h2, > h3, > h4, > h5, > h6 {
-    margin-top: 3rem;
-    margin-bottom: 0.8rem;
-
     &:first-child {
       margin-top: 0;
     }
   }
+
+  > h1:before {
+    content: '# '
+  }
+  > h2:before{
+    content: '## '
+  }
+
+  > h3:before{
+    content: '### '
+  }
+
 
   p {
     margin-bottom: 1.4em;
