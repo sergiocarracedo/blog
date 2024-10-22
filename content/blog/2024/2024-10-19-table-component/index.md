@@ -157,3 +157,5 @@ Defining this architecture is vital for other functionalities the table can impl
 In the next post, we will understand the different ways the data can be sorted, and paginated (spoiler: external or internal) and the implications it has in other features.
 
 > If you like this post, please leave a comment to let me know your interest.
+  
+[Lessons I learned creating a table component (part II)]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}})
