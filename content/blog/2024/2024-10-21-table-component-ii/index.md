@@ -1,5 +1,5 @@
 ---
-title: "Lessons I learned creating a table component (part II)"
+title: "Pagination, sorting, filtering and row selection: Lessons I learned creating a table component (part II)"
 date: 2024-10-30
 cover: pexels-pixabay-159510.jpg
 url: /creating-a-table-component-ii
