@@ -9,9 +9,9 @@ tags:
   - filtering 
 ---
 
-I wrote a couple of posts ([1]({{< ref "/blog/2024/2024-10-19-table-component" >}}) and [2]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}})) about my learnings creating a table components, and this post can be the third part as I created a query builder for that component, but it can be used in other uses cases.
+I wrote a couple of posts ([1]({{< ref "/blog/2024/2024-10-19-table-component" >}}) and [2]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}})) about my learnings creating table components, and this post can be the third part as I made a query builder for that component, but it can be used in other uses cases.
 
-A query builder provides a convenient and (usually) simple interface to create and execute queries (filtering) over a data set.
+A query builder provides a convenient and (usually) simple interface for creating and executing queries (filtering) on a data set.
 
 In TypeScript (or any other language) if you want to filter an array of objects like:
 
@@ -30,7 +30,7 @@ const filteredData = data.filter(row => {
 })
 ```
 
-The goal is to define a dynamic way to define the filters without change the code.
+The goal is to define a dynamic way to define the filters without changing the code.
 
 ## Characterizing a filter
 
@@ -38,7 +38,7 @@ A simple filter, is basically, a value source (the attribute name), a value to c
 
 Using Typescript we can model that like:
 
-> NOTE: I'm not going to do a complex typing to simplify the code, but in a production is necesary to type type the field to ensure is a key of the data and the value type
+> NOTE: I'm not going to do complex typing to simplify the code, but in production is necessary to type the field to ensure is a key of the data and the value type
 
 ```ts
 type FilterComparationOperator = 'eq' | 'neq'| 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'notContains' | 'startsWith' | 'endsWith'
@@ -49,8 +49,8 @@ interface Filter {
   caseSensitive?: boolean
 }
 ```
-First we model in the type `FilterComparationOperator` the different ways to compare the field value and the filter value:
-* equal (eq): 
+First, we model in the type `FilterComparationOperator` the different ways to compare the field value and the filter value:
+* equal (eq):
 * non-equal (neq)
 * great than (gt)
 * great than or equal (gte)
@@ -60,11 +60,11 @@ First we model in the type `FilterComparationOperator` the different ways to com
 * non-contains the value (notContains)
 * starts with the value (startsWith)
 * endsWith (endsWith)
-* You can thing more operators if you need it
+* You can think more operators if you need it
 
-Then we model the filter, with the field we will use to the the value in the data, the value for the filter, the comparator operator, and a couple of flag to refine the filter behavior, if it should case-sensitive (case-insensitive by default)
+Then we model the filter, with the field we will use to the the value in the data, the value for the filter, the comparator operator, and a couple of flags to refine the filter behavior, if it should be case-sensitive (case-insensitive by default)
 
-With that we an write a function to compare 2 values using the operator and the filter constraints like if the comparative should be case-sensitive or non-case-sensitive: 
+With that, we will write a function to compare 2 values using the operator and the filter constraints like if the comparative should be case-sensitive or non-case-sensitive:
 
 ```ts
 function compare<T = unknown>(
@@ -77,8 +77,8 @@ function compare<T = unknown>(
     return typeof value === "string";
   }
 
-  // If the filter value is an string and the filter is not caseSensitive
-  // converts the values to lowercase for a case insensitive comparation
+  // If the filter value is a string and the filter is not caseSensitive
+  // converts the values to lowercase for a case insensitive comparison
   const filterValueComp =
     isString(filterValue) && !caseSensitive
       ? filterValue.toLocaleLowerCase()
@@ -138,13 +138,13 @@ console.log(compare("lorem ipsum dolor est", "contains", "DOloR")); //True
 console.log(compare("lorem ipsum dolor est", "contains", "DOloR", true)); //False
 ```
 
-## Having multiple filters and complex relationship between them
+## Having multiple filters and complex relationships between them
 
-We want to let the user create complex comparatives like: if the (temperature is lower than 20 and temperature is higher than 0) or the temperature is -999 or ((the city name is Vigo and country is Spain) or (city name is Santiago and country is chile))
+We want to let the user create complex comparatives like if the (temperature is lower than 20 and temperature is higher than 0) or the temperature is -999 or ((the city name is Vigo and country is Spain) or (city name is Santiago and the country is chile))
 
-Note the parenthesis that groups the logic as is not the same `A and B or C` (same as `(A and B) or C) than `A and (B or C)`. [Read more about order of operations](https://en.wikipedia.org/wiki/Order_of_operations#Programming_languages)  
+Note the parenthesis that groups the logic as is not the same `A and B or C` (same as `(A and B) or C) than `A and (B or C)`. [Read more about the order of operations](https://en.wikipedia.org/wiki/Order_of_operations#Programming_languages)
 
-So we need to define an struct to model this groups and the relationship
+So we need to define a struct to model these groups and the relationship.
 
 ```ts
 interface GroupFilter {
@@ -154,7 +154,7 @@ interface GroupFilter {
 }
 ```
 
-This "filter group" can contain filters and other groups (that can contain more filters and more groups,....) and the operator to define the relationships between the filters and groups. For example: 
+This "filter group" can contain filters and other groups (that can contain more filters and more groups,....) and the operator to define the relationships between the filters and groups. For example:
 
 ```ts
 const group: GroupFilter = {
@@ -162,9 +162,9 @@ const group: GroupFilter = {
   filters: [{ field: "temperature", value: 20, operator: "lt" }, { field: "temperature", value: 0, operator: "gte" }],
 };
 ```
-defines a filter group that check if the temperature is lower than 20 OR higher (or equal) than 0.
+defines a filter group that checks if the temperature is lower than 20 OR higher (or equal) than 0.
 
-With this simple nested struct we can create complex filters like the one in the example:
+With this simple nested struct, we can create complex filters like the one in the example:
 
 ```ts
 // if the (temperature is lower than 20 and temperature is higher than 0) or the temperature is -999 or ((the city name is Vigo and country is Spain) or (city name is Santiago and country is Chile))
@@ -211,7 +211,7 @@ function filter<T extends Record<PropertyKey, any>>(
   data: T[],
   filterGroup: GroupFilter
 ): T[] {
-  // If the no rows, we dont need to continue
+  // If the no rows, we don't need to continue
   if (data.length === 0) {
     return data;
   }
@@ -241,7 +241,7 @@ function filter<T extends Record<PropertyKey, any>>(
     const filters = filterGroup.filters || [];
 
     if (filterGroup.operator === "and") {
-      // For the and operator, we should return true if all of the filters and groups fulfills. If no filters or no groups we consider it a match
+      // For the and operator, we should return true if all of the filters and groups are fulfilled. If no filters or no groups we consider it a match
       return (
         (filters.length === 0 || filters.every(filterColFunc)) &&
         (groups.length === 0 ||
@@ -249,7 +249,7 @@ function filter<T extends Record<PropertyKey, any>>(
           groups.every((group: GroupFilter) => filterRow(row, group)))
       );
     } else {
-      // For or operator, we should return true if any of the filters or groups fulfill or they are emtry
+      // For or operator, we should return true if any of the filters or groups fulfill or they are empty
       return (
         filters.some(filterColFunc) ||
         groups.some((group: GroupFilter) => filterRow(row, group)) ||
@@ -263,7 +263,7 @@ function filter<T extends Record<PropertyKey, any>>(
 }
 ```
 
-And now we can execute out filter just doing:
+Now we can execute our filter just by doing:
 
 ```ts
 const filteredData = filter(data, filters)
@@ -278,11 +278,10 @@ const filteredData = filter(data, filters)
 
 ## Last thoughts
 
-The code I show you here is just a base, there improvements it needs to be production-ready, for example the typings, the comparation between numbers and string (now 1 !== "1" and maybe you want to consider that is the same for filtering porpoises), the performance, etc.
+The code I show you here is just a base, there are improvements it needs to be production-ready, for example the typings, the comparison between numbers and strings (now 1 !== "1" and maybe you want to consider that is the same for filtering porpoises), the performance, etc.
 
-But my goal is to show you how simple is to create a dynamic filter that allow the user to define how to filter the data, for example the user can generate the filters groups using a query builder UI or just a form to select a couple of value, but the developer can define the operators depending on the field without need to write it in the code.
+But my goal is to show you how simple is to create a dynamic filter that allows the user to define how to filter the data, for example, the user can generate the filter groups using a query builder UI or just a form to select a couple of value, but the developer can define the operators depending on the field without the need to write it in the code.
 
-Read the code carefully and check how powerful are the recursive functions, they can seem complicated in the beginning, but when you start to understand the, they make the code simpler and more flexible
-
+Read the code carefully and check how powerful are the recursive functions, they can seem complicated in the beginning, but when you start to understand them, they make the code simpler and more flexible.
 
 
