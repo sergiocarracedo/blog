@@ -8,6 +8,9 @@ tags:
   - ui
 ---
 
+> This post is part of a post series: [Second part]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}})), [Third part]({{< ref "/blog/2024/2024-10-27-table-component-iii" >}}), and an extra related post: [Writing a query builder to filter data]({{< ref "/blog/2024/2024-10-24-query-builder" >}})
+
+
 I love creating UI components because they are the fundamental bricks supporting a UI application. When the components are good enough, both User and Developer experience increases, making applications consistent, easy to implement, and easy to scale.
 
 If the UI application shows data in lists, sooner or later, you will need a table. Tables are UI components that can become very complex depending on their features. The goal of this blog post is not to tell you how to program features but to help you understand some typical needs and features tables should implement to give you useful ideas for your custom UI table component's implementation.

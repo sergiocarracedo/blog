@@ -8,6 +8,9 @@ tags:
   - ui
 ---
 
+
+> This post is part of a post series: [First part]({{< ref "/blog/2024/2024-10-19-table-component" >}})), [Third part]({{< ref "/blog/2024/2024-10-27-table-component-iii" >}}), and an extra related post: [QWriting a query builder to filter data]({{< ref "/blog/2024/2024-10-24-query-builder" >}})
+
 In the [first chapter]({{< ref "/blog/2024/2024-10-19-table-component" >}}) I talked about the data and cols definition. How to manipulate the data, transform it, and format it.
 
 This second chapter will focus on the pagination, sorting, and filtering features and the row selection.
