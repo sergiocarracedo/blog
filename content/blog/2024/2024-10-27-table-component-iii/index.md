@@ -68,6 +68,6 @@ For the internal cols the fixed property should not affect them, but we need to 
 
 Also, it is important to force some flags or properties in the fixed cols to overwrite the user config, for example, a fixed col is not sortable.
 
-## More things to bear in mind
+## In the next chapter
 
 A table component is (or can be) a complex component, and I prefer to provide the maximum number of features in the table itself, making it unnecessary to think about the implementation outside of the table, and making it simple to fix bugs and maintain the table. If you like this approach (vs simple table that only renders data in a tabular way) there are a lot of things to think about, I will talk about Table settings persistence, nested rows, row actions, toolbar, action bar, empty state, async loading, expandable rows in the next post.
