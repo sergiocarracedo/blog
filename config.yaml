@@ -24,8 +24,6 @@ params:
   disqus: sergiocarracedo.disqus.com
   favicon: 'favicon.png'
   mainSections: ["posts"]
-  images:
-    - '/i/cover.jpg'
 
 permalinks:
   '/2021': '/:slug'

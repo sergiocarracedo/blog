@@ -9,7 +9,7 @@ tags:
   - filtering 
 ---
 
-I wrote a couple of posts ([1]({{< ref "/blog/2024/2024-10-19-table-component" >}}) and [2]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}})) about my learnings creating table components, and this post can be the third part as I made a query builder for that component, but it can be used in other uses cases.
+I wrote posts ([1]({{< ref "/blog/2024/2024-10-19-table-component" >}}), [2]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}}) and [3]({{< ref "/blog/2024/2024-10-27-table-component-iii" >}})) about my learnings creating table components, and this post can be the third part as I made a query builder for that component, but it can be used in other uses cases.
 
 A query builder provides a convenient and (usually) simple interface for creating and executing queries (filtering) on a data set.
 
