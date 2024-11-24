@@ -12,6 +12,15 @@
     "textColor": "black"
   },
   {
+    "name": "React",
+    "icon": "fab fa-react",
+    "color": "#61dbfb",
+    "textColor": "black"
+  },
+  {
+    "name": "Clean architectures"
+  },
+  {
     "name": "JS",
     "icon": "fab fa-js",
     "color": "#F0DB4F",
@@ -39,15 +48,15 @@
   {
     "name": "Vite"
   },
-  {
-    "name": "Clean architectures"
-  },
+
   {
     "name": "Data Visualization",
     "icon": "fas fa-grip-horizontal"
   },
   {
-    "name": "e-charts"
+    "name": "echarts",
+    "icon": "fa fa-chart-pie",
+    "color": "#F72C5B"
   },
   {
     "name": "PHP",
