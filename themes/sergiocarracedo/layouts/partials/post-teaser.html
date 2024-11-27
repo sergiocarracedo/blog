@@ -24,9 +24,9 @@
     </header>
 
 
-    <a aria-label="{{ .Summary | plainify | truncate 40 }}" class="post__summary" href="{{ .RelPermalink }}">
-      <p>{{ .Summary | safeHTML | truncate 100 }}</p>
-    </a>
+    <div aria-label="{{ .Summary | plainify | truncate 40 }}" class="post__summary">
+      {{ .Summary | safeHTML | truncate 100 }}
+    </div>
 
     <a class="post__read-more btn" href="{{ .RelPermalink }}" title="{{ .Title | plainify }}">
       Read more
