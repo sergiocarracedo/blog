@@ -86,7 +86,7 @@ This bar only appears when the user selects more than one row and allows it to e
 ![Action bar](actionbar.png)
 
 
-# Summary
+## Summary
 Creating a table component is a challenging and interesting experience, that requires (as any other component) paying attention to the details, understanding, identifying, and defining the concepts involved in the process. 
 
 My goal with this post series was to give you tips and share the solutions and decisions I made (and why I made them). 
