@@ -1,5 +1,5 @@
 ---
-title: "Lessons I learned creating a table component (part I)"
+title: "Lessons I learned creating a table component (1/4)"
 date: 2024-10-19
 cover: pexels-pixabay-210607.jpg
 url: /creating-a-table-component-i
@@ -8,7 +8,7 @@ tags:
   - ui
 ---
 
-> This post is part of a post series: [Second part]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}})), [Third part]({{< ref "/blog/2024/2024-10-27-table-component-iii" >}}), and an extra related post: [Writing a query builder to filter data]({{< ref "/blog/2024/2024-10-24-query-builder" >}})
+> This post is part of a post series: [Second part]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}})), [Third part]({{< ref "/blog/2024/2024-10-27-table-component-iii" >}}), [Fourth part]({{< ref "/blog/2024/2024-11-26-table-component-iv" >}}), and an extra related post: [Writing a query builder to filter data]({{< ref "/blog/2024/2024-10-24-query-builder" >}})
 
 
 I love creating UI components because they are the fundamental bricks supporting a UI application. When the components are good enough, both User and Developer experience increases, making applications consistent, easy to implement, and easy to scale.

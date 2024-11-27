@@ -1,5 +1,5 @@
 ---
-title: "Column related features: Lessons I Learned Creating a Table Component (part III)"
+title: "Column related features: Lessons I Learned Creating a Table Component (3/4)"
 date: 2024-11-12
 cover: pexels-pixabay-221392.jpg
 url: /creating-a-table-component-iii
@@ -8,7 +8,7 @@ tags:
   - ui
 ---
 
-> This post is part of a post series: [First part]({{< ref "/blog/2024/2024-10-19-table-component" >}}), [Second part]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}})) and an extra related post: [Writing a query builder to filter data]({{< ref "/blog/2024/2024-10-24-query-builder" >}})
+> This post is part of a post series: [First part]({{< ref "/blog/2024/2024-10-19-table-component" >}}), [Second part]({{< ref "/blog/2024/2024-10-21-table-component-ii" >}}), [Fourth part]({{< ref "/blog/2024/2024-11-26-table-component-iv" >}}) and an extra related post: [Writing a query builder to filter data]({{< ref "/blog/2024/2024-10-24-query-builder" >}})
 
 I want to use this last post in the series to discuss col-related features, such as col sorting, hidden cols, excluded cols, fixed cols, etc.
 

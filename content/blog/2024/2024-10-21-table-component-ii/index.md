@@ -1,5 +1,5 @@
 ---
-title: "Table pagination, sorting, filtering and row selection. Lessons I learned creating a table component (part II)"
+title: "Table pagination, sorting, filtering and row selection. Lessons I learned creating a table component (2/4)"
 date: 2024-10-29
 cover: pexels-pixabay-159510.jpg
 url: /creating-a-table-component-ii
@@ -9,7 +9,7 @@ tags:
 ---
 
 
-> This post is part of a post series: [First part]({{< ref "/blog/2024/2024-10-19-table-component" >}})), [Third part]({{< ref "/blog/2024/2024-10-27-table-component-iii" >}}), and an extra related post: [QWriting a query builder to filter data]({{< ref "/blog/2024/2024-10-24-query-builder" >}})
+> This post is part of a post series: [First part]({{< ref "/blog/2024/2024-10-19-table-component" >}})), [Third part]({{< ref "/blog/2024/2024-10-27-table-component-iii" >}}), [Fourth part]({{< ref "/blog/2024/2024-11-26-table-component-iv" >}}), and an extra related post: [Writing a query builder to filter data]({{< ref "/blog/2024/2024-10-24-query-builder" >}})
 
 In the [first chapter]({{< ref "/blog/2024/2024-10-19-table-component" >}}) I talked about the data and cols definition. How to manipulate the data, transform it, and format it.
 
