@@ -8,5 +8,5 @@ different ways (charts) and there are multiple ways of resolving it:&lt;/p>
 &lt;p>Let&amp;rsquo;s see some pros and cons of the different approaches there is no perfect solution, depends on your needs.&lt;/p></description></item><item><title>Creating a simple donut progress chart</title><link>https://sergiocarracedo.es/2020/05/18/Creating-a-simple-donut-chart/</link><pubDate>Mon, 18 May 2020 09:28:03 +0000</pubDate><guid>https://sergiocarracedo.es/2020/05/18/Creating-a-simple-donut-chart/</guid><description>&lt;p>One of more simpler charts you can create is a circular chart to represent the percent of completion of something.&lt;/p>
 &lt;h1 id="first-approximation">First approximation&lt;/h1>
 &lt;p>We could create a SVG document to draw our donut. SVG allow us to represent graphical elements, for example, cicles, rectangles, polygons, etc&amp;hellip; using XML (and therefore accesing to the elements via DOM). SVG is vertorial and is perfect for responsive.&lt;/p>
-&lt;p>&lt;img src="https://sergiocarracedo.es/2020/05/18/Creating-a-simple-donut-chart/01.svg">&lt;/p>
+&lt;p>&lt;img src="01.svg"alt="" title="" />&lt;/p>
 &lt;p>Figure 1 represent that kind of chart, if the value is 100% the donut is perfect, if is 50% donut is a half donut, and 0% means no donut.&lt;/p></description></item></channel></rss>

@@ -13,9 +13,7 @@ function displayResults(e,t){const n=document.getElementById("results");if(e.len
       <i class="far fa-calendar-alt"></i> ${n.date}
     </time>
   
-    <div class="post__tags">
       ${n.tags.map(e=>`<a href="tags/${e}" class="post__tag"><span>${e}</span></a>`).join("")}      
-    </div>
   
     <span class="post__reading-time">
       <i class="far fa-clock"></i> ${n.readingTime}
@@ -35,7 +33,7 @@ function displayResults(e,t){const n=document.getElementById("results");if(e.len
       <p>${n.content.substring(0,150)}...</p>
     </a>
 
-    <a href="${n.url}"class="post__read-more">
+    <a href="${n.url}"class="post__read-more btn">
       Read more
     </a>
   </div>

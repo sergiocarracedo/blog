@@ -3,7 +3,7 @@
 &lt;p>Let&amp;rsquo;s use this SVG image created by &lt;a href="https://freeicons.io/profile/730">Anu Rocks&lt;/a> for all examples.&lt;/p>
 &lt;p>&lt;strong>We will assume our icon set is monochrome.&lt;/strong>&lt;/p>
 &lt;!-- raw HTML omitted -->
-&lt;p>&lt;a href="https://freeicons.io/common-ui-icons/battery-medium-icon-54110">&lt;img src="https://sergiocarracedo.es/custom-svg-icon-set-management-with-vue/example.svg">&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://freeicons.io/common-ui-icons/battery-medium-icon-54110">&lt;img src="example.svg"alt="" title="" />&lt;/a>&lt;/p>
 &lt;!-- raw HTML omitted -->
 &lt;h2 id="img-tag">&amp;lt;img&amp;gt; tag&lt;/h2>
 &lt;p>The simplest way of adding an icon is using the &lt;code>&amp;lt;img&amp;gt;&lt;/code> tag as the other images.&lt;/p></description></item></channel></rss>
