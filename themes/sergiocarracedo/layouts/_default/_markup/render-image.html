@@ -13,14 +13,14 @@
 {{- $sizestag := slice -}}
 {{- range $sizes -}}
 {{- if lt (mul . 1.2) $imageOriginalWidth -}}
-{{- $thumb := $image.Resize (printf "%dx webp q100" .) -}}
+{{- $thumb := $image.Resize (printf "%dx webp q90" .) -}}
 {{- $srcset = $srcset | append (printf ("%s %dw") $thumb.RelPermalink . ) -}}
 {{- $sizestag = $sizestag | append (printf ("(max-width: %dpx) 100vw") . ) -}}
 {{- end -}}
 {{- end -}}
 
 {{- if ne (len $srcset) 3 -}}
-{{- $thumb := $image.Resize (printf "%dx webp q100" $imageOriginalWidth) -}}
+{{- $thumb := $image.Resize (printf "%dx webp q90" $imageOriginalWidth) -}}
 {{- $srcset = $srcset | append (printf ("%s %dw") $thumb.RelPermalink $imageOriginalWidth ) -}}
 {{- $sizestag = $sizestag | append (printf ("%dpx") $imageOriginalWidth ) -}}
 {{- end -}}
