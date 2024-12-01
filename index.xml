@@ -98,7 +98,9 @@ I wrote it with &lt;a href="https://www.linkedin.com/in/mgarlorenzo/">Miguel Gar
  &lt;img
  src="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu1517126561094978434.jpg"
  alt="caniuse css variables"
- title="" srcset="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2712143101988994246.webp 458w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu16625346311424674725.webp 768w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2765121895761830054.webp 1377w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, 1377px"/>
+ title=""
+ width="1377"
+ height="598" srcset="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2712143101988994246.webp 458w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu16625346311424674725.webp 768w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2765121895761830054.webp 1377w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, 1377px"/>
  &lt;figcaption>&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>CSS variables allow us, like another kind of variable in another programming language to store a value we can reuse across our document.&lt;/p></description></item><item><title>Typescript enums, const enums and readonly maps</title><link>https://sergiocarracedo.es/typescript-enums/</link><pubDate>Sun, 29 Jan 2023 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/typescript-enums/</guid><description>&lt;h1 id="enum-basics">Enum basics&lt;/h1>
@@ -258,7 +260,9 @@ and
  &lt;img
  src="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu1462919087267906555.jpg"
  alt=""
- title="" srcset="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu8621489050594597029.webp 499w" sizes="499px"/>
+ title=""
+ width="499"
+ height="229" srcset="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu8621489050594597029.webp 499w" sizes="499px"/>
  &lt;figcaption>&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>We use a lot of operators: sum (+), subtraction (-), multiply (*), division (/), logic and (&amp;amp;&amp;amp;), negation (!),&amp;hellip;&lt;/p>
@@ -389,7 +393,9 @@ For example&lt;/p>
  &lt;img
  src="https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu17565838690649693049.jpg"
  alt=""
- title="" srcset="https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu13753848766067036267.webp 458w, https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu14316939810989933672.webp 768w, https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu2167198694828235898.webp 1200w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, (max-width: 1200px) 100vw"/>
+ title=""
+ width="2402"
+ height="2657" srcset="https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu13753848766067036267.webp 458w, https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu14316939810989933672.webp 768w, https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu2167198694828235898.webp 1200w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, (max-width: 1200px) 100vw"/>
  &lt;figcaption>&lt;/figcaption>
 &lt;/figure>
 (Foto: &lt;a href="https://commons.wikimedia.org/wiki/File:CSIRO_ScienceImage_2936_Nokia_mobile_phone.jpg">Wikimedia&lt;/a>)&lt;/p></description></item><item><title>Haciendo café: simple análisis de costes</title><link>https://sergiocarracedo.es/2019/04/27/haciendo-cafe/</link><pubDate>Sat, 27 Apr 2019 11:44:20 +0000</pubDate><guid>https://sergiocarracedo.es/2019/04/27/haciendo-cafe/</guid><description>&lt;p>Aunque no me puedo considerar un gran &amp;ldquo;cafetero&amp;rdquo;, si que me gusta desayunar con un buen café por las mañanas.&lt;/p>
@@ -404,7 +410,9 @@ For example&lt;/p>
  &lt;img
  src="https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff_hu6821822077903511709.jpg"
  alt=""
- title="" srcset="https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff_hu12642675241762679919.webp 458w, https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff_hu9866769661363466449.webp 833w" sizes="(max-width: 458px) 100vw, 833px"/>
+ title=""
+ width="833"
+ height="627" srcset="https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff_hu12642675241762679919.webp 458w, https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff_hu9866769661363466449.webp 833w" sizes="(max-width: 458px) 100vw, 833px"/>
  &lt;figcaption>&lt;/figcaption>
 &lt;/figure>
 Hace ya unos cuantos meses había comprado &lt;a href="https://amzn.to/2HDOlWM">este aparatillo&lt;/a>: un interruptor wifi, con la intención de probar a &amp;ldquo;domotizar&amp;rdquo; algo en casa.&lt;/p>

@@ -34,7 +34,9 @@ In this first post I&amp;rsquo;m going to talk about the component of why you sh
  &lt;img
  src="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu1517126561094978434.jpg"
  alt="caniuse css variables"
- title="" srcset="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2712143101988994246.webp 458w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu16625346311424674725.webp 768w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2765121895761830054.webp 1377w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, 1377px"/>
+ title=""
+ width="1377"
+ height="598" srcset="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2712143101988994246.webp 458w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu16625346311424674725.webp 768w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2765121895761830054.webp 1377w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, 1377px"/>
  &lt;figcaption>&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>CSS variables allow us, like another kind of variable in another programming language to store a value we can reuse across our document.&lt;/p></description></item><item><title>How to create a table with a fixed header</title><link>https://sergiocarracedo.es/how-to-create-a-table-with-a-fixed-header/</link><pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/how-to-create-a-table-with-a-fixed-header/</guid><description>&lt;p>Tables in HTML are one of the older things in the standard, even before CSS we had HTML tables. In the past tables were used to markup the webpages, but the correct usage is to display tabular data.&lt;/p>
