@@ -30,6 +30,8 @@
       src="{{ $imageFallback.RelPermalink }}"
       alt="{{ $.PlainText }}"
       title="{{ $.Title }}"
+      width="{{ $image.Width }}"
+      height="{{ $image.Height }}"
       {{- if gt (len $srcset) 0 -}}
       {{- (printf " srcset=\"%s\"" (delimit $srcset ", ")) | safeHTMLAttr -}}
   {{- (printf " sizes=\"%s\"" (delimit $sizestag ", ")) | safeHTMLAttr -}}
