@@ -96,7 +96,7 @@ I wrote it with &lt;a href="https://www.linkedin.com/in/mgarlorenzo/">Miguel Gar
 &lt;p>&lt;a href="https://dzone.com/articles/introducing-amp-assimilating-caching-quick-read-fo">Caches&lt;/a> are very useful software components that all engineers must know. It is a transversal component that applies to all the tech areas and architecture layers such as operating systems, data platforms, backend, frontend, and other components. In this article, we are going to describe what is a cache and explain specific use cases focusing on the frontend and &lt;a href="https://dzone.com/articles/web-caching-client-side">client side&lt;/a>.&lt;/p></description></item><item><title>Withdraw your library because there is another one better: It's something nice!</title><link>https://sergiocarracedo.es/withdraw-your-library-there-is-another-better/</link><pubDate>Sun, 30 Apr 2023 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/withdraw-your-library-there-is-another-better/</guid><description>&lt;p>In 2019 (almost 4 years ago) I wrote an article about how to handle a &lt;a href="https://sergiocarracedo.es/2019/12/05/tu-propio-v-model-en-un-componente-vue/">custom v-model in Vue 2&lt;/a> (Spanish), in that article I explained how to create a custom v-model in Vue 2, the good practices synchronizing the prop and the internal status and how to avoid the warning message &amp;ldquo;&lt;em>Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop’s value.&lt;/em>&amp;rdquo;&lt;/p></description></item><item><title>CSS variables scoping to create and theme flexible ui components</title><link>https://sergiocarracedo.es/css-variables-scoping/</link><pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/css-variables-scoping/</guid><description>&lt;p>The real name of the &lt;em>CSS variables&lt;/em> is &lt;strong>CSS Custom Properties&lt;/strong> is a draft standard (yes when I wrote these lines is on &lt;a href="https://www.w3.org/standards/history/css-variables-1">Candidate Recommendation Snapshot&lt;/a>), but is widely supported by modern browsers.&lt;/p>
 &lt;p>&lt;figure class="image-caption">
  &lt;img
- src="https://sergiocarracedo.es/css-variables-scoping/caniuse.png"
+ src="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu1517126561094978434.jpg"
  alt="caniuse css variables"
  title="" srcset="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2712143101988994246.webp 458w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu16625346311424674725.webp 768w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2765121895761830054.webp 1377w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, 1377px"/>
  &lt;figcaption>&lt;/figcaption>
@@ -256,7 +256,7 @@ and
 &lt;p>An operator is a symbol that define the operation to do between 1 o more operands.&lt;/p>
 &lt;p>&lt;figure class="image-caption">
  &lt;img
- src="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators.png"
+ src="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu1462919087267906555.jpg"
  alt=""
  title="" srcset="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu8621489050594597029.webp 499w" sizes="499px"/>
  &lt;figcaption>&lt;/figcaption>
@@ -387,7 +387,7 @@ For example&lt;/p>
 &lt;h1 id="el-primer-móvil">El primer móvil&lt;/h1>
 &lt;p>&lt;figure class="image-caption">
  &lt;img
- src="https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110.jpg"
+ src="https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu17565838690649693049.jpg"
  alt=""
  title="" srcset="https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu13753848766067036267.webp 458w, https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu14316939810989933672.webp 768w, https://sergiocarracedo.es/2019/05/12/Mi-historico-de-telefonos-moviles/nokia5110_hu2167198694828235898.webp 1200w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, (max-width: 1200px) 100vw"/>
  &lt;figcaption>&lt;/figcaption>
@@ -402,7 +402,7 @@ For example&lt;/p>
 &lt;p>He aquí una lista de los proyectos que liberado agrupados por de una forma totalmente arbitraria.&lt;/p></description></item><item><title>Mis charlas</title><link>https://sergiocarracedo.es/2019/03/01/mis-charlas/</link><pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/2019/03/01/mis-charlas/</guid><description>&lt;p>Hace un par de años, superando mi timidez, empecé a dar &lt;!-- raw HTML omitted -->chapas&lt;!-- raw HTML omitted --> charlas técnicas en publico, obviamente la primera fue un desastre &amp;#x1f613;, pero para eso es la primera, para aprender, y tambíen la segunda y la tercera&amp;hellip;. &amp;#x1f602;&lt;/p>
 &lt;p>Compartir conocimiento de esta forma, es algo que recomiendo, por muchos motivos, incluso motivos &amp;ldquo;egoístas&amp;rdquo; como el hecho de obligarte a esforzate a preparar ese tema sobre el que vas a hablar.&lt;/p></description></item><item><title>"Domotizar" una lámpara de escritorio por 10€</title><link>https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/</link><pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/</guid><description>&lt;p>&lt;figure class="image-caption">
  &lt;img
- src="https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff.jpg"
+ src="https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff_hu6821822077903511709.jpg"
  alt=""
  title="" srcset="https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff_hu12642675241762679919.webp 458w, https://sergiocarracedo.es/2019/02/04/lampara-de-escritorio-domotica/sonoff_hu9866769661363466449.webp 833w" sizes="(max-width: 458px) 100vw, 833px"/>
  &lt;figcaption>&lt;/figcaption>
