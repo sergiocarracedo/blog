@@ -5,7 +5,7 @@
   <meta content="width=device-width, minimum-scale=1.0" name="viewport">
   <title>{{ $title }}</title>
 
-  <meta content="yes" name="apple-mobile-web-app-capable"/>
+  <meta content="yes" name="mobile-web-app-capable">
   <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
   {{ if $.Site.Params.keywords }}
   <meta content="{{ $.Site.Params.keywords }}" name="keywords">
@@ -50,6 +50,5 @@
   {{ $style := $scss | toCSS | resources.Minify | resources.Fingerprint  }}
   <link href="{{ $style.Permalink  }}" integrity="{{ $style.Data.Integrity }}" rel="stylesheet preconnect">
 
-  <link href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css"  rel="stylesheet preload"
-         type="text/css"/>
+  <link as="style"  href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" rel="stylesheet preload" type="text/css"/>
 </head>

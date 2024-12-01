@@ -25,9 +25,7 @@ function displayResults (results, store) {
       <i class="far fa-calendar-alt"></i> ${item.date}
     </time>
   
-    <div class="post__tags">
       ${item.tags.map(tag => `<a href="tags/${tag}" class="post__tag"><span>${tag}</span></a>`).join('')}      
-    </div>
   
     <span class="post__reading-time">
       <i class="far fa-clock"></i> ${item.readingTime}
@@ -47,7 +45,7 @@ function displayResults (results, store) {
       <p>${item.content.substring(0, 150)}...</p>
     </a>
 
-    <a href="${item.url}"class="post__read-more">
+    <a href="${item.url}"class="post__read-more btn">
       Read more
     </a>
   </div>
