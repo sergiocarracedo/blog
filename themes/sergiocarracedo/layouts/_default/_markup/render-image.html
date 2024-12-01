@@ -24,9 +24,10 @@
 {{- $srcset = $srcset | append (printf ("%s %dw") $thumb.RelPermalink $imageOriginalWidth ) -}}
 {{- $sizestag = $sizestag | append (printf ("%dpx") $imageOriginalWidth ) -}}
 {{- end -}}
+{{- $imageFallback := $image.Resize "100x jpg q90" -}}
 <figure class="image-caption">
   <img
-      src="{{ $image.RelPermalink }}"
+      src="{{ $imageFallback.RelPermalink }}"
       alt="{{ $.PlainText }}"
       title="{{ $.Title }}"
       {{- if gt (len $srcset) 0 -}}
