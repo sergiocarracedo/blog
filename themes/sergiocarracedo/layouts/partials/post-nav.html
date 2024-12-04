@@ -5,7 +5,7 @@
       {{ $cover := .Next.Resources.GetMatch .Next.Params.cover }}
       {{ if $cover }}
       {{ $cover := ($cover.Fill "200x120 Center")}}
-      <img alt=".Next.Title" src="{{ $cover.RelPermalink }}">
+      <img alt=".Next.Title" src="{{ $cover.RelPermalink }}" width="200" height="120">
       {{ end }}
     </div>
     <div class="post-nav__title">
@@ -27,7 +27,7 @@
       {{ $cover := .Prev.Resources.GetMatch .Prev.Params.cover }}
       {{ if $cover }}
       {{ $cover := ($cover.Fill "200x120 Center")}}
-      <img alt=".Prev.Title" class="post-nav__cover" src="{{ $cover.RelPermalink }}">
+      <img alt=".Prev.Title" class="post-nav__cover" src="{{ $cover.RelPermalink }}" width="200" height="120">
       {{ end }}
     </div>
     <div class="post-nav__title">
