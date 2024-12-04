@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Css on Sergio Carracedo</title><link>https://sergiocarracedo.es/tags/css/</link><description>Recent content in Css on Sergio Carracedo</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 05 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sergiocarracedo.es/tags/css/index.xml" rel="self" type="application/rss+xml"/><item><title>CSS variables scoping to create and theme flexible ui components</title><link>https://sergiocarracedo.es/css-variables-scoping/</link><pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/css-variables-scoping/</guid><description>&lt;p>The real name of the &lt;em>CSS variables&lt;/em> is &lt;strong>CSS Custom Properties&lt;/strong> is a draft standard (yes when I wrote these lines is on &lt;a href="https://www.w3.org/standards/history/css-variables-1">Candidate Recommendation Snapshot&lt;/a>), but is widely supported by modern browsers.&lt;/p>
 &lt;p>&lt;figure class="image-caption">
  &lt;img
- src="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu1517126561094978434.jpg"
+ src="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu1024568659502407434.jpg"
  alt="caniuse css variables"
  title=""
- width="1377"
- height="598" srcset="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2712143101988994246.webp 458w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu16625346311424674725.webp 768w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2765121895761830054.webp 1377w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, 1377px"/>
+ width="1100"
+ height="478" srcset="https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2712143101988994246.webp 458w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu16625346311424674725.webp 768w, https://sergiocarracedo.es/css-variables-scoping/caniuse_hu2765121895761830054.webp 1377w" sizes="(max-width: 458px) 100vw, (max-width: 768px) 100vw, 1377px"/>
  &lt;figcaption>&lt;/figcaption>
-&lt;/figure>&lt;/p>
+ &lt;/figure>&lt;/p>
 &lt;p>CSS variables allow us, like another kind of variable in another programming language to store a value we can reuse across our document.&lt;/p></description></item></channel></rss>

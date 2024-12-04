@@ -19,13 +19,13 @@ and
 &lt;p>An operator is a symbol that define the operation to do between 1 o more operands.&lt;/p>
 &lt;p>&lt;figure class="image-caption">
  &lt;img
- src="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu1462919087267906555.jpg"
+ src="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu120340465820863.jpg"
  alt=""
  title=""
- width="499"
- height="229" srcset="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu8621489050594597029.webp 499w" sizes="499px"/>
+ width="1100"
+ height="505" srcset="https://sergiocarracedo.es/2020/05/09/js-unary-operators-and-taking-advantage/operators_hu8621489050594597029.webp 499w" sizes="499px"/>
  &lt;figcaption>&lt;/figcaption>
-&lt;/figure>&lt;/p>
+ &lt;/figure>&lt;/p>
 &lt;p>We use a lot of operators: sum (+), subtraction (-), multiply (*), division (/), logic and (&amp;amp;&amp;amp;), negation (!),&amp;hellip;&lt;/p>
 &lt;h2 id="whats-a-unary-operator">What&amp;rsquo;s a unary operator?&lt;/h2>
 &lt;p>A unary operator is an operator that only needs one operand to work.
