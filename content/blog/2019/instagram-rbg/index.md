@@ -36,6 +36,6 @@ There are a lot of blue ones if you think of the sea and the skies, but all thos
 
 If you like this idea (different Instagram accounts based in color), please follow them:
 
-Red: https://www.instagram.com/sergiocarracedo.red/
-Green: https://www.instagram.com/sergiocarracedogreen/
-Blue: https://www.instagram.com/sergiocarracedo.blue/
+- Red: https://www.instagram.com/sergiocarracedo.red/
+- Green: https://www.instagram.com/sergiocarracedogreen/
+- Blue: https://www.instagram.com/sergiocarracedo.blue/
