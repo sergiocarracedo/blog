@@ -30,6 +30,9 @@ And a few days later, I completed the RGB project creating the blue one: https:/
 ![](sergiocarracedo-blue.png)
 &nbsp;
 
+
+
+
 In the beginning I thought that taking pictures based on a single color would be easy but I was wrong. Taking pictures is complicated, maybe the red are the easiest, and blue ones the hardest, always with the constraint of not repeating topic.
 
 There are a lot of blue ones if you think of the sea and the skies, but all those pictures would be similar.
