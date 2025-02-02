@@ -1,7 +1,6 @@
 ---
 title: "Introduction to an open-source framework to create AI multi-agent workflows: Bee Agent Framework"
 date: 2025-02-02
-draft: true
 cover: bee-agents-framework.jpg
 url: /bee-agent-framework-introduction
 tags:  
