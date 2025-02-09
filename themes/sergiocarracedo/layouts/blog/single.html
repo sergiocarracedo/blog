@@ -14,8 +14,6 @@
     {{ $cover := ($cover.Fill "1200x400 Center")}}
     <div class="post__cover">
       {{ partial "image.html" (dict "Image" $cover "Alt" .Title "Title" .Title "Width" $cover.Width) }}
-
-      <!--<img alt="{{ .Title }}" height="{{ $cover.Height }}" src="{{ $cover.RelPermalink }}" width="{{ $cover.Width }}"/>-->
     </div>
     {{ end }}
 

@@ -6,7 +6,7 @@
 
 {{ $media := (.Site.GetPage "page" "media").Resources }}
 {{ $original := index ($media.Match (printf "%s" $image)) 0 }}
-{{ $width := .Width | $original.Width}}
+{{ $width := .Width | default $original.Width}}
 {{ $intWidth := int $width }}
 
 {{- /* The following is is used as a fallback if the image is not found or if it's a GIF. */ -}}
