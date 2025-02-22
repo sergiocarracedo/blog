@@ -35,7 +35,7 @@ The agent provides the context to the LLM model about what tools do and how to a
 
 ## Bee Agent Framework
 
-Recently IBM released an open-source framework to create AI multi-agent workflows: [Bee Agent Framework](https://i-am-bee.github.io/bee-agent-framework/#/). It can work with multiple LLM providers (WatsonX, OpenIA, Azure OpenIA, Langchain, Groq, etc) but the most interesting provider is [Ollama](https://ollama.com/) that allows you to run multiple models to use like: llama, phi4, and the new one: deepseek-r1 is not able to call functions yet, but probably will be in the future.
+Recently IBM released an open-source framework to create AI multi-agent workflows: [Bee Agent Framework](https://github.com/i-am-bee/beeai-framework). It can work with multiple LLM providers (WatsonX, OpenIA, Azure OpenIA, Langchain, Groq, etc) but the most interesting provider is [Ollama](https://ollama.com/) that allows you to run multiple models to use like: llama, phi4, and the new one: deepseek-r1 is not able to call functions yet, but probably will be in the future.
 It was written in Typescript and you can write tools and agents in Typescript or Javascript.
 
 
