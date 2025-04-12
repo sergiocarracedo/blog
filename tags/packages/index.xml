@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Packages on Sergio Carracedo</title><link>https://sergiocarracedo.es/tags/packages/</link><description>Recent content in Packages on Sergio Carracedo</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 12 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://sergiocarracedo.es/tags/packages/index.xml" rel="self" type="application/rss+xml"/><item><title>Git publish: Releasing and publishing ephemeral npm packages</title><link>https://sergiocarracedo.es/git-publish/</link><pubDate>Sat, 12 Apr 2025 00:00:00 +0000</pubDate><guid>https://sergiocarracedo.es/git-publish/</guid><description>&lt;p>Releasing and publishing a JavaScript/TypeScript package to a &lt;em>npm registry&lt;/em> is something relatively easy to do.&lt;/p>
+&lt;p>There are a lot of tutorials and guides on the internet about how to do it, and the process is well documented in the
+npm/yarn/pnpm&amp;rsquo;s
+documentation.&lt;/p>
+&lt;p>&lt;strong>But what about releasing and publishing an ephemeral version of a package?&lt;/strong> For example when you want to test a
+feature, a refactor, or a fix you are working on the package in another project which uses the package, but without
+generate a release or publish a new version (even an alpha version) or when want to share those changes with another
+a teammate in your company to let them know the changes are coming and give them a chance to test it before doing an
+alpha
+release.&lt;/p></description></item></channel></rss>
