@@ -1,6 +1,9 @@
 ---
-import { SITE_TITLE } from '@/consts';
+import { SITE_TITLE } from '../../consts';
 import HeaderLink from './HeaderLink.astro';
+interface Props {
+  menu: { href: string; label: string }[];
+}
 const menu = Astro.props.menu;
 ---
 
@@ -44,7 +47,7 @@ const menu = Astro.props.menu;
   </nav>
 </div>
 
-<script is:inline>
+<script client:load>
   (function () {
     const btn = document.getElementById('menu-toggle');
     const overlay = document.getElementById('menu-overlay');

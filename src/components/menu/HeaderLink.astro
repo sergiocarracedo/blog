@@ -1,5 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components';
 import type { HTMLAttributes } from 'astro/types';
 
 type Props = HTMLAttributes<'a'>;
@@ -19,7 +18,5 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
   ]}
   {...props}
 >
-  {isActive && <Icon name="outline/arrow-right-outline" />}
   <slot />
-  {isActive && <Icon name="outline/arrow-left-outline" />}
 </a>

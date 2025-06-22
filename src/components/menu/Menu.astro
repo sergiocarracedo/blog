@@ -5,7 +5,6 @@ import MenuOverlay from './MenuOverlay.astro';
 const menu: Array<{ label: string; href: string }> = Array.isArray(menuRaw) ? menuRaw : [];
 ---
 
-<!-- Use a React component for the mobile menu overlay -->
 <div class="relative">
   <!-- Desktop menu -->
   <div class="hidden md:flex gap-4 internal-links">
@@ -13,6 +12,6 @@ const menu: Array<{ label: string; href: string }> = Array.isArray(menuRaw) ? me
   </div>
   <!-- Mobile burger -->
   <div class="md:hidden flex items-center">
-    <MenuOverlay client:load menu={menu} />
+    <MenuOverlay menu={menu} />
   </div>
 </div>
