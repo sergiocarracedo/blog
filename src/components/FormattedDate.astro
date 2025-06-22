@@ -1,0 +1,20 @@
+---
+interface Props {
+  date: Date;
+  class?: string;
+  prepend?: string | Astro.JSX.Element;
+}
+
+const { date } = Astro.props;
+---
+
+<time datetime={date.toISOString()} class:list={[`flex items-center gap-2`, Astro.props.class]}>
+  {Astro.props.prepend && <span class="prepend">{Astro.props.prepend}</span>}
+  {
+    date.toLocaleDateString('en-us', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  }
+</time>

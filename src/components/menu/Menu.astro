@@ -1,0 +1,18 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import menuRaw from './menu.json';
+import MenuOverlay from './MenuOverlay.astro';
+const menu: Array<{ label: string; href: string }> = Array.isArray(menuRaw) ? menuRaw : [];
+---
+
+<!-- Use a React component for the mobile menu overlay -->
+<div class="relative">
+  <!-- Desktop menu -->
+  <div class="hidden md:flex gap-4 internal-links">
+    {menu.map((item) => <HeaderLink href={item.href}>{item.label}</HeaderLink>)}
+  </div>
+  <!-- Mobile burger -->
+  <div class="md:hidden flex items-center">
+    <MenuOverlay client:load menu={menu} />
+  </div>
+</div>

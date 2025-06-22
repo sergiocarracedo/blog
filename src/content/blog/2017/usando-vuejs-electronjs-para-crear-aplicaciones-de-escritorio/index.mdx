@@ -1,0 +1,38 @@
+---
+title: 'Usando Vue.js + electron.js para crear aplicaciones de escritorio'
+pubDate: 2017-04-18
+slug: 2017/04/18/usando-vuejs-electronjs-para-crear-aplicaciones-de-escritorio/
+heroImage: ./screenshot_from_2017-04-11_20-38-13.png
+---
+
+**[Electron.js](https://electron.atom.io/) **es *framework* pensado para crear aplicaciones "nativas" de escritorio usando JavaScript, HTML y CSS. Básicamente ejecuta tu código en **node.js** y realiza el render de la app en [Chromium](https://www.chromium.org/).
+
+Este detalle lo debemos tener muy en cuenta: por un lado tenemos un proceso (**main process**) que es como su nombre indica el proceso principal de la aplicación, y que mientras este ejecutándose, nuestra aplicación esta funcionando. El **Main process**, no tiene visualización, es decir, **no** es la ventana principal, pero si que una de sis funciones es crear la ventana o ventanas de nuestra aplicación, y esto nos lleva a la segunda pieza; el/los procesos de render (**Renderer process**), cada ventana que cree (no tiene por que visualizarse en ese momento) crea una instancia de *Chormium* que corre en su propio proceso.y de forma independiente a las demás. Cada una de estos procesos (_renderer process_) unicamente puede comunicarse con el _main_, no hay posibilidad de comunicación **directa** entre *renderers*.
+
+El objeto de este post, no es entrar en los entresijos de *electron.js, _sino que, aprovechando la experiencia que tenemos en **vue.js**, comentar las posibilidades que nos ofrece el hecho de unir los dos \_frameworks* en un mismo proyecto.
+
+**Vue.js** es JavaScript, así que por lo tanto y de forma directa funciona sin ningún tipo de problema en cualquiera de los **procesos de render** de electron, ya que no son más que una instancia de *Chromium*, como hemos dicho. Así que por lo tanto emplear ambos frameworks es sencillamente **trivial**.
+
+Ahora bien, podemos simplificarnos más la vida usando un **_boilerplate_** que nos cree el *scaffolding* de nuestra futura app para que solo tengamos que ponernos a escribir nuestro código.
+
+Este *boilerplate* lo tenemos en https://github.com/SimulatedGREG/electron-vue y su instalación es tan sencilla como:
+
+```
+# Instalar vue-cli y la plantilla de scaffold
+npm install -g vue-cli
+vue init simulatedgreg/electron-vue my-project
+# Instalar las dependencias y ejecutar tu app
+cd my-project
+npm install
+npm run dev
+```
+
+Y *voilà* ya podemos empezar a crear una app de escritorio.
+
+Este *boilerplate* además ya nos instala **vuex.**
+
+Como prueba de concepto he creado una aplicación que permite tener una ventana para usar como fondo del [OBS](https://obsproject.com/) en las grabaciones de las reuniones las comunidades de usuarios, permitiendo configurar de forma sencilla la lista de charla y ponente, escoger para que comunidad se configura el fondo, podemos tener incluso un cronometro para las charlas *lightning*.
+
+https://github.com/sergiocarracedo/ug-obs-background
+
+Os recomiendo echarle un vistazo, y si creéis que se puede mejorar los *pull requests* son bienvenidos.

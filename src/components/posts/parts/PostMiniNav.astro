@@ -1,0 +1,49 @@
+---
+import { enrichBlogPost } from '@/utils/enrichBlogPost';
+import { truncate } from '@/utils/truncate';
+import { Picture } from 'astro:assets';
+import type { CollectionEntry, CollectionKey } from 'astro:content';
+
+interface Props<C extends CollectionKey = 'blog'> {
+  post: CollectionEntry<C>;
+  direction?: 'next' | 'prev';
+  class?: string;
+}
+
+const { post, direction } = Astro.props;
+
+const enrichedPost = enrichBlogPost(post);
+---
+
+<a
+  class:list={['flex flex-col p-2 max-w-[200px] btn-img-child', Astro.props.class]}
+  href={`${enrichedPost.slug}?ref=footer`}
+>
+  <div class="mb-4 btn-img btn-hover-parent">
+    {
+      enrichedPost.data.heroImage && (
+        <Picture
+          src={enrichedPost.data.heroImage}
+          width={200}
+          height={120}
+          fit="cover"
+          alt={enrichedPost.data.title}
+        />
+      )
+    }
+  </div>
+  <div
+    class:list={[
+      direction === 'prev'
+        ? ['text-right', 'self-end', 'after:content-["»"]', 'hover:after:translate-x-[10px]']
+        : ['text-left', 'before:content-["«"]', 'hover:before:translate-x-[-10px]'],
+      'text-xs',
+      ['after:transition-all', 'after:inline-block', 'duration-300'],
+      ['before:transition-all', 'before:inline-block', 'duration-300'],
+      'font-semibold',
+      'max-w-[180px]',
+    ]}
+  >
+    {truncate(enrichedPost.data.title, 50)}
+  </div>
+</a>

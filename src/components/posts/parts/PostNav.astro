@@ -1,0 +1,51 @@
+---
+import type { CollectionKey } from 'astro:content';
+import { getSortedCollection } from '../../../utils/getSortedCollection';
+import PostMiniNav from './PostMiniNav.astro';
+
+interface Props {
+  collection?: CollectionKey;
+  id: string;
+}
+
+const { collection = 'blog', id } = Astro.props;
+
+const posts = await getSortedCollection('blog');
+
+const post = posts.find((p) => p.id === id);
+if (!post) {
+  return;
+}
+
+const nextIndex = posts.findIndex((p) => p.id === id) + 1;
+const prevIndex = posts.findIndex((p) => p.id === id) - 1;
+const nextPost = posts[nextIndex];
+const prevPost = posts[prevIndex];
+---
+
+<div class="flex gap-4 flex-wrap space-between w-full">
+  {
+    nextPost ? (
+      <div class="order-1 grow-1">
+        <PostMiniNav post={nextPost} direction="next" />
+      </div>
+    ) : (
+      <div class="order-1 grow-1 w-[200px]" aria-hidden="true" />
+    )
+  }
+
+  <div
+    class="flex-1 flex justify-center items-center min-w-40 py-10 order-10 sm:order-4 w-full sm:w-auto basis-full sm:basis-auto"
+  >
+    <a class="btn-outlined" href="/blog" title="All Blog posts"> All Blog posts </a>
+  </div>
+  {
+    prevPost ? (
+      <div class="order-5 grow-1">
+        <PostMiniNav post={prevPost} direction="prev" class="order-6 justify-self-end" />
+      </div>
+    ) : (
+      <div class="order-5 grow-1 w-[200px]" aria-hidden="true" />
+    )
+  }
+</div>

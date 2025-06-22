@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import { SITE_TITLE } from '../consts';
+import MenuMenu from './menu/Menu.astro';
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 backdrop-blur-xs bg-white/20 mb-15 transition-all duration-500 max-w-full mx-auto"
+>
+  <nav class="flex gap-4 p-4 items-center justify-between">
+    <h2>
+      <a href="/">
+        <Image
+          src="/i/sergiocarracedo.jpg"
+          alt="Sergio Carracedo"
+          width={50}
+          height={50}
+          class="inline-block mr-2 rounded-full border-solid border-primary border-4"
+        />
+        {SITE_TITLE}
+      </a>
+    </h2>
+
+    <div class="internal-links">
+      <MenuMenu />
+    </div>
+  </nav>
+</header>
+
+<script set:script>
+  const header = document.getElementById('site-header');
+  const onTopClasses = [
+    'max-w-[900px]',
+    'bg-secondary/60',
+    'top-6',
+    'backdrop-blur-none',
+    'py-4',
+    'px-4',
+    'rounded-lg',
+  ];
+  const scrolledClasses = ['max-w-full', 'bg-white/20', 'backdrop-blur-xs', 'top-0'];
+  const onScroll = () => {
+    if (!header) return;
+    if (window.scrollY === 0) {
+      header.classList.add(...onTopClasses);
+      header.classList.remove(...scrolledClasses);
+    } else {
+      header.classList.remove(...onTopClasses);
+      header.classList.add(...scrolledClasses);
+    }
+  };
+  window.addEventListener('scroll', onScroll);
+  onScroll(); // Initial check
+</script>

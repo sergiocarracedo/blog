@@ -1,0 +1,20 @@
+---
+title: 'Crear plantillas de email con nuxt.js'
+pubDate: 2017-10-23
+slug: 2017/10/23/crear-plantillas-de-email-con-nuxtjs/
+heroImage: ./pexels-photo-261706.jpeg
+---
+
+Si eres maquetador Web y quieres viajar al pasado, a un pasado en el que se maquetaban las webs usando tablas anidas hasta el infinito, imágenes de 1x1px transparentes, la etiqueta **`<font>`**, `<b>` en lugar de `<strong>`, y un largo ecéteras de cosas que me ponen los pelos de punta.
+
+Como, probablemente has podido extraer de mis palabras, para mi es una pesadilla. maquetar una plantailla de email, por que es como si de golpe te quitasen todas las herramientas que tienes para hacerlo y con un martillo y cincel, por eso trato siemple de simplificar lo máximo posible el trabajo buscnado métodos que me permitan que la tarea de maquetar un email tengoa un poco de *dignidad* ;).
+
+Revisando maquetaciones pasadas me he dado cuenta que muchos elementos se repiten, y que es posible modularizarlo, aprovechando que estoy de lleno con **Vue.js** y **Nuxt,js,** he visto que encaja muy bien, ya que debido al modelos de componentes de Vue.js podemos "trocear" la maqueta en esos componentes que por supuesto podemos reutilizar, por ejemplo una noticia, podria ser un componente, con su foto, texto y titulo y esta se repetirá varias veces en la maqueta, por lo que un v-for nos resuelve la repetición de forma sencilla, he incluso podriamos pasarles valores para generar distintas noticias.
+
+Al tener los componentes una sola vez, si necesitamos hacer un ajuste de maquetación en una noticia, este ya se aplica a todas.
+
+Una vez maquetado, entra la parte **nuxt.js** que con su función de gneración de página estáticas al estilo Jekyillrb o Hugo, nos permite tener un html puro de cada plantailla y esta es la que pasaremos al programa de envio de emails / newsletters o a nuestro cliente,
+
+Si nos llegan cambios de cliente, hacer una modificación es sencillo, se modifican los componentes necesarios y se vuelve a genear.
+
+No es que este uso de **nuxt.js** sea el invento del siglo, pero si es una forma un poco distinta de sacarle partido.

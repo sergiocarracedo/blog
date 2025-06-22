@@ -1,0 +1,80 @@
+---
+import { Icon } from 'astro-icon/components';
+import Search from 'astro-pagefind/components/Search';
+import { Picture } from 'astro:assets';
+import { type CollectionEntry, render } from 'astro:content';
+import { mdxComponents } from '../../mdx-components';
+import { enrichBlogPost } from '../../utils/enrichBlogPost';
+import FormattedDate from '../FormattedDate.astro';
+import YearsNav from '../YearsNav.astro';
+import PostNav from './parts/PostNav.astro';
+import PostTags from './parts/PostTags.astro';
+import ReadingTime from './parts/ReadingTime.astro';
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+};
+
+const { post } = Astro.props;
+
+const enrichedPost = enrichBlogPost(post);
+const { title, pubDate, heroImage, tags } = enrichedPost.data;
+const { readingTime } = enrichedPost;
+
+const { Content } = await render(post);
+---
+
+<article class="post">
+  <div class="wrapper">
+    <div class="mb-6">
+      <a
+        class="text-primary link mb-9 group"
+        href="/blog"
+        aria-label="Back to blog"
+        title="Back to blog"
+      >
+        <Icon
+          name="outline/arrow-left-outline"
+          class="inline-block mr-2 transition-transform duration-300 group-hover:-translate-x-2"
+        />Back to blog
+      </a>
+    </div>
+    <header class="mb-3">
+      <h1 class="text-3xl md:text-4xl font-impact font-bold mb-2">
+        {title}
+      </h1>
+
+      <aside class="flex gap-2 flex-wrap w-full">
+        <FormattedDate date={pubDate} class="flex-1" />
+        <ReadingTime readingTime={readingTime} class="flex-1 justify-end text-right" />
+      </aside>
+    </header>
+
+    {
+      heroImage && (
+        <div class="radius-2xl overflow-hidden mb-6">
+          <Picture width={836} height={470} src={heroImage} alt={title} fit="cover" />
+        </div>
+      )
+    }
+    <PostTags tags={tags} class="mb-6" />
+  </div>
+  <div class="wrapper-alt -mx-2 md:mx-auto">
+    <div class="prose">
+      <Content components={mdxComponents} />
+    </div>
+  </div>
+</article>
+
+<aside class="wrapper background-diagonal-secondary py-7 rounded-t-xl">
+  <PostNav id={post.id} />
+  <YearsNav collection="blog" class="mt-4" />
+</aside>
+
+<aside class="background-diagonal-primary py-7 wrapper mb-6 rounded-b-xl">
+  <Search className="pagefind-ui-dark" />
+</aside>
+
+<aside class="wrapper mb-6 rounded-xl bg-secondary/20 py-6 backdrop-blur-sm">
+  <div id="disqus_thread">To show comments is mandatory to accept cookie policy.</div>
+</aside>

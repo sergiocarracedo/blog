@@ -1,0 +1,19 @@
+---
+import { getTags } from '../../utils/getTags';
+
+export async function getStaticPaths() {
+  const tags = await getTags();
+
+  const paths = [];
+  for (const tag of tags) {
+    paths.push({
+      params: { tag },
+      rewrite: `/tags/${tag}`,
+    });
+  }
+  return paths;
+}
+
+const { tag } = Astro.params;
+return Astro.rewrite(`/tags/${tag}/1`);
+---

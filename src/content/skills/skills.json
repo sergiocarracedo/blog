@@ -1,0 +1,140 @@
+[
+  {
+    "name": "TypeScript",
+    "color": "#007acc",
+    "textColor": "white",
+    "id": "typescript",
+    "icon": "tech/typescript"
+  },
+  {
+    "name": "React",
+    "color": "#61dbfb",
+    "textColor": "black",
+    "id": "react",
+    "icon": "tech/react"
+  },
+  {
+    "name": "Vue",
+    "color": "#41B883",
+    "textColor": "black",
+    "id": "vue",
+    "icon": "tech/vue"
+  },
+   {
+    "name": "JS",
+    "color": "#F0DB4F",
+    "textColor": "black",
+    "id": "js",
+    "icon": "tech/js"
+  },
+  {
+    "name": "Clean architectures",
+    "id": "clean-architectures",
+    "icon": "tech/hexagon"
+
+  },
+  {
+    "name": "Golang",
+    "color": "#29BEB0",
+    "textColor": "black",
+    "id": "golang",
+    "icon": "tech/golang"
+
+  },
+  {
+    "name": "Node.js",
+    "color": "#68A063",
+    "textColor": "black",
+    "id": "nodejs",
+    "icon": "tech/nodejs"
+  },
+  {
+    "name": "Astro",
+    "color": "#41B883",
+    "textColor": "black",
+    "id": "astro",
+    "icon": "tech/astro"
+  },
+  {
+    "name": "Vitest",
+    "id": "vitest"
+  },
+  {
+    "name": "Vite",
+    "id": "vite"
+  },
+  {
+    "name": "Data Visualization",
+    "id": "data-visualization",
+    "icon": "tech/charts"
+  },
+  {
+    "name": "Desing systems",
+    "id": "desing-systems"
+  },
+  {
+    "name": "echarts",
+    "color": "#F72C5B",
+    "id": "echarts"
+  },
+  {
+    "name": "PHP",
+    "color": "#787CB5",
+    "textColor": "black",
+    "id": "php",
+    "icon": "tech/php"
+  },
+  {
+    "name": "Symfony",
+    "textColor": "white",
+    "color": "#333",
+    "id": "symfony",
+    "icon": "tech/symfony"
+
+  },
+  {
+    "name": "Linux",
+    "color": "#f99",
+    "textColor": "black",
+    "id": "linux",
+    "icon": "tech/linux"
+  },
+  {
+    "name": "k8s",
+    "id": "k8s"
+  },
+  {
+    "name": "Docker",
+    "id": "docker",
+    "icon": "tech/docker"
+
+  },
+  {
+    "name": "GitHub Actions",
+    "id": "github-actions"
+  },
+  {
+    "name": "Postgres",
+    "id": "postgres"
+  },
+  {
+    "name": "MySQL",
+    "id": "mysql"
+  },
+  {
+    "name": "CSS3",
+    "id": "css3"
+  },
+  {
+    "name": "HTML5",
+    "id": "html5"
+  },
+  {
+    "name": "Open Source",
+    "id": "open-source"
+  },
+  {
+    "name": "Talks",
+    "id": "talks"
+  }
+]

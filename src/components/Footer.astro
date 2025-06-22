@@ -1,0 +1,19 @@
+---
+import AboutMe from './AboutMe.astro';
+import SocialLinks from './SocialLinks.astro';
+const today = new Date();
+---
+
+<footer
+  class="pt-8 pb-10 text-gray-700 background-paper-secondary border-t border-primary border-t-6 border-solid wrapper rounded-xl mb-3"
+>
+  <div class="flex flex-wrap items-center justify-between gap-4 text-md">
+    <div>
+      <AboutMe />
+      <div class="mt-2 text-sm">
+        &copy; {today.getFullYear()} Sergio Carracedo. All rights reserved.
+      </div>
+    </div>
+    <SocialLinks />
+  </div>
+</footer>

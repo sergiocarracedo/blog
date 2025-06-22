@@ -1,0 +1,108 @@
+---
+interface Props {
+  post: CollectionEntry<'blog'>;
+  style?: 'default' | 'highlighted';
+}
+
+const { post, style = 'default' } = Astro.props;
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { enrichBlogPost } from '../../utils/enrichBlogPost';
+import { truncate } from '../../utils/truncate';
+import PostMetadata from './parts/PostMetadata.astro';
+
+const enrichedPost = enrichBlogPost(post);
+const postUrl = enrichedPost.slug;
+const { title, heroImage, pubDate } = enrichedPost.data;
+const { readingTime, excerpt } = enrichedPost;
+---
+
+<article
+  class:list={[
+    'md:flex mb-10',
+    style === 'highlighted' &&
+      'flex-col content-center bg-secondary md:bg-transparent rounded-sm gap-2',
+    style === 'default' && 'gap-4',
+  ]}
+>
+  <div class:list={['flex-1 max-w-full mb-3', style === 'default' && 'basis-[300px] ']}>
+    <a class:list={['btn-img block']} href={postUrl} title={title}>
+      {
+        heroImage && (
+          <Picture
+            class:list={[style === 'highlighted' ? 'md:hidden' : '']}
+            src={heroImage}
+            decoding="async"
+            loading="lazy"
+            formats={['jpeg', 'webp']}
+            width={500}
+            height={250}
+            fit="cover"
+            alt={title}
+          />
+        )
+      }
+
+      {
+        heroImage && style === 'highlighted' && (
+          <Picture
+            class="hidden md:block"
+            src={heroImage}
+            decoding="async"
+            loading="lazy"
+            formats={['jpeg', 'webp']}
+            width={800}
+            height={300}
+            fit="cover"
+            alt={title}
+          />
+        )
+      }
+    </a>
+  </div>
+
+  <div
+    class:list={[
+      'px-3 flex-1',
+      style === 'default' && 'basis-[300px] py-3',
+      style === 'highlighted' && 'py-1',
+    ]}
+  >
+    <header>
+      <h3
+        class:list={[
+          'm-0 font-impact font-bold text-2xl md:text-3xl mb-4',
+          style === 'highlighted' && 'md:px-20 flex justify-center',
+          style === 'default' && 'max-w-md',
+        ]}
+      >
+        <a class="link" href={postUrl} title={title}>
+          {title}
+        </a>
+      </h3>
+    </header>
+
+    <PostMetadata
+      date={pubDate}
+      tags={style === 'default' ? enrichedPost.data.tags : []}
+      readingTime={readingTime}
+      class:list={[style === 'highlighted' ? 'flex justify-center' : 'mb-2']}
+    />
+    <div
+      aria-label={truncate(excerpt, 40)}
+      class:list={['mb-5 text-md text-gray-700', style === 'highlighted' && 'text-center text-sm']}
+    >
+      <p>{truncate(excerpt, 100)}</p>
+    </div>
+
+    {
+      style === 'default' && (
+        <footer>
+          <a class="btn" href={postUrl} title={title}>
+            Read more
+          </a>
+        </footer>
+      )
+    }
+  </div>
+</article>

@@ -1,0 +1,34 @@
+---
+import { enrichBlogPost } from '@/utils/enrichBlogPost';
+import { type CollectionEntry, getCollection } from 'astro:content';
+import PostSingle from '../components/posts/PostSingle.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { truncate } from '../utils/truncate';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<'blog'>;
+
+const post = Astro.props;
+
+const enrichedPost = enrichBlogPost(post);
+
+const meta = {
+  title: enrichedPost.data.title,
+  description: truncate(enrichedPost.excerpt, 180),
+  image: enrichedPost.data.heroImage.src,
+  url: enrichedPost.slug,
+  date: post.data.pubDate,
+  tags: post.data.tags || [],
+  type: 'article',
+};
+---
+
+<BaseLayout meta={meta}>
+  <PostSingle post={post} />
+</BaseLayout>

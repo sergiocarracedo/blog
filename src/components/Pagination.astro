@@ -1,0 +1,84 @@
+---
+import type { Page } from 'astro';
+
+type Props = {
+  page: Page<unknown>;
+  urlPattern: string;
+};
+
+const { page, urlPattern } = Astro.props;
+
+// Calculate a window of up to 5 pages centered on the current page
+let start = Math.max(1, page.currentPage - 2);
+let end = Math.min(page.lastPage, start + 4);
+if (end - start < 4) {
+  start = Math.max(1, end - 4);
+}
+const paginationList = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+
+const getPage = (num: number) => {
+  return urlPattern.replace('{}', num.toString());
+};
+---
+
+<nav aria-label="Pages" class="bg-secondary-light p-4 backdrop-blur-xs">
+  <ul class="flex items-center justify-center gap-1 flex-wrap max-w-[800px] mx-auto">
+    {
+      page.url.first && page.url.first !== page.url.current && (
+        <li>
+          <a href={page.url.first} class="pagination-link" area-label="First page">
+            <span area-hidden="true">««</span>
+          </a>
+        </li>
+      )
+    }
+
+    {
+      page.url.prev && (
+        <li>
+          <a href={page.url.prev} class="pagination-link" aria-label="Previous page">
+            <span area-hidden="true">«</span>
+          </a>
+        </li>
+      )
+    }
+
+    {
+      paginationList.map((num) => (
+        <li>
+          {page.currentPage === num ? (
+            <span class="pagination-link parallelogram-mask bg-primary text-white">{num}</span>
+          ) : (
+            <a
+              href={`${getPage(num)}`}
+              class={`pagination-link ${page.currentPage === num ? 'pagination__item--active' : ''}`}
+              aria-label={`Page ${num}`}
+            >
+              {num}
+            </a>
+          )}
+        </li>
+      ))
+    }
+
+    {
+      page.url.next && (
+        <li>
+          <a href={page.url.next} class="pagination-link" aria-label="Next page">
+            <span aria-hidden="true">»</span>
+          </a>
+        </li>
+      )
+    }
+
+    {
+      page.url.last && page.url.last !== page.url.current && (
+        <li>
+          <a href={page.url.last} class="pagination-link" aria-label="Last page">
+            <span aria-hidden="true">»»</span>
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</nav>

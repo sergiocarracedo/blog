@@ -1,0 +1,31 @@
+---
+import type { CollectionKey } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  collection?: CollectionKey;
+  class?: string;
+}
+
+const { collection = 'blog' } = Astro.props;
+
+const years = new Set<string>();
+const posts = await getCollection(collection);
+
+posts.forEach((post) => {
+  const year = post.data.pubDate.getFullYear().toString();
+  years.add(year);
+});
+---
+
+<ul class:list={['flex', 'flex-wrap', 'gap-2', 'list-none', 'justify-center', Astro.props.class]}>
+  {
+    Array.from(years).map((year) => (
+      <li>
+        <a class="link" href={`/blog/by-year#${year}`}>
+          {year}
+        </a>
+      </li>
+    ))
+  }
+</ul>

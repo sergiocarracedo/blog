@@ -1,0 +1,73 @@
+---
+import { SITE_TITLE } from '@/consts';
+import HeaderLink from './HeaderLink.astro';
+const menu = Astro.props.menu;
+---
+
+<button
+  id="menu-toggle"
+  aria-label="Open menu"
+  class="flex flex-col justify-center items-center w-10 h-10 group z-50"
+  type="button"
+>
+  <span
+    id="bar1"
+    class="block w-6 h-0.5 bg-primary mb-1 transition-all duration-300 group-hover:bg-black"></span>
+  <span
+    id="bar2"
+    class="block w-6 h-0.5 bg-primary mb-1 transition-all duration-300 group-hover:bg-black"></span>
+  <span
+    id="bar3"
+    class="block w-6 h-0.5 bg-primary transition-all duration-300 group-hover:bg-black"></span>
+</button>
+
+<div
+  id="menu-overlay"
+  class="fixed inset-0 bg-primary/80 backdrop-blur-xs z-40 flex flex-col items-center justify-center w-full h-full transition-transform duration-500 translate-x-full text-white"
+  style="will-change: transform;"
+  aria-hidden="true"
+>
+  <h2
+    class="mb-8 text-2xl font-bold flex flex-col items-center justify-center flex-wrap gap-2 text-white"
+  >
+    <img
+      src="/i/sergiocarracedo.jpg"
+      alt="Sergio Carracedo"
+      width="50"
+      height="50"
+      class="inline-block rounded-full border-solid border-primary border-4"
+    />
+    {SITE_TITLE}
+  </h2>
+  <nav class="flex flex-col gap-6 text-xl items-center justify-center">
+    {(menu || []).map((item) => <HeaderLink href={item.href}>{item.label}</HeaderLink>)}
+  </nav>
+</div>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById('menu-toggle');
+    const overlay = document.getElementById('menu-overlay');
+    const bar1 = document.getElementById('bar1');
+    const bar2 = document.getElementById('bar2');
+    const bar3 = document.getElementById('bar3');
+    let open = false;
+    function setMenuState(state) {
+      open = state;
+      overlay.classList.toggle('translate-x-0', open);
+      overlay.classList.toggle('translate-x-full', !open);
+      overlay.setAttribute('aria-hidden', !open);
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.classList.toggle('overflow-hidden', open);
+      // Animate bars
+      bar1.style.transform = open ? 'rotate(45deg) translateY(7px)' : '';
+      bar2.style.opacity = open ? 0 : 1;
+      bar3.style.transform = open ? 'rotate(-45deg) translateY(-7px)' : '';
+    }
+    btn.addEventListener('click', () => setMenuState(!open));
+    // Close menu on nav click
+    overlay.addEventListener('click', function (e) {
+      if (e.target.classList.contains('menu-link')) setMenuState(false);
+    });
+  })();
+</script>

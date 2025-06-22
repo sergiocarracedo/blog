@@ -1,0 +1,26 @@
+---
+import FormattedDate from '../../FormattedDate.astro';
+import PostTags from './PostTags.astro';
+import ReadingTime from './ReadingTime.astro';
+
+interface Props {
+  date: Date;
+  tags?: string[];
+  readingTime?: number;
+  class?: string;
+}
+
+const { date, tags, readingTime, class: className } = Astro.props;
+---
+
+<aside class={className}>
+  <div class="flex items-center gap-2 mb-2 flex-wrap">
+    <FormattedDate date={date} />
+
+    <ReadingTime readingTime={readingTime} class="flex-1" />
+  </div>
+
+  <div>
+    <PostTags tags={tags} />
+  </div>
+</aside>

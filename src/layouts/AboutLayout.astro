@@ -1,0 +1,21 @@
+---
+import AboutMe from '@/components/about/AboutMe.astro';
+import BaseLayout from './BaseLayout.astro';
+
+const { frontmatter } = Astro.props;
+const meta = {
+  title: frontmatter.title || 'Page',
+  description: frontmatter.description || '',
+  keywords: frontmatter.keywords || [],
+  subtitle: frontmatter.subtitle || '',
+};
+---
+
+<BaseLayout meta={meta}>
+  <div class="wrapper-alt">
+    <AboutMe />
+    <div class="prose">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>

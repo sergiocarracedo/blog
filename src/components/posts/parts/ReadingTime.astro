@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  readingTime?: number;
+  class?: string;
+}
+
+const { readingTime, class: className } = Astro.props;
+---
+
+{
+  readingTime && (
+    <span class:list={[`text-sm text-gray-600 flex items-center gap-1`, className]}>
+      <Icon name="outline/clock-outline" class="w-4 h-4" />
+      <span>
+        {readingTime}&nbsp;{readingTime === 1 ? 'minute' : 'minutes'} read
+      </span>
+    </span>
+  )
+}

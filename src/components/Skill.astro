@@ -1,0 +1,28 @@
+---
+import { Icon } from 'astro-icon/components';
+const { skill, class: className } = Astro.props;
+---
+
+<span
+  class:list={[
+    'parallelogram bg-[--skill-color] text-[--skill-text-color] px-2 py-[2px] rounded-md text-sm font-semibold',
+    className,
+  ]}
+  style={{
+    background: skill.data.color || '#333',
+    color: skill.data.textColor || '#fff',
+  }}
+>
+  <span>
+    {
+      skill.data.icon && (
+        <Icon
+          name={skill.data.icon}
+          class="inline-block mr-1"
+          style={{ color: skill.data.textColor || '#fff' }}
+        />
+      )
+    }
+    {skill.data.name}
+  </span>
+</span>

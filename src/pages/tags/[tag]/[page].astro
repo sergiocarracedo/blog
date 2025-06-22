@@ -1,0 +1,80 @@
+---
+import SectionHeader from '@/components/SectionHeader.astro';
+import type { CollectionEntry } from 'astro:content';
+import Pagination from '../../../components/Pagination.astro';
+import PostTeaser from '../../../components/posts/PostTeaser.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPostsByTag } from '../../../utils/getPostsByTag';
+import { getTags } from '../../../utils/getTags';
+
+// Represents the params object for your [tag]/[page].astro route
+export interface TagPageParams {
+  tag: string;
+  page: string;
+}
+
+// Represents the props you might want to pass to each page
+export interface TagPageProps {
+  posts: any[]; // Replace 'any' with your actual post type if you have one
+  tag: string;
+}
+
+// Represents a single path object returned by getStaticPaths
+export interface StaticPath {
+  params: TagPageParams;
+  props: TagPageProps;
+}
+
+export const getStaticPaths = async ({
+  paginate,
+}: {
+  paginate: (
+    items: CollectionEntry<'blog'>[],
+    options: { pageSize: number; params: { tag: string } }
+  ) => StaticPath[];
+}) => {
+  const tags = await getTags();
+
+  const paths: StaticPath[] = [];
+  for (const tag of tags) {
+    const tagPosts = await getPostsByTag(tag, 'blog');
+    const paginated = paginate(tagPosts, { pageSize: 10, params: { tag } });
+    paginated.forEach((page) => {
+      paths.push(page);
+    });
+  }
+
+  return paths;
+};
+
+const { tag } = Astro.params;
+const { page } = Astro.props;
+const { data: posts } = page;
+
+const filteredPosts = posts.filter((post) => post.data.tags?.includes(tag));
+
+const urlPattern = `/tags/${tag}/{}`;
+---
+
+<BaseLayout>
+  <section class="wrapper">
+    <SectionHeader
+      title={`Posts tagged with "${tag}"`}
+      subtitle={`[${filteredPosts.length} post${filteredPosts.length !== 1 ? 's' : ''}]`}
+      description="Explore posts related to this tag."
+      class="mb-6"
+    />
+    <ul>
+      <ul>
+        {
+          filteredPosts.map((post) => (
+            <li>
+              <PostTeaser post={post} />
+            </li>
+          ))
+        }
+      </ul>
+    </ul>
+  </section>
+  <Pagination page={page} urlPattern={urlPattern} />
+</BaseLayout>

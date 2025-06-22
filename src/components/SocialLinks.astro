@@ -1,0 +1,21 @@
+---
+import { SOCIAL } from '../consts';
+---
+
+<div class="flex gap-2 flex-wrap items-center justify-center">
+  {
+    SOCIAL.map((social) => (
+      <a
+        href={social.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="h-10 w-10 flex items-center justify-center transition-all hover:text-primary hover:scale-110 bg-neutral-100 rounded-full hover:bg-neutral-200 p-2.5"
+        aria-label={`Follow Sergio Carracedo on ${social.name}`}
+        title={`Follow Sergio Carracedo on ${social.name}`}
+      >
+        <span class="sr-only">Follow Sergio Carracedo on {social.name}</span>
+        <Fragment set:html={social.icon} />
+      </a>
+    ))
+  }
+</div>

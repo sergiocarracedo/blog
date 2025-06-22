@@ -1,0 +1,25 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'>;
+
+const { href, class: className, ...props } = Astro.props;
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const subpath = pathname.match(/[^\/]+/g);
+const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+---
+
+<a
+  href={href}
+  class:list={[
+    className,
+    'link flex gap-0.5 justify-center items-center',
+    isActive ? ['font-bold'] : '',
+  ]}
+  {...props}
+>
+  {isActive && <Icon name="outline/arrow-right-outline" />}
+  <slot />
+  {isActive && <Icon name="outline/arrow-left-outline" />}
+</a>

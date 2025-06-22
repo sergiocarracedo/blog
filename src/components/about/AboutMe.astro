@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Skill from '../Skill.astro';
+
+import {
+  SITE_AUTHOR,
+  SITE_AUTHOR_DESCRIPTION,
+  SITE_AUTHOR_IMG_ALT,
+  SITE_AUTHOR_POSITION,
+} from '../../consts';
+
+const skills = await getCollection('skills');
+
+const { class: className } = Astro.props;
+---
+
+<section
+  class:list={[
+    'max-w-[900px] mx-auto mb-6 p-6 background-diagonal-secondary rounded-lg relative',
+    'flex flex-col md:flex-row items-center gap-6',
+    'min-h-[300px]',
+    className,
+  ]}
+>
+  <div class="md:absolute bottom-0 left-0 w-70 h-70 z-0 mix-blend-multiply order-2 md: order-1">
+    <img
+      alt={SITE_AUTHOR}
+      height="180"
+      src={SITE_AUTHOR_IMG_ALT}
+      width="180"
+      class="w-70 h-70 grayscale"
+    />
+  </div>
+  <div class="min-w-70 flex-shrink-0"></div>
+  <div class="flex-1 flex flex-col justify-center z-10 relative">
+    <div class="">
+      <header>
+        <h1 class="mb-2 font-impact font-bold text-2xl md:text-4xl sr-only">{SITE_AUTHOR}</h1>
+        <h2 class="mb-1 text-xl font-normal">
+          {SITE_AUTHOR_POSITION}
+        </h2>
+        <h3 class="text-lg italic font-normal mb-6">
+          {SITE_AUTHOR_DESCRIPTION}
+        </h3>
+      </header>
+
+      <aside class="flex flex-wrap gap-2">
+        {skills.map((skill, index) => <Skill skill={skill} />)}
+      </aside>
+    </div>
+  </div>
+</section>

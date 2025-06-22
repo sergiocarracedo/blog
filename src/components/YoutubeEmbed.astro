@@ -1,0 +1,16 @@
+---
+// YoutubeEmbed.astro
+// Props: id (YouTube video ID)
+const { id } = Astro.props;
+---
+
+<figure class="aspect-video relative overflow-hidden bg-gray-200 rounded-lg shadow-lg w-full">
+  <iframe
+    src={`https://www.youtube-nocookie.com/embed/${id}`}
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    class="max-w-full rounded-lg top-0 left-0 w-full h-full border-transparent border-0 absolute"
+    loading="lazy"></iframe>
+</figure>

@@ -1,0 +1,67 @@
+---
+import SectionHeader from '@/components/SectionHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSlug } from '@/utils/getSlug';
+import { getSortedCollection } from '@/utils/getSortedCollection';
+import type { CollectionEntry } from 'astro:content';
+
+const posts = await getSortedCollection('blog');
+const postsByYear = new Map<number, CollectionEntry<'blog'>[]>();
+
+posts.forEach((post) => {
+  const year = post.data.pubDate.getFullYear();
+  console.log(year, post.data.title);
+  if (!postsByYear.has(year)) {
+    postsByYear.set(year, []);
+  }
+  postsByYear.get(year)?.push(post);
+});
+---
+
+<BaseLayout>
+  <section class="wrapper">
+    <SectionHeader title="Posts by Year" class="mb-1" />
+
+    <ul class="flex flex-wrap gap-4 mb-8" role="navigation">
+      {
+        Array.from(postsByYear.entries()).map(([year, posts]) => (
+          <li>
+            <a class="text-primary link" href={`#${year}`}>
+              {year}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      Array.from(postsByYear.entries()).map(([year, posts]) => (
+        <section class="">
+          <h2 class="font-impact font-bold md:text-right md:w-40 mb-4 text-3xl text-primary">
+            {/* Using the year as an anchor for linking */}
+            <a class="anchor" id={year.toString()} />
+            {year}
+          </h2>
+          <ul class="mb-12 list-none">
+            {/* Mapping through posts of the current year */}
+            {posts.map((post) => (
+              <li class="mb-2 flex gap-5">
+                <span class="md:w-40 text-primary md:text-right">
+                  {/* Displaying the publication date */}
+                  {post.data.pubDate.toLocaleDateString('en-us', {
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </span>
+                <a class="flex-1 min-w-0 link font-semibold" href={getSlug(post)}>
+                  {/* Displaying the post title */}
+                  {post.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </section>
+</BaseLayout>

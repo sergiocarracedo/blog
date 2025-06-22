@@ -1,0 +1,47 @@
+---
+title: 'Backup incremental sobre FTP con rsync + curlftpfs'
+pubDate: 2011-12-13
+slug: 2011/12/13/backup-incremental-sobre-ftp-con-rsync-curlftpfs/
+heroImage: ./back-to-school-paper-colored-paper-stationery-159519.jpeg
+---
+
+Seguro que en alguna ocasión has necesitado realizar un _backup_ de un sitio web al que solo tienes acceso mediante **ftp**. Lo habitual es emplear un cliente ftp tipo [filezilla](http://filezilla-project.org/) o directamente trabajando en bash. El problema se plantea cuando, por ejemplo necesitamos realizar una copia incremental del sitio web y no tenemos acceso **ssh** sobre el que pueda trabajar **[rsync](http://es.wikipedia.org/wiki/Rsync) **o **[unison](http://www.cis.upenn.edu/~bcpierce/unison/)**. La solución nos la da **[curlftpfs](http://curlftpfs.sourceforge.net/)** que nos permite montar un directorio ftp en nuestro sistema para tratarlo como si fuese una carpeta local y realizar un rsyn o unison de forma normal.
+
+En primer lugar instalamos **curlftpfs**
+
+```
+$ sudo apt-get install curlftpfs
+```
+
+A continuación debemos editar nuestro `/etc/fstab` con nuestro editor favorito
+
+```
+$ sudo nano /etc/fstab
+```
+
+y le añadimos la siguiente linea `curlftpfs#_user_:_pass_@_host.com_/_ruta-carpeta-remota_ /_punto-de-montaje_/ fuse ro,user,uid=_userid_,auto 0 0`
+
+Donde:
+
+- user: es el nombre de usuario ftp
+- pass: el la contraseña de acceso al ftp
+- host: es el host ftp
+- userid: es el id del usuario no-root al que le permitiremos montar la carpeta, podemos obtener el nuestro mediante el comando
+
+```
+$ id
+```
+
+En este caso he montado la carpeta **ftp** en modo solo lectura por razones de seguridad (nadie quiere borrar por accidente su sitio web ;) ) La carpeta se montara en el próximo reinicio del sistema o podemos forzarlo mediante
+
+```
+$ sudo mount -a
+```
+
+Lo siguiente realizar un rsync entre la carpeta montada y la carpeta donde almacenaremos el backup, por ejemplo:
+
+```
+$ rsync -arzvl /punto-de-montaje/* /home/usuario/backups/mi-ftp</span>
+```
+
+Solo nos quedaria crear un script y añadirlo a nuestro **crontab** para que se realice el backup automaticamente. Nota: La velocidad respecto a una sincronización de rsync sobre  SSH es considerablemente inferior, por ello esta técnica de considerarse una alternativa cuando no tenemos posibilididad de acceso _ssh_

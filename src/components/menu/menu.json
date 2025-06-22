@@ -1,0 +1,6 @@
+[
+  { "label": "Home", "href": "/" },
+  { "label": "Blog", "href": "/blog" },
+  { "label": "By Year", "href": "/blog/by-year" },
+  { "label": "About", "href": "/about" }
+]

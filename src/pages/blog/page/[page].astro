@@ -1,0 +1,31 @@
+---
+import Pagination from '../../../components/Pagination.astro';
+import PostTeaser from '../../../components/posts/PostTeaser.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getSortedCollection } from '../../../utils/getSortedCollection';
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getSortedCollection('blog');
+  return paginate(posts, { pageSize: 10 });
+}
+
+const urlPattern = `/blog/page/{}`;
+
+const { page } = Astro.props;
+const { data: posts } = page;
+---
+
+<BaseLayout>
+  <section class="wrapper">
+    <ul>
+      {
+        posts.map((post) => (
+          <li>
+            <PostTeaser post={post} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+  <Pagination page={page} urlPattern={urlPattern} />
+</BaseLayout>

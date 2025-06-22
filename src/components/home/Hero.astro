@@ -1,0 +1,48 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getCollection } from 'astro:content';
+import Skill from '../Skill.astro';
+
+import { SITE_AUTHOR, SITE_AUTHOR_DESCRIPTION, SITE_AUTHOR_POSITION } from '../../consts';
+
+const skills = await getCollection('skills');
+
+const { class: className } = Astro.props;
+---
+
+<section
+  class:list={[
+    'max-w-[900px] mx-auto mb-6 p-6 background-diagonal-secondary rounded-lg relative',
+    'flex flex-col md:flex-row items-center gap-6',
+    className,
+  ]}
+>
+  <div class="flex-1 flex flex-col justify-center z-10 relative">
+    <header>
+      <h1 class="mb-2 font-impact font-bold text-2xl md:text-4xl">{SITE_AUTHOR}</h1>
+      <h2 class="mb-1 text-xl font-normal">
+        {SITE_AUTHOR_POSITION}
+      </h2>
+      <h3 class="text-lg italic font-normal mb-6">
+        {SITE_AUTHOR_DESCRIPTION}
+      </h3>
+    </header>
+
+    <aside class="flex flex-wrap gap-2">
+      {
+        skills.map((skill, index) => (
+          <Skill skill={skill} class={index > 5 && 'hidden md:visible'} data-more={index > 5} />
+        ))
+      }
+    </aside>
+    <aside>
+      <a href="/about" class="text-primary link mt-4 inline-block group">
+        <Icon
+          name="outline/arrow-right-outline"
+          class="inline-block mr-2 transition-transform duration-300 group-hover:translate-x-2"
+        />
+        More about me
+      </a>
+    </aside>
+  </div>
+</section>

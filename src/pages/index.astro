@@ -1,0 +1,41 @@
+---
+import Hero from '@/components/home/Hero.astro';
+import SectionHeader from '@/components/SectionHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSortedCollection } from '@/utils/getSortedCollection';
+import PostTeaser from '../components/posts/PostTeaser.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = await getSortedCollection('blog');
+
+const homePosts = posts.slice(0, 5);
+---
+
+<BaseLayout meta={{ title: SITE_TITLE, description: SITE_DESCRIPTION }}>
+  <main>
+    <Hero />
+
+    <section class="wrapper">
+      <SectionHeader
+        title="Blog"
+        subtitle="Latest Posts"
+        description="Explore my latest articles and insights."
+      />
+      <ul>
+        {
+          homePosts.map((post, index) => (
+            <li>
+              <PostTeaser style={index === 0 ? 'highlighted' : 'default'} post={post} />
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="text-center mt-8 mb-10">
+        <a class="btn text-xl" href="/blog" title={`All Blog posts [${posts.length}]`}>
+          All Blog posts [{posts.length}]
+        </a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

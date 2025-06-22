@@ -1,0 +1,44 @@
+{
+  "name": "",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/react": "^4.3.0",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.4.0",
+    "@jop-software/astro-cookieconsent": "^3.0.1",
+    "@tailwindcss/vite": "^4.1.8",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "astro": "^5.8.1",
+    "astro-icon": "^1.1.5",
+    "astro-pagefind": "^1.8.3",
+    "framer-motion": "^12.18.1",
+    "html-to-text": "^9.0.5",
+    "markdown-it": "^14.1.0",
+    "motion": "^12.18.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "remark-directive": "^4.0.0",
+    "remark-emoji": "^5.0.1",
+    "sass": "^1.89.1",
+    "sharp": "^0.34.2",
+    "tailwindcss": "^4.1.8",
+    "unist-util-visit": "^5.0.0",
+    "vanilla-cookieconsent": "^3.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "gray-matter": "^4.0.3",
+    "prettier": "^3.5.3",
+    "prettier-plugin-astro": "^0.14.1"
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
+}
