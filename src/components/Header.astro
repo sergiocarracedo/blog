@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { SITE_TITLE } from '../consts';
 import MenuMenu from './menu/Menu.astro';
+import MenuOverlay from './menu/MenuOverlay.astro';
 ---
 
 <header
@@ -27,6 +28,8 @@ import MenuMenu from './menu/Menu.astro';
     </div>
   </nav>
 </header>
+
+<MenuOverlay />
 
 <script set:script>
   const header = document.getElementById('site-header');

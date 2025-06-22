@@ -1,7 +1,7 @@
 ---
+import { Icon } from 'astro-icon/components';
 import HeaderLink from './HeaderLink.astro';
 import menuRaw from './menu.json';
-import MenuOverlay from './MenuOverlay.astro';
 const menu: Array<{ label: string; href: string }> = Array.isArray(menuRaw) ? menuRaw : [];
 ---
 
@@ -12,6 +12,16 @@ const menu: Array<{ label: string; href: string }> = Array.isArray(menuRaw) ? me
   </div>
   <!-- Mobile burger -->
   <div class="md:hidden flex items-center">
-    <MenuOverlay menu={menu} />
+    <button
+      id="menu-toggle"
+      aria-label="Open menu"
+      class="flex flex-col justify-center items-center w-10 h-10 group z-100"
+      type="button"
+    >
+      <Icon
+        name="outline/menu-outline"
+        class="w-6 h-6 text-primary group-hover:text-white transition-colors duration-300"
+      />
+    </button>
   </div>
 </div>

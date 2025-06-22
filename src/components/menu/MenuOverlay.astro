@@ -1,35 +1,22 @@
 ---
+import { Icon } from 'astro-icon/components';
 import { SITE_TITLE } from '../../consts';
 import HeaderLink from './HeaderLink.astro';
-interface Props {
-  menu: { href: string; label: string }[];
-}
-const menu = Astro.props.menu;
+import menuRaw from './menu.json';
+const menu: Array<{ label: string; href: string }> = Array.isArray(menuRaw) ? menuRaw : [];
 ---
-
-<button
-  id="menu-toggle"
-  aria-label="Open menu"
-  class="flex flex-col justify-center items-center w-10 h-10 group z-50"
-  type="button"
->
-  <span
-    id="bar1"
-    class="block w-6 h-0.5 bg-primary mb-1 transition-all duration-300 group-hover:bg-black"></span>
-  <span
-    id="bar2"
-    class="block w-6 h-0.5 bg-primary mb-1 transition-all duration-300 group-hover:bg-black"></span>
-  <span
-    id="bar3"
-    class="block w-6 h-0.5 bg-primary transition-all duration-300 group-hover:bg-black"></span>
-</button>
 
 <div
   id="menu-overlay"
-  class="fixed inset-0 bg-primary/80 backdrop-blur-xs z-40 flex flex-col items-center justify-center w-full h-full transition-transform duration-500 translate-x-full text-white"
+  class="fixed inset-0 bg-primary/80 backdrop-blur-xs z-90 flex flex-col items-center justify-center w-full h-full transition-transform duration-500 translate-x-full text-white"
   style="will-change: transform;"
   aria-hidden="true"
 >
+  <Icon
+    name="outline/xmark-outline"
+    class="w-6 h-6 text-white absolute top-18 right-13"
+    id="close-menu"
+  />
   <h2
     class="mb-8 text-2xl font-bold flex flex-col items-center justify-center flex-wrap gap-2 text-white"
   >
@@ -50,10 +37,8 @@ const menu = Astro.props.menu;
 <script client:load>
   (function () {
     const btn = document.getElementById('menu-toggle');
+    const closeBtn = document.getElementById('close-menu');
     const overlay = document.getElementById('menu-overlay');
-    const bar1 = document.getElementById('bar1');
-    const bar2 = document.getElementById('bar2');
-    const bar3 = document.getElementById('bar3');
     let open = false;
     function setMenuState(state) {
       open = state;
@@ -61,13 +46,11 @@ const menu = Astro.props.menu;
       overlay.classList.toggle('translate-x-full', !open);
       overlay.setAttribute('aria-hidden', !open);
       btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      closeBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       document.body.classList.toggle('overflow-hidden', open);
-      // Animate bars
-      bar1.style.transform = open ? 'rotate(45deg) translateY(7px)' : '';
-      bar2.style.opacity = open ? 0 : 1;
-      bar3.style.transform = open ? 'rotate(-45deg) translateY(-7px)' : '';
     }
     btn.addEventListener('click', () => setMenuState(!open));
+    closeBtn.addEventListener('click', () => setMenuState(false));
     // Close menu on nav click
     overlay.addEventListener('click', function (e) {
       if (e.target.classList.contains('menu-link')) setMenuState(false);
