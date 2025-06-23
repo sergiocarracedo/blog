@@ -29,6 +29,10 @@
   @apply max-w-[900px] mx-auto px-4 md:px-0;
 }
 
+@utility wrapper-no-padding {
+  @apply max-w-[900px] mx-auto px-0;
+}
+
 @utility anchor {
   display: block;
   position: relative;

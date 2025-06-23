@@ -1,6 +1,6 @@
 @layer components {
 .prose {
-  @apply backdrop-blur-md bg-neutral-100/60 text-gray-900 rounded-md p-4 sm:p-6 lg:p-8 text-base;
+  @apply backdrop-blur-md bg-neutral-100/60 text-gray-900 rounded-md text-base;
 
   *::selection {
     @apply bg-primary text-white;
@@ -16,7 +16,7 @@
   }
 
   img {
-    margin: auto;
+    @apply rounded-md mx-auto w-full max-w-full;
   }
 
   h1{

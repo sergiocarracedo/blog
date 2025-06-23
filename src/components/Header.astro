@@ -7,17 +7,17 @@ import MenuOverlay from './menu/MenuOverlay.astro';
 
 <header
   id="site-header"
-  class="sticky top-0 z-50 backdrop-blur-xs bg-white/20 mb-15 transition-all duration-500 max-w-full mx-auto"
+  class="sticky top-0 z-50 backdrop-blur-xs bg-secondary/40 mb-6 md:mb-15 transition-all duration-500 max-w-full mx-auto"
 >
-  <nav class="flex gap-4 p-4 items-center justify-between">
-    <h2>
+  <nav class="flex gap-4 p-4 items-center justify-between wrapper">
+    <h2 class="text-sm md:text-xl">
       <a href="/">
         <Image
           src="/i/sergiocarracedo.jpg"
           alt="Sergio Carracedo"
           width={50}
           height={50}
-          class="inline-block mr-2 rounded-full border-solid border-primary border-4"
+          class="inline-block mr-2 rounded-full border-solid border-primary border-4 w-11 h-11 md:w-13 md:h-13"
         />
         {SITE_TITLE}
       </a>
@@ -35,14 +35,14 @@ import MenuOverlay from './menu/MenuOverlay.astro';
   const header = document.getElementById('site-header');
   const onTopClasses = [
     'max-w-[900px]',
-    'bg-secondary/60',
-    'top-6',
+    'bg-secondary/40',
+    'md:top-6',
     'backdrop-blur-none',
     'py-4',
     'px-4',
     'rounded-lg',
   ];
-  const scrolledClasses = ['max-w-full', 'bg-white/20', 'backdrop-blur-xs', 'top-0'];
+  const scrolledClasses = ['max-w-full', 'bg-white/40', 'backdrop-blur-xs', 'top-0'];
   const onScroll = () => {
     if (!header) return;
     if (window.scrollY === 0) {
