@@ -8,6 +8,7 @@ import {
   SITE_AUTHOR_IMG_ALT,
   SITE_AUTHOR_POSITION,
 } from '../../consts';
+import SocialLinks from '../SocialLinks.astro';
 
 const skills = await getCollection('skills');
 
@@ -44,9 +45,14 @@ const { class: className } = Astro.props;
         </h3>
       </header>
 
-      <aside class="flex flex-wrap gap-2">
-        {skills.map((skill, index) => <Skill skill={skill} />)}
+      <aside class="mb-6">
+        <div class="flex flex-wrap gap-2">
+          {skills.map((skill, index) => <Skill skill={skill} />)}
+        </div>
       </aside>
+
+      <h4 class="text-lg font-bold mb-2 font-impact">Connect with me</h4>
+      <SocialLinks class="mt-6" />
     </div>
   </div>
 </section>
