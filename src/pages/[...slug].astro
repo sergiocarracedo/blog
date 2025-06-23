@@ -21,7 +21,7 @@ const enrichedPost = enrichBlogPost(post);
 const meta = {
   title: enrichedPost.data.title,
   description: truncate(enrichedPost.excerpt, 180),
-  image: enrichedPost.data.heroImage.src,
+  image: enrichedPost.data.heroImage?.src,
   url: enrichedPost.slug,
   date: post.data.pubDate,
   tags: post.data.tags || [],
