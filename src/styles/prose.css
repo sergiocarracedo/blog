@@ -20,7 +20,7 @@
   }
 
   h1{
-    @apply text-2xl mb-4 mt-8 before:content-['#'] before:text-xl
+    @apply text-2xl mb-4 mt-8 before:content-['#']! before:text-xl
   }
   h2{
     @apply text-xl mb-3 mt-6 before:content-['##'] before:text-lg;
@@ -37,8 +37,7 @@
   h6{
     @apply text-xs  mb-1 mt-1 before:content-['######'] before:text-xs;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply text-2xl mb-4 mt-8 before:content-['#'] ;
+  h1, h2, h3, h4, h5, h6 {    
     @apply before:font-bold before:text-primary-light before:mr-2;
   }
 

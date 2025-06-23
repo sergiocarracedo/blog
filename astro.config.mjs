@@ -1,9 +1,13 @@
 // @ts-check
+import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import remarkDirective from 'remark-directive';
+
+
 import emoji from 'remark-emoji';
 import './src/middleware';
 import { remarkDirectiveASCIInema } from './src/remark-plugins/remark-directive-asciinema';
@@ -38,6 +42,22 @@ export default defineConfig({
       [remarkDirectiveIframe, {}],
       [remarkDirectiveASCIInema, {}],
       [emoji, {}]
+    ],
+    rehypePlugins: [
+      rehypeHeadingIds,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'wrap',
+          
+          headingProperties: {
+            className: ['anchor'],
+          },
+          properties: {
+            className: ['anchor-link'],
+          },
+        },
+      ],
     ]
   },
   vite: {
