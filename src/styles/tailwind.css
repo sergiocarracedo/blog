@@ -139,9 +139,9 @@
   }
 
   body {
-    @apply font-primary text-neutral-700 bg-gray-100 font-impact text-lg 
-    [--background-paper-bg:var(--color-gray-100)]
-    [--background-paper-lines:var(--color-primary-lighter)]
+    @apply font-primary text-[#404040] bg-[#f3f4f6] font-impact text-lg 
+    [--background-paper-bg:#f3f4f6]
+    [--background-paper-lines:#8BC2B933]
     background-paper;
     background-attachment: fixed;
 
