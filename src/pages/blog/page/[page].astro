@@ -1,4 +1,5 @@
 ---
+import SectionHeader from '@/components/SectionHeader.astro';
 import Pagination from '../../../components/Pagination.astro';
 import PostTeaser from '../../../components/posts/PostTeaser.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
@@ -13,10 +14,13 @@ const urlPattern = `/blog/page/{}`;
 
 const { page } = Astro.props;
 const { data: posts } = page;
+
+const totalPosts = (await getSortedCollection('blog')).length;
 ---
 
 <BaseLayout>
   <section class="wrapper">
+    <SectionHeader title="Blog" description={`Explore my ${totalPosts} articles.`} />
     <ul>
       {
         posts.map((post) => (
