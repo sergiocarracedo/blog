@@ -9,6 +9,12 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 const posts = await getSortedCollection('blog');
 
 const homePosts = posts.slice(0, 5);
+
+const meta = {
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  keywords: ['blog', 'articles', 'insights'],
+};
 ---
 
 <BaseLayout meta={{ title: SITE_TITLE, description: SITE_DESCRIPTION }}>
