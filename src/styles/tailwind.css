@@ -4,7 +4,8 @@
 
 @theme {
   --font-impact: "Atkinson", "sans-serif";
-  --font-primary: "Noto Sans", "sans-serif";
+  --font-primary: "NotoSans", "sans-serif";
+
 
   --color-primary: #213b4a;
   --color-primary-700: rgba(33, 59, 74, 0.9);
@@ -148,9 +149,12 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-impact text-primary leading-none font-bold tracking-tight;
   }
+  html {
+    @apply font-primary text-[#404040]; 
+  }
 
   body {
-    @apply font-primary text-[#404040] bg-[#f3f4f6] font-impact text-lg 
+    @apply font-primary text-[#404040] bg-[#f3f4f6] text-lg 
     [--background-paper-bg:#f3f4f6]
     [--background-paper-lines:#8BC2B933]
     background-paper;
