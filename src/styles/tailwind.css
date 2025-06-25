@@ -1,9 +1,10 @@
 @import "tailwindcss";
+@import "./fonts.css";
 @import "./prose.css";
 
 @theme {
   --font-impact: "Atkinson", "sans-serif";
-  --font-primary: "iA Writer Mono", "sans-serif";
+  --font-primary: "Noto Sans", "sans-serif";
 
   --color-primary: #213b4a;
   --color-primary-700: rgba(33, 59, 74, 0.9);
