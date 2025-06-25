@@ -1,4 +1,6 @@
 ---
+import SectionHeader from '@/components/SectionHeader.astro';
+import Search from 'astro-pagefind/components/Search';
 import Pagination from '../../../components/Pagination.astro';
 import PostTeaser from '../../../components/posts/PostTeaser.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
@@ -17,6 +19,18 @@ const { data: posts } = page;
 
 <BaseLayout>
   <section class="wrapper">
+    <div class="md:flex gap-7 mb-10 justify-between">
+      <SectionHeader
+        title="Blog"
+        subtitle={page.currentPage > 1 ? `Page ${page.currentPage}` : ''}
+        description="Explore my articles and insights."
+        class="mb-2"
+      />
+      <div class="flex-1 items-end md:max-w-[350px]">
+        <Search className="pagefind-ui-dark pagefind-ui-floating" />
+      </div>
+    </div>
+
     <ul>
       {
         posts.map((post) => (
