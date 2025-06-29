@@ -1,0 +1,241 @@
+---
+title: 'Automating package version bump with Release Please'
+pubDate: 2025-06-30
+slug: /release-please
+heroImage: ./cover.png
+tags:
+ - ci
+ - release
+ - npm
+ - javascript
+ - typescript
+---
+
+When working on a project that needs to be released as a package, version bumping (increasing the version number depending on the changes) can be tedious. 
+
+> I will focus on npm packages, but the concepts can be applied to other package managers as well.
+
+I'm assuming you are familiar with the [Semantic Versioning](https://semver.org/) (SemVer) system, which defines how version numbers should be incremented based on the type of changes made to the codebase.
+
+Given a version number MAJOR.MINOR.PATCH, increment the:
+
+- **MAJOR** version when you make incompatible API changes
+- **MINOR** version when you add functionality in a backward-compatible manner
+- **PATCH** version when you make backward compatible bug fixes
+
+Making a new release requires you to check the changes manually, decide on the version type (major, minor, patch), and then update the version in your `package.json` file before building and publishing the package. This can lead to human error and inconsistencies, especially in larger teams or projects with frequent updates.
+
+If you also want to keep a changelog, you would also need to manually write the changes in a `CHANGELOG.md` file, which can be even more error-prone and time-consuming.
+
+
+## Automating version bumping
+
+If we want to automate this process, first, we need to define a set of rules that will allow us to determine the type of version bump (major, minor, patch). 
+
+One solution to that is to use the commit messages to specify the type of change the commit includes. 
+
+### Conventional Commits to the rescue
+
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) is a specification for writing standardized commit messages can be used for multiple purposes, including our use case: automating version bumping.
+
+There are other advantages of using Conventional Commits, such as generating changelogs automatically.
+
+Conventional commits propose a commit message format:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+Type can be `fix` or `feat` for bug fixes and new features, respectively. IF those include the `!` character, it means that the change is a breaking change, which should trigger a major version bump.
+
+Other types can be used to categorize commits, such as `chore`, `docs`, `style`, `refactor`, `perf`, and `test`, but those will not trigger a version bump.
+
+Example:
+
+`feat(datacollection)!: Allow to group items in the collection`
+
+This commit message indicates that a new feature was added to the data collection (the scope), and it is a breaking change, so it should trigger a major version bump.
+
+### Ensuring commit messages to follow Conventional Commits
+
+Conventional Commits is a convention, so nothing prevents you or your team from writing commit messages that do not follow the specifications. If you want to ensure that all commit messages follow the specification (you should), you can use a tool like [commitlint](https://commitlint.js.org/), which together with [husky](https://typicode.github.io/husky/#/) or a similar tool can be used to check and enforce commit message rules.
+
+
+Once we agree with the team on the commit message format, we are sure all the commit messages follow the agreement and we have a tool to check it, we can proceed to automate the version bumping process.
+
+## Release Please
+
+[Release Please](https://github.com/googleapis/release-please) is a tool developed by Google that automates the version bumping process and the release PRs generation based on Conventional Commits.
+
+When a release PR is merged, release-please will automatically update the `CHANGELOG.md` file, update the version in the `package.json` file, and create a GitHub release.
+
+Release Please works with release PRs, and handles the PR lifecycle, including merging the PR when the release is ready. It can also be configured to automatically publish the package to npm or other package managers.
+
+But this does not mean you can not use continuous delivery (CD) to automatically publish the package when you merge something in main. You can still use Release Please to handle the version bumping and changelog generation, only need to trigger the Release Please workflow when you the code is merged into `main`.
+
+### Setting up Release Please
+
+
+The first step is to configure Release Please in your repository. The recommended way is to use the Github Action [release-please-action](https://github.com/googleapis/release-please-action).
+
+
+Then you need to create a configuration file in the root of your repository, named `release-please-config.json`. This file will define how Release Please should behave, including the release type, the package or package name, and other options.
+
+Example:
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "packages": {
+    "packages/react": {
+      "pull-request-header": "🤖 React package stable release 🚀",
+      "pull-request-title-pattern": "chore${scope}: 🤖 React package release${component} ${version} 🚀",
+      "group-pull-request-title-pattern": "chore${scope}: 🤖 React package release ${version} 🚀"
+ },
+    "packages/react-native": {
+      "pull-request-header": "🤖 React Native 📱 stable release 🚀",
+      "pull-request-title-pattern": "chore${scope}: 🤖 React Native 📱 release${component} ${version}",
+      "group-pull-request-title-pattern": "chore${scope}: 🤖 React Native 📱 release ${version}"
+ },    
+ }
+}
+```
+
+In the first execution Release Please will the file `.release-please-manifest.json` in the root of your repository, which will contain the information about the current versions of the packages.
+
+If your project only has one package and you don't want to configure the release message, tags, etc you can skip this step.
+
+
+As we want to create auto-create and merge a release PR when a commit is pushed to the `main` branch, we need to set up a GitHub Action workflow that will run Release Please. Create a file `.github/workflows/release-please.yml` with the following content:
+
+```yaml
+name: "Create release"
+
+on:
+  push:
+    branches:
+ - main
+
+jobs:
+  release-please:
+    name: "Release library(s)"
+    # Prevents running on the release-please branch and create a loop
+    if: |
+ github.head_ref != 'release-please--branches--master' &&
+ !contains(github.event.pull_request.labels.*.name, 'autorelease')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      BRANCH: ${{ github.event.repository.default_branch }}
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      prs_created: ${{ steps.release.outputs.prs_created }}
+      pr: ${{ steps.release.outputs.pr }}
+    steps:
+ - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+ - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
+          target-branch: ${{ env.BRANCH }}
+
+ - name: Auto approves release-please PR
+        if: steps.release.outputs.prs_created == 'true'
+        uses: juliangruber/approve-pull-request-action@b71c44ff142895ba07fad34389f1938a4e8ee7b0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ fromJSON(steps.release.outputs.pr || '{}').number }}
+
+ - name: Merge release-please PR and create a release
+        run: |
+ if [ -z "$PR_NUMBER" ]; then
+ echo "No PR number found"
+ echo "::warning title='No release PR created by release-please'::Conventional commits didn't trigger a version bump and a release is not necessary"
+ exit 0
+ fi
+ echo "Merging PR $PR_NUMBER"
+ gh pr merge --squash --admin "$PR_NUMBER"
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
+          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr || '{}').number }}
+
+      # Set the output to true if a PR was created. This is used in other workflows to determine if a new version was created
+ - name: Set new_version output
+        if: ${{ steps.release.outputs.pr }}
+        id: set-output
+        run: echo "new_version=true" >> $GITHUB_OUTPUT
+```
+
+This workflow will run on every push to the `main` branch and will create a release PR if there are any changes that require a version bump. The PR will be automatically approved and merged, and a new release will be created.
+
+> Depending on your GitHub branch protection rules, specifically PRs must be approved by other codeowners, you need to create a GitHub token with the necessary permissions to create and merge PRs. You can create a personal access token and add it to your repository secrets as `RELEASE_PLEASE_GH_TOKEN`.
+
+The last step of the workflow will set the output `new_version` to `true` if a new version was created. This can be used in other workflows to trigger actions based on the new version, such as publishing the package to npm as we will see in action.
+
+## Publishing the package
+
+To publish the package to npm after a version bump, we can create another GitHub Action workflow that will run when a new version is created. This workflow will check if the `new_version` output is set to `true`, and if so, it will publish the package to npm.
+
+
+```yaml
+
+name: "Publish package"
+
+on:
+  release:
+    types: [released]
+  # Release is not triggered when the release was created by another workflow using GITHUB_TOKEN https://github.com/orgs/community/discussions/25281#discussioncomment-3300251
+  workflow_run:
+    workflows: [Create release]
+    types:
+ - completed
+
+  workflow_dispatch: # Allows manual triggering
+    inputs:
+      release_tag:
+        description: "The release tag to checkout"
+        required: true
+
+jobs:
+  publish:
+    name: "Publish to npm"
+    # Prevents running on the release-please branch
+    # For workflow_run trigger we need to check if the workflow_run was successful and if the new_version output was set to not run on it if no new version was released
+    if: |
+ contains(github.event.release.tag_name, 'react-v') &&
+ github.head_ref != 'release-please--branches--master' && !contains(github.event.pull_request.labels.*.name, 'autorelease') && 
+ github.event_name == 'workflow_dispatch' || github.event_name == 'release' || 
+ (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.outputs.new_version)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+ - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.event.inputs.release_tag || github.sha }} # Checkout the tagged release
+ - uses: ./.github/actions/publish-to-npmjs
+        id: publish
+        with:
+          workspace: "@myorg/my-package" # Replace with your package name
+          registry_token: ${{ secrets.NPMJS_TOKEN }}
+
+```
+
+
+Now when someone merges a PR into `main` (after passing all the validation the team has set up), The first workflow will run, and check if the commit includes `feat` or `fix` (or a BREAKING CHANGE) creating a release PR, if not just skips the next steps. Release please find the package.json of the project and bump the version according to the commit messages, update the `CHANGELOG.md` file with the changes made in the release, and create a PR with the changes.
+
+In our case, we auto-approve the PR and merge it, because we want continuous delivery, but you can also set up the workflow to create the releases manually and trigger the Release Please workflow in that case.
+.
+With these simple workflows, we can simplify and automate the process of version bumping and package publishing, reducing the risk of human error and ensuring a consistent release process, generating at the same time a changelog file with the changes made in each release.
