@@ -26,10 +26,10 @@ const { meta } = Astro.props;
       data-service="ga4"
       data-src={`https://www.googletagmanager.com/gtag/js?id=${GA}`}></script>
 
-    <script1>
+    <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
-        dataLayer.push(arguments);
+        window.dataLayer.push(arguments);
       }
       gtag('js', new Date());
 
