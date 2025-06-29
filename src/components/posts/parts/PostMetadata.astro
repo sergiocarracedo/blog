@@ -15,7 +15,7 @@ const { date, tags, readingTime, class: className } = Astro.props;
 
 <aside class={className}>
   <div class="flex items-center gap-2 mb-2 flex-wrap">
-    <FormattedDate date={date} />
+    <FormattedDate date={date} class="text-sm" />
 
     <ReadingTime readingTime={readingTime} class="flex-1" />
   </div>

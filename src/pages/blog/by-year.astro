@@ -10,21 +10,24 @@ const postsByYear = new Map<number, CollectionEntry<'blog'>[]>();
 
 posts.forEach((post) => {
   const year = post.data.pubDate.getFullYear();
-  console.log(year, post.data.title);
   if (!postsByYear.has(year)) {
     postsByYear.set(year, []);
   }
   postsByYear.get(year)?.push(post);
 });
+
+const postsByYearSorted = Array.from(postsByYear.entries()).sort(
+  ([yearA], [yearB]) => yearB - yearA
+);
 ---
 
 <BaseLayout>
   <section class="wrapper">
     <SectionHeader title="Posts by Year" class="mb-1" />
 
-    <ul class="flex flex-wrap gap-4 mb-8" role="navigation">
+    <ul class="flex flex-wrap gap-2 mb-8" role="navigation">
       {
-        Array.from(postsByYear.entries()).map(([year, posts]) => (
+        postsByYearSorted.map(([year, posts]) => (
           <li>
             <a class="text-primary link" href={`#${year}`}>
               {year}
@@ -35,7 +38,7 @@ posts.forEach((post) => {
     </ul>
 
     {
-      Array.from(postsByYear.entries()).map(([year, posts]) => (
+      postsByYearSorted.map(([year, posts]) => (
         <section class="">
           <h2 class="font-impact font-bold md:text-right md:w-40 mb-4 text-3xl text-primary">
             {/* Using the year as an anchor for linking */}

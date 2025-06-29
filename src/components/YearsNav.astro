@@ -20,12 +20,14 @@ posts.forEach((post) => {
 
 <ul class:list={['flex', 'flex-wrap', 'gap-2', 'list-none', 'justify-center', Astro.props.class]}>
   {
-    Array.from(years).map((year) => (
-      <li>
-        <a class="link" href={`/blog/by-year#${year}`}>
-          {year}
-        </a>
-      </li>
-    ))
+    Array.from(years)
+      .sort((a, b) => parseInt(b) - parseInt(a))
+      .map((year) => (
+        <li>
+          <a class="link" href={`/blog/by-year#${year}`}>
+            {year}
+          </a>
+        </li>
+      ))
   }
 </ul>

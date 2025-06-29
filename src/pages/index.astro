@@ -3,12 +3,19 @@ import Hero from '@/components/home/Hero.astro';
 import SectionHeader from '@/components/SectionHeader.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getSortedCollection } from '@/utils/getSortedCollection';
+import Search from 'astro-pagefind/components/Search';
 import PostTeaser from '../components/posts/PostTeaser.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const posts = await getSortedCollection('blog');
 
 const homePosts = posts.slice(0, 5);
+
+const meta = {
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  keywords: ['blog', 'articles', 'insights'],
+};
 ---
 
 <BaseLayout meta={{ title: SITE_TITLE, description: SITE_DESCRIPTION }}>
@@ -16,11 +23,18 @@ const homePosts = posts.slice(0, 5);
     <Hero />
 
     <section class="wrapper">
-      <SectionHeader
-        title="Blog"
-        subtitle="Latest Posts"
-        description="Explore my latest articles and insights."
-      />
+      <div class="md:flex gap-7 mb-10 justify-between">
+        <SectionHeader
+          title="Blog"
+          subtitle="Latest Posts"
+          description="Explore my latest articles and insights."
+          class="mb-2"
+        />
+        <div class="flex-1 items-end md:max-w-[350px]">
+          <Search className="pagefind-ui-dark pagefind-ui-floating" />
+        </div>
+      </div>
+
       <ul>
         {
           homePosts.map((post, index) => (

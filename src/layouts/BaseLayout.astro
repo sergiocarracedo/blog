@@ -26,12 +26,20 @@ const { meta } = Astro.props;
       data-service="ga4"
       data-src={`https://www.googletagmanager.com/gtag/js?id=${GA}`}></script>
 
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-87X78TXEGE');
+    </script>
+
     <script
       async
       data-category="analytics"
       data-service="disqus"
       data-src={`https://${DISQUS}/embed.js`}></script>
-
-    <script async src={`https://${DISQUS}/embed.js`}></script>
   </body>
 </html>
