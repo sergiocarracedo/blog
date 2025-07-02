@@ -15,6 +15,12 @@ const blog = defineCollection({
       tags: z.array(z.string()).optional().default([]),
       pexelsId: z.number().optional(),
       canonicalUrl: z.string().optional(),
+      heroImageMeta: z
+        .object({
+          author: z.string().optional(),
+          prompt: z.string().optional(),
+        })
+        .optional(),
     }),
 });
 
