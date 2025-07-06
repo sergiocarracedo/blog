@@ -1,11 +1,12 @@
 ---
 title: 'Selection on chunked data'
-pubDate: 2025-07-08
+pubDate: 2025-07-06
 slug: /selection-on-chunked-data
-heroImage: ./cover.png
+heroImage: ./pexels-pixabay-247113.jpg
 heroImageMeta:
-  author: ""
-  prompt: ""
+  author: "Pixabay"
+  licence: "CC0"
+  source: "https://www.pexels.com/es-es/foto/toma-directamente-encima-de-la-decoracion-seca-247113/"
 tags:
  - frontend
  - typescript
@@ -91,6 +92,7 @@ const selectedStatus = {
  ]
   rows: [{ id: 1, selected: false }, { id: 2, selected: false }, { id: 3, selected: true }]
 };
+```
 
 ### How to recreate the real list of selected items
 
@@ -102,23 +104,23 @@ For example, if we have the `selectedStatus` object like the above, and the data
 const data = {
  total: 100,
  groups: [
- { id: 1, name: 'Group 1', rows: [
- {id: 1, name: "Row 1"}, 
- {id: 2, name: "Row 2"}
- ]},
- { id: 2, name: 'Group 2', rows: [
- {id: 3, name: "Row 3"}, 
- {id: 4, name: "Row 4"}, 
- {id: 5, name: "Row 5"}
- ]},
- { id: 3, name: 'Group 3', rows: [
- {id: 6, name: "Row 6"},
- {id: 7, name: "Row 7"},
- {id: 8, name: "Row 8"}
- ]},
+  { id: 1, name: 'Group 1', rows: [
+    {id: 1, name: "Row 1"}, 
+    {id: 2, name: "Row 2"}
+  ]},
+  { id: 2, name: 'Group 2', rows: [
+    {id: 3, name: "Row 3"}, 
+    {id: 4, name: "Row 4"}, 
+    {id: 5, name: "Row 5"}
+  ]},
+  { id: 3, name: 'Group 3', rows: [
+    {id: 6, name: "Row 6"},
+    {id: 7, name: "Row 7"},
+    {id: 8, name: "Row 8"}
+  ]},
  ],
  rows: [
- { id: 10, name: 'Row 1' },
+  { id: 10, name: 'Row 1' },
  ]
 };
 ```

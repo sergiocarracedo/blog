@@ -19,6 +19,8 @@ const blog = defineCollection({
         .object({
           author: z.string().optional(),
           prompt: z.string().optional(),
+          source: z.string().optional(),
+          licence: z.string().optional(),
         })
         .optional(),
     }),
