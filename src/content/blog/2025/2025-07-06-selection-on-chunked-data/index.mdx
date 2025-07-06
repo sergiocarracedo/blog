@@ -11,40 +11,40 @@ tags:
  - typescript
 ---
 
-In the post I wrote last year about the lessons learned from building a table component I mentioned just a a :astro-ref[few lines]{path="blog/2024/2024-10-21-table-component-ii" fragment="row-selection"} about the selection, but I think it is worth to write a separate post about it as it is an interesting topic.
+In the post I wrote last year about the lessons learned from building a table component, I mentioned just a :astro-ref[few lines]{path="blog/2024/2024-10-21-table-component-ii" fragment="row-selection"} about the selection. Still, I think it's worth writing a separate post about it, as it's an interesting topic.
 
 
 ## What is chunked data in this context?
 
-In this context "chunked data" refers you will not have all the data at the same time in the client and you will have only access to a subset of the data at a time, and to some metadata, for example, the total number of rows.
+In this context, "chunked data" refers to the fact that you will not have all the data at the same time in the client, and you will have only access to a subset of the data at a time, and to some metadata, for example, the total number of rows.
 
-This is a very common scenario when when you are dealing with large datasets, or when you want to give the user the fastest possible response time.
+This is a very common scenario when you are dealing with large datasets or when you want to give the user the fastest possible response time.
 
-> If you check the previous post I mentioned the internal pagination, that means the data is chucked into page, but it a UI chunking, not a data chunking as you have all the data available in the client and you chuck it for render porpouses, so it is not the same case.
+> If you check the previous post, I mentioned the internal pagination, which means the data is chunked into pages, but it is a UI chunking, not a data chunking as you have all the data available in the client and you chuck it for render porpouses, so it is not the same case.
 
-## Selection on non chunked data
+## Selection on non-chunked data
 
 Imagine you have a table and you have all the rows, for example 1000 rows, handle the selecte rows state is straightforward, you can just have an array of the selected rows (you can store ref to the rows or the row ids, it depends on your use case), even if the data has groups, we donnt need to take care of that, as the final selection are items, not groups, so if you have a group with 10 rows, and the user selects the group, you just add the 10 rows to the selected rows array.
 
-if you need to execute an action on the selected rows in the backend you just send the array of selected rows (in most cases its better to send the ids of the selected rows). And the backend can just execute the action.
+If you need to execute an action on the selected rows in the backend, you just send the array of selected rows (in most cases, it's better to send the IDs of the selected rows). And the backend can just execute the action.
 
 This case is simple but doesn't scale well in multiple ways: 
 - You need to load all the data in the client, probably via an API call, and the backend needs to get it from the database, that means, database executions time, network time, parse time (CPU and memory), and client rendering time and also the memory usage in the client to store all the dataset, which can be a problem if you have a lot of data.
-- You need to keep track of the selected rows in the client, and agains will need more memory and network usage as bigget is the dataset.
+- You need to keep track of the selected rows in the client, and again will need more memory and network usage as bigger is the dataset.
 
 
 ## Selection on chunked data
-So the natural next step is to chunk the data, and only load a subset of the data at a time, to reduce the memory usage and the network usage, but this brings some challenges when it comes to selection.
+So the natural next step is to chunk the data and only load a subset of the data at a time, to reduce the memory usage and the network usage, but this brings some challenges when it comes to selection.
 
-Imagine you have a table with 1B rows, this probably  will be unmanageable in the client (I pretty sure it will be), so the reasonable thing to do is to chunk the data, for example, in chucks (pages) of 1000 rows. Doing this we have a maximun use case, no mattrer how many rows you have, you will only have 1000 rows in the client at a time, so the memory usage, CPU usage, and network usage for each load have a upper limit.
+Imagine you have a table with 1B rows; this probably will be unmanageable in the client (I'm pretty sure it will be), so the reasonable thing to do is to chunk the data, for example, in chunks (pages) of 1000 rows. Doing this, we have a maximum use case, no matter how many rows you have, you will only have 1000 rows in the client at a time, so the memory usage, CPU usage, and network usage for each load have an upper limit.
 
-This brings us a new challenge, how to handle the selection.
+This brings us a new challenge: how to handle the selection.
 
 You can think it can work like the previous case, just store the selected rows in an array, and you are right, when the data chunk is loaded, we now the rows ids and when the user select a row, we just add the row id to the selected rows array, when the user navigates to the next page (chunk) we don't clear the array, just keep adding the new selected rows.
 
-But in terms of User Experience this forces the user to visit all the pages to select all the rows, which is one of the worse UX i can imagine.
+But in terms of User Experience, this forces the user to visit all the pages to select all the rows, which is one of the worst UX I can imagine.
 
-Tipically we will have a select all checkbox or button, that allows the user to select all INDICATE WE WANTS to select all the rows, event the one are not loaded.
+Typically, we will have a select all checkbox or button, that allows the user to select all, which INDICATE HE/SHE WANTS to select all the rows, even the ones that are not loaded.
 
 ### Action vs Wants to
 That is the key point, in the non-chunked data case, when the user select a row or click on select all, or select all in a group, we are just selecting the rows, adding them to the selected rows array, because we are executing the action the user wants to execute or we will execute it as we know all the items, but in the chunked data case, we are not executing the action (only the backend could execute it), in this case we are just indicating that the user wants to select all rows, or to select a group, or a single row, but is the backend the one will execute the action, and for that it needs to be able to recreate the real list of select items based on the user desires which is what we will store in the client and send to the backend.
@@ -54,7 +54,7 @@ That is the key point, in the non-chunked data case, when the user select a row 
 
 
 #### Select all rows
-As we mentioned, the user can have a button or a checkbox (lets use this in the examples) to select/deselect all rows, in this case we need to store the status of this checkbox (and send it to the backend later)
+As we mentioned, the user can have a button or a checkbox (let's use this in the examples) to select/deselect all rows. In this case, we need to store the status of this checkbox (and send it to the backend later)
 
 We could represent it like this:
 ```typescript
@@ -65,7 +65,7 @@ const selectedStatus = {
 
 
 #### Select/Deselect rows (select all is false)
-When the user selects a row, we need to store the row id in the selected rows array, we can do it as we have in the memory the rows ids, so we can just add a an array of ids of selected rows to our `selectedStatus`, and add the selected rows and when the user deselect it, jsut remove the id from it. right? **Spoiler: NO**. Let's see the next case before that.
+When the user selects a row, we need to store the row id in the selected rows array, we can do it as we have in the memory the rows ids, so we can just add a an array of ids of selected rows to our `selectedStatus`, and add the selected rows and when the user deselect it, jsut remove the id from it. Right? **Spoiler: NO**. Let's see the next case before that.
 
 #### Select/Deselect rows (select all is true)
 Imagine this case, the user wanst to select all the rows, **except** one or two, so the user checks the select all checkbox, and then deselects the rows he/she doesn't want to select, We still not have all the rows in the client, so we need to store the user desires, in this case, he wants to select all the rows except the ids 1 and 2, so we can represent it like this:
@@ -77,57 +77,57 @@ const selectedStatus = {
 };
 ```
 
-With this simple struct we can represent the user desires, and we can send it to the backend, so the backend can recreate the real list of selected items,
+With this simple struct, we can represent the user's desires, and we can send it to the backend, so the backend can recreate the real list of selected items.
 
 #### Groups
-If we have groups, we need to take care of that too. Basically is to repeat the same logic of the rows for the groups
+If we have groups, we need to take care of that too. Basically is to repeat the same logic of the rows for the groups.
 
 ```typescript
 const selectedStatus = {
   all: true,
   groups: [
-    { id: 1, selected: true },
-    { id: 2, selected: false },
-  ]
+ { id: 1, selected: true },
+ { id: 2, selected: false },
+ ]
   rows: [{ id: 1, selected: false }, { id: 2, selected: false }, { id: 3, selected: true }]
 };
 
 ### How to recreate the real list of selected items
 
-One we have the `selectedStatus` object and the access to query the items (for example in the backend) we can recreate the real list of selected items. The logic is simple, should start from the wide scope to the narrow scope, apply the exceptions (that are the status of the childs scope) and **understand want the undefined means in the context of the selection, that is to follow the parent desired state**.
+Once we have the `selectedStatus` object and access to query the items (for example, in the backend) we can recreate the real list of selected items. The logic is simple: start from the wide scope to the narrow scope, apply the exceptions (that are the status of the child's scope), and **understand what the undefined means in the context of the selection, that is to follow the parent desired state**.
 
-For example, if we have the `selectedStatus` object like the above and the data we have in the backend is:
+For example, if we have the `selectedStatus` object like the above, and the data we have in the backend is:
 
 ```typescript
 const data = {
-  total: 100,
-  groups: [
-    { id: 1, name: 'Group 1', rows: [
-     {id: 1, name: "Row 1"}, 
-     {id: 2, name: "Row 2"}
-    ]},
-    { id: 2, name: 'Group 2', rows: [
-     {id: 3, name: "Row 3"}, 
-     {id: 4, name: "Row 4"}, 
-     {id: 5, name: "Row 5"}
-    ]},
-    { id: 3, name: 'Group 3', rows: [
-     {id: 6, name: "Row 6"},
-     {id: 7, name: "Row 7"},
-     {id: 8, name: "Row 8"}
-    ]},
-  ],
-  rows: [
-    { id: 10, name: 'Row 1' },
-  ]
+ total: 100,
+ groups: [
+ { id: 1, name: 'Group 1', rows: [
+ {id: 1, name: "Row 1"}, 
+ {id: 2, name: "Row 2"}
+ ]},
+ { id: 2, name: 'Group 2', rows: [
+ {id: 3, name: "Row 3"}, 
+ {id: 4, name: "Row 4"}, 
+ {id: 5, name: "Row 5"}
+ ]},
+ { id: 3, name: 'Group 3', rows: [
+ {id: 6, name: "Row 6"},
+ {id: 7, name: "Row 7"},
+ {id: 8, name: "Row 8"}
+ ]},
+ ],
+ rows: [
+ { id: 10, name: 'Row 1' },
+ ]
 };
 ```
 
-Starting for the wider scope, the `all` property, it is true, so we will select all the items so any children (group or row) that is not in the `selectedStatus` will be selected. In this case we should the items add the group 1 (because it is explicity selected) and 3 (because it is not explicity deselected).
+Starting with the wider scope, the `all` property, it is true, so we will select all the items so any children (group or row) that is not in the `selectedStatus` will be selected. In this case, we should add the items the group 1 (because it is explicitly selected) and 3 (because it is not explicitly deselected).
 
-Next iteration is focused in the items:
-- the rows 1 and 2 (group 1) are explicity deselected, so we will remove them to the selected items in the group 1.
-- the row 3 (group 2) is selected, so we will add it to the selected items even if the group 2 is explicity now selected.
+Next iteration is focused on the items:
+- Rows 1 and 2 (group 1) are explicitly deselected, so we will remove them from the selected items in group 1.
+- Row 3 (group 2) is selected, so we will add it to the selected items even if group 2 is explicity now selected.
 
 
 
