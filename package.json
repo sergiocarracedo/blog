@@ -15,6 +15,8 @@
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.4.0",
     "@jop-software/astro-cookieconsent": "^3.0.1",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/vite": "^4.1.8",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
@@ -33,6 +35,7 @@
     "sass": "^1.89.1",
     "sharp": "^0.34.2",
     "tailwindcss": "^4.1.8",
+    "tailwindcss-multi-column": "^1.0.2",
     "unist-util-visit": "^5.0.0",
     "vanilla-cookieconsent": "^3.1.0"
   },
