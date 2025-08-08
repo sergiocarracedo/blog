@@ -69,6 +69,10 @@ Unless you are creating a new design system before to create the product (someth
 
 Make the migration to a new design system is not a one shot task, you can not freeze the product for weeks and months to migrate all the components, patterns and workflows. You need to do it gradually, and causing visual and user experience inconsistencies in the product. **There are no magic solution to this, we can minimize the incosistences in the time and in cuantity, but we can not eliminate them**.
 
+### Migration strategies
+
+#### Horizontal migration
+
 - **One strategy is to work first on the new components** (in design and frontend) and replace the ones have a (more or less) 1:1 match with the old components. For example, the buttons, inputs, modals, etc. You need to know the real world is not perfect and usally the new components doesn't match 1:1 with the old ones, you need to define an strategy to create a catalog of the use cases of the old components and how to migrate them to the new ones (note: not migrate a behavior can be an aceptable solution).
 
 This strategy allows to remote completely some old components, but requires time to create the new components, before replace them, and you are not getting feedback of the new components until they are used in ALL the product, and it creates horizontal inconsistencies (across all the application pages/views).
@@ -79,6 +83,7 @@ AI agents can complement the deterministic codmods, and they are also very helpf
 
 For the components don't match 1:1 with the new ones, for the patterns and workflows, you can do the same: Replace them gradually, but in this case the migraction needs more understanding of the context and the use cases, so you need to work closely with the product teams to understand their needs and how to migrate the components, patterns and workflows, and again you are not getting to much feedback until the migration is done.
 
+#### Vertical migration
 - Another strategy is **to work with a product team, for an specific page or workflows, and think how to migrate them together.** creating the new component, patterns and workflow during this process. The output of this process is not a final design system (not all the necessary components, patterns and workflows are created yet), it will be a page that follows completely the new design system (components, patterns and workflows), but you will have a bunch of them, and you can use them in the next page to migrate, a page that will need more components, patterns and workflows... This is a more iterative approach, and allows you to get feedback from the product team and the customers earlier in the process and improve them.
 
 In terms of inconsistencies, this will create vertical inconsistencies, consistences between the pages of the same product
@@ -87,23 +92,39 @@ This approach can be seem slower than the previous one, because the product team
 
 This approach also creates an **"envy" effect**, as other product teams see the **benefits of the new design system fully applied** and push to migrate their own pages and workflows.
 
+With this approach, you can also use codmods to help with the migration, but instead of migrate all the application at once, you can create codmods for each page or workflow you migrate.
+
 > This is the approach my team used in a previous company I worked for, and it was very successful, as we were able to migrate the design system (and the frontend framework) gradually, getting feedback from the product teams and the customers, and creating a more consistent user experience across the product, with a smaller team, freeing up those developers to work on product features.
 
 ### Being strict with the components usage
 
+In a small company or in a simple product, with a few product teams, a design system team very open can work well, as is easy to validate the components, patterns and workflows usage, and to ensure that the product teams are using the design system correctly (in the expected way: consistent, maintainable, etc).
+
+An "open" design system means, that you can let developers use all the components properties being sure they will use then in the expected way, following the design system guidelines. 
+
+A simple example and based in the real life experience. 
+
+A table component, this is a common component in a design system, and the cells usually will display text, numbers, links, badges, etc. In an open design system, you can let the developers use the `cell` property to pass any kind of content or component, you can define some rules or agreements to ensure only some content type is used, when to use it, and how to use it, for example, you define the images only will be allowed on the first column, and the links only in the last column, etc. But the component allows any content in the cell, so the developers can use it in any way they want, but with a small team, and small product is easy to comunicate the rules via formations, documentation, etc.
+
+But in a **large company**, with **multiple product teams**, and **a complex product**, this approach can lead to inconsistencies, as even if the rules are well documented, they are compiting with a large number of other documents and guidelines, and **it is easy to forget or misinterpret them**.
+
+In this case we need to be more strict with the components usage, and enforce via code the usage of the components, patterns and workflows, in the table example, we can not let the developers pass any content to the `cell` property, we need to create a system, that only allow specific content types, and limited configurations.
+
+This strictness (even if is essential), specially when the product teams were using an open design system before, can lead to frustration, and the developers can feel this is an artifical limitation that makes they development slower, but it is necessary to ensure a consistent user experience across the product, and to make the design system maintainable in the long term.
+
+#### Minimizing the frustration
+
+To minimize the frustration of the product teams:
+
+- it is important to **communicate clearly the reasons behind the strictness**, and to involve them in the process of defining the components, patterns and workflows, something works very well with the vertical migration strategy,
+- to **provide clear documentation** and examples of how to use the components, patterns and workflows, with good examples (storybook is a nice tool for this), with clear guidelines and best practices.
+- **be fast to respond to their feedback/questions/request**, if you are not fast providing an aswer to a doubt or implemeting a feature, it can lead to find shortcuts or workarounds that can lead to inconsistencies in the product.
 
 
 
+## Summary
 
-
-Clients: 
-
-- Well documented components and patterns:
-
-
-
-
-
+A **good design system** and a good design system team **will not make your product better magically**, make the developement faster and the user experience consistent, but a **bad design system will make your product worse**, providing an inconsistent and frustrating user experience. I will not provide the building blocks to the product teams to create a good product, and they will spend more time on non-product-related tasks, instead of focusing on building product features and solving user problems.
 
 
 
