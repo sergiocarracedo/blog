@@ -12,13 +12,15 @@ import Search from 'astro-pagefind/components/Search';
         description={`You tried to visit a missing page.`}
         class="mb-6"
     />
-    <div class="text-center mb-10">
-      <p class="mb-8 text-lg">Try searching for something similar below:</p>
+    <div class=" mb-10">
+      <p class="text-center mb-8 text-lg">Try searching for something similar below:</p>
       <div class="flex justify-center mb-10">
-        <Search id="astro-404-search" className="pagefind-ui-dark "/>
+        <Search id="astro-404-search" className="pagefind-ui"/>
       </div>
-      <p class="mb-8 text-lg">Or you can go back to the homepage:</p>
-      <a href="/" class="btn">Go to Homepage</a>
+      <p class="mb-8  text-center text-lg">Or you can go back to the homepage:</p>
+      <div class="text-center">
+        <a href="/" class="btn">Go to Homepage</a>
+      </div>
     </div>
   </main>
   <script is:inline>
