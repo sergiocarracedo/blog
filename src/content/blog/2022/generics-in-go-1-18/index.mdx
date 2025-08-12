@@ -16,7 +16,7 @@ go1.18rc1 download
 
 One of the most interesting novelties is the _generics_ in a similar way we have in other languages (C#, Java, Typescript, etc...). Generics allow us as developers, for example, to create a function that works with different types. The classical example Go uses in its blog to explain [why generics](https://go.dev/blog/why-generics) (highly recommended), is a function that does some operation over an array, for example, reverse the array. Now we must write the same function for different types, ex: int, float, string, etc
 
-```golang
+```go
 func ReverseInts(s []int) {
     first := 0
     last := len(s) - 1
@@ -43,7 +43,7 @@ As you see the code inside the function is exactly the same for both types, only
 How we can achieve it using generics: adding a new element to the signature between brackets _[\_typeName_ _constraint_]\_ and using this `T` definition as the argument Type
 Like in this example:
 
-```golang
+```go
 func Reverse[T any] (s []T) {
     first := 0
     last := len(s) - 1
@@ -72,7 +72,7 @@ The union type is a list of possible types: `int | float64`. In our previous exa
 
 Imagine we want to create a function to get the minimum value in the array, we could write something like:
 
-```golang
+```go
 // Not this function only works for positive numbers. but it's for example pourpouse
 func Max[T any](values []T) T {
   var max T
@@ -93,7 +93,7 @@ We can solve this using `func Max[T int|string](values []T) T` as signature, but
 
 So we can so
 
-```golang
+```go
 import "golang.org/x/exp/constraints"
 func Max[T constraints.Ordered](values []T) T {
 ....
@@ -104,7 +104,7 @@ func Max[T constraints.Ordered](values []T) T {
 
 Is very common in Go creating custom types from a "primitive" type
 
-```golang
+```go
 type MyString = string
 ```
 
@@ -118,7 +118,7 @@ The way to solve it is the `type aproximation`: that is a type that underlying i
 
 Go also supports generics in Structs:
 
-```golang
+```go
 type MyGenericStruct[T string | int, U constraints.Ordered] struct {
 	id    T
 	value U
@@ -131,7 +131,7 @@ d := MyGenericStruct[string, int]{"c", 2}
 
 That means we can use generics in methods (but in a limited way), we can use generic in the receiver, but not in the method, this was [pushed to go 1.19]
 
-```golang
+```go
 // Works
 func (m MyGenericStruct[T, U]) GetValue() U {
 	return m.value
@@ -145,7 +145,7 @@ func (m MyGenericStruct[T, U]) [A any]GetValueAndAdd(add A) U {
 
 For the methods, we could use generics defined in the struct as a roundabout, but I think is not very elegant
 
-```golang
+```go
 type MyGenericStruct[T string | int, U constraints.Ordered, A any] struct {
 	id    T
 	value U
