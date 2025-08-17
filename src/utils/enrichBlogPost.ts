@@ -7,6 +7,7 @@ export interface EnrichedPost<T = any> {
   slug?: string;
   readingTime: number;
   excerpt: string;
+  sanitizedId: string;
 }
 
 export function enrichBlogPost<T = any>(entry: {
@@ -24,5 +25,6 @@ export function enrichBlogPost<T = any>(entry: {
     excerpt,
     body: entry.body || '',
     slug: getSlug(entry),
+    sanitizedId: entry.id.replaceAll('/', ''),
   };
 }

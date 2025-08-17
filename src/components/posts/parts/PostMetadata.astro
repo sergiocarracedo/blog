@@ -8,19 +8,20 @@ interface Props {
   tags?: string[];
   readingTime?: number;
   class?: string;
+  postId?: string;
 }
 
-const { date, tags, readingTime, class: className } = Astro.props;
+const { date, tags, readingTime, class: className, postId } = Astro.props;
 ---
 
 <aside class={className}>
   <div class="flex items-center gap-2 mb-2 flex-wrap">
-    <FormattedDate date={date} class="text-sm" />
+    <FormattedDate date={date} class="text-sm" postId={postId} />
 
-    <ReadingTime readingTime={readingTime} class="flex-1" />
+    <ReadingTime readingTime={readingTime} class="flex-1" postId={postId} />
   </div>
 
   <div>
-    <PostTags tags={tags} />
+    <PostTags tags={tags} postId={postId} />
   </div>
 </aside>

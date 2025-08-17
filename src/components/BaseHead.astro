@@ -4,6 +4,8 @@
 import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import '../styles/tailwind.css';
 
+import { ClientRouter } from 'astro:transitions';
+
 export interface Meta {
   title?: string;
   description?: string;
@@ -89,3 +91,5 @@ const image = meta.image || '/i/sergiocarracedo-og.png';
 
 <meta content="#213b4a" name="msapplication-TileColor" />
 <meta content="#213b4a" name="theme-color" />
+
+<ClientRouter />
