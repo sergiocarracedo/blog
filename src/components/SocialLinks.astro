@@ -2,9 +2,10 @@
 import { SOCIAL } from '../consts';
 interface Props {
   size?: 'xs' | 'md' | 'lg';
+  viewTransition?: boolean;
 }
 
-const { size = 'md' } = Astro.props as Props;
+const { size = 'md', viewTransition = false } = Astro.props as Props;
 
 const sizeClasses = {
   xs: 'h-8 w-8 p-2',
@@ -26,6 +27,7 @@ const sizeClasses = {
         ]}
         aria-label={`Follow Sergio Carracedo on ${social.name}`}
         title={`Follow Sergio Carracedo on ${social.name}`}
+        transition:name={viewTransition ? `social-${social.name}` : undefined}
       >
         <span class="sr-only">Follow Sergio Carracedo on {social.name}</span>
         <Fragment set:html={social.icon} />
