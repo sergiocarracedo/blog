@@ -69,7 +69,7 @@ Making the migration to a new design system is not a one-shot task; you can not 
 
 #### Horizontal migration
 
-- **One strategy is to work first on the new components** (in design and frontend) and replace the ones that have a (more or less) 1:1 match with the old components. For example, the buttons, inputs, modals, etc. You need to know the real world is not perfect and usally the new components doesn't match 1:1 with the old ones, you need to define an strategy to create a catalog of the use cases of the old components and how to migrate them to the new ones (note: not migrate a behavior can be an aceptable solution).
+- **One strategy is to work first on the new components** (in design and frontend) and replace the ones that have a (more or less) 1-1 match with the old components. For example, the buttons, inputs, modals, etc. You need to know the real world is not perfect and usally the new components doesn't match 1-1 with the old ones, you need to define an strategy to create a catalog of the use cases of the old components and how to migrate them to the new ones (note: not migrate a behavior can be an acceptable solution).
 
 This strategy allows for the completion of some old components, but requires time to create the new components, before replacing them, and you are not getting feedback on the new components until they are used in the entire product, and it creates horizontal inconsistencies (across all the application pages/views).
 
@@ -77,7 +77,7 @@ One advantage of this is that you can use codmods to migrate the old components 
 
 AI agents can complement the deterministic codmods, and they are also very helpful in this process, as they can assist in understanding the context and making decisions about the migration following your migration prompt.
 
-For the components don't match 1:1 with the new ones, for the patterns and workflows, you can do the same: Replace them gradually, but in this case the migraction needs more understanding of the context and the use cases, so you need to work closely with the product teams to understand their needs and how to migrate the components, patterns and workflows, and again you are not getting to much feedback until the migration is done.
+For the components don't match 1-1 with the new ones, for the patterns and workflows, you can do the same: Replace them gradually, but in this case the migraction needs more understanding of the context and the use cases, so you need to work closely with the product teams to understand their needs and how to migrate the components, patterns and workflows, and again you are not getting to much feedback until the migration is done.
 
 #### Vertical migration
 
