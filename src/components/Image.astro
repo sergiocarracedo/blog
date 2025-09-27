@@ -1,4 +1,41 @@
 ---
-// Props: src, width, height, alt, href
-const { src, width, height, alt = "", href = "" } = Astro.props;
+// Props: src, width, height, alt, href, class, loading
+import { Image } from 'astro:assets';
+
+const { 
+  src, 
+  width, 
+  height, 
+  alt = "", 
+  href = "", 
+  class: className = "",
+  loading = "lazy",
+  ...props 
+} = Astro.props;
 ---
+
+{href ? (
+  <a href={href}>
+    <Image 
+      src={src} 
+      width={width} 
+      height={height} 
+      alt={alt} 
+      class={className}
+      loading={loading}
+      format="webp"
+      {...props}
+    />
+  </a>
+) : (
+  <Image 
+    src={src} 
+    width={width} 
+    height={height} 
+    alt={alt} 
+    class={className}
+    loading={loading}
+    format="webp"
+    {...props}
+  />
+)}

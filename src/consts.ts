@@ -5,7 +5,7 @@ export const SITE_TITLE = 'Sergio Carracedo';
 export const SITE_URL = 'https://sergiocarracedo.es';
 export const SITE_AUTHOR = 'Sergio Carracedo';
 export const SITE_AUTHOR_IMG = '/i/sergiocarracedo.jpg';
-export const SITE_AUTHOR_IMG_ALT = '/i/sergiocarracedo-alt.png';
+export const SITE_AUTHOR_IMG_ALT = '/i/sergiocarracedo-alt.webp';
 export const SITE_AUTHOR_POSITION = 'Senior Fullstack developer - Staff Engineer at Factorial';
 
 export const SITE_AUTHOR_DESCRIPTION =
@@ -13,7 +13,7 @@ export const SITE_AUTHOR_DESCRIPTION =
 
 export const SITE_DESCRIPTION = `${SITE_AUTHOR} personal blog. Here I share my thoughts, experiences, and knowledge on software development, technology, and life in general. ${SITE_AUTHOR_DESCRIPTION}`;
 
-export const SITE_OPEN_GRAPH_IMAGE = '/i/sergiocarracedo-og.png';
+export const SITE_OPEN_GRAPH_IMAGE = '/i/sergiocarracedo-og.webp';
 
 export const GA = 'G-87X78TXEGE'; // Google Analytics ID
 export const DISQUS = 'sergiocarracedo.disqus.com';

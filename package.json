@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "optimize-images": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^6.3.6",
@@ -15,18 +16,15 @@
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.0",
     "@jop-software/astro-cookieconsent": "^3.0.1",
-    "@tailwindcss/aspect-ratio": "^0.4.2",
-    "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/vite": "^4.1.8",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "astro": "^5.13.2",
     "astro-icon": "^1.1.5",
     "astro-pagefind": "^1.8.3",
-    "framer-motion": "^12.18.1",
+    "gray-matter": "^4.0.3",
     "html-to-text": "^9.0.5",
     "markdown-it": "^14.1.0",
-    "motion": "^12.18.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "rehype-autolink-headings": "^7.1.0",
@@ -40,8 +38,6 @@
     "vanilla-cookieconsent": "^3.1.0"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16",
-    "gray-matter": "^4.0.3",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1"
   },

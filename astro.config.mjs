@@ -28,6 +28,11 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: 'https://sergiocarracedo.es',
   integrations: [mdx(), sitemap(), icon(), pagefind(), cookieconsent(cookieConsentConfig), react()],
+  image: {
+    // Enable image optimization
+    domains: ['sergiocarracedo.es'],
+    remotePatterns: [{ protocol: 'https' }]
+  },
   markdown: {
     remarkPlugins: [
       [remarkDirective, {}],

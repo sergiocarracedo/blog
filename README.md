@@ -1,27 +1,40 @@
-# Astro Starter Kit: Blog
+# sergiocarracedo.es
+
+Personal blog built with **Astro 5.x** featuring optimized performance and modern web standards.
+
+## 🚀 Quick Start
 
 ```sh
-pnpm create astro@latest -- --template blog
+pnpm install
+pnpm dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+## 🧞 Commands
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `pnpm install`            | Installs dependencies                            |
+| `pnpm dev`                | Starts local dev server at `localhost:4321`     |
+| `pnpm build`              | Build your production site to `./dist/`         |
+| `pnpm preview`            | Preview your build locally, before deploying    |
+| `pnpm optimize-images`    | Optimize images in `public/i/` directory        |
+| `pnpm astro ...`          | Run CLI commands like `astro add`, `astro check`|
 
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+## 📊 Performance Optimizations
 
-Features:
+### Image Optimization
+- **87% size reduction** on main images (1.24MB → 0.16MB)
+- WebP format with quality optimization
+- Astro's built-in image optimization enabled
+- Responsive image loading with `loading="lazy"`
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+### Dependency Cleanup
+Removed unused dependencies:
+- `framer-motion` & `motion` (unused animation libraries)
+- `@tailwindcss/aspect-ratio` & `@tailwindcss/forms` (unused plugins)
+- `@astrojs/image` (replaced with built-in optimization)
 
-## 🚀 Project Structure
+## 🏗️ Architecture
 
 Inside of your Astro project, you'll see the following folders and files:
 
