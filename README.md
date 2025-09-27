@@ -18,7 +18,39 @@ pnpm dev
 | `pnpm build`              | Build your production site to `./dist/`         |
 | `pnpm preview`            | Preview your build locally, before deploying    |
 | `pnpm optimize-images`    | Optimize images in `public/i/` directory        |
+| `pnpm lint`               | Run all linters (TypeScript + Markdown)         |
+| `pnpm lint:ts`            | Lint TypeScript files with ESLint               |
+| `pnpm lint:ts:fix`        | Fix auto-fixable TypeScript issues              |
+| `pnpm lint:oxc`           | Run oxlint (fast Rust-based linter)             |
+| `pnpm lint:md`            | Lint Markdown files                             |
+| `pnpm lint:md:fix`        | Fix auto-fixable Markdown issues               |
+| `pnpm format`             | Format all files with Prettier                  |
+| `pnpm format:check`       | Check formatting without fixing                 |
 | `pnpm astro ...`          | Run CLI commands like `astro add`, `astro check`|
+
+## 🔍 Code Quality & Linting
+
+This project uses multiple linters to maintain code quality:
+
+### TypeScript Linting
+- **ESLint** with `eslint-config-love` (Standard TypeScript style)
+- Configured for strict type checking and best practices
+- Auto-fixable issues can be resolved with `pnpm lint:ts:fix`
+
+### Markdown Linting
+- **markdownlint** for consistent Markdown formatting
+- Custom rules for line length (100 chars) and style consistency
+- Supports both `.md` and `.mdx` files
+
+### Fast Linting (Optional)
+- **oxlint** - Rust-based linter for extremely fast code analysis
+- Complements ESLint with additional performance-focused checks
+- Can be used for quick pre-commit checks
+
+### IDE Integration
+- VS Code settings configured for automatic linting and formatting
+- Recommended extensions: ESLint, Prettier, Markdownlint
+- Format on save and fix on save enabled
 
 ## 📊 Performance Optimizations
 

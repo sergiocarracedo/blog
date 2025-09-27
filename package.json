@@ -7,7 +7,15 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "optimize-images": "node scripts/optimize-images.js"
+    "optimize-images": "node scripts/optimize-images.js",
+    "lint": "pnpm run lint:ts && pnpm run lint:md",
+    "lint:ts": "eslint .",
+    "lint:ts:fix": "eslint . --fix",
+    "lint:oxc": "oxlint",
+    "lint:md": "markdownlint \"**/*.md\" \"**/*.mdx\"",
+    "lint:md:fix": "markdownlint --fix \"**/*.md\" \"**/*.mdx\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^6.3.6",
@@ -38,6 +46,16 @@
     "vanilla-cookieconsent": "^3.1.0"
   },
   "devDependencies": {
+    "@types/node": "^24.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/parser": "^8.44.1",
+    "eslint": "^9.36.0",
+    "eslint-config-love": "^130.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-n": "^17.23.1",
+    "eslint-plugin-promise": "^7.2.1",
+    "markdownlint-cli": "^0.45.0",
+    "oxlint": "^1.18.0",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1"
   },
