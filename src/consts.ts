@@ -6,7 +6,7 @@ export const SITE_URL = 'https://sergiocarracedo.es';
 export const SITE_AUTHOR = 'Sergio Carracedo';
 export const SITE_AUTHOR_IMG = '/i/sergiocarracedo.jpg';
 export const SITE_AUTHOR_IMG_ALT = '/i/sergiocarracedo-alt.webp';
-export const SITE_AUTHOR_POSITION = 'Senior Fullstack developer - Staff Engineer at Factorial';
+export const SITE_AUTHOR_POSITION = 'Senior Fullstack developer';
 
 export const SITE_AUTHOR_DESCRIPTION =
   'Always learning, cats, good conversations and small details lover.';
