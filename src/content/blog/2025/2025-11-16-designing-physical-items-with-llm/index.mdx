@@ -1,0 +1,116 @@
+---
+title: 'Designing physical items with LLMs (AI)'
+pubDate: 2025-11-16
+slug: /designing-physical-items-with-llms
+heroImage: ./cover.png
+heroImageMeta:
+  prompt: create 1920x1080px pixel art picture that represent a factory worker trying to insert a piece that is a poka-yoke and she is scratching the head representing is thinking
+  author: OpenAI
+tags:
+ - cad
+ - 3d-printing
+ - ai
+---
+
+When you become an owner of a 3d printer, the first you face is to understand the tools you need to print (e.g. Cura), also concepts like bed leveling, filament types, nozzle temperature, infill, raft, supports, etc.
+
+The next challenge is to find models to print. Probably you start printing models downloaded from the internet, from repositories like [Thingiverse](https://www.thingiverse.com/) or [Cults3D](https://cults3d.com/en). 
+
+Its nice to see the amazing things people have designed and shared for free, **but sooner or later you want to design your own models**, and the complex part begins.
+
+Designing 3d models is not trivial if you are not a 3d designer, you need to learn how to use 3D CAD software like Fusion360, Tinkercad, FreeCAD, Blender, etc. 
+
+Each of these tools have a steep learning curve, and mastering them takes time and effort. Even a small task like do a small mofication to an existing model can be challenging if you are not familiar with the tool.
+
+But there are another way to design 3d models not using the traditional CAD tools, that is [OpenSCAD](https://openscad.org/), a text-based 3D modeling tool where you define your models using code.
+
+> This remembers me a lot to [Logo programming language](https://en.wikipedia.org/wiki/Logo_(programming_language)) where you control a turtle with commands to draw shapes. OpenSCAD is similar but in 3D.
+
+As this tool is code-based, and one thing the LLMs are good at is generating code, so you can leverage LLMs to generate OpenSCAD code. You dont need to know anything about 3D modeling, just describe what you want to create in natural language and the LLM will generate the OpenSCAD code for you.
+
+For example, I used Github copilot to generate a house model, with the following prompt:
+
+```
+I need an OpenSCAD model of a 3d home, based in the image provided, please infer the volume. The house is like a cube and the roof is a hipped roof.
+The model should fit in 5x5cm
+```
+
+
+![Prompt drawing](./house.png)(style: max-width: 150px;)
+
+(Yes, my drawing skills are not the best :) )
+
+And just with the initial prompt, the model generated looks like this:
+
+
+![3d model of a house](./openscad_demo.png)
+
+You can download the OpenSCAD code [here](./demo.scad).
+
+Amazing right?
+
+## Improving the experience with MCP
+
+This way is amazing, but requires to use the LLM page to generate the code, or iterate it, and the copy and paste the code into OpenSCAD, which is not the most convenient workflow.
+
+There are multiple opensource MCP servers that provides a better integration between LLMs and OpenSCAD or other tools like FreeCAD:
+
+- For OpenSCAD, you can use [OpenSCAD MCP Server](https://github.com/quellant/openscad-mcp)
+
+If you use VSCode, only need to install the MCP server editing the `mcp.json` in yout workspace and add the following entry under `servers`:
+
+
+```json
+{
+  "servers": {
+    "openscad": {
+      "command": "[PATH TO YOUR uv EXECUTABLE]",
+      "args": [
+        "run",
+        "--with",
+        "git+https://github.com/quellant/openscad-mcp.git",
+        "openscad-mcp"
+      ],
+      "env": {
+        "OPENSCAD_PATH": "/usr/bin/openscad"
+      }
+    },
+    ....
+  },
+  ...
+}
+
+> Remember your are executing code from internet, so review the code before running it. Or download the code and run it locally.
+
+Then clicking on the chat "Configure tools" icon, enable the OpenSCAD MCP if its not.
+
+This will about you to interact with OpenSCAD directly from VSCode, generating code, modifying existing code, and even rendering the model.
+
+
+- For FreeCAD, you can use [FreeCAD MCP](https://github.com/neka-nat/freecad-mcp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://github.com/neka-nat/freecad-mcp
+
+
+
+But sooner or later, you want to design your own models.
+
+

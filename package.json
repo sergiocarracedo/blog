@@ -38,6 +38,7 @@
     "rehype-autolink-headings": "^7.1.0",
     "remark-directive": "^4.0.0",
     "remark-emoji": "^5.0.1",
+    "remark-imgattr": "^1.0.5",
     "sass": "^1.89.1",
     "sharp": "^0.34.2",
     "tailwindcss": "^4.1.8",
