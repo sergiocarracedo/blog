@@ -4,8 +4,8 @@ pubDate: 2025-12-14
 slug: /react-controllable-components
 heroImage: ./cover.png
 heroImageMeta:
-  prompt: 
-  author: 
+  prompt: ''
+  author: ''
 tags:
  - react
  - javascript
@@ -22,13 +22,13 @@ This post introduces a custom hook called `useControllable` that simplifies the 
 
 Imagine the typical select component. In most cases you will want to use it in a controlled way, passing the selected `value` and an `onChange` handler from the parent component. 
 
-A simple component like this makes not to much sense as uncontrolled, but imagine the same component that includes a searchbox to filter the options in the semect. In this case, you can control the searchbox in the parent to be aware of what the user is typing, but you can also just want to let the select manage its own state as the filter is done in the select component without need to control the state in the parent.
+A simple component like this doesn't make too much sense as uncontrolled, but imagine the same component that includes a searchbox to filter the options in the select. In this case, you can control the searchbox in the parent to be aware of what the user is typing, but you can also just want to let the select manage its own state as the filter is done in the select component without need to control the state in the parent.
 
-In a case like that (we want the searchbox to be optionally controlled, but if not it should keep the internal state), we could always have and internal state for the searchbox, but reacting to the changes in the parent when the `value` prop is provided and emitting the changes to the parent when the user types in the searchbox. 
+In a case like that (we want the searchbox to be optionally controlled, but if not it should keep the internal state), we could always have an internal state for the searchbox, but reacting to the changes in the parent when the `value` prop is provided and emitting the changes to the parent when the user types in the searchbox. 
 
 ```tsx
 export const MySelect({search, onChangeSearch}: {search?: string; onChangeSearch?: (newSearch: string) => void}) {
-  const [internalSearch, setInternalSearch] = React.useState(value ?? '');
+  const [internalSearch, setInternalSearch] = React.useState(search ?? '');
 
 
   // Updates the internal state when the `search` prop changes
@@ -63,9 +63,9 @@ export const MySelect({search, onChangeSearch}: {search?: string; onChangeSearch
 }
 ```
 
-This solutions works, but adds an extra complexity to the component, with two `useEffect` hooks to sync the internal state with the props, and if the value is not a privitive type (string, number, boolean) you will need to add extra logic to avoid infinite loops when the parent provides a new object/array with the same content but different reference.
+This solution works, but adds an extra complexity to the component, with two `useEffect` hooks to sync the internal state with the props, and if the value is not a primitive type (string, number, boolean) you will need to add extra logic to avoid infinite loops when the parent provides a new object/array with the same content but different reference.
 
-A better approach is to use only the internal state when the value and onChange props are not provided, and use the props directly when it is provided. This way we avoid the need to sync the states.
+A better approach is to use only the internal state when the value and onChange props are not provided, and use the props directly when they are provided. This way we avoid the need to sync the states.
 
 ```tsx
 export const MySelect({search, onChangeSearch, defaultSearch}: {search?: string; onChangeSearch?: (newSearch: string) => void, defaultSearch?: string}) {
@@ -127,7 +127,7 @@ export const MySelect({search, onChangeSearch, defaultSearch}: MySelectProps) {
     <div>
       <input
         type="text"
-        value={effectiveSearch}
+        value={value}
         onChange={(e) => handleSearchChange(e.target.value)}
       />
       {/* Render select options based on effectiveSearch */}
@@ -136,7 +136,7 @@ export const MySelect({search, onChangeSearch, defaultSearch}: MySelectProps) {
 }
 ```
 
-Checking this code, we can see that the logic to determine the effective value and change handler is now encapsulated in the `useControllable` hook, the rest of the compoment code is cleaner and easier to read, itś like a standard controlled component, but with the added benefit of being able to work in uncontrolled mode as well.
+Checking this code, we can see that the logic to determine the effective value and change handler is now encapsulated in the `useControllable` hook, the rest of the component code is cleaner and easier to read, it's like a standard controlled component, but with the added benefit of being able to work in uncontrolled mode as well.
 
 You can have multiple controllable props in the same component by calling the `useControllable` hook multiple times with different prop names.
 
@@ -174,12 +174,12 @@ export const MySelect(props: MySelectProps) {
         onChange={(e) => handleSearchChange(e.target.value)}
       />
       <select value={value} onChange={setValue}>
-        //...
+        {/* ... */}
       </select>
     </div>
   );
 }
-
+```
 
 ## Installation
 
@@ -209,6 +209,3 @@ I ran some benchmarks to compare the performance of components using the `useCon
 ## Conclusion
 
 The `useControllable` hook provides a clean and efficient way to create React components that can operate in both controlled and uncontrolled modes. By encapsulating the logic for managing effective values and change handlers, it simplifies component implementation and enhances code readability. If you often find yourself needing components that can switch between controlled and uncontrolled behavior, give the `useControllable` hook a try and let me know what you think or any feedback!
-
-
-
