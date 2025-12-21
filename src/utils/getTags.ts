@@ -1,7 +1,7 @@
 import { getCollection } from 'astro:content';
 import { createSlug } from './createSlug';
 
-export const getTags = async (collection: string = 'blog'): Promise<Map<string, string>> => {
+export const getTags = async (collection = 'blog'): Promise<Map<string, string>> => {
   const posts = (await getCollection('blog')).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
