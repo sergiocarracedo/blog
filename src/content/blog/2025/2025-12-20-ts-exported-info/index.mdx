@@ -4,8 +4,8 @@ pubDate: 2025-12-21
 slug: /ts-exported-info
 heroImage: ./cover.png
 heroImageMeta:
-  prompt: ''
-  author: ''
+  prompt: 'Create a 1920x1080 pixel art illustration with a lilac-to-blue gradient background. In the center, there is a cardboard box. A robot is holding a magnifying glass that points at the box. On the robot’s chest, there is the GitHub Actions logo. Inside the magnifying glass, arrows can be seen coming out of the box, emphasizing motion and inspection. The overall style should be detailed pixel art with soft lighting and clear shapes.'
+  author: 'ChatGPT'
 tags: 
  - javascript
  - typescript
@@ -61,7 +61,7 @@ As you can see, this tool is very simple to use and can be a great help when dev
 
 ## Going further create a GitHub Action to check exports on PRs
 
-To take advantage of this tool even more, I created a GitHub Action that lays on this tool to check the exported items on every Pull Request (PR) to ensure that the public API of the library is not accidentally changed, or that all necessary items are exported. [ts-exported-info-action](https://github.com/sergiocarracedo/ts-exported-info-action)
+To take advantage of this tool even more, I created a GitHub Action that relies on this tool to check the exported items on every Pull Request (PR) to ensure that the public API of the library is not accidentally changed, or that all necessary items are exported. [ts-exported-info-action](https://github.com/sergiocarracedo/ts-exported-info-action)
 
 This action can be easily integrated into your CI/CD pipeline, and it will run automatically on every PR, providing feedback directly in the PR comments. 
 
@@ -90,8 +90,8 @@ jobs:
         with:
           path: src/**/*.ts
           detailed: false  # Set to true for detailed export list
-          compare: false # Set to true to compare agains base
-          list-changes: false # Set to true list the changes (needs compare true)
+          compare: false # Set to true to compare against base
+          list-changes: false # Set to true to list the changes (needs compare true)
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
