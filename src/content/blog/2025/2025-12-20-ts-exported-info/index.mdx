@@ -59,6 +59,8 @@ ts-exported-info "src/lib/**/*.ts" --json
 
 As you can see, this tool is very simple to use and can be a great help when developing TypeScript libraries, ensuring that your public API is well-defined and accurate. https://www.npmjs.com/package/ts-exported-info
 
+> For the examples I ran the tool against [Factorial's f0 design system](https://github.com/factorialco/f0), which is an open source project big enought to get nice and realistic results.
+
 ## Going further create a GitHub Action to check exports on PRs
 
 To take advantage of this tool even more, I created a GitHub Action that relies on this tool to check the exported items on every Pull Request (PR) to ensure that the public API of the library is not accidentally changed, or that all necessary items are exported. [ts-exported-info-action](https://github.com/sergiocarracedo/ts-exported-info-action)
