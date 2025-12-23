@@ -4,14 +4,19 @@ pubDate: 2025-12-23
 slug: /design-system-ux-patterns-consistency
 heroImage: ./cover.png
 heroImageMeta:
-  prompt: ''
+  prompt: 'Create a pixel art image in 1920x1080 resolution.
+    The scene shows a factory production line with a conveyor belt transporting multiple boxes that all share the same shape and size, except one box that is slightly different (subtle variation in shape or detail).
+    Next to the conveyor belt stands a small working robot (industrial or humanoid style) inspecting the boxes. The robot is clearly confused and frustrated, expressed through its posture, facial screen/eyes, or small animated symbols (e.g., question marks, sweat pixels, or sparks).
+    The conveyor belt runs horizontally across the scene, emphasizing repetition and uniformity, with the odd box breaking the pattern.
+    The background uses a smooth gradient transitioning from cyan to blue, minimal and clean, with no complex details to keep focus on the production line.
+    Use a consistent pixel art style, crisp outlines, limited color palette, clear lighting, and readable silhouettes. Overall mood: playful, slightly humorous, and visually clear.'
   author: 'ChatGPT'
 tags: 
  - design system
  - ux
 ---
 
-A design system is a collection of reusable components, understading for componentes not only UI elements but also patterns, guidelines, code, documentations, and more.
+A design system is a collection of reusable components, understanding for components not only UI elements but also patterns, guidelines, code, documentation, and more.
 
 One of the main goals of a design system is to ensure the behavioral and visual consistency across a product creating a unified user experience independently of the page the user is visiting, also the consistency is important from the developer point of view to have a common language and patterns to follow.
 
@@ -21,7 +26,7 @@ One of the main goals of a design system is to ensure the behavioral and visual 
 
 - **Brand Identity**: A consistent design system helps reinforce the brand identity. 
 
-- **Efficiency in Development**: A consistent design system from developer point of view makes the developments go fast and allow developers to focus on building real value.
+- **Efficiency in Development**: A consistent design system from developer point of view makes the developments go fast and allows developers to focus on building real value.
 
 
 ## How to achieve consistency in a design system?
@@ -39,16 +44,16 @@ Note this is not only about the position, it is also about to decide and stick w
 ### Naming conventions
 > There are only two hard things in Computer Science: cache invalidation and naming things. -- Phil Karlton
 
-This also aplies for the labels, for example in forms the action to submit the form should be always named the same, for example "Submit" and not "Send", "Save" in different places. 
+This also applies for the labels, for example in forms the action to submit the form should be always named the same, for example "Submit" and not "Send", "Save" in different places. 
 
-This can seems trivial but is not. For example is very common to name the same things in different ways when the developers are distributed in different teams.
+This can seem trivial but is not. For example is very common to name the same things in different ways when the developers are distributed in different teams.
 
 
 
 ### Consistent component behavior
-Components should behave consistently across the application or if the behavior change for some specific reason, the user must be aweare of that. 
+Components should behave consistently across the application or if the behavior changes for some specific reason, the user must be aware of that. 
 
-For example, something we discussed in project I working on, we have a filter picker component that is used in different places. This component allows the user to select filter values for different fields, but also provides "presets" that are predefined sets of filter values.
+For example, something we discussed in a project I'm working on, we have a filter picker component that is used in different places. This component allows the user to select filter values for different fields, but also provides "presets" that are predefined sets of filter values.
 
 The problem here is to define the behavior when the user selects a preset and then modifies one of the filter values or when the user modifies a filter value and then selects a preset.
 
@@ -59,12 +64,12 @@ We can define the behavior in, at least, two different ways:
 - **Merge**: When the user selects a preset, the preset values are merged with the current filter values. If the user modifies a filter value after selecting a preset, the preset selection remains
 
 
-Both behaviors are valid, so the team can fall into temptation of implement both behaviors in the component and let dedice the developer using the component what behavior to use in each case via a prop.
+Both behaviors are valid, so the team can fall into temptation to implement both behaviors in the component and let decide the developer using the component what behavior to use in each case via a prop.
 
-But, in my opinion this is a bad idea, because now the user can find different behaviors in different places of the application, and the worse part, without any visual clue that the behavior is different. This can lead to confusion, mistakes and frustration for the user.
+But, in my opinion this is a bad idea, because now the user can find different behaviors in different places of the application, and the worst part, without any visual clue that the behavior is different. This can lead to confusion, mistakes and frustration for the user.
 
 
 ## Conclusion
 
 **Consistency is more about decisions and discipline than about the actual implementation.** 
-Maintain the consistency in a design system requires to take decisions and stick to them, even when seems easier to do it in a different way for a specific casem, and to achieve this the design system must provide clear guidelines and patterns to follow and to have a governance team which can enforce these decisions when is necessary.
+Maintaining consistency in a design system requires to take decisions and stick to them, even when it seems easier to do it in a different way for a specific case, and to achieve this the design system must provide clear guidelines and patterns to follow and to have a governance team which can enforce these decisions when is necessary.
