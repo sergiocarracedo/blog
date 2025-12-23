@@ -1,0 +1,70 @@
+---
+title: 'Design system patterns: UX consistency'
+pubDate: 2025-12-23
+slug: /design-system-ux-patterns-consistency
+heroImage: ./cover.png
+heroImageMeta:
+  prompt: ''
+  author: 'ChatGPT'
+tags: 
+ - design system
+ - ux
+---
+
+A design system is a collection of reusable components, understading for componentes not only UI elements but also patterns, guidelines, code, documentations, and more.
+
+One of the main goals of a design system is to ensure the behavioral and visual consistency across a product creating a unified user experience independently of the page the user is visiting, also the consistency is important from the developer point of view to have a common language and patterns to follow.
+
+## Why is consistency important in a design system?
+
+- **Improved Usability**: When users encounter consistent design patterns and interactions, they can navigate and use the product more easily. Familiarity with components and behaviors reduces the learning curve, the mistakes and the user frustration.
+
+- **Brand Identity**: A consistent design system helps reinforce the brand identity. 
+
+- **Efficiency in Development**: A consistent design system from developer point of view makes the developments go fast and allow developers to focus on building real value.
+
+
+## How to achieve consistency in a design system?
+
+### Position and variant of the elements
+
+The user should expect to find certain elements in specific locations across the application. For example page actions (primary, secondary, etc) should be always in the same place, like the top right corner. Also the variants should be consistent, in the example the primary action button should look the same.
+
+Typically the user uses his/her "muscular memory" to interact with the application, so if the elements are not in the expected place or look different that can lead to confusion and mistakes.
+
+As example, if the primary action button always the first button (starting from right to left) in a dialog, and in some in this position is the secondary action button (close button), the user can click the wrong button by mistake.
+
+Note this is not only about the position, it is also about to decide and stick which actions are primary, secondary, etc. 
+
+### Naming conventions
+> There are only two hard things in Computer Science: cache invalidation and naming things. -- Phil Karlton
+
+This also aplies for the labels, for example in forms the action to submit the form should be always named the same, for example "Submit" and not "Send", "Save" in different places. 
+
+This can seems trivial but is not. For example is very common to name the same things in different ways when the developers are distributed in different teams.
+
+
+
+### Consistent component behavior
+Components should behave consistently across the application or if the behavior change for some specific reason, the user must be aweare of that. 
+
+For example, something we discussed in project I working on, we have a filter picker component that is used in different places. This component allows the user to select filter values for different fields, but also provides "presets" that are predefined sets of filter values.
+
+The problem here is to define the behavior when the user selects a preset and then modifies one of the filter values or when the user modifies a filter value and then selects a preset.
+
+We can define the behavior in, at least, two different ways:
+
+- **Replace**: When the user selects a preset, all the filter values are replaced by the preset values. If the user modifies a filter value after selecting a preset, the preset selection is cleared.
+
+- **Merge**: When the user selects a preset, the preset values are merged with the current filter values. If the user modifies a filter value after selecting a preset, the preset selection remains
+
+
+Both behaviors are valid, so the team can fall into temptation of implement both behaviors in the component and let dedice the developer using the component what behavior to use in each case via a prop.
+
+But, in my opinion this is a bad idea, because now the user can find different behaviors in different places of the application, and the worse part, without any visual clue that the behavior is different. This can lead to confusion, mistakes and frustration for the user.
+
+
+## Conclusion
+
+**Consistency is more about decisions and discipline than about the actual implementation.** 
+Maintain the consistency in a design system requires to take decisions and stick to them, even when seems easier to do it in a different way for a specific casem, and to achieve this the design system must provide clear guidelines and patterns to follow and to have a governance team which can enforce these decisions when is necessary.
