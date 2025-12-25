@@ -48,7 +48,11 @@ Then the application grows, new domains, new pages, new components, etc., you ca
 This is better, but when the application grows more and more, new problems appear:
 
 - **File size**: The JSON file can become very large, impacting the loading time and performance of the application. 
-  To have a translations file bigger the whole application is not something strange. This approach forces the application to load all the translations even if only a small subset is needed for the current page or component, impacting the initial load time and performance.
+  To have a translations file bigger the whole application is not something strange. Some IDEs can struggle to open or index very large files, making difficult to work with them.
+
+- **Scalability**: If you need to split the application in multiple microfrontends or modules, having a single translations file can become a bottleneck, as each module may need to load the entire translations file even if it only uses a small subset of the strings.
+
+- **Performance**: Loading and parsing a large JSON file can be slow, especially on low-end devices or slow network connections. Also you need to load all the translations even if only a small subset is needed for the current page or component, impacting the initial load time and performance.
 
 - **Organization**: The organization of the strings can become complex, each domain became unmanageable and is common to try to add more levels in the tree, and the common section typically become a mess.
   I will becase very difficult to find a specific string, and also to identify duplicates or inconsistencies.
@@ -56,6 +60,7 @@ This is better, but when the application grows more and more, new problems appea
 - **Orphaned strings**: As the application evolves, some strings may become unused or obsolete, if the developers forget to remove them from the translations file you will get a file full of orphaned strings that are not used anymore.
   This is will require some tools to identify and remove these orphaned strings doing code analysis, but is not perfect as some strings can be used dynamically makeing difficult to identify if they are used or not.
 
+- **Maintainability**: When you need to update an existing tranlation, it hard to know how this will affect to the other parts of the application, for example if you change a common string that is used in multiple places, you need to verify that the new translation is still valid in all contexts and for that you need a way to find al the string usages, which is not always trivial.  
 
 - **Collaboration challenges**: 
   When multiple developers are working in the application will need to modify the translations file, this can lead to merge conflicts and coordination issues.
@@ -69,53 +74,65 @@ This is better, but when the application grows more and more, new problems appea
 
 There are multiple strategies to organize the i18n strings in a scalable way, here I will describe one I used in the past which it worked well (with its pros and cons):
 
-The main idea is to split the translations in multiple files and put the strings closer to where they are used, for example:
+The main ideas behind this approach are
+- **split the translations in multiple files**: instead of having a single JSON file per language, with nested keys, create multiple files based on domains, pages or components.
 
-```src/
-  components/
-    Button/
-      Button.tsx
-      i18n/
-        en.json
-        es.json
-    Header/
-      Header.tsx
-      i18n/
-        en.json
-        es.json
-  domain/
-    Auth/
-      i18n/
-        en.json
-        es.json
-      pages/
-        Login/
-          Login.tsx
-          i18n/
-            en.json
-            es.json
-        Register/
-          Register.tsx
-          i18n/
-            en.json
-            es.json
-    Sales/
-      i18n/
-        en.json
-        es.json
-      pages/
-        Dashboard/
-          Dashboard.tsx
-          i18n/
-            en.json
-            es.json
-        Reports/
-          Reports.tsx
-          i18n/
-            en.json
-            es.json 
-  i18n/
-    common/
-      en.json
-      es.json
+- **put the strings closer to where they are used**, set the i18n strings files in the same directory as the code that uses them
+
+- **composition of translations**: have a common translations in the different levels (global, domain, page, component) and compose them when needed.
+
+- **define a jerarchy the compoisition**: have a clear hierarchy for the translations files, The tranlations in lower levels override the translations in higher levels. For example the common translations can define the "Save money" string, the domain translation defined the same key as "Save my money" and the page translation defined as "Save all my money", then when the page is rendered the final translation will be "Save all my money".
+
+Exanple of directory structure:
+
+```bash
+src/
+├── domains
+│   ├── Auth
+│   │   ├── i18n # directory for i18n strings related to Auth domain
+│   │   └── pages
+│   │       ├── Login
+│   │       │   ├── Login.tsx
+│   │       │   └── i18n # directory for i18n strings related to Login page
+│   │       └── Register
+│   │           ├── Register.tsx
+│   │           └── i18n # directory for i18n strings related to Register page
+│   └── Sales
+│       ├── i18n # directory for i18n strings related to Sales domain
+│       └── pages
+│           ├── Dashboard
+│           │   ├── Dashboard.tsx
+│           │   └── i18n  # directory for i18n strings related to Dashboard page
+│           └── Reports
+│               ├── Reports.tsx
+│               └── i18n/ # directory for i18n strings related to Reports page
+└── i18n
+    └── common
+        ├── en.json
+        └── es.json
 ``` 
+
+## Pros
+- **Scalability**: As the application grows, new domains, pages or components can have their own translations files without impacting the existing ones. If you divide the application in microfrontends, each microfrontend can have its own translations files.
+
+- **Maintainability**: Easier to maintain and update translations, as each file is smaller and focused on a specific area of the application.
+
+- **Context**: Translators can have better context of where and how the strings are used and developers can easily find and update the strings related to a specific domain, page or component. Also removes the risk of having the issue in the example of "Water" string explained before.
+
+- **Reduced conflicts**: With multiple files, the chances of merge conflicts are reduced, as developers can work on different translation files simultaneously.
+
+- **Performance**: By loading only the necessary translation files for the current domain, page or component, you can improve the performance and reduce the initial load time of the application.
+
+- **Orphans**: Easier to identify and remove orphaned strings,for example if you remove a page as the translations are part of the page directory, you remove the whole directory and all the strings related to that page are removed too.
+
+## Cons
+- **Complexity**: The organization and loading of translations becomes more complex, requiring a mechanism to compose the translations from multiple files. It's something easy to implement but requires some extra work.
+
+- **Overhead**: There is some overhead in managing multiple files, especially when adding new domains, pages or components, as you need to create the corresponding translations files.
+
+- **Duplication**: There is a risk of duplicating strings across different files, especially for common strings. In my opinion is not a big problem as the translations needs to have context and is not a problem if the same string is translated differently in different contexts. In any case a way to mitigate this is to use 'references' in the translations.
+
+## Conclusion
+Organizing i18n strings in a scalable way is crucial for maintaining and growing applications that target a global audience. The approach of splitting translations into multiple files based on domains, pages or components, and composing them as needed, can provide significant benefits in terms of scalability, maintainability, context and performance. 
+
+However, it also introduces some complexity and overhead that need to be managed carefully and maybe is not worthy for small applications.Overall, this approach can be a good fit for many applications, especially those that are expected to grow and evolve over time
