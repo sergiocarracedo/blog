@@ -54,34 +54,37 @@ This is better, but when the application grows more and more, new problems appea
 
 - **Performance**: Loading and parsing a large JSON file can be slow, especially on low-end devices or slow network connections. Also you need to load all the translations even if only a small subset is needed for the current page or component, impacting the initial load time and performance.
 
-- **Organization**: The organization of the strings can become complex, each domain became unmanageable and is common to try to add more levels in the tree, and the common section typically become a mess.
+- **Organization**: The organization of the strings can become complex, each domain becomes unmanageable and it is common to try to add more levels in the tree, and the common section typically becomes a mess.
   It will become very difficult to find a specific string, and also to identify duplicates or inconsistencies.
 
 - **Orphaned strings**: As the application evolves, some strings may become unused or obsolete, if the developers forget to remove them from the translations file you will get a file full of orphaned strings that are not used anymore.
-  This will require some tools to identify and remove these orphaned strings doing code analysis, but is not perfect as some strings can be used dynamically making it difficult to identify if they are used or not.
+  This will require some tools to identify and remove these orphaned strings doing code analysis, but it is not perfect as some strings can be used dynamically making it difficult to identify if they are used or not.
 
 - **Maintainability**: When you need to update an existing translation, it's hard to know how this will affect to the other parts of the application, for example if you change a common string that is used in multiple places, you need to verify that the new translation is still valid in all contexts and for that you need a way to find all the string usages, which is not always trivial.  
 
 - **Collaboration challenges**: 
-  When multiple developers are working in the application will need to modify the translations file, this can lead to merge conflicts and coordination issues.
+  When multiple developers are working in the application need to modify the translations file, this can lead to merge conflicts and coordination issues.
   
 - **Context**: 
-  - Translators may lack the context if the string keys are not well organized, because they only will see a string without knowing where or how is used in the application, needing to do an extra work to understand the context.
-  - The same string can be used in different contexts, requiring different translations. For example, in English "Water" can be a noun or a verb: as verb means "to pour water on plants", and as noun means "the liquid we drink", but in Spanish are translated differently: "Agua" (noun) and "Regar" (verb). And is very common to try to reuse that string key in different contexts leading to wrong translations. I found this problem multiple times in real projects, with a developer of a team changing the translation and affecting another page, and the developer of that page getting a ticket about a translations changed and is not correct, creating a kind of loop of fixing/breaking.
+  - Translators may lack the context if the string keys are not well organized, because they will only see a string without knowing where or how it is used in the application, needing to do extra work to understand the context.
+  - The same string can be used in different contexts, requiring different translations. For example, in English "Water" can be a noun or a verb: as verb means "to pour water on plants", and as noun means "the liquid we drink", but in Spanish they are translated differently: "Agua" (noun) and "Regar" (verb). It is very common to try to reuse that string key in different contexts leading to wrong translations. I found this problem multiple times in real projects, with a developer of a team changing the translation and affecting another page, and the developer of that page getting a ticket about a translation that was changed and is not correct, creating a kind of loop of fixing/breaking.
 
 
 ## How to organize i18n strings for scalability?
 
 There are multiple strategies to organize the i18n strings in a scalable way, here I will describe one I used in the past which worked well (with its pros and cons):
 
-The main ideas behind this approach are
+> Divide et impera (divide and conquer)
+
+The main ideas behind this approach are:
+
 - **split the translations in multiple files**: instead of having a single JSON file per language, with nested keys, create multiple files based on domains, pages or components.
 
 - **put the strings closer to where they are used**, set the i18n strings files in the same directory as the code that uses them
 
-- **composition of translations**: have a common translations in the different levels (global, domain, page, component) and compose them when needed.
+- **composition of translations**: have common translations in the different levels (global, domain, page, component) and compose them when needed.
 
-- **define a hierarchy for the composition**: have a clear hierarchy for the translations files, The translations in lower levels override the translations in higher levels. For example the common translations can define the "Save money" string, the domain translation defined the same key as "Save my money" and the page translation defined as "Save all my money", then when the page is rendered the final translation will be "Save all my money".
+- **define a hierarchy for the composition**: have a clear hierarchy for the translations files, the translations in lower levels override the translations in higher levels. For example the common translations can define the "Save money" string, the domain translation defines the same key as "Save my money" and the page translation defines as "Save all my money", then when the page is rendered the final translation will be "Save all my money".
 
 Example of directory structure:
 
@@ -113,26 +116,26 @@ src/
 ``` 
 
 ## Pros
-- **Scalability**: As the application grows, new domains, pages or components can have their own translations files without impacting the existing ones. If you divide the application in microfrontends, each microfrontend can have its own translations files.
+- **Scalability**: As the application grows, new domains, pages or components can have their own translations files without impacting the existing ones. If you divide the application into microfrontends, each microfrontend can have its own translations files.
 
 - **Maintainability**: Easier to maintain and update translations, as each file is smaller and focused on a specific area of the application.
 
-- **Context**: Translators can have better context of where and how the strings are used and developers can easily find and update the strings related to a specific domain, page or component. Also removes the risk of having the issue in the example of "Water" string explained before.
+- **Context**: Translators can have better context of where and how the strings are used and developers can easily find and update the strings related to a specific domain, page or component. It also removes the risk of having the issue in the example of "Water" string explained before.
 
 - **Reduced conflicts**: With multiple files, the chances of merge conflicts are reduced, as developers can work on different translation files simultaneously.
 
 - **Performance**: By loading only the necessary translation files for the current domain, page or component, you can improve the performance and reduce the initial load time of the application.
 
-- **Orphaned strings**: Easier to identify and remove orphaned strings, for example if you remove a page as the translations are part of the page directory, you remove the whole directory and all the strings related to that page are removed too.
+- **Orphaned strings**: Easier to identify and remove orphaned strings, for example, if you remove a page since the translations are part of the page directory, you remove the whole directory and all the strings related to that page are removed too.
 
 ## Cons
-- **Complexity**: The organization and loading of translations becomes more complex, requiring a mechanism to compose the translations from multiple files. It's something easy to implement but requires some extra work.
+- **Complexity**: The organization and loading of translations becomes more complex, requiring a mechanism to compose the translations from multiple files. While it's easy to implement, it requires some extra work.
 
 - **Overhead**: There is some overhead in managing multiple files, especially when adding new domains, pages or components, as you need to create the corresponding translations files.
 
-- **Duplication**: There is a risk of duplicating strings across different files, especially for common strings. In my opinion it is not a big problem as the translations need to have context and it is not a problem if the same string is translated differently in different contexts. In any case a way to mitigate this is to use 'references' in the translations.
+- **Duplication**: There is a risk of duplicating strings across different files, especially for common strings. In my opinion it is not a big problem as the translations need to have context and it is not a problem if the same string is translated differently in different contexts. In any case, a way to mitigate this is to use 'references' in the translations.
 
 ## Conclusion
 Organizing i18n strings in a scalable way is crucial for maintaining and growing applications that target a global audience. The approach of splitting translations into multiple files based on domains, pages or components, and composing them as needed, can provide significant benefits in terms of scalability, maintainability, context and performance. 
 
-However, it also introduces some complexity and overhead that need to be managed carefully and maybe is not worth it for small applications. Overall, this approach can be a good fit for many applications, especially those that are expected to grow and evolve over time
+However, it also introduces some complexity and overhead that need to be managed carefully and it may not be worth it for small applications. Overall, this approach can be a good fit for many applications, especially those that are expected to grow and evolve over time.
