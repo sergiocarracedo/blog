@@ -1,0 +1,121 @@
+---
+title: 'Organizing i18n strings for scalability'
+pubDate: 2026-01-02
+slug: /i18n-strings-organization
+heroImage: ./cover.png
+heroImageMeta:
+  prompt: ''
+  author: ''
+tags: 
+ - frontend
+ - i18n
+ - localization
+ - architecture
+---
+
+
+Translation and localization are critical aspects of modern applications, especially when you target a global audience. 
+
+There are multiple way to translate an application, but basically you replace a string (non-translated) with another string (translated) based on the user language or locale.
+
+In other post we can discuss the different ways to store the translations (.po, json, yaml, etc), the pluralization, the gender variations, etc. but in this post I want to focus on how to organize the i18n strings in a scalable way.
+
+## Why is important to organize i18n strings?
+
+Let suppose a frontend app where the translations are stored in JSON files, one file per language, and all the strings are in a single file.
+
+This works for small application, and simplifies a lot the strings loading, the translations management, etc. 
+
+Then the application grows, new domains, new pages, new components, etc., you can start to use the keys to group the strings by domain or page, and also have the "common" section for strings are used across the application, for example:
+
+```json
+{
+  "home": {
+    "title": "Welcome to our application",
+    "subtitle": "This is the best app ever"
+  },
+  "profile": {
+    "greeting": "Hello, {name}!",
+    "edit": "Edit your profile"
+  }
+  //... more domains or pages
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}
+``` 
+This is better, but when the application grows more and more, new problems appear:
+
+- **File size**: The JSON file can become very large, impacting the loading time and performance of the application. 
+  To have a translations file bigger the whole application is not something strange. This approach forces the application to load all the translations even if only a small subset is needed for the current page or component, impacting the initial load time and performance.
+
+- **Organization**: The organization of the strings can become complex, each domain became unmanageable and is common to try to add more levels in the tree, and the common section typically become a mess.
+  I will becase very difficult to find a specific string, and also to identify duplicates or inconsistencies.
+
+- **Orphaned strings**: As the application evolves, some strings may become unused or obsolete, if the developers forget to remove them from the translations file you will get a file full of orphaned strings that are not used anymore.
+  This is will require some tools to identify and remove these orphaned strings doing code analysis, but is not perfect as some strings can be used dynamically makeing difficult to identify if they are used or not.
+
+
+- **Collaboration challenges**: 
+  When multiple developers are working in the application will need to modify the translations file, this can lead to merge conflicts and coordination issues.
+  
+- **Context**: 
+  - Translators may lack the context if the string keys are not well organized, because they only will see a string without knowing where or how is used in the application, needing to do an extra work to understand the context.
+  - The same string can be used in different contexts, requiring different translations. For example, in english "Water" can be a noun or a verb: as verb means "to pour water on plants", and as noun means "the liquid we drink", but in spanish are translated differently: "Agua" (noun) and "Regar" (verb). And is very common to try to reuse that string key in different contexts leading to wrong translations. I found this problem multiple times in real projects, with a developer of a team changing the translation and affecting another page, and the developer of that page getting a ticket about a translations changed and is not correct, creating a kind of loop of fixing/breaking.
+
+
+## How to organize i18n strings for scalability?
+
+There are multiple strategies to organize the i18n strings in a scalable way, here I will describe one I used in the past which it worked well (with its pros and cons):
+
+The main idea is to split the translations in multiple files and put the strings closer to where they are used, for example:
+
+```src/
+  components/
+    Button/
+      Button.tsx
+      i18n/
+        en.json
+        es.json
+    Header/
+      Header.tsx
+      i18n/
+        en.json
+        es.json
+  domain/
+    Auth/
+      i18n/
+        en.json
+        es.json
+      pages/
+        Login/
+          Login.tsx
+          i18n/
+            en.json
+            es.json
+        Register/
+          Register.tsx
+          i18n/
+            en.json
+            es.json
+    Sales/
+      i18n/
+        en.json
+        es.json
+      pages/
+        Dashboard/
+          Dashboard.tsx
+          i18n/
+            en.json
+            es.json
+        Reports/
+          Reports.tsx
+          i18n/
+            en.json
+            es.json 
+  i18n/
+    common/
+      en.json
+      es.json
+``` 
