@@ -12,6 +12,7 @@ import imgAttr from 'remark-imgattr';
 import './src/middleware';
 import { remarkDirectiveASCIInema } from './src/remark-plugins/remark-directive-asciinema';
 import { remarkDirectiveAstroEntryRef } from './src/remark-plugins/remark-directive-astro-entry-ref';
+import { remarkDirectiveFloatImage } from './src/remark-plugins/remark-directive-float-image';
 import { remarkDirectiveIframe } from './src/remark-plugins/remark-directive-iframe';
 import { remarkDirectiveSpotify } from './src/remark-plugins/remark-directive-spotify';
 import { remarkDirectiveYoutube } from './src/remark-plugins/remark-directive-youtube';
@@ -42,6 +43,7 @@ export default defineConfig({
       [remarkDirectiveSpotify, {}],
       [remarkDirectiveIframe, {}],
       [remarkDirectiveASCIInema, {}],
+      [remarkDirectiveFloatImage, {}],
       [emoji, {}],
       [imgAttr, {}],
     ],

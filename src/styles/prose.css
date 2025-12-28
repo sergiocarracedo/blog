@@ -18,6 +18,14 @@
       @apply rounded-md mx-auto w-full max-w-full;
     }
 
+    @media (max-width: 600px) {
+      img.float-image {
+        float: none !important;
+        margin: 0 auto 1em auto !important;
+        max-width: 100% !important;
+      }
+    }
+
     h1 {
       @apply text-2xl mb-4 mt-8 before:content-['#']! before:text-xl;
     }
