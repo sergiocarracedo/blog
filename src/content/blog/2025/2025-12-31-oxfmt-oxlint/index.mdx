@@ -14,31 +14,34 @@ tags:
   - voidzero
 ---
 
-Formatting and linting code are essential tasks in modern software development, ensuring code quality and consistency independently of which editor or IDE is used, who is writing the code, and ensuring some team agreements are followed.
+Code formatting and linting are essential tasks in modern software development. They keep a codebase consistent and catch common issues early, regardless of which editor or IDE is used or who is writing the code.
 
-For javaScript and TypeScript projects, the most popular tools for these tasks are:
+For JavaScript and TypeScript projects, the most popular tools for these tasks are:
 
-- **for code formatting**: [Prettier](https://prettier.io/), an opinionated code formatter which supports not only JavaScript and TypeScript but also many other languages and formats like JSON, CSS, Markdown, etc. 
+- **for code formatting**: [Prettier](https://prettier.io/), an opinionated code formatter that supports not only JavaScript and TypeScript but also many other languages and formats like JSON, CSS, Markdown, etc.
 - **for code linting**: [ESLint](https://eslint.org/), a highly configurable linter for JavaScript and TypeScript that helps identify and fix problems in the code, enforce coding standards, and improve code quality.
 
-Both tools are wrote in JavaScript/TypeScript and run on Node.js, which makes them easy to integrate into any JavaScript/TypeScript project, but also introduces some performance limitations, especially for large codebases or when running on less powerful machines.
-It is very common to experience slowdowns when running these tools, especially in the CI workflows.
+Both tools are written in JavaScript/TypeScript and run on Node.js, which makes them easy to integrate into any JavaScript/TypeScript project. However, this can introduce performance limitations, especially on large codebases and in CI workflows.
 
 What if I tell you that there are alternatives that can speed up these tasks by an order of magnitude (10x) or more?
 
-Those alternatives are part [oxc](https://oxc.rs/), "The JavaScript Oxidation Compiler", a project that aims to provide high-performance tools for JavaScript and TypeScript development using Rust. It includes a parser, a linter, a formatter, a transformer, a minifier, a resolver, a bundler, and also a javascript engine.
+Those alternatives are part of [Oxc](https://oxc.rs/), "The JavaScript Oxidation Compiler", a project that aims to provide high-performance tools for JavaScript and TypeScript development using Rust. It includes a parser, a linter, a formatter, a transformer, a minifier, a resolver, a bundler, and also a JavaScript engine.
 
-> Oxc is part of [voidzero](https://voidzero.dev/), a collection of high-performance tooling, like [Vite](https://vite.dev/), [Vitest](https://vitest.dev/), and [Rolldown](https://https://rolldown.rs//).
+> Oxc is part of [voidzero](https://voidzero.dev/), a collection of high-performance tooling like [Vite](https://vite.dev/), [Vitest](https://vitest.dev/), and [Rolldown](https://rolldown.rs/).
 
 
 ## Replacing Prettier with oxfmt
 
-It is very easy, you only need to add a new dev dependency to your project:
+It is very easy: you only need to add a new dev dependency to your project:
 
 ```bash
 npm add -D oxfmt
+# or
+pnpm add -D oxfmt
+# or
+yarn add -D oxfmt
 ```
-And rename the existing Prettier configuration file (`.prettierrc`, `.prettierrc.json`, etc.) to `.oxfmtrc.jsonc`, and you're done! 
+Then rename the existing Prettier configuration file (`.prettierrc`, `.prettierrc.json`, etc.) to `.oxfmtrc.jsonc`, and you're done.
 
 You can now run `oxfmt` instead of `prettier` to format your code, for example replacing the script in your `package.json`:
 
@@ -50,45 +53,55 @@ You can now run `oxfmt` instead of `prettier` to format your code, for example r
 }
 ``` 
 
-You can remove prettier from your dependencies if you don't need it anymore.
+You can remove Prettier from your dependencies if you don't need it anymore.
 
-> In the case you have prettier configuration in other file like `prettierrc.js` or `package.json`, you can use the [run the migration script](https://oxc.rs/docs/guide/usage/formatter/migrate-from-prettier.html#step-3-migrate-prettier-configuration-file)
+> If you have a Prettier configuration in another file like `prettierrc.js` or `package.json`, you can [run the migration script](https://oxc.rs/docs/guide/usage/formatter/migrate-from-prettier.html#step-3-migrate-prettier-configuration-file).
 
 
-At the time of writing, oxfmt is in alpha, but the the main features are already implemented and working well, but if you miss some feature ([List of caveheats of oxfmt](https://oxc.rs/docs/guide/usage/formatter/migrate-from-prettier.html#caveats-for-migrating-to-oxfmt)), you can still using prettier with the [@prettier/plugin-oxc](https://github.com/prettier/prettier/tree/main/packages/plugin-oxc) plugin, which uses oxc under the hood to speed up the formatting process.
+### Caveats
+
+At the time of writing, oxfmt is in alpha, but the main features are already implemented and working well.
+
+- If you miss a feature, check the [caveats for migrating to oxfmt](https://oxc.rs/docs/guide/usage/formatter/migrate-from-prettier.html#caveats-for-migrating-to-oxfmt).
+- If you need full Prettier compatibility, you can keep using Prettier with the [@prettier/plugin-oxc](https://github.com/prettier/prettier/tree/main/packages/plugin-oxc) plugin, which uses Oxc under the hood to speed up formatting.
 
 
 ### Benchmarking oxfmt vs Prettier
-To compare the performance of oxfmt and Prettier, I ran both formatters on a large TypeScript codebase (https://github.com/factorialco/f0) (packages/react)
+To compare the performance of oxfmt and Prettier, I ran both formatters on a large TypeScript codebase (https://github.com/factorialco/f0), specifically `packages/react`.
+
+| Tool | Time |
+| --- | ---: |
+| Prettier | 42s |
+| oxfmt | 2.72s :medal_sports: |
+
+Results will vary depending on your machine and CI environment, but the difference is often noticeable.
 
 
-- Prettier: 42s
-- Oxfmt: 2.72s :medal_sports:
+## Replacing ESLint with oxlint
 
-It's crazy, but real.
-
-
-## Replacing Eslint with oxlint
-
-Similar to oxfmt, replacing ESLint with oxlint is simple, but as it is a more configurable tool, there are more things to bear in mind.
+Similar to oxfmt, replacing ESLint with oxlint is simple, but since it is a more configurable tool, there are more things to bear in mind.
 
 
-There are [two ways](https://oxc.rs/docs/guide/usage/linter.html#adoption-paths) to configure oxlint:
+There are [two ways](https://oxc.rs/docs/guide/usage/linter.html#adoption-paths) to adopt oxlint:
 
-- Replace ESlint (recommended for most projects)
+- Replace ESLint (recommended for most projects)
 - Use oxlint alongside ESLint (for large projects)
 
 
-I will focus on the first approach here, but the oxc documentation has a good explanation of both approaches.
+I will focus on the first approach here, but the Oxc documentation explains both approaches well.
 
 
 First, add oxlint as a dev dependency:
 
 ```bash
 npm add -D oxlint
+# or
+pnpm add -D oxlint
+# or
+yarn add -D oxlint
 ```
 
-Then, create an oxlint configuration file `.oxlintrc.jsonc` in the root of your project. To simplify the migration you can run the [migrate script](https://github.com/oxc-project/oxlint-migrate) that will generate a basic configuration file based on your existing ESLint configuration.
+Then, create an oxlint configuration file `.oxlintrc.jsonc` in the root of your project. To simplify the migration, you can run the [migration script](https://github.com/oxc-project/oxlint-migrate), which will generate a basic configuration file based on your existing ESLint configuration.
 
 ```bash
 npx @oxlint/migrate --js-plugins
@@ -98,9 +111,9 @@ npx @oxlint/migrate --js-plugins <optional-eslint-flat-config-path>
 
 The `--js-plugins` flag is important as it tells the migration tool to include support for JavaScript/TypeScript plugins that you may be using in your ESLint configuration.
 
-### JsPlugins vs native plugins
+### JS plugins vs native plugins
 
-Oxlint provides a growing list of [build-in plugins](https://oxc.rs/docs/guide/usage/linter/plugins.html) which are written in Rust and provide better performance than their JavaScript counterparts, but not all the plugins are converted yet, so using the `--js-plugins` flag ensures that your existing ESLint plugins will continue to work with oxlint.
+Oxlint provides a growing list of [built-in plugins](https://oxc.rs/docs/guide/usage/linter/plugins.html) which are written in Rust and provide better performance than their JavaScript counterparts, but not all plugins are converted yet. Using the `--js-plugins` flag ensures that your existing ESLint plugins will continue to work with oxlint.
 
 Finally, replace the ESLint script in your `package.json`:
 
@@ -114,26 +127,27 @@ Finally, replace the ESLint script in your `package.json`:
 
 ### Benchmarking oxlint vs ESLint
 
-I used the same project than before (https://github.com/factorialco/f0)
+I used the same project as before (https://github.com/factorialco/f0)
 
+| Tool | Time |
+| --- | ---: |
+| ESLint | 35.34s |
+| oxlint | 1.17s :medal_sports: |
 
-- ESlint: 35.34s
-- Oxfmt: 1.17s :medal_sports:
+Again, results vary by machine, but the improvement is substantial.
 
-It's a big improvement again!
-
-You can check more benchmarks in the [oxc documentation](https://github.com/oxc-project/bench-linter)
+You can check more benchmarks in the [Oxc documentation](https://github.com/oxc-project/bench-linter)
 
 
 ## Making the IDE use oxfmt and oxlint
 
-Now, I guess, you want to use oxfmt and oxlint in your IDE too. Most IDE includes build-in integration with Prettier and ESlint as are the most popular tools, but you can configure them to use oxfmt and oxlint instead.
+Now, I guess you want to use oxfmt and oxlint in your IDE too. Most IDEs include built-in integration with Prettier and ESLint since they are the most popular tools, but you can configure them to use oxfmt and oxlint instead.
 
-### VSCode
-You need the [Oxc extension for VSCode](https://marketplace.visualstudio.com/items?itemName=oxc-project.oxc-vscode)
+### VS Code
+You need the [Oxc extension for VS Code](https://marketplace.visualstudio.com/items?itemName=oxc-project.oxc-vscode)
 
 
-Then, add or edit the following entries in configuration to your `settings.json`:
+Then, add or edit the following entries in your `settings.json`:
 
 ```json
   "editor.defaultFormatter": "oxc.oxc-vscode",
@@ -149,8 +163,8 @@ Then, add or edit the following entries in configuration to your `settings.json`
 
 ### IntelliJ (IDEA/WebStorm/etc)
 
-You must install the pluing created by Boshen (the main oxc contributor): [Oxc Plugin](https://plugins.jetbrains.com/plugin/27061-oxc)
+You must install the plugin created by Boshen (the main Oxc contributor): [Oxc Plugin](https://plugins.jetbrains.com/plugin/27061-oxc)
 
 ## Conclusion
 
-In my opinion, for we (the developers) it is very important to have fast feedback loops when working on code, or trying to deploy changes, and having tools that can speed up common tasks like formatting and linting is a big win. Oxfmt and Oxlint are great alternatives to Prettier and ESLint that can provide significant performance improvements without sacrificing functionality or configurability.
+In my opinion, fast feedback loops matter a lot when working on code or trying to ship changes. Tools that speed up common tasks like formatting and linting are a big win, and oxfmt and oxlint are strong alternatives to Prettier and ESLint that can deliver significant performance improvements.
