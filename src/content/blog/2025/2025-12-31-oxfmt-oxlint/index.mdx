@@ -4,8 +4,8 @@ pubDate: 2026-01-23
 slug: speed-up-10x-code-formatting-and-linting-with-oxfmt-and-oxlint
 heroImage: ./cover.png
 heroImageMeta:
-  prompt: ''
-  author: ''
+  prompt: '16-bit pixel art style, retro SNES aesthetic. A high-speed hyperspace jump effect, centered composition. White star streaks and motion lines radiating rapidly from the center, mimicking a warp speed tunnel. In the dead center is the OXC logo, integrated into the speed effect. Background: A clean vertical gradient split by a clear horizon line. Use a random combination of two cool solid tones (choose between: deep purple, neon cyan, matrix green, or royal blue). Composition: strictly centered elements with wide negative space, leaving a 20% empty padding area around the main subject. High definition, sharp edges, dithering, 2D game asset.'
+  author: 'Gemini Nano Banana Pro'
 tags:
   - typescript
   - developer-tools
@@ -117,11 +117,40 @@ Finally, replace the ESLint script in your `package.json`:
 I used the same project than before (https://github.com/factorialco/f0)
 
 
-- Eslint: s
-- Oxfmt: 9.36s :medal_sports:
+- ESlint: 35.34s
+- Oxfmt: 1.17s :medal_sports:
 
+It's a big improvement again!
 
 You can check more benchmarks in the [oxc documentation](https://github.com/oxc-project/bench-linter)
 
 
 ## Making the IDE use oxfmt and oxlint
+
+Now, I guess, you want to use oxfmt and oxlint in your IDE too. Most IDE includes build-in integration with Prettier and ESlint as are the most popular tools, but you can configure them to use oxfmt and oxlint instead.
+
+### VSCode
+You need the [Oxc extension for VSCode](https://marketplace.visualstudio.com/items?itemName=oxc-project.oxc-vscode)
+
+
+Then, add or edit the following entries in configuration to your `settings.json`:
+
+```json
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  // Or enable it for specific files:
+  // "[javascript]": {
+  //   "editor.defaultFormatter": "oxc.oxc-vscode"
+  // },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxfmt": "always"
+  },
+  "oxc.fmt.experimental": true,
+```
+
+### IntelliJ (IDEA/WebStorm/etc)
+
+You must install the pluing created by Boshen (the main oxc contributor): [Oxc Plugin](https://plugins.jetbrains.com/plugin/27061-oxc)
+
+## Conclusion
+
+In my opinion, for we (the developers) it is very important to have fast feedback loops when working on code, or trying to deploy changes, and having tools that can speed up common tasks like formatting and linting is a big win. Oxfmt and Oxlint are great alternatives to Prettier and ESLint that can provide significant performance improvements without sacrificing functionality or configurability.
