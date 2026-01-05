@@ -4,6 +4,7 @@ const { skill, class: className } = Astro.props;
 ---
 
 <span
+  transition:name={`skill-${skill.data.name}`}
   class:list={[
     'parallelogram bg-[--skill-color] text-[--skill-text-color] px-2 py-[2px] rounded-md text-sm font-semibold',
     className,

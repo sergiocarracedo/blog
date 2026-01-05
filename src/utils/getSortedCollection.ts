@@ -6,8 +6,6 @@ type SortableKeys = 'pubDate' | 'updatedDate';
 export const getSortedCollection = async (
   collection: CollectionKey,
   sortBy: SortableKeys = 'pubDate'
-) => {
-  return (await getCollection(collection)).sort(
+) => (await getCollection(collection)).sort(
     (a, b) => (b.data[sortBy] as Date).valueOf() - (a.data[sortBy] as Date).valueOf()
   );
-};

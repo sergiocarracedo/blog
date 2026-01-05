@@ -3,12 +3,17 @@ interface Props {
   date: Date;
   class?: string;
   prepend?: string | Astro.JSX.Element;
+  postId?: string;
 }
 
-const { date } = Astro.props;
+const { date, postId } = Astro.props;
 ---
 
-<time datetime={date.toISOString()} class:list={[`flex items-center gap-2`, Astro.props.class]}>
+<time
+  datetime={date.toISOString()}
+  class:list={[`flex items-center gap-2`, Astro.props.class]}
+  transition:name={`post-date-${postId}`}
+>
   {Astro.props.prepend && <span class="prepend">{Astro.props.prepend}</span>}
   {
     date.toLocaleDateString('en-us', {

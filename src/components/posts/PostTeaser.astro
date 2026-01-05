@@ -39,6 +39,7 @@ const { readingTime, excerpt } = enrichedPost;
             height={250}
             fit="cover"
             alt={title}
+            transition:name={`post-picture-${enrichedPost.sanitizedId}`}
           />
         )
       }
@@ -55,6 +56,7 @@ const { readingTime, excerpt } = enrichedPost;
             height={300}
             fit="cover"
             alt={title}
+            transition:name={`post-picture-${enrichedPost.sanitizedId}`}
           />
         )
       }
@@ -70,6 +72,7 @@ const { readingTime, excerpt } = enrichedPost;
   >
     <header>
       <h3
+        transition:name={`post-title-${enrichedPost.sanitizedId}`}
         class:list={[
           'm-0 font-impact font-bold text-2xl md:text-3xl mb-4',
           style === 'highlighted' && 'md:px-20 flex justify-center text-center',
@@ -86,10 +89,12 @@ const { readingTime, excerpt } = enrichedPost;
       date={pubDate}
       tags={style === 'default' ? enrichedPost.data.tags : []}
       readingTime={readingTime}
+      postId={enrichedPost.sanitizedId}
       class:list={[style === 'highlighted' ? 'flex justify-center' : 'mb-2']}
     />
     <div
       aria-label={truncate(excerpt, 40)}
+      transition:name={`post-body-${enrichedPost.sanitizedId}`}
       class:list={['mb-5 text-md text-gray-700', style === 'highlighted' && 'text-center text-sm']}
     >
       <p>{truncate(excerpt, 100)}</p>

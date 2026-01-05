@@ -1,0 +1,205 @@
+---
+title: 'Await component in React 18: Wait for a promise in the UI'
+pubDate: 2025-07-13
+slug: /await-component-in-react-18
+heroImage: ./hhh13-jU0jgjgJTHo-unsplash.jpg
+heroImageMeta:
+  author: "傅甬 华 (@hhh13)"
+  licence: "Unsplash license"
+  source: "https://unsplash.com/photos/jU0jgjgJTHo"
+tags:
+ - frontend
+ - typescript
+ - react
+---
+
+Managing asynchronous values in the frontend is our day a day work, as typically you get the data from an API, and you need to wait for the response to render the UI. in the most cases you will show the user a component to show the data is loading and when the data is ready, you will render the "real" component with the data.
+
+In React 19 you can use the [new `use` API](https://react.dev/reference/react/use), which suspends any component using this value until the promise is resolved, together `<Suspense>`, but in React 18 you don't have this API, so you need to use a workaround to achieve the same result.
+
+The simplest solution is to use useState and useEffect in your component to manage the loading, and error state, and wait for the promise to resolve:
+
+```tsx
+import React, { useState, useEffect } from 'react';
+
+export const MyComponent = () => {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('...');
+        const data = await response.json();
+        setData(data);
+ } catch (error) {
+        setHasError(true);
+ } finally {
+        setIsLoading(false);
+ }
+ };
+
+    fetchData();
+ }, []);
+
+
+  return (
+    <div>
+    {isLoading ? (
+      <p>Loading data...</p>
+ ) : hasError ? (
+      <p>Error fetching data</p>
+ ) : (
+      <div>
+        <h1>Data Loaded</h1>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      </div>
+ )}
+    </div>      
+ );
+};
+```
+
+
+But this code is very verbose, and you need to repeat the same logic in every component that needs to wait for a promise to resolve, so it is better to extract this logic into a reusable component.
+
+## Using third-party libraries
+As this is a widespread use case, many libraries provide a solution for this problem, like [react-async](https://github.com/async-library/react-async), which provides a hook and a component to manage the loading states.
+
+Or TanStack Router's [Await component](https://tanstack.com/router/v1/docs/framework/react/api/router/awaitComponent), a part of the TanStack Router library, that provides a component to wait for a promise to resolve and render the UI accordingly.
+
+```tsx
+import { Await } from '@tanstack/react-router'
+
+function Component() {
+  const { deferredPromise } = route.useLoaderData()
+
+  return (
+    <Await promise={deferredPromise}>
+      {(data) => <div>{JSON.stringify(data)}</div>}
+    </Await>
+ )
+}
+```
+
+In my use case, the TanStack Await component seemed to be the solution, even if I don't use TanStack Router, but I found our use case was a little bit different.
+
+## My use case
+
+One think I like to do in the components is to provide a simplier API to the developer as possible, trying to cover multiples ways to provide values to a component, for example accepting in a prop: a value, a promise, a function that returns a value or a promise to adapt to the most common use cases, without needing to take care of the different ways get the value from outside of the component, in that case, the component must handle the different cases and provide a consistent behavior.
+
+The use cases for the await component is a good example of this.
+
+We have a component that renders a table with groups, and the groups are rendered in the UI, with the group name and the number of items in the group. Depending on the data source, the number of items in the group can be a number or a promise that resolves to a number. 
+
+One way to handle this is to render the Await component if the value is a promise, and render the value directly if it is not a promise, but this forces us to add the logic in every place we want to use the value. So whay not think in a "primitive" value like a promise that is resolved intantly.
+
+Back to the await component, that means the component should accept a value that can be a promise or a value, and if it is a promise, it should wait for the promise to resolve and render the value, and if it is not a promise, it should render the value directly.
+
+That it something the TanStack Await component does not, so I decided to implement our own Await component, which can handle both cases, and also provide a loading state and an error state.
+
+The component is very simple; it accepts:
+- A `resolve` prop that can be a promise or a value that is the value we want to wait for, 
+- A `fallback` prop that is rendered while the promise is resolving, for example, a skeleton, 
+- An optional `error` prop that is rendered if the promise rejects. This is deliberately not rendered when null is provided to allow us to fail silently
+- A `children` prop that is a function that receives the resolved value and returns the UI to render.
+
+
+```tsx
+import { ReactNode, useEffect, useState } from "react"
+
+type AwaitProps<T> = {
+  resolve: Promise<T> | T
+  fallback: ReactNode
+  error?: ReactNode
+  className?: string
+  children: (value: T) => ReactNode
+}
+
+export const Await = <T,>({
+  resolve,
+  fallback,
+  error: errorFallback,
+  children,
+}: AwaitProps<T>): ReactNode => {
+  const [resolvedValue, setResolvedValue] = useState<T | null>(null)
+  const [error, setError] = useState<Error | null>(null)
+  const [isPending, setIsPending] = useState(false)
+
+  useEffect(() => {
+    if (resolve instanceof Promise) {
+      setIsPending(true)
+      resolve
+ .then((value) => {
+          setResolvedValue(value)
+ })
+ .catch((error) => {
+          setError(error)
+ })
+ .finally(() => {
+          setIsPending(false)
+ })
+ } else {
+      setResolvedValue(resolve)
+      setIsPending(false)
+ }
+ }, [resolve])
+
+  if (isPending) {
+    return fallback
+ }
+  if (error) {
+    return errorFallback ?? null
+ }
+  if (resolvedValue) {
+    return children(resolvedValue)
+ }
+  return null
+}
+```
+
+You can use this component like this:
+
+```tsx
+import { Await } from './Await'
+import { Skeleton } from './Skeleton'
+import { fetchData } from './api'
+export const MyComponent = () => {
+  const dataPromise = fetchData()
+
+  return (
+    <Await
+      resolve={dataPromise}
+      fallback={<Skeleton />}
+      error={<div>Error loading data</div>}
+    >
+      {(data) => JSON.stringify(data, null, 2)}
+    </Await>
+ )
+}
+```
+And it works in the same way when the resolved props are a real value, like a number or a string:
+
+```tsx
+import { Await } from './Await'
+export const MyComponent = () => {
+  const data = 42
+  return (
+    <Await
+      resolve={data}
+      fallback={<Skeleton />}
+      error={<div>Error loading data</div>}
+    >
+      {(data) => data}
+    </Await>
+ )
+}
+```
+
+You can find the code and the documentation for this component in the [Factorial One GitHub repository](https://github.com/factorialco/factorial-one/tree/main/packages/react/src/components/Utilities/Await)
+
+
+## Conclusion
+
+The key point of this article is to show you how to create a reusable helper component that render a value or component that depends on a value, and it's that component the one that takes care of adapt it behavior to a promise or a value, making the developers' life easier and allow them to focus on building their applications without spend time thinking how to handle the different cases of promises and values.

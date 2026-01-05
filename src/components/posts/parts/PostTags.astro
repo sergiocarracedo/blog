@@ -1,18 +1,25 @@
 ---
+import { createSlug } from '@/utils/createSlug';
+
 interface Props {
   tags?: string[];
   class?: string;
+  postId?: string;
 }
 
 const { tags } = Astro.props;
+const tagsMap = new Map<string, string>((tags || []).map((tag) => [createSlug(tag), tag]));
 ---
 
 {
   tags && tags.length > 0 && (
-    <div class:list={['flex flex-wrap gap-2', Astro.props.class]}>
-      {tags.map((tag) => (
+    <div
+      class:list={['flex flex-wrap gap-2', Astro.props.class]}
+      transition:name={`post-tags-${Astro.props.postId}`}
+    >
+      {Array.from(tagsMap).map(([slug, tag]) => (
         <a
-          href={`/tags/${tag}/`}
+          href={`/tags/${slug}/`}
           class="parallelogram bg-primary text-white px-6 py-0 rounded-sm hover:bg-primary-600 transition-colors hover:bg-secondary hover:text-primary-600 text-sm font-semibold"
         >
           <span>{tag}</span>

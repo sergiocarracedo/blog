@@ -20,6 +20,8 @@ const { post } = Astro.props;
 const enrichedPost = enrichBlogPost(post);
 const { title, pubDate, heroImage, tags, heroImageMeta } = enrichedPost.data;
 const { readingTime } = enrichedPost;
+// Sanitize post.id for view transition name
+const sanitizedId = post.id.replaceAll('/', '-');
 
 const { Content } = await render(post);
 ---
@@ -40,28 +42,60 @@ const { Content } = await render(post);
       </a>
     </div>
     <header class="mb-3">
-      <h1 class="text-3xl md:text-4xl font-impact font-bold mb-2">
+      <h1 class="text-3xl md:text-4xl font-impact font-bold mb-2" transition:name={`post-title-${enrichedPost.sanitizedId}`}>
         {title}
       </h1>
 
       <aside class="flex gap-2 flex-wrap w-full">
-        <FormattedDate date={pubDate} class="flex-1" />
-        <ReadingTime readingTime={readingTime} class="flex-1 justify-end text-right" />
+        <FormattedDate date={pubDate} class="flex-1" postId={enrichedPost.sanitizedId} />
+        <ReadingTime readingTime={readingTime} class="flex-1 justify-end text-right" postId={enrichedPost.sanitizedId} />
       </aside>
     </header>
 
     {
       heroImage && (
         <div class="rounded-lg overflow-hidden mb-6 relative group overflow-hidden">
-          <Picture width={836} height={470} src={heroImage} alt={title} fit="cover" />
-          {(heroImageMeta?.author || heroImageMeta?.prompt) && (
-            <div class="text-xs text-gray-500  absolute bottom-0 left-0 right-0 group-hover:translate-y-0 translate-y-[calc(100%-10px)] transition-transform duration-300 z-10">
-              <div class="bg-gray-100/60 p-2">
-                <em>Picture by</em> <strong>{heroImageMeta.author}</strong>
+          <Picture 
+            width={836} 
+            height={470} 
+            src={heroImage}
+            alt={title}
+            fit="cover"
+            transition:persist
+            transition:name={`post-picture-${enrichedPost.sanitizedId}`}
+          />
+          {(heroImageMeta?.author ||
+            heroImageMeta?.prompt ||
+            heroImageMeta?.source ||
+            heroImageMeta?.licence) && (
+            <div class="text-xs text-gray-500 absolute bottom-0 left-0 right-0 group-hover:translate-y-0 translate-y-[calc(100%-10px)] transition-transform duration-300 z-10">
+              <div class="bg-gray-100/90 p-2">
+                <em>Picture by</em> <strong>
+                  {heroImageMeta.source && (
+                    <a
+                      href={heroImageMeta.source}
+                      class="text-primary link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {heroImageMeta.author}
+                    </a>
+                  ) || (
+                    <strong>{heroImageMeta.author}</strong>
+                  )}
+
+
                 {heroImageMeta.prompt && (
                   <span>
                     {' '}
                     - <em>Prompt</em>: {heroImageMeta.prompt}
+                  </span>
+                )}
+                
+                {heroImageMeta.licence && (
+                  <span>
+                    {' '}
+                    - <em>Licence</em>: {heroImageMeta.licence}
                   </span>
                 )}
               </div>
@@ -70,10 +104,10 @@ const { Content } = await render(post);
         </div>
       )
     }
-    <PostTags tags={tags} class="mb-6" />
+    <PostTags tags={tags} class="mb-6" postId={enrichedPost.sanitizedId} />
   </div>
   <div class="wrapper-no-padding">
-    <div class="prose p-6 sm:p-6 lg:p-8">
+    <div class="prose p-6 sm:p-6 lg:p-8" transition:name={`post-body-${enrichedPost.sanitizedId}`}>
       <Content components={mdxComponents} />
     </div>
   </div>

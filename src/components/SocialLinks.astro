@@ -1,5 +1,17 @@
 ---
 import { SOCIAL } from '../consts';
+interface Props {
+  size?: 'xs' | 'md' | 'lg';
+  viewTransition?: boolean;
+}
+
+const { size = 'md', viewTransition = false } = Astro.props as Props;
+
+const sizeClasses = {
+  xs: 'h-8 w-8 p-2',
+  md: 'h-10 w-10 p-2.5',
+  lg: 'h-12 w-12 p-3',
+};
 ---
 
 <div class="flex gap-2 flex-wrap items-center">
@@ -9,9 +21,13 @@ import { SOCIAL } from '../consts';
         href={social.url}
         target="_blank"
         rel="noopener noreferrer"
-        class="h-10 w-10 flex items-center justify-center transition-all hover:text-primary hover:scale-110 bg-neutral-100 rounded-full hover:bg-neutral-200 p-2.5"
+        class:list={[
+          sizeClasses[size],
+          'flex items-center justify-center transition-all ease-in-out duration-200 hover:text-primary hover:scale-120 bg-neutral-100 rounded-full hover:bg-neutral-200 ',
+        ]}
         aria-label={`Follow Sergio Carracedo on ${social.name}`}
         title={`Follow Sergio Carracedo on ${social.name}`}
+        transition:name={viewTransition ? `social-${social.name}` : undefined}
       >
         <span class="sr-only">Follow Sergio Carracedo on {social.name}</span>
         <Fragment set:html={social.icon} />

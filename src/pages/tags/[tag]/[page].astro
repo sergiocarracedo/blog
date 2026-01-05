@@ -1,5 +1,6 @@
 ---
 import SectionHeader from '@/components/SectionHeader.astro';
+import { createSlug } from '@/utils/createSlug';
 import type { CollectionEntry } from 'astro:content';
 import Pagination from '../../../components/Pagination.astro';
 import PostTeaser from '../../../components/posts/PostTeaser.astro';
@@ -25,6 +26,8 @@ export interface StaticPath {
   props: TagPageProps;
 }
 
+const tags = (await getTags()) || new Map();
+
 export const getStaticPaths = async ({
   paginate,
 }: {
@@ -33,12 +36,11 @@ export const getStaticPaths = async ({
     options: { pageSize: number; params: { tag: string } }
   ) => StaticPath[];
 }) => {
-  const tags = await getTags();
-
   const paths: StaticPath[] = [];
-  for (const tag of tags) {
+  const tags = (await getTags()) || new Map();
+  for (const [slug, tag] of tags) {
     const tagPosts = await getPostsByTag(tag, 'blog');
-    const paginated = paginate(tagPosts, { pageSize: 10, params: { tag } });
+    const paginated = paginate(tagPosts, { pageSize: 10, params: { tag: slug } });
     paginated.forEach((page) => {
       paths.push(page);
     });
@@ -47,13 +49,17 @@ export const getStaticPaths = async ({
   return paths;
 };
 
-const { tag } = Astro.params;
+const { tag: tagSlug } = Astro.params;
 const { page } = Astro.props;
 const { data: posts } = page;
 
+const tag = tags.get(tagSlug) || tagSlug; // Fallback to slug if tag not found
+
+console.log(tagSlug, tag);
+
 const filteredPosts = posts.filter((post) => post.data.tags?.includes(tag));
 
-const urlPattern = `/tags/${tag}/{}`;
+const urlPattern = `/tags/${createSlug(tag)}/{}`;
 ---
 
 <BaseLayout>

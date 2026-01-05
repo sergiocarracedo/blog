@@ -1,3 +1,4 @@
+
 @import "tailwindcss";
 @import "./fonts.css";
 @import "./prose.css";
@@ -162,6 +163,5 @@
 
     /* background-diagonal-[color-secondary__color-primary-lighter] */
     /* @include mixings.background-paper(var(--bg), var(--primary-color-10)); */
-
   }
 }

@@ -7,32 +7,34 @@ import { defineConfig } from 'astro/config';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import remarkDirective from 'remark-directive';
 
-
 import emoji from 'remark-emoji';
+import imgAttr from 'remark-imgattr';
 import './src/middleware';
 import { remarkDirectiveASCIInema } from './src/remark-plugins/remark-directive-asciinema';
 import { remarkDirectiveAstroEntryRef } from './src/remark-plugins/remark-directive-astro-entry-ref';
+import { remarkDirectiveFloatImage } from './src/remark-plugins/remark-directive-float-image';
 import { remarkDirectiveIframe } from './src/remark-plugins/remark-directive-iframe';
 import { remarkDirectiveSpotify } from './src/remark-plugins/remark-directive-spotify';
 import { remarkDirectiveYoutube } from './src/remark-plugins/remark-directive-youtube';
 
 import icon from 'astro-icon';
 
-
 import pagefind from 'astro-pagefind';
-
 
 import cookieconsent from '@jop-software/astro-cookieconsent';
 import { cookieConsentConfig } from './cookieConsentConfig';
 
-
 import react from '@astrojs/react';
-
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://sergiocarracedo.es',
   integrations: [mdx(), sitemap(), icon(), pagefind(), cookieconsent(cookieConsentConfig), react()],
+  image: {
+    // Enable image optimization
+    domains: ['sergiocarracedo.es'],
+    remotePatterns: [{ protocol: 'https' }],
+  },
   markdown: {
     remarkPlugins: [
       [remarkDirective, {}],
@@ -41,7 +43,9 @@ export default defineConfig({
       [remarkDirectiveSpotify, {}],
       [remarkDirectiveIframe, {}],
       [remarkDirectiveASCIInema, {}],
-      [emoji, {}]
+      [remarkDirectiveFloatImage, {}],
+      [emoji, {}],
+      [imgAttr, {}],
     ],
     rehypePlugins: [
       rehypeHeadingIds,
@@ -49,7 +53,7 @@ export default defineConfig({
         rehypeAutolinkHeadings,
         {
           behavior: 'wrap',
-          
+
           headingProperties: {
             className: ['anchor'],
           },
@@ -58,13 +62,13 @@ export default defineConfig({
           },
         },
       ],
-    ]
+    ],
   },
   vite: {
     resolve: {
       alias: {
         '@': '/src',
-      }
+      },
     },
     plugins: [tailwindcss()],
   },

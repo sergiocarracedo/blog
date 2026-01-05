@@ -1,27 +1,72 @@
-# Astro Starter Kit: Blog
+# sergiocarracedo.es
+
+Personal blog built with **Astro 5.x** featuring optimized performance and modern web standards.
+
+## 🚀 Quick Start
 
 ```sh
-pnpm create astro@latest -- --template blog
+pnpm install
+pnpm dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+## 🧞 Commands
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `pnpm install`            | Installs dependencies                            |
+| `pnpm dev`                | Starts local dev server at `localhost:4321`     |
+| `pnpm build`              | Build your production site to `./dist/`         |
+| `pnpm preview`            | Preview your build locally, before deploying    |
+| `pnpm optimize-images`    | Optimize images in `public/i/` directory        |
+| `pnpm lint`               | Run all linters (TypeScript + Markdown)         |
+| `pnpm lint:ts`            | Lint TypeScript files with ESLint               |
+| `pnpm lint:ts:fix`        | Fix auto-fixable TypeScript issues              |
+| `pnpm lint:oxc`           | Run oxlint (fast Rust-based linter)             |
+| `pnpm lint:md`            | Lint Markdown files                             |
+| `pnpm lint:md:fix`        | Fix auto-fixable Markdown issues               |
+| `pnpm format`             | Format all files with Prettier                  |
+| `pnpm format:check`       | Check formatting without fixing                 |
+| `pnpm astro ...`          | Run CLI commands like `astro add`, `astro check`|
 
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+## 🔍 Code Quality & Linting
 
-Features:
+This project uses multiple linters to maintain code quality:
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+### TypeScript Linting
+- **ESLint** with `eslint-config-love` (Standard TypeScript style)
+- Configured for strict type checking and best practices
+- Auto-fixable issues can be resolved with `pnpm lint:ts:fix`
 
-## 🚀 Project Structure
+### Markdown Linting
+- **markdownlint** for consistent Markdown formatting
+- Custom rules for line length (100 chars) and style consistency
+- Supports both `.md` and `.mdx` files
+
+### Fast Linting (Optional)
+- **oxlint** - Rust-based linter for extremely fast code analysis
+- Complements ESLint with additional performance-focused checks
+- Can be used for quick pre-commit checks
+
+### IDE Integration
+- VS Code settings configured for automatic linting and formatting
+- Recommended extensions: ESLint, Prettier, Markdownlint
+- Format on save and fix on save enabled
+
+## 📊 Performance Optimizations
+
+### Image Optimization
+- **87% size reduction** on main images (1.24MB → 0.16MB)
+- WebP format with quality optimization
+- Astro's built-in image optimization enabled
+- Responsive image loading with `loading="lazy"`
+
+### Dependency Cleanup
+Removed unused dependencies:
+- `framer-motion` & `motion` (unused animation libraries)
+- `@tailwindcss/aspect-ratio` & `@tailwindcss/forms` (unused plugins)
+- `@astrojs/image` (replaced with built-in optimization)
+
+## 🏗️ Architecture
 
 Inside of your Astro project, you'll see the following folders and files:
 

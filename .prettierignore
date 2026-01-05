@@ -11,3 +11,4 @@ coverage/
 .idea/
 .DS_Store
 *.astro.build/
+pnpm-lock.yaml

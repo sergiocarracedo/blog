@@ -4,6 +4,8 @@
 import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import '../styles/tailwind.css';
 
+import { ClientRouter } from 'astro:transitions';
+
 export interface Meta {
   title?: string;
   description?: string;
@@ -87,6 +89,7 @@ const image = meta.image || '/i/sergiocarracedo-og.png';
 <!-- Aditional metatags -->
 <link href="/site.webmanifest" rel="manifest" />
 
-<link color="#213b4a" href="/safari-pinned-tab.svg" rel="mask-icon" />
 <meta content="#213b4a" name="msapplication-TileColor" />
 <meta content="#213b4a" name="theme-color" />
+
+<ClientRouter />

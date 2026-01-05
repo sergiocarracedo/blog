@@ -28,6 +28,7 @@ const enrichedPost = enrichBlogPost(post);
           height={120}
           fit="cover"
           alt={enrichedPost.data.title}
+          transition:name={`post-picture-${enrichedPost.sanitizedId}`}
         />
       )
     }
@@ -43,6 +44,7 @@ const enrichedPost = enrichBlogPost(post);
       'font-semibold',
       'max-w-[180px]',
     ]}
+    transition:name={`post-title-${enrichedPost.sanitizedId}`}
   >
     {truncate(enrichedPost.data.title, 50)}
   </div>

@@ -1,230 +1,255 @@
 @layer components {
-.prose {
-  @apply backdrop-blur-md bg-neutral-100/60 text-gray-900 rounded-md text-base;
+  .prose {
+    @apply backdrop-blur-md bg-neutral-100/60 text-gray-900 rounded-md text-base;
 
-  *::selection {
-    @apply bg-primary text-white;
-  }
+    *::selection {
+      @apply bg-primary text-white;
+    }
 
+    iframe {
+      @apply rounded-md mb-6;
+    }
 
-  iframe {
-    @apply rounded-md mb-6;
-  }
+    a {
+      @apply link whitespace-pre-wrap break-all;
+    }
 
-  a {
-    @apply link whitespace-pre-wrap break-all;
-  }
+    img {
+      @apply rounded-md mx-auto w-full max-w-full;
+    }
 
-  img {
-    @apply rounded-md mx-auto w-full max-w-full;
-  }
+    @media (max-width: 600px) {
+      img.float-image {
+        float: none !important;
+        margin: 0 auto 1em auto !important;
+        max-width: 100% !important;
+      }
+    }
 
-  h1{
-    @apply text-2xl mb-4 mt-8 before:content-['#']! before:text-xl
-  }
-  h2{
-    @apply text-xl mb-3 mt-6 before:content-['##'] before:text-lg;
-  }
-  h3{
-    @apply text-lg mb-2 mt-4  before:content-['###'] before:text-base;
-  }
-  h4{
-    @apply text-base mb-1 mt-2 before:content-['####'] before:text-sm;
-  }
-  h5{
-    @apply text-sm mb-1 mt-1 before:content-['#####'] before:text-xs;
-  }
-  h6{
-    @apply text-xs  mb-1 mt-1 before:content-['######'] before:text-xs;
-  }
-  h1, h2, h3, h4, h5, h6 {    
-    @apply before:font-bold before:text-primary-light before:mr-2;
-  }
+    h1 {
+      @apply text-2xl mb-4 mt-8 before:content-['#']! before:text-xl;
+    }
+    h2 {
+      @apply text-xl mb-3 mt-6 before:content-['##'] before:text-lg;
+    }
+    h3 {
+      @apply text-lg mb-2 mt-4  before:content-['###'] before:text-base;
+    }
+    h4 {
+      @apply text-base mb-1 mt-2 before:content-['####'] before:text-sm;
+    }
+    h5 {
+      @apply text-sm mb-1 mt-1 before:content-['#####'] before:text-xs;
+    }
+    h6 {
+      @apply text-xs  mb-1 mt-1 before:content-['######'] before:text-xs;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply before:font-bold before:text-primary-light before:mr-2;
+    }
 
-  > h1, > h2, > h3, > h4, > h5, > h6 {
-    @apply first:mt-0;
-  }
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6 {
+      @apply first:mt-0;
+    }
 
-  p, ul, ol, blockquote {
-    @apply mb-4 leading-6;
-  }
+    p,
+    ul,
+    ol,
+    blockquote {
+      @apply mb-4 leading-6;
+    }
 
-  ul, ol {
-    @apply list-disc pl-6;
-  }
-  ul li {
-    @apply mb-1;
-  }
+    ul,
+    ol {
+      @apply list-disc pl-6;
+    }
+    ul li {
+      @apply mb-1;
+    }
 
-  ul li ul {
-    @apply mb-0;
-  }
+    ul li p {
+      @apply mb-0;
+    }
 
+    ul li ul {
+      @apply mb-2;
+    }
 
-   pre, .highlight {
-    @apply bg-[#272822] p-6 border-y border-transparent overflow-auto text-[#ccc] block leading-[1.4em] my-6 font-mono rounded-md;
-    scrollbar-width: thin;
-    scrollbar-color: theme('colors.white') transparent;
-  }
-  pre code {
-    @apply bg-transparent text-white p-0 shadow-none;
-  }
-  pre::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-    border-radius: 99px;
-  }
-  pre::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  pre::-webkit-scrollbar-thumb {
-    background-color: #fff;
-    border-radius: 100px;
-    background-clip: content-box;
-    margin: 10px;
-  }
-  pre::-webkit-scrollbar-corner {
-    background-color: transparent;
-  }
+    pre,
+    .highlight {
+      @apply bg-[#272822] p-6 border-y border-transparent overflow-auto text-[#ccc] block leading-[1.4em] my-6 font-mono rounded-md;
+      scrollbar-width: thin;
+      scrollbar-color: theme('colors.white') transparent;
+    }
+    pre code {
+      @apply bg-transparent text-white p-0 shadow-none;
+    }
+    pre::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      border-radius: 99px;
+    }
+    pre::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    pre::-webkit-scrollbar-thumb {
+      background-color: #fff;
+      border-radius: 100px;
+      background-clip: content-box;
+      margin: 10px;
+    }
+    pre::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
 
-  .highlight {
-    background: transparent;
-    padding: 0;
-    overflow: visible;
-    margin-top: -1.6rem;
+    .highlight {
+      background: transparent;
+      padding: 0;
+      overflow: visible;
+      margin-top: -1.6rem;
+
+      table {
+        margin: 0;
+        width: auto;
+
+        td {
+          border: none;
+          padding: 0;
+        }
+
+        tr {
+          border: 0;
+        }
+
+        figcaption {
+          font-size: 0.85em;
+          color: #999;
+          line-height: 1em;
+          margin-bottom: 1em;
+
+          a {
+            float: right;
+          }
+        }
+      }
+
+      .line {
+        height: 20px;
+      }
+    }
+
+    code,
+    pre {
+      font-family: 'Source Code Pro', monospace;
+    }
+
+    code {
+      color: var(--primary-color);
+      padding: 1px 2px;
+      border-radius: 2px;
+      word-wrap: break-word;
+    }
+
+    pre {
+      @apply bg-[#272822] p-6 border-y border-transparent overflow-auto text-[#ccc] block leading-[1.4em] my-6 font-mono rounded-md;
+      scrollbar-width: thin;
+      scrollbar-color: theme('colors.white') transparent;
+    }
+    pre code {
+      @apply bg-transparent text-white p-0 shadow-none;
+    }
+
+    pre::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      border-radius: 99px;
+    }
+    pre::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    pre::-webkit-scrollbar-thumb {
+      background-color: #fff;
+      border-radius: 100px;
+      background-clip: content-box;
+      margin: 10px;
+    }
+    pre::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+
+    blockquote {
+      @apply bg-primary-lighter;
+      margin: 0 0 1.1em;
+      box-shadow: var(--color-primary) -7px 0 0 0;
+      border-radius: 5px;
+      padding: 15px 20px;
+      color: var(--color-primary);
+
+      a {
+        @apply link;
+      }
+
+      p:last-child {
+        margin: 0;
+      }
+    }
 
     table {
-      margin: 0;
-      width: auto;
+      margin: 15px 0;
+      border-collapse: collapse;
+      min-width: 100%;
+      table-layout: fixed;
+      word-wrap: break-word;
 
+      max-width: 100%;
+      overflow-x: auto;
+      display: block;
+
+      th,
+      strong {
+        color: var(--primary-color);
+        font-weight: bold;
+        text-align: left;
+      }
+      th,
       td {
-        border: none;
-        padding: 0;
+        border-bottom: 1px solid var(--text-color);
+        padding: 10px 13px;
+      }
+      td {
+        background-color: color.adjust(variables.$flat-color, $lightness: 32%);
       }
 
-      tr {
-        border: 0;
-      }
-
-      figcaption {
-        font-size: 0.85em;
-        color: #999;
-        line-height: 1em;
-        margin-bottom: 1em;
-
-        a {
-          float: right;
+      tr:last-child {
+        td {
+          border-bottom: none;
         }
       }
     }
 
-    .line {
-      height: 20px;
-    }
-  }
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      padding-top: 25px;
+      height: 0;
 
-  code, pre {
-    font-family: "Source Code Pro", monospace
-  }
-
-  code {
-    color: var(--primary-color);
-    padding: 1px 2px;
-    border-radius: 2px;
-    word-wrap: break-word;
-  }
-
-
-  pre {
-    @apply bg-[#272822] p-6 border-y border-transparent overflow-auto text-[#ccc] block leading-[1.4em] my-6 font-mono rounded-md;
-    scrollbar-width: thin;
-    scrollbar-color: theme('colors.white') transparent;
-  }
-  pre code {
-    @apply bg-transparent text-white p-0 shadow-none;
-  }
-
-  pre::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-    border-radius: 99px;
-  }
-  pre::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  pre::-webkit-scrollbar-thumb {
-    background-color: #fff;
-    border-radius: 100px;
-    background-clip: content-box;
-    margin: 10px;
-  }
-  pre::-webkit-scrollbar-corner {
-    background-color: transparent;
-  }
-
-  blockquote {
-    @apply bg-primary-lighter;
-    margin: 0 0 1.1em;
-    box-shadow: var(--color-primary) -7px 0 0 0;
-    border-radius: 5px;
-    padding: 15px 20px;
-    color: var(--color-primary);
-
-    a {
-      @apply link;
-    }
-
-    p:last-child {
-      margin: 0;
-    }
-  }
-
-  table {
-    margin: 15px 0;
-    border-collapse: collapse;
-    min-width: 100%;
-    table-layout: fixed;
-    word-wrap: break-word;
-
-    max-width: 100%;
-    overflow-x: auto;
-    display: block;
-
-    th, strong  {
-      color: var(--primary-color);
-      font-weight: bold;
-      text-align: left;
-
-    }
-    th, td {
-      border-bottom: 1px solid var(--text-color);
-      padding: 10px 13px;
-    }
-    td {
-      background-color: color.adjust(variables.$flat-color, $lightness: 32%);
-    }
-
-    tr:last-child {
-      td {
-        border-bottom: none
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
       }
     }
-  }
-
-
-  .video-container {
-    position: relative;
-    padding-bottom: 56.25%;
-    padding-top: 25px;
-    height: 0;
-
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  }
   }
 }

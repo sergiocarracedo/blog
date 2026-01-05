@@ -4,14 +4,18 @@ import { Icon } from 'astro-icon/components';
 interface Props {
   readingTime?: number;
   class?: string;
+  postId?: string;
 }
 
-const { readingTime, class: className } = Astro.props;
+const { readingTime, class: className, postId } = Astro.props;
 ---
 
 {
   readingTime && (
-    <span class:list={[`text-sm text-gray-600 flex items-center gap-1`, className]}>
+    <span
+      class:list={[`text-sm text-gray-600 flex items-center gap-1`, className]}
+      transition:name={`post-reading-time-${postId}`}
+    >
       <Icon name="outline/clock-outline" class="w-4 h-4" />
       <span>
         {readingTime}&nbsp;{readingTime === 1 ? 'minute' : 'minutes'} read

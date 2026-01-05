@@ -1,0 +1,163 @@
+---
+title: 'Poka-yokes (ポカヨケ) in software development'
+pubDate: 2025-11-10
+slug: /poka-yokes-software-development
+heroImage: ./poka-yokes.png
+heroImageMeta:
+  prompt: create 1920x1080px pixel art picture that represent a factory worker trying to insert a piece that is a poka-yoke and she is scratching the head representing is thinking
+  source: OpenAI
+tags:
+ - software
+ - qa
+---
+
+## What are poka-yokes?
+
+As a fan of the automotive industry and how production works, I have always been fascinated by the concept of **poka-yokes (ポカヨケ)**, a Japanese term that translates to "mistake-proofing" or "error prevention."
+
+This concept was first introduced by Shigeo Shingo as part of the Toyota Production System to avoid mistakes in manufacturing processes by designing mechanisms that prevent errors or make them immediately obvious.
+
+The idea has since extended beyond manufacturing — we are surrounded by poka-yokes in our daily lives, as the examples below show.
+
+A poka-yoke aims to reduce human error by either:
+
+- **preventing incorrect actions or minimizing the effects**: 
+  - For example, a USB connector is keyed to make incorrect insertion harder
+  - Fuel nozzles at gas stations and the filler necks on vehicles are different sizes: diesel nozzles are larger than gasoline ones, which helps prevent putting the wrong fuel in a gasoline engine, which could cause serious damage. (But still possible to refuel a diesel car with gasoline, which is less problematic).
+
+- **making them immediately obvious.**
+  - In manufacturing, an operator might place the exact number of screws in a tray before assembly. If screws remain in the tray afterward, it's immediately clear something went wrong.
+  - In surgery, the surgical team counts sponges and instruments before and after the procedure to ensure nothing has been left inside the patient.
+
+
+### Everyday poka-yoke examples
+
+- Washing machine won’t start unless the door is closed — prevents flooding.
+- Microwave stops when the door opens — prevents injury.
+- Car won’t start unless the brake pedal is pressed — ensures safety.
+- USB plugs designed to fit only one way — prevents incorrect insertion.
+- ATM returns your card before the cash in some designs — reduces the chance of forgetting the card when you came to withdraw money.
+
+## Poka-yokes in software development
+
+Like other fields, software development can benefit from poka-yokes to reduce human errors during design, development, testing, and deployment.
+
+> I'll focus examples on TypeScript and frontend development, but the concepts apply to any programming language or area of software development.
+
+If you use TypeScript (or any statically typed language), you're already using a poka-yoke: the type system prevents assigning a string to a number variable, reducing type-related errors.
+
+
+### Types of human errors in software development
+
+Poka-yokes are designed to address human errors. These errors can have different origins; understanding them helps design effective poka-yokes. (This is a software-development-oriented classification, but it can apply elsewhere as well.)
+
+#### Lack of knowledge or context
+
+This is common in large applications or teams, or when working with new technologies or unfamiliar domains. For example, adding a new feature without fully understanding the existing codebase or the business requirements can lead to incorrect implementations.
+
+
+#### Forgetfulness
+
+Simple oversights or memory lapses, such as forgetting to update a configuration file, missing a required step in a deployment process, or failing to apply a change in all the places it is needed.
+
+
+#### Fatigue or stress:
+
+Long working hours, tight deadlines, or high-pressure situations reduce concentration and increase the likelihood of mistakes and lower overall quality.
+
+#### Distractions
+
+Interruptions, multitasking, or a noisy environment can cause loss of focus and lead to errors.
+
+#### Complexity
+
+Complex systems or codebases increase the chance of mistakes due to misunderstandings, hidden dependencies, or oversights.
+
+
+### Common poka-yokes in software development
+
+Some well-known poka-yokes used in software development include:
+
+- Comprehensive, up-to-date documentation to help developers understand the codebase and business rules.
+- Code reviews so peers can catch misunderstandings before code reaches production.
+- Automated testing (unit, integration, end-to-end) to catch regressions and edge cases early.
+- Continuous integration / continuous deployment (CI/CD) pipelines to automate builds, tests, and deployments and reduce manual errors.
+- Linters and static analysis to detect potential bugs and style issues.
+- Feature flags and staged rollouts to limit the blast radius of changes.
+- etc
+
+But I want to provide some specific examples of poka-yokes:
+
+#### Case 1:
+
+Passing an incorrect value to a function — not the wrong type, but the wrong meaning. For example, a function that calculates a user's age from their birth date:
+
+```typescript
+function calculateAge(birthDate: Date): number {
+  //....
+}
+
+// Mistake
+
+const age = calculateAge(user.registerDate); // Passing the registration date instead of the birth date. This will compile because the type is correct; if tests are not well defined they may pass, but the result will be wrong.
+```
+
+**Solution**: Create specific types to differentiate between similar values. In TypeScript you can use :astro-ref[branded types]{path="/blog/2024/2024-10-06-branded-types"}:
+
+```typescript
+type BirthDate = Date & { __brand: 'BirthDate' };
+type RegistrationDate = Date & { __brand: 'RegistrationDate' };
+
+function calculateAge(birthDate: BirthDate): number {
+  //....
+}
+
+// Usage 
+const age = calculateAge(user.registerDate); // Error: Argument of type 'RegistrationDate' is not assignable to parameter of type 'BirthDate'.
+```
+
+#### Case 2:
+
+Repeated logic across the codebase. For example, calculating the discount for a product in different parts of the application:
+
+```typescript
+const price = 100;
+const discount = 0.1;
+
+
+return <div className={price * discount > 20 ? 'expensive' : 'cheap'}>
+  <p>Price after discount: {price - price * discount}</p>
+  ...
+  <p>Total price: {price - price * discount + tax}</p>
+
+</div>
+```
+If the final-price logic (price * discount) appears in multiple files and you need to change the discount calculation, it's easy to forget to update every occurrence. Tests can help, but centralizing the logic is a better approach.
+
+**Solution**: Encapsulate the logic in a function and reuse it (DRY — Don't Repeat Yourself):
+
+```typescript
+function calculateDiscountedPrice(price: number, discount: number): number {
+  return price - price * discount;
+}
+return <div className={calculateDiscountedPrice(price, discount) > 20 ? 'expensive' : 'cheap'}>
+  <p>Price after discount: {calculateDiscountedPrice(price, discount)}</p>
+  ...
+  <p>Total price: {calculateDiscountedPrice(price, discount) + tax}</p>
+</div>
+```
+This commonly happens when you're iterating quickly and the calculation seems simple.
+
+### Additional examples of software poka-yokes
+
+- Strongly typed APIs or schema validation (e.g., JSON Schema, Zod, io-ts) to prevent invalid data from entering systems.
+- Pre-commit hooks to prevent committing lint or formatting issues.
+- Repository templates and scaffolding to ensure new modules follow established patterns.
+- Dangerous-action confirmations (e.g., "Are you sure?") or protected branches to reduce accidental destructive changes.
+- Instrumentation and monitoring that make failures immediately visible.
+
+
+
+
+##### References: 
+- https://es.wikipedia.org/wiki/Poka-yoke
