@@ -16,26 +16,26 @@ tags:
 
 Nowadays when you deploy a new version of your frontend application, you don't push your code to production directly. Instead, you run (typically  automatically) a deployment pipeline in the CI that builds your application, runs tests, and finally deploys the built assets to a hosting service.
 
-This process takes some time, and when multiple developers are working in the same code base it can happen that while one developer is deploying a new version, another developer pushes new changes to the main branch and trigger a new deployment pipeline, this creates a race condition whre you don't really know which version of the code is currently deployed, unless you check the deployment logs or the CI status page which is slow and a lot of work.
+This process takes some time, and when multiple developers are working in the same code base, it can happen that while one developer is deploying a new version, another developer pushes new changes to the main branch and triggers a new deployment pipeline. This creates a race condition where you don't really know which version of the code is currently deployed, unless you check the deployment logs or the CI status page, which is slow and a lot of work.
 
-We need a better (simplier, and fast) way to know which version of our frontend application is currently deployed.
+We need a better (simpler and faster) way to know which version of our frontend application is currently deployed.
 
-This also applies to the browser cache, even if the deployed version is thge correct one, the browser might still be serving an older version of the assets from its cache, leading to confusion, so we also need to know which version of the assets the browser is using.
+This also applies to the browser cache. Even if the deployed version is the correct one, the browser might still be serving an older version of the assets from its cache, leading to confusion, so we also need to know which version of the assets the browser is using.
 
 ## Solution
 
-One simple solution to this problems is to include the version of the code in the build asstets, it could be a simple text file or a JSON file that contains the version number, but this approach has some drawbacks, for example, if this file was not accessed before and you ask the user to get it to get the version, you will the correct one, but the browser can still serving a cached version of the entrypoint, in a SPA is typically `index.html`. So, this file seems to be the best condidate to include the version information.
+One simple solution to this problem is to include the version of the code in the build assets. It could be a simple text file or a JSON file that contains the version number, but this approach has some drawbacks. For example, if this file was not accessed before and you ask the user to retrieve it to get the version, you will get the correct one, but the browser can still be serving a cached version of the entrypoint, which in a SPA is typically `index.html`. So, this file seems to be the best candidate to include the version information.
 
 
 ## Version ID
 
-We need to define how we will get the version of our code, it should be a number or string that identifies the build uniquely and you can use it in other places to relate it with the code base. That will depend on your dep;loyment strategy, for example, if you are using git tags to mark releases, you can use the latest tag as the version, if you are using a CI/CD tool that provides build numbers, you can use that, even you can use the commit hash or the PR number.
+We need to define how we will get the version of our code. It should be a number or string that identifies the build uniquely and you can use it in other places to relate it with the code base. That will depend on your deployment strategy. For example, if you are using git tags to mark releases, you can use the latest tag as the version. If you are using a CI/CD tool that provides build numbers, you can use that. You can even use the commit hash or the PR number.
 
 
 
 ## Implementation
 
-I will suppose you are using Vite as your build tool, but you can find the way to apply this approach to other build tools like wekpack or rollup.
+I will assume you are using Vite as your build tool, but you can find a way to apply this approach to other build tools like webpack or rollup.
 
 We will create a simple Vite plugin that will replace placeholders in the `index.html` file with the version information.
 
@@ -55,7 +55,7 @@ export const htmlEnvPlugin = (
 }
 ```
 
-This plugin will look for placeholders in the format `%PLACEHOLDER%` and replace them with the corresponding value from the `env` object. This placeholders' approach will allow you to add more information from the env vars if needed, for example the build date time.
+This plugin will look for placeholders in the format `%PLACEHOLDER%` and replace them with the corresponding value from the `env` object. This placeholders approach will allow you to add more information from the env vars if needed, for example the build date/time.
 
 Now, we need to use this plugin in the Vite config file and pass the version information from the environment variables.
 
@@ -67,7 +67,7 @@ import { htmlEnvPlugin } from './htmlEnvPlugin'
 export default defineConfig({
   plugins: [
     htmlEnvPlugin({
-      BUILD_VERSION: process.env.BUILD_VERSION || 'dev'
+      BUILD_VERSION: process.env.BUILD_VERSION || 'dev',
       BUILD_DATE: new Date().toISOString()
     })
   ]
@@ -86,13 +86,16 @@ We need to add the placeholder in the `index.html` file.
 <!-- Build date: %BUILD_DATE% -->
 ```
 
-Finally, we need to set the `BUILD_VERSION` environment variable in the CI pipeline before running the build command. How you do this will depend on your CI tool, but let assume you are using GitHub Actions, you can use the following step to set the variable using PR number.
+Finally, we need to set the `BUILD_VERSION` environment variable in the CI pipeline before running the build command. How you do this will depend on your CI tool, but let's assume you are using GitHub Actions. You can use the following step to set the variable using the PR number.
 ```yaml
 - name: Set build version
   run: echo "BUILD_VERSION=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
 ```
 
 With this setup, every time you deploy a new version of your frontend application, the `index.html` file will include the build version and date, allowing you to easily check which version is currently deployed by simply inspecting the HTML source in the browser.
+
+
+You can use this approach to include other interesting information, for example, the backend API version your frontend is using.
 
 
 
