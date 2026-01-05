@@ -4,15 +4,16 @@ pubDate: 2026-01-30
 slug: /how-to-know-which-version-of-your-frontend-is-deployed
 heroImage: ./cover.png
 heroImageMeta:
-  author: ""
-  prompt: ""
+  author: "Gemini Banana Pro"
+  prompt: "pixel art style, retro game aesthetic. In the center of the frame, a 2 computer monitors displays the same schematic web browser interface represented by abstract boxes and lines. From each monitor a tag in the style of a Minecraft tag (see example image) hang, each tag have a differnt number . The background is a clean vertical gradient with a distinct horizon line, using a two-tone palette of cool colors (picking from cyan, purple, blue, green, or light green). The central monitor is surrounded by 20% empty negative space padding on all sides. High definition, crisp pixels, sharp edges, wide angle. --ar 16:9"
 tags:
  - ci
  - release
- - npm
+ - vite
  - javascript
  - typescript
 ---
+
 Nowadays when you deploy a new version of your frontend application, you don't push your code to production directly. Instead, you run (typically  automatically) a deployment pipeline in the CI that builds your application, runs tests, and finally deploys the built assets to a hosting service.
 
 This process takes some time, and when multiple developers are working in the same code base, it can happen that while one developer is deploying a new version, another developer pushes new changes to the main branch and triggers a new deployment pipeline. This creates a deployment race condition: if multiple pipelines run concurrently, the last one to finish determines which code is deployed, regardless of which was triggered first. This means you don't really know which version of the code is currently deployed unless you check the deployment logs or the CI status page, which is slow and a lot of work.
