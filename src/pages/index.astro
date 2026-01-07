@@ -39,7 +39,11 @@ const meta = {
         {
           homePosts.map((post, index) => (
             <li>
-              <PostTeaser style={index === 0 ? 'highlighted' : 'default'} post={post} />
+              <PostTeaser
+                style={index === 0 ? 'highlighted' : 'default'}
+                post={post}
+                showVideo={index === 0}
+              />
             </li>
           ))
         }
