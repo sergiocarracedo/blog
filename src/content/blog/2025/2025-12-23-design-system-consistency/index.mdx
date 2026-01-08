@@ -1,0 +1,84 @@
+---
+title: 'Design system patterns: UX consistency'
+pubDate: 2026-1-6
+slug: /design-system-ux-patterns-consistency
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+heroImageMeta:
+  prompt: 'Create a pixel art image in 1920x1080 resolution.
+    The scene shows a factory production line with a conveyor belt transporting multiple boxes that all share the same shape and size, except one box that is slightly different (subtle variation in shape or detail).
+    Next to the conveyor belt stands a small working robot (industrial or humanoid style) inspecting the boxes. The robot is clearly confused and frustrated, expressed through its posture, facial screen/eyes, or small animated symbols (e.g., question marks, sweat pixels, or sparks).
+    The conveyor belt runs horizontally across the scene, emphasizing repetition and uniformity, with the odd box breaking the pattern.
+    The background uses a smooth gradient transitioning from cyan to blue, minimal and clean, with no complex details to keep focus on the production line.
+    Use a consistent pixel art style, crisp outlines, limited color palette, clear lighting, and readable silhouettes. Overall mood: playful, slightly humorous, and visually clear.'
+  author: 'ChatGPT'
+tags: 
+ - design system
+ - ux
+---
+A design system is a collection of reusable components—encompassing UI elements, patterns, guidelines, code, and documentation—that helps teams build products more effectively. However, having these components is not enough. The true power of a design system lies in how consistently these components are applied across the product.
+
+One of the main goals of a design system is to ensure behavioral and visual consistency across a product, creating a unified user experience regardless of the page the user is visiting. Consistency is equally important from a developer's point of view by providing a common language and patterns to follow.
+
+## Why is consistency important in a design system?
+
+- **Improved Usability**: When users encounter consistent design patterns and interactions, they can navigate and use the product more easily. Familiarity with components and behaviors reduces the learning curve, minimizes mistakes, and decreases user frustration.
+
+- **Stronger Brand Identity**: Consistent design patterns help reinforce brand identity by creating a cohesive visual and interactive experience that users can recognize and trust.
+
+- **Increased Development Efficiency**: A consistent design system from a developer's point of view makes development faster and allows developers to focus on building real value rather than reinventing solutions for common problems.
+
+
+## How to achieve consistency in a design system?
+
+Understanding why consistency matters is one thing; achieving it in practice is another. Let's explore key areas where consistency must be maintained.
+
+### Position and variant of the elements
+
+The user should expect to find certain elements in specific locations across the application. For example page actions (primary, secondary, etc) should be always in the same place, like the top right corner. Also the variants should be consistent, in the example the primary action button should look the same.
+
+Users rely on muscle memory to interact with applications efficiently. When elements consistently appear in expected locations with familiar appearances, users can perform actions almost automatically. Moving or changing these elements disrupts this learned behavior and can lead to confusion and mistakes.
+
+As an example, if the primary action button is always the first button (starting from right to left) in a dialog, but in some cases at this position is the secondary action button (close button), the user can click the wrong button by mistake.
+
+Note this is not only about the position, it is also about deciding and sticking to which actions are primary, secondary, etc.
+
+### Naming conventions
+> There are only two hard things in Computer Science: cache invalidation and naming things. -- Phil Karlton
+
+This classic quote applies equally to user-facing labels and terminology. Consistent naming helps users build a mental model of the application and reduces cognitive load.
+
+Consider form submission buttons: if one form uses "Submit", another uses "Save", and a third uses "Send", users must pause to interpret what each button does, even though they all perform similar actions. The same action should always use the same label throughout the application.
+
+This may seem trivial, but it's a common problem, especially in large organizations where multiple teams work on different parts of the product. Without clear naming guidelines in the design system, each team naturally develops its own vocabulary, creating a fragmented user experience.
+
+
+
+### Consistent component behavior
+
+Beyond visual consistency and naming, how components behave is equally critical to a unified user experience.
+
+Components should behave consistently across the application or if the behavior changes for some specific reason, the user must be aware of that. 
+
+For example, in a project I'm working on, we have a filter picker component used in multiple places throughout the application. This component allows users to select filter values for different fields and also provides "presets"—predefined sets of filter values for common use cases.
+
+**The challenge:** What should happen when a user selects a preset and then modifies individual filter values? Or when they modify filters and then select a preset?
+
+We identified at least two valid approaches:
+
+- **Replace behavior**: Selecting a preset replaces all current filter values with the preset values. If the user subsequently modifies any filter value, the preset selection is cleared to indicate custom filtering is now active.
+
+- **Merge behavior**: Selecting a preset merges the preset values with current filter values. If the user modifies a filter value after selecting a preset, the preset selection indicator remains active.
+
+Both behaviors are valid, so the team can fall into the temptation to implement both behaviors in the component and let the developer using the component decide what behavior to use in each case via a prop.
+
+However, this is problematic. Users would encounter different behaviors in different parts of the application without any visual indication of the difference. This inconsistency leads to confusion, mistakes, and frustration as users must relearn the component's behavior in each context.
+
+
+## Conclusion
+
+**Consistency is more about decisions and discipline than about the actual implementation.** 
+
+The technical implementation of a design system—the components, code, and documentation—is relatively straightforward. The real challenge lies in maintaining consistency: making clear decisions about patterns and behaviors, documenting them, and having the discipline to follow them even when shortcuts seem tempting.
+
+This requires the design system to provide clear guidelines and patterns to follow, and a governance team that can enforce these decisions when necessary. Without this organizational commitment, even the best-designed components will lead to an inconsistent user experience that undermines the entire purpose of the design system.
