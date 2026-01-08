@@ -1,0 +1,69 @@
+---
+import { Picture } from 'astro:assets';
+import path from 'node:path';
+const { src, alt, transitionName, width, height, className = [], video, basePath } = Astro.props;
+
+// Resolve video path if it exists
+let resolvedVideoUrl;
+if (video) {
+  const videoModules: Record<string, string> = import.meta.glob(
+    '/src/content/blog/**/*.{mp4,webm,webp}',
+    {
+      eager: true,
+      query: '?url',
+      import: 'default',
+    }
+  );
+
+  // Get the directory of the current post
+  const postDir = path.dirname(basePath ?? '');
+  const videoPath = `/${postDir}/${video.replace('./', '')}`;
+  resolvedVideoUrl = videoModules[videoPath];
+}
+---
+
+{
+  video ? (
+    <div>
+      <video
+        style={{ aspectRatio: `${width} / ${height}`, objectFit: 'cover' }}
+        class:list={['w-full h-auto overflow-hidden object-cover', ...className]}
+        autoplay
+        muted
+        width={width}
+        height={height}
+        loop
+        playsinline
+        transition:name={transitionName}
+      >
+        <source src={resolvedVideoUrl} type="video/webm" />
+
+        <Picture
+          class:list={className}
+          src={src}
+          decoding="async"
+          loading="lazy"
+          formats={['jpeg', 'webp']}
+          width={width}
+          height={height}
+          fit="cover"
+          alt={alt}
+          transition:name={transitionName}
+        />
+      </video>
+    </div>
+  ) : (
+    <Picture
+      class:list={className}
+      src={src}
+      decoding="async"
+      loading="lazy"
+      formats={['jpeg', 'webp']}
+      width={width}
+      height={height}
+      fit="cover"
+      alt={alt}
+      transition:name={transitionName}
+    />
+  )
+}
