@@ -2,18 +2,19 @@
 interface Props {
   post: CollectionEntry<'blog'>;
   style?: 'default' | 'highlighted';
+  showVideo?: boolean;
 }
 
-const { post, style = 'default' } = Astro.props;
-import { Picture } from 'astro:assets';
+const { post, style = 'default', showVideo = false } = Astro.props;
 import type { CollectionEntry } from 'astro:content';
 import { enrichBlogPost } from '../../utils/enrichBlogPost';
 import { truncate } from '../../utils/truncate';
+import PostMainMedia from './parts/PostMainMedia.astro';
 import PostMetadata from './parts/PostMetadata.astro';
 
 const enrichedPost = enrichBlogPost(post);
 const postUrl = enrichedPost.slug;
-const { title, heroImage, pubDate } = enrichedPost.data;
+const { title, heroImage, heroVideo, pubDate } = enrichedPost.data;
 const { readingTime, excerpt } = enrichedPost;
 ---
 
@@ -25,39 +26,32 @@ const { readingTime, excerpt } = enrichedPost;
     style === 'default' && 'gap-4',
   ]}
 >
-  <div class:list={['flex-1 max-w-full mb-3', style === 'default' && 'basis-[300px] ']}>
+  <div class:list={['flex-1 max-w-full mb-3', style === 'default' && 'basis-[300px]']}>
     <a class:list={['btn-img block']} href={postUrl} title={title}>
+      <PostMainMedia
+        className={[style === 'highlighted' ? 'md:hidden' : '']}
+        src={heroImage}
+        decoding="async"
+        loading="lazy"
+        width={500}
+        height={250}
+        alt={title}
+        transitionName={`post-picture-${enrichedPost.sanitizedId}`}
+      />
       {
-        heroImage && (
-          <Picture
-            class:list={[style === 'highlighted' ? 'md:hidden' : '']}
-            src={heroImage}
-            decoding="async"
-            loading="lazy"
-            formats={['jpeg', 'webp']}
-            width={500}
-            height={250}
-            fit="cover"
-            alt={title}
-            transition:name={`post-picture-${enrichedPost.sanitizedId}`}
-          />
-        )
-      }
-
-      {
-        heroImage && style === 'highlighted' && (
-          <Picture
-            class="hidden md:block"
-            src={heroImage}
-            decoding="async"
-            loading="lazy"
-            formats={['jpeg', 'webp']}
-            width={800}
-            height={300}
-            fit="cover"
-            alt={title}
-            transition:name={`post-picture-${enrichedPost.sanitizedId}`}
-          />
+        style === 'highlighted' && (
+          <>
+            <PostMainMedia
+              className={['hidden', 'md:block']}
+              src={heroImage}
+              alt={title}
+              width={800}
+              height={300}
+              transitionName={`post-picture-${enrichedPost.sanitizedId}`}
+              video={showVideo ? heroVideo : undefined}
+              basePath={post.filePath}
+            />
+          </>
         )
       }
     </a>

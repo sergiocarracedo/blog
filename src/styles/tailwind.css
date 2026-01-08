@@ -1,12 +1,10 @@
-
-@import "tailwindcss";
-@import "./fonts.css";
-@import "./prose.css";
+@import 'tailwindcss';
+@import './fonts.css';
+@import './prose.css';
 
 @theme {
-  --font-impact: "Atkinson", "sans-serif";
-  --font-primary: "NotoSans", "sans-serif";
-
+  --font-impact: 'Atkinson', 'sans-serif';
+  --font-primary: 'NotoSans', 'sans-serif';
 
   --color-primary: #213b4a;
   --color-primary-700: rgba(33, 59, 74, 0.9);
@@ -23,7 +21,6 @@
   --skew-x: 20deg;
 }
 
-
 @utility wrapper {
   @apply max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8;
 }
@@ -39,36 +36,37 @@
 @utility anchor {
   padding-top: 100px;
   margin-top: -100px;
-    /* display: block;
+  /* display: block;
   position: relative;
   // visibility: hidden; */
 }
 
-
 @utility link {
-    @apply underline decoration-4 decoration-primary-light hover:decoration-primary-lighter transition-all duration-200 ease-in-out;
+  @apply underline decoration-4 decoration-primary-light hover:decoration-primary-lighter transition-all duration-200 ease-in-out;
 }
 
 @utility btn-bottom-shadow-* {
- box-shadow: var(--color-primary) 0 --value(integer)px 0 0;
+  box-shadow: var(--color-primary) 0 --value(integer) px 0 0;
 }
-
 
 @utility btn {
   @apply rounded-[10px] border-0 px-3 py-2 text-[15px] tracking-wide transition-all duration-300 ease-in-out cursor-pointer no-underline font-sans shadow-md
-    bg-secondary btn-bottom-shadow-7 hover:btn-bottom-shadow-0 active:btn-bottom-shadow-0 ; 
+    bg-secondary btn-bottom-shadow-7 hover:btn-bottom-shadow-0 active:btn-bottom-shadow-0;
 }
 
 @utility btn-outlined {
   @apply btn border-solid border-1 border-primary;
 }
 
-
 @utility btn-img {
   @apply btn p-0 inline-block overflow-hidden hover:translate-y-0;
+
+  video,
   img {
     @apply w-full rounded-[10px] transition-all duration-200 ease-in-out;
   }
+
+  &:hover video,
   &:hover img {
     @apply scale-110 rotate-[2deg];
   }
@@ -85,7 +83,6 @@
   }
 }
 
-
 @utility background-diagonal {
   background-color: var(--background-diagonal-bg, #fff);
   background-size: 10px 10px;
@@ -98,13 +95,24 @@
   );
 }
 
-@utility background-paper {  
+@utility background-paper {
   background-color: var(--background-paper-bg);
-  background-image:  linear-gradient(var(--background-paper-lines) 2px, transparent 2px), linear-gradient(90deg, var(--background-paper-lines) 2px, transparent 2px), linear-gradient(var(--background-paper-lines) 1px, transparent 1px), linear-gradient(90deg, var(--background-paper-lines) 1px, var(--background-paper-bg) 1px);
-  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
-  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+  background-image:
+    linear-gradient(var(--background-paper-lines) 2px, transparent 2px),
+    linear-gradient(90deg, var(--background-paper-lines) 2px, transparent 2px),
+    linear-gradient(var(--background-paper-lines) 1px, transparent 1px),
+    linear-gradient(90deg, var(--background-paper-lines) 1px, var(--background-paper-bg) 1px);
+  background-size:
+    50px 50px,
+    50px 50px,
+    10px 10px,
+    10px 10px;
+  background-position:
+    -2px -2px,
+    -2px -2px,
+    -1px -1px,
+    -1px -1px;
 }
-
 
 @layer components {
   .pagination-link {
@@ -129,29 +137,34 @@
     background-paper;
   }
 
- .pagefind-ui-dark { 
-   .pagefind-ui__drawer {
-     --pagefind-ui-text: #fff;    
+  .pagefind-ui-dark {
+    .pagefind-ui__drawer {
+      --pagefind-ui-text: #fff;
       color: var(--pagefind-ui-text) !important;
     }
   }
 
-  .pagefind-ui-floating { 
+  .pagefind-ui-floating {
     position: relative;
     .pagefind-ui__drawer {
       @apply absolute! top-11! left-0! right-0! z-50! bg-primary/50! backdrop-blur-sm! rounded-lg! shadow-lg! p-4! pt-0! max-h-[500px]! overflow-y-auto!;
-      --pagefind-ui-text: #fff;    
+      --pagefind-ui-text: #fff;
       color: var(--pagefind-ui-text) !important;
     }
   }
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-impact text-primary leading-none font-bold tracking-tight;
   }
   html {
-    @apply font-primary text-[#404040]; 
+    @apply font-primary text-[#404040];
   }
 
   body {

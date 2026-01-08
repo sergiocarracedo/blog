@@ -10,6 +10,7 @@ import YearsNav from '../YearsNav.astro';
 import PostNav from './parts/PostNav.astro';
 import PostTags from './parts/PostTags.astro';
 import ReadingTime from './parts/ReadingTime.astro';
+import PostMainMedia from './parts/PostMainMedia.astro';
 
 type Props = {
   post: CollectionEntry<'blog'>;
@@ -55,14 +56,14 @@ const { Content } = await render(post);
     {
       heroImage && (
         <div class="rounded-lg overflow-hidden mb-6 relative group overflow-hidden">
-          <Picture 
-            width={836} 
-            height={470} 
+          <PostMainMedia
             src={heroImage}
             alt={title}
-            fit="cover"
-            transition:persist
-            transition:name={`post-picture-${enrichedPost.sanitizedId}`}
+            width={836}
+            height={470}
+            transitionName={`post-picture-${enrichedPost.sanitizedId}`}
+            video={enrichedPost.data.heroVideo}
+            basePath={post.filePath}
           />
           {(heroImageMeta?.author ||
             heroImageMeta?.prompt ||
