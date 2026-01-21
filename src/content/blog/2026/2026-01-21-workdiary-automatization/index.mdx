@@ -1,32 +1,32 @@
 ---
-title: 'Automatizing my work diary with AI'
+title: 'Automating my work diary with AI'
 pubDate: 2026-01-21
 slug: automatizing-my-work-diary-with-ai
 heroVideo: ./cover.webm
 heroImage: ./cover.png
 heroImageMeta:
-  prompt: ''
+  prompt: 'Generate a 1920x1080 wallpaper in 8-bit pixel art style.Subject: A cute AI robot sitting in the center, writing in a diary with a feather quill.Composition: The robot is perfectly centered with a padding of approximately 20% (1/5th) of empty space around it.Background: A vertical gradient background emulating a simple horizon line. Use exactly two solid colors for the gradient, choosing randomly from this list: [Green, Blue, Purple, Light Green, Cyan].Style: Retro, clean pixel art, minimalist.'
   author: 'Gemini Nano Banana Pro'
 tags:
   - ai
   - productivity  
 ---
 
-As someone is always looking for the next changenge I don't care about contabilize completed tasks, and it is something useful to look back and see what I achived in the past.
+As someone who is always looking for the next challenge, I don't usually bother keeping track of completed tasks. Still, it's very useful to be able to look back and see what I have achieved in the past.
 
-So face this, for me, hard work of remebering what in the past Quarter for my performance review, so I was wandering how to automatize this task and I took the opportunity to experiment with AI tools.
+Because of this, it was always hard for me to remember what I did in the previous quarter when preparing my performance review. I started wondering how I could automate this task and took the opportunity to experiment with AI tools.
 
-My first idea was focus in a specific solution, get some daily stats (commits, PRs, comments, etc) from GitHub, as for a developer it is something very representative of the work done in a day.
+My first idea was to focus on a specific solution, get some daily stats (commits, PRs, comments, etc.) from GitHub, as for a developer it is something very representative of the work done in a day.
 
-The next step was to use an AI model to generate a summary of the day based on these stats, so I can have a concise and clear description of what I did in a human readable format.
+The next step was to use an AI model to generate a summary of the day based on these stats, so I can have a concise and clear description of what I did in a human-readable format.
 
-And the last step was to store these summaries in a structured way, I decided to use https://obsidian.md/ as it a great tool for note taking and knowledge management, and it allows me to easily organize and search my work diary.
+And the last step was to store these summaries in a structured way, I decided to use https://obsidian.md/ as it is a great tool for note taking and knowledge management, and it allows me to easily organize and search my work diary.
 
-This this simple idea in mind, I write a definition document with the requirements and the steps to follow, and used GitHub Copilot to create a plan, an execute it.
+This this simple idea in mind, I write a definition document with the requirements and the steps to follow, and used GitHub Copilot to create a plan, and execute it.
 
-The result, in 2-3 iterations with the agent, was a simple CLI tool that runs daily, fetch the GitHub stats, generate the summary using an AI model, and store the summary in a repo which contains my Obsidian vault.
+The result, in 2-3 iterations with the agent, was a simple CLI tool that runs daily, fetches the GitHub stats, generates the summary using an AI model, and stores the summary in a repo which contains my Obsidian vault.
 
-I could validate the results and they where amazing, as example this real output for a day:
+I could validate the results and they were amazing, as example this real output for a day:
 
 ```
 # Work Diary - 2026-01-15
@@ -40,26 +40,26 @@ Pull request #3242 introduces this new hook, showcasing a more streamlined appro
 
 ## Going further
 
-I undertood the potencial of this tools, so I rethink the architecture to make it more flexible and extensible. I found that:
-- not only GitHub stats are useful, other sources like slack, email, jira, etc.  can be useful
-- markdown is something can change in other usecases
-- maybe I just want to output the summary to other places like email, slack, etc.
+I understood the potential of these tools, so I rethought the architecture to make it more flexible and extensible. I found that:
+- not only GitHub stats are useful; other sources like Slack, email, and Jira can also be valuable
+- the output format doesn't always need to be Markdown
+- sometimes I might want to send the summary to different places like email or Slack instead of (or in addition to) a file
 
-With this in mind I redesigned the architecture to have a plugin based system, that provides functionality a 3 + 1 steps process:
+With this in mind I redesigned the architecture around a plugin‑based system that follows a 3 + 1 step process:
 
-- **Input** (Plugins): Plugins which fetch data from different sources (GitHub, Slack, Email, Jira, etc.), and provide a prompt to the AI model to summarize the data.
+- **Input** (plugins): collect data from different sources (GitHub, Slack, email, Jira, etc.) and provide a prompt to the AI model to summarize that data.
 
-- **Ai summarizer** (Core): a core module which takes the data from the input plugins and generate a summary using an AI model
+- **AI summarizer** (core): takes the data from the input plugins and generates a summary using an AI model.
 
-- **Formatter** (Plugin): A plugins put together all the plugins summaries and formats it in different formats (Markdown, HTML, Plain text, etc.)
+- **Formatter** (plugin): combines all the plugin summaries and formats them into different representations (Markdown, HTML, plain text, etc.).
 
-- **Output** (Plugins): Plugins which get the output of the Formatter and store\, print or send the summary to different destinations.
+- **Output** (plugins): take the formatter output and store, print, or send the summary to different destinations.
 
 This way I can easily add new input sources, change the AI model, add new formatters or output destinations without changing the core logic of the application.
 
 ### Example workflow
 
-Create a workflow as the same in the first iteration looks like this:
+A workflow similar to the one in the first iteration looks like this:
 
 ```yaml
 ai:
@@ -92,29 +92,29 @@ outputs:
   - plugin: file
     config:
       path: '~/workdiary-{date}.md'
-      mode: merge # Dont be worried if the file exists, just append the new summary or updated the previous one as wrapraps the content with markers  
+      mode: merge # Don't be worried if the file exists, just append the new summary or update the previous one as it wraps the content with markers  
 ```
-> Note the use of env: to get the API keys and sensitive data from environment variables, so they are not stored in plain text in the workflow file. When the tool runs, it will replace these placeholders with the actual values from the environment variables.
+> Note the use of `env:` to get the API keys and other sensitive data from environment variables, so they are not stored in plain text in the workflow file. When the tool runs, it replaces these placeholders with the actual values from the environment.
 
-And then run the tool to generate the work diary:
+Then run the tool to generate the work diary:
 
 ```
 $ work-diary --workflow ./workflow.yaml
 ```
 ## Show me the code!
 
-I thougth this tool can be useful for other people, so relesed it as open source: https://github.com/sergiocarracedo/work-diary, if you want to run it in your machine you can follow the instructions in [SETUP.md](https://github.com/sergiocarracedo/work-diary/blob/main/SETUP.md).
+I thought this tool could be useful for other people, so I released it as open source: https://github.com/sergiocarracedo/work-diary. If you want to run it on your machine you can follow the instructions in [SETUP.md](https://github.com/sergiocarracedo/work-diary/blob/main/SETUP.md).
 
 > The project is still in early stages, but if you want to contribute with new plugins, features, etc. you are welcome!
 
 ## Running it as a scheduled task
 
-To be valuable, this tool needs to run daily and there are many ways to do it, but I decided to use GitHub Actions as it is easy to setup and maintain, so the repository contains a GitHub Action (sergiocarracedo/work-diary@v1.1.0) you can use in your own repo to run the tool daily.
+To be truly valuable, this tool needs to run every day. There are many ways to achieve that, but I decided to use GitHub Actions because it is easy to set up and maintain. The repository includes a reusable GitHub Action (sergiocarracedo/work-diary@v1.1.0) that you can use in your own repo to run the tool daily.
 
-This is the workflow I use in my repo to run the tool every day at the end of the day and commit the changes to the obsidian repo:
+This is the workflow I use in my repo to run the tool at the end of each day and commit the changes to the Obsidian repo:
 
 ```yaml
-# ,.github/workflows/work-diary.yml
+# .github/workflows/work-diary.yml
 name: Work Diary
 
 on:
@@ -186,31 +186,15 @@ jobs:
           fi
 ```
 
-This workflow runs every day at 23:30 UTC, you can adjust the cron expression to fit your needs. It checks out the repository, runs the work-diary tool with the specified configuration, and then commits and pushes any changes to the repository.
+This workflow runs every day at 23:30 UTC, and you can adjust the cron expression to fit your needs. It checks out the repository, runs the work-diary tool with the specified configuration, and then commits and pushes any changes to the repository.
 
 ## Conclusion
-Automatizing my work diary with AI has been a great experience, it has saved me time and effort, and allowed me to focus on more important tasks and gives me a better overview of my work, and I pretty sure it will help me a lot in the future when I need to prepare my performance reviews. :whink::whink:
+Automating my work diary with AI has been a great experience. It has saved me time and effort and allowed me to focus on more important tasks. It also gives me a better overview of my work, and I'm pretty sure it will help me a lot in the future when I need to prepare my performance reviews. :wink::wink:
 
 > If you are interested in other input sources, formatters or output plugins, feel free to open an issue or a PR in the [work-diary](https://github.com/sergiocarracedo/work-diary/issues). Providing feedback and suggestions is always welcome!
 
 
 ## Disclaimer
-No AI models were harmed during the making of this tool, well I streessed they a little bit :D
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+No AI models were harmed during the making of this tool, well I stressed them a little bit :joy:
 
 
