@@ -61,7 +61,12 @@ const { class: className } = Astro.props;
       <img
         alt={SITE_AUTHOR}
         src={SITE_AUTHOR_IMG_ALT}
+        width="400"
+        height="400"
         class="max-w-full grayscale mix-blend-multiply -mb-6 -mr-4 sm:-mr-6 lg:-mr-8 block aspect-1 scale-x-[-1] rounded-br-lg"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
         transition:name="author-image"
       />
     </div>
