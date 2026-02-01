@@ -30,6 +30,8 @@
     "astro": "^5.17.0",
     "astro-icon": "^1.1.5",
     "astro-pagefind": "^1.8.5",
+    "echarts": "^5.6.0",
+    "echarts-for-react": "^3.0.2",
     "gray-matter": "^4.0.3",
     "html-to-text": "^9.0.5",
     "markdown-it": "^14.1.0",

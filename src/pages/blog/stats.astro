@@ -1,0 +1,32 @@
+---
+import SectionHeader from '@/components/SectionHeader.astro';
+import BlogStatsCharts from '@/components/blog/BlogStatsCharts';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getBlogStats } from '@/utils/getBlogStats';
+
+const stats = await getBlogStats();
+const meta = {
+  title: 'Blog stats',
+  description: 'Visual analytics for blog publishing cadence, words, and tags.',
+  keywords: ['blog stats', 'charts', 'analytics'],
+};
+---
+
+<BaseLayout meta={meta}>
+  <section class="wrapper">
+    <SectionHeader
+      title="Blog stats"
+      subtitle="Publishing cadence and content breakdown"
+      description="Charts are generated from the static stats JSON produced at build time."
+    />
+  </section>
+
+  <section class="wrapper-no-padding">
+    <div class="p-6 sm:p-6 lg:p-8">
+      <BlogStatsCharts stats={stats} client:only="react" />
+      <div class="mt-8 text-sm text-slate-500">
+        Stats JSON: <a class="underline" href="/blog/stats.json">/blog/stats.json</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
