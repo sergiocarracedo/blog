@@ -40,6 +40,30 @@ const tooltip = {
   textStyle: { color: '#f9fafb' },
 };
 
+const toIsoWeekLabel = (dateString: string) => {
+  const date = new Date(dateString);
+  const tmp = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const day = tmp.getUTCDay() || 7;
+  tmp.setUTCDate(tmp.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(tmp.getUTCFullYear(), 0, 1));
+  const week = Math.ceil(((tmp.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  return `${tmp.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
+};
+
+const formatTagTooltip = (
+  params: Array<{ axisValue?: string; seriesName?: string; value?: number }>
+) => {
+  if (!Array.isArray(params) || params.length === 0) {
+    return '';
+  }
+  const axisValue = params[0]?.axisValue ?? '';
+  const lines = params
+    .filter((item) => (item.value ?? 0) > 0)
+    .map((item) => `${item.seriesName}: ${item.value}`);
+
+  return [axisValue, ...lines].join('<br/>');
+};
+
 const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
   const yearLabels = stats.perYear.map((item) => item.year.toString());
   const yearPosts = stats.perYear.map((item) => item.posts);
@@ -47,12 +71,14 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
   const yearAvg = stats.perYear.map((item) => item.avgWords);
 
   const monthLabels = stats.perMonth.map((item) => item.month);
-  const monthPosts = stats.perMonth.map((item) => item.posts);
   const monthWords = stats.perMonth.map((item) => item.words);
   const monthAvg = stats.perMonth.map((item) => item.avgWords);
 
-  const gapLabels = stats.gaps.map((item) => item.date);
-  const gapValues = stats.gaps.map((item) => item.daysSincePrev);
+  const monthOfYearLabels = stats.perMonthOfYear.map((item) => item.label);
+  const monthOfYearPosts = stats.perMonthOfYear.map((item) => item.posts);
+
+  const gapLabels = stats.gaps.map((item) => toIsoWeekLabel(item.date));
+  const gapValues = stats.gaps.map((item) => item.weeksSincePrev);
 
   const tagYears = stats.tags.yearly.map((item) => item.year.toString());
   const allTags = Object.entries(stats.tags.totals)
@@ -122,12 +148,12 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         <ReactECharts
           style={{ height: 360 }}
           option={{
-            ...toChartTitle('Posts per month', 'Monthly volume across the archive'),
+            ...toChartTitle('Posts per month', 'Totals per month across all years'),
             tooltip,
             grid: { left: 50, right: 20, bottom: 60, top: 70 },
             xAxis: {
               type: 'category',
-              data: monthLabels,
+              data: monthOfYearLabels,
               ...axisStyles,
               axisLabel: { ...axisStyles.axisLabel, rotate: 45 },
             },
@@ -135,9 +161,9 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
             series: [
               {
                 name: 'Posts',
-                type: 'line',
+                type: 'bar',
                 smooth: true,
-                data: monthPosts,
+                data: monthOfYearPosts,
                 itemStyle: { color: '#90c6be' },
                 areaStyle: { opacity: 0.15 },
               },
@@ -150,7 +176,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         <ReactECharts
           style={{ height: 360 }}
           option={{
-            ...toChartTitle('Days between posts'),
+            ...toChartTitle('Weeks between posts'),
             tooltip,
             grid: { left: 50, right: 20, bottom: 60, top: 70 },
             xAxis: {
@@ -162,11 +188,11 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
             yAxis: { type: 'value', ...axisStyles },
             series: [
               {
-                name: 'Days',
+                name: 'Weeks',
                 type: 'line',
                 smooth: true,
                 data: gapValues,
-                itemStyle: { color: '#22c55e80' },
+                itemStyle: { color: '#90c6be' },
                 areaStyle: { opacity: 0.15 },
               },
             ],
@@ -245,7 +271,10 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
           style={{ height: 420 }}
           option={{
             ...toChartTitle('Tags usage by year', 'All tags stacked by year'),
-            tooltip,
+            tooltip: {
+              ...tooltip,
+              formatter: formatTagTooltip,
+            },
             legend: {
               type: 'scroll',
               orient: 'horizontal',
