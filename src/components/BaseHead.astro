@@ -4,6 +4,8 @@
 import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import '../styles/tailwind.css';
 
+import copyCodeUrl from '../scripts/copy-code.ts?url';
+
 import { ClientRouter } from 'astro:transitions';
 
 export interface Meta {
@@ -100,3 +102,5 @@ const image = meta.image || '/i/sergiocarracedo-og.png';
 <meta content="#213b4a" name="theme-color" />
 
 <ClientRouter />
+
+<script type="module" src={copyCodeUrl}></script>
