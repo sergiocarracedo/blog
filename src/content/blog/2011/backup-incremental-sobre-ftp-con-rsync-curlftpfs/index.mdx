@@ -1,8 +1,10 @@
 ---
-title: 'Backup incremental sobre FTP con rsync + curlftpfs'
-pubDate: 2011-12-13
+title: Backup incremental sobre FTP con rsync + curlftpfs
+pubDate: 2011-12-13T00:00:00.000Z
 slug: /backup-incremental-sobre-ftp-con-rsync-curlftpfs/
 heroImage: ./back-to-school-paper-colored-paper-stationery-159519.jpeg
+tags:
+  - productivity
 ---
 
 Seguro que en alguna ocasión has necesitado realizar un _backup_ de un sitio web al que solo tienes acceso mediante **ftp**. Lo habitual es emplear un cliente ftp tipo [filezilla](http://filezilla-project.org/) o directamente trabajando en bash. El problema se plantea cuando, por ejemplo necesitamos realizar una copia incremental del sitio web y no tenemos acceso **ssh** sobre el que pueda trabajar **[rsync](http://es.wikipedia.org/wiki/Rsync) **o **[unison](http://www.cis.upenn.edu/~bcpierce/unison/)**. La solución nos la da **[curlftpfs](http://curlftpfs.sourceforge.net/)** que nos permite montar un directorio ftp en nuestro sistema para tratarlo como si fuese una carpeta local y realizar un rsyn o unison de forma normal.
