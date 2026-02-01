@@ -44,4 +44,7 @@ const totalPosts = (await getSortedCollection('blog')).length;
     </ul>
   </section>
   <Pagination page={page} urlPattern={urlPattern} />
+  <div class="wrapper text-center mb-8">
+    <a class="text-primary link" href="/blog/stats">View stats</a>
+  </div>
 </BaseLayout>
