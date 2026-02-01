@@ -40,16 +40,6 @@ const tooltip = {
   textStyle: { color: '#f9fafb' },
 };
 
-const toIsoWeekLabel = (dateString: string) => {
-  const date = new Date(dateString);
-  const tmp = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const day = tmp.getUTCDay() || 7;
-  tmp.setUTCDate(tmp.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(tmp.getUTCFullYear(), 0, 1));
-  const week = Math.ceil(((tmp.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
-  return `${tmp.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
-};
-
 const formatTagTooltip = (
   params: Array<{ axisValue?: string; seriesName?: string; value?: number }>
 ) => {
@@ -76,9 +66,8 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
 
   const monthOfYearLabels = stats.perMonthOfYear.map((item) => item.label);
   const monthOfYearPosts = stats.perMonthOfYear.map((item) => item.posts);
-
-  const gapLabels = stats.gaps.map((item) => toIsoWeekLabel(item.date));
-  const gapValues = stats.gaps.map((item) => item.weeksSincePrev);
+  const dayOfWeekLabels = stats.perDayOfWeek.map((item) => item.label);
+  const dayOfWeekPosts = stats.perDayOfWeek.map((item) => item.posts);
 
   const tagYears = stats.tags.yearly.map((item) => item.year.toString());
   const allTags = Object.entries(stats.tags.totals)
@@ -176,22 +165,20 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         <ReactECharts
           style={{ height: 360 }}
           option={{
-            ...toChartTitle('Weeks between posts'),
+            ...toChartTitle('Posts per day of week', 'Totals by weekday across all years'),
             tooltip,
             grid: { left: 50, right: 20, bottom: 60, top: 70 },
             xAxis: {
               type: 'category',
-              data: gapLabels,
+              data: dayOfWeekLabels,
               ...axisStyles,
-              axisLabel: { ...axisStyles.axisLabel, rotate: 45 },
             },
             yAxis: { type: 'value', ...axisStyles },
             series: [
               {
-                name: 'Weeks',
-                type: 'line',
-                smooth: true,
-                data: gapValues,
+                name: 'Posts',
+                type: 'bar',
+                data: dayOfWeekPosts,
                 itemStyle: { color: '#90c6be' },
                 areaStyle: { opacity: 0.15 },
               },

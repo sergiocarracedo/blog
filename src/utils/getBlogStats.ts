@@ -33,9 +33,12 @@ export interface BlogStats {
     words: number;
     avgWords: number;
   }>;
-  gaps: Array<{
-    date: string;
-    weeksSincePrev: number;
+  perDayOfWeek: Array<{
+    day: number;
+    label: string;
+    posts: number;
+    words: number;
+    avgWords: number;
   }>;
   tags: {
     totals: Record<string, number>;
@@ -77,6 +80,8 @@ const MONTH_LABELS = [
   'Dec',
 ];
 
+const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 const getMonthRange = (from: Date, to: Date) => {
   const months: MonthKey[] = [];
   const cursor = new Date(from.getFullYear(), from.getMonth(), 1);
@@ -88,11 +93,6 @@ const getMonthRange = (from: Date, to: Date) => {
   }
 
   return months;
-};
-
-const weeksBetween = (a: Date, b: Date) => {
-  const diff = a.getTime() - b.getTime();
-  return Math.max(0, Math.round(diff / (1000 * 60 * 60 * 24 * 7)));
 };
 
 const toAvg = (stats: PerPeriodStats) =>
@@ -112,14 +112,15 @@ export const getBlogStats = async (): Promise<BlogStats> => {
   const perYear = new Map<number, PerPeriodStats>();
   const perMonth = new Map<MonthKey, PerPeriodStats>();
   const perMonthOfYear = new Map<number, PerPeriodStats>();
+  const perDayOfWeek = new Map<number, PerPeriodStats>();
   const tagTotals = new Map<string, number>();
   const tagYearly = new Map<number, Map<string, number>>();
-  const gaps: BlogStats['gaps'] = [];
 
   entries.forEach((entry, index) => {
     const year = toYear(entry.date);
     const monthKey = toMonthKey(entry.date);
     const monthIndex = entry.date.getMonth();
+    const dayOfWeek = (entry.date.getDay() + 6) % 7;
 
     const yearStats = perYear.get(year) ?? { posts: 0, words: 0 };
     yearStats.posts += 1;
@@ -136,6 +137,11 @@ export const getBlogStats = async (): Promise<BlogStats> => {
     monthOfYearStats.words += entry.words;
     perMonthOfYear.set(monthIndex, monthOfYearStats);
 
+    const dayOfWeekStats = perDayOfWeek.get(dayOfWeek) ?? { posts: 0, words: 0 };
+    dayOfWeekStats.posts += 1;
+    dayOfWeekStats.words += entry.words;
+    perDayOfWeek.set(dayOfWeek, dayOfWeekStats);
+
     const yearTagStats = tagYearly.get(year) ?? new Map<string, number>();
 
     entry.tags.forEach((tag) => {
@@ -146,14 +152,6 @@ export const getBlogStats = async (): Promise<BlogStats> => {
     });
 
     tagYearly.set(year, yearTagStats);
-
-    if (index > 0) {
-      const prev = entries[index - 1];
-      gaps.push({
-        date: entry.date.toISOString().split('T')[0],
-        weeksSincePrev: weeksBetween(entry.date, prev.date),
-      });
-    }
   });
 
   const perYearArray = Array.from(perYear.entries())
@@ -190,6 +188,17 @@ export const getBlogStats = async (): Promise<BlogStats> => {
     };
   });
 
+  const perDayOfWeekArray = WEEKDAY_LABELS.map((label, index) => {
+    const stats = perDayOfWeek.get(index) ?? { posts: 0, words: 0 };
+    return {
+      day: index + 1,
+      label,
+      posts: stats.posts,
+      words: stats.words,
+      avgWords: toAvg(stats),
+    };
+  });
+
   const tagTotalsObject = Object.fromEntries(tagTotals.entries());
 
   const tagYearlyArray = Array.from(tagYearly.entries())
@@ -212,7 +221,7 @@ export const getBlogStats = async (): Promise<BlogStats> => {
     perYear: perYearArray,
     perMonth: perMonthArray,
     perMonthOfYear: perMonthOfYearArray,
-    gaps,
+    perDayOfWeek: perDayOfWeekArray,
     tags: {
       totals: tagTotalsObject,
       yearly: tagYearlyArray,
