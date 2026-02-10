@@ -1,0 +1,84 @@
+name: Newsletter - Send Monthly
+
+on:
+  schedule:
+    # Run on the 1st of every month at 9 AM UTC
+    - cron: '0 9 1 * *'
+  workflow_dispatch:
+    inputs:
+      days_back:
+        description: 'Number of days to look back for posts'
+        required: false
+        default: '30'
+      test_mode:
+        description: 'Test mode (only log, dont send)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate and send newsletter
+        env:
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          SITE_URL: 'https://sergiocarracedo.es'
+          DAYS_BACK: ${{ github.event.inputs.days_back || '30' }}
+          TEST_MODE: ${{ github.event.inputs.test_mode || 'false' }}
+        run: |
+          node scripts/send-newsletter.js
+
+      - name: Mark posts as sent
+        if: env.TEST_MODE != 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add src/content/blog/
+          if git diff --staged --quiet; then
+            echo "No posts to mark as sent"
+          else
+            git commit -m "chore: mark newsletter posts as sent [skip ci]"
+            git push
+          fi
+
+      - name: Upload newsletter log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newsletter-log
+          path: newsletter-*.log

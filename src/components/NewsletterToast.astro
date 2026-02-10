@@ -1,0 +1,206 @@
+---
+import NewsletterForm from './NewsletterForm.astro';
+---
+
+<newsletter-toast>
+  <div class="newsletter-toast" hidden>
+    <button class="newsletter-toast__close" aria-label="Close" type="button">
+      ✕
+    </button>
+    <div class="newsletter-toast__content">
+      <NewsletterForm placement="toast" />
+      <button class="newsletter-toast__dismiss" type="button">
+        Maybe later
+      </button>
+    </div>
+  </div>
+</newsletter-toast>
+
+<style>
+  .newsletter-toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    border-radius: 12px;
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 1.5rem;
+    z-index: 1000;
+    border: 2px solid var(--color-primary-lighter);
+    animation: slideIn 0.3s ease-out;
+  }
+
+  .newsletter-toast[hidden] {
+    display: none;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  .newsletter-toast.closing {
+    animation: slideOut 0.3s ease-in forwards;
+  }
+
+  .newsletter-toast__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    line-height: 1;
+    padding: 0.25rem;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .newsletter-toast__close:hover {
+    color: var(--color-primary);
+  }
+
+  .newsletter-toast__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .newsletter-toast__dismiss {
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    text-decoration: underline;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .newsletter-toast__dismiss:hover {
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 640px) {
+    .newsletter-toast {
+      bottom: 1rem;
+      right: 1rem;
+      left: 1rem;
+      max-width: none;
+      width: auto;
+    }
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'newsletter-toast-dismissed';
+  const DISMISS_DURATION_DAYS = 30;
+
+  class NewsletterToast extends HTMLElement {
+    private toast: HTMLElement;
+    private closeButton: HTMLButtonElement;
+    private dismissButton: HTMLButtonElement;
+    private hasShown = false;
+
+    constructor() {
+      super();
+      this.toast = this.querySelector('.newsletter-toast')!;
+      this.closeButton = this.querySelector('.newsletter-toast__close')!;
+      this.dismissButton = this.querySelector('.newsletter-toast__dismiss')!;
+
+      this.closeButton.addEventListener('click', () => this.dismiss(false));
+      this.dismissButton.addEventListener('click', () => this.dismiss(true));
+
+      // Check if should show
+      if (!this.shouldShow()) {
+        return;
+      }
+
+      // Show on scroll (50% of page) or after 15 seconds
+      this.setupTriggers();
+    }
+
+    shouldShow(): boolean {
+      const dismissed = localStorage.getItem(STORAGE_KEY);
+      if (!dismissed) return true;
+
+      const dismissedDate = new Date(dismissed);
+      const now = new Date();
+      const daysSinceDismissed =
+        (now.getTime() - dismissedDate.getTime()) / (1000 * 60 * 60 * 24);
+
+      return daysSinceDismissed >= DISMISS_DURATION_DAYS;
+    }
+
+    setupTriggers() {
+      let timeoutId: number;
+      let hasTriggered = false;
+
+      const show = () => {
+        if (hasTriggered || this.hasShown) return;
+        hasTriggered = true;
+        this.show();
+      };
+
+      // Trigger 1: After 15 seconds
+      timeoutId = window.setTimeout(show, 15000);
+
+      // Trigger 2: On 50% scroll
+      const handleScroll = () => {
+        const scrollPercent =
+          (window.scrollY /
+            (document.documentElement.scrollHeight - window.innerHeight)) *
+          100;
+
+        if (scrollPercent >= 50) {
+          show();
+          window.removeEventListener('scroll', handleScroll);
+          clearTimeout(timeoutId);
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+
+    show() {
+      this.toast.hidden = false;
+      this.hasShown = true;
+    }
+
+    dismiss(remember: boolean) {
+      if (remember) {
+        localStorage.setItem(STORAGE_KEY, new Date().toISOString());
+      }
+
+      this.toast.classList.add('closing');
+      setTimeout(() => {
+        this.toast.hidden = true;
+        this.toast.classList.remove('closing');
+      }, 300);
+    }
+  }
+
+  customElements.define('newsletter-toast', NewsletterToast);
+</script>
