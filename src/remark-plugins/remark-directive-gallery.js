@@ -1,12 +1,16 @@
 import { visit } from 'unist-util-visit';
 
 /**
- * Remark plugin to replace :::gallery directive with a responsive image grid.
- * 
- * Usage:
- * :::gallery
- * images: image1.jpg,image2.jpg,image3.jpg
- * cols: 3
+ * Remark plugin to render a responsive image gallery grid.
+ *
+ * Usage with attributes:
+ * :::gallery{images="image1.jpg,image2.jpg" cols="2"}
+ * :::
+ *
+ * Or with content (one image per line):
+ * :::gallery{cols="2"}
+ * image1.jpg
+ * image2.jpg
  * :::
  */
 export function remarkDirectiveGallery() {
@@ -18,16 +22,31 @@ export function remarkDirectiveGallery() {
 
       const data = node.data || (node.data = {});
       const attributes = node.attributes || {};
-      const imagesStr = attributes.images;
+      let imagesStr = attributes.images;
       const cols = attributes.cols ? parseInt(attributes.cols, 10) : 3;
+
+      // If no images attribute, try to extract from node content
+      if (!imagesStr && node.children && node.children.length > 0) {
+        // Extract text content from children (recursively handle paragraphs)
+        const extractText = (child) => {
+          if (child.type === 'text') return child.value;
+          if (child.type === 'paragraph' && child.children) {
+            return child.children.map(extractText).join('');
+          }
+          return '';
+        };
+
+        const textContent = node.children.map(extractText).join('\n');
+        imagesStr = textContent.trim();
+      }
 
       if (!imagesStr) {
         file.fail('Unexpected missing `images` on `gallery` directive', node);
       }
 
-      // Parse images - handle comma-separated list
+      // Parse images - handle comma-separated list or newline-separated
       const images = imagesStr
-        .split(',')
+        .split(/[,\n]/)
         .map((img) => img.trim())
         .filter((img) => img.length > 0);
 
@@ -38,21 +57,26 @@ export function remarkDirectiveGallery() {
       // Validate cols is between 1 and 6
       const validCols = Math.max(1, Math.min(6, cols));
 
-      // Generate responsive grid HTML
-      const imageElements = images
-        .map(
-          (src) =>
-            `<img src="${src}" alt="Gallery image" class="gallery-img" loading="lazy" />`
-        )
-        .join('\n');
+      // Create image nodes - let the markdown pipeline handle URL resolution like float-image does
+      const imageNodes = images.map((src) => ({
+        type: 'image',
+        url: src,
+        alt: 'Gallery image',
+        title: null,
+      }));
 
-      const gridHtml = `<div class="gallery-grid" style="--gallery-cols: ${validCols}">
-${imageElements}
-</div>`;
+      // Create a wrapper div as HTML node and image nodes as children
+      // We'll transform this to a gallery component structure
+      const data2 = node.data || (node.data = {});
+      data2.hName = 'div';
+      data2.hProperties = {
+        className: 'gallery-grid',
+        style: `--gallery-cols: ${validCols}`,
+      };
 
-      node.type = 'html';
-      node.value = gridHtml;
-      node.children = [];
+      // Replace children with proper image nodes
+      node.children = imageNodes;
+      node.type = 'containerDirective'; // Keep as container to process children
     });
   };
 }
