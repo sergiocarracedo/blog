@@ -7,39 +7,37 @@ interface PerPeriodStats {
   words: number;
 }
 
+interface TimeStats {
+  posts: number;
+  words: number;
+  avgWords: number;
+}
+
 export interface BlogStats {
   generatedAt: string;
-  totals: {
-    posts: number;
-    words: number;
-    avgWords: number;
-  };
-  perYear: Array<{
-    year: number;
-    posts: number;
-    words: number;
-    avgWords: number;
-  }>;
-  perMonth: Array<{
-    month: MonthKey;
-    posts: number;
-    words: number;
-    avgWords: number;
-  }>;
-  perMonthOfYear: Array<{
-    month: number;
-    label: string;
-    posts: number;
-    words: number;
-    avgWords: number;
-  }>;
-  perDayOfWeek: Array<{
-    day: number;
-    label: string;
-    posts: number;
-    words: number;
-    avgWords: number;
-  }>;
+  totals: TimeStats;
+  perYear: Array<
+    {
+      year: number;
+    } & TimeStats
+  >;
+  perMonth: Array<
+    {
+      month: MonthKey;
+    } & TimeStats
+  >;
+  perMonthOfYear: Array<
+    {
+      month: number;
+      label: string;
+    } & TimeStats
+  >;
+  perDayOfWeek: Array<
+    {
+      day: number;
+      label: string;
+    } & TimeStats
+  >;
   tags: {
     totals: Record<string, number>;
     yearly: Array<{
