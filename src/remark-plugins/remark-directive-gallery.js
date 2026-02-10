@@ -1,7 +1,7 @@
 import { visit } from 'unist-util-visit';
 
 /**
- * Remark plugin to render a responsive image gallery grid.
+ * Remark plugin to render a responsive image gallery with modal.
  *
  * Usage with attributes:
  * :::gallery{images="image1.jpg,image2.jpg" cols="2"}
@@ -20,7 +20,6 @@ export function remarkDirectiveGallery() {
         return;
       }
 
-      const data = node.data || (node.data = {});
       const attributes = node.attributes || {};
       let imagesStr = attributes.images;
       const cols = attributes.cols ? parseInt(attributes.cols, 10) : 3;
@@ -57,26 +56,16 @@ export function remarkDirectiveGallery() {
       // Validate cols is between 1 and 6
       const validCols = Math.max(1, Math.min(6, cols));
 
-      // Create image nodes - let the markdown pipeline handle URL resolution like float-image does
-      const imageNodes = images.map((src) => ({
-        type: 'image',
-        url: src,
-        alt: 'Gallery image',
-        title: null,
-      }));
-
-      // Create a wrapper div as HTML node and image nodes as children
-      // We'll transform this to a gallery component structure
-      const data2 = node.data || (node.data = {});
-      data2.hName = 'div';
-      data2.hProperties = {
-        className: 'gallery-grid',
-        style: `--gallery-cols: ${validCols}`,
+      // Transform to MDX JSX component
+      const data = node.data || (node.data = {});
+      data.hName = 'GalleryModal';
+      data.hProperties = {
+        images: JSON.stringify(images),
+        cols: validCols,
       };
 
-      // Replace children with proper image nodes
-      node.children = imageNodes;
-      node.type = 'containerDirective'; // Keep as container to process children
+      // Clear children - we don't need them anymore
+      node.children = [];
     });
   };
 }

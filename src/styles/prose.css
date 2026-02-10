@@ -264,6 +264,223 @@
 
     .gallery-grid img {
       @apply rounded-md w-full;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
+    }
+
+    .gallery-grid img:hover {
+      filter: brightness(0.9);
+      transform: scale(1.02);
+    }
+
+    /* Gallery Modal Styles */
+    .gallery-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 1rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-modal-overlay.gallery-modal-open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .gallery-modal-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    .gallery-modal-image-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      max-height: 100%;
+      position: relative;
+    }
+
+    .gallery-modal-image {
+      max-width: 100%;
+      max-height: 85vh;
+      width: auto;
+      height: auto;
+      border-radius: 0.5rem;
+      object-fit: contain;
+    }
+
+    /* Navigation Buttons */
+    .gallery-modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.375rem;
+      padding: 0.75rem 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10000;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-modal-nav:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .gallery-modal-nav:active {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .gallery-modal-prev {
+      left: 1rem;
+    }
+
+    .gallery-modal-next {
+      right: 1rem;
+    }
+
+    /* Close Button */
+    .gallery-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.375rem;
+      width: 44px;
+      height: 44px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-modal-close:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .gallery-modal-close:active {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Image Counter */
+    .gallery-modal-counter {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      z-index: 10000;
+    }
+
+    /* Tablet and below */
+    @media (max-width: 768px) {
+      .gallery-modal-nav {
+        padding: 0.5rem 0.75rem;
+        font-size: 1.25rem;
+        min-width: 40px;
+        min-height: 40px;
+      }
+
+      .gallery-modal-prev {
+        left: 0.5rem;
+      }
+
+      .gallery-modal-next {
+        right: 0.5rem;
+      }
+
+      .gallery-modal-close {
+        width: 40px;
+        height: 40px;
+        top: 0.5rem;
+        right: 0.5rem;
+      }
+
+      .gallery-modal-image {
+        max-height: 80vh;
+      }
+
+      .gallery-modal-counter {
+        bottom: 0.5rem;
+        font-size: 0.75rem;
+        padding: 0.375rem 0.75rem;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .gallery-modal-content {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .gallery-modal-nav {
+        padding: 0.375rem 0.5rem;
+        font-size: 1.125rem;
+        min-width: 36px;
+        min-height: 36px;
+      }
+
+      .gallery-modal-prev {
+        left: 0.25rem;
+      }
+
+      .gallery-modal-next {
+        right: 0.25rem;
+      }
+
+      .gallery-modal-close {
+        width: 36px;
+        height: 36px;
+        top: 0.25rem;
+        right: 0.25rem;
+        font-size: 1.25rem;
+      }
+
+      .gallery-modal-image {
+        max-height: 75vh;
+        border-radius: 0.25rem;
+      }
+
+      .gallery-modal-counter {
+        bottom: 0.25rem;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+      }
     }
 
     @media (max-width: 1024px) {

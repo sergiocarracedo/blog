@@ -1,0 +1,181 @@
+---
+interface Props {
+  images: string[] | string;
+  cols?: number;
+}
+
+function parseImages(imagesProp: string[] | string): string[] {
+  if (typeof imagesProp === 'string') {
+    try {
+      return JSON.parse(imagesProp);
+    } catch {
+      return [];
+    }
+  }
+  return imagesProp || [];
+}
+
+const { images: imagesProp, cols = 3 } = Astro.props;
+const images = parseImages(imagesProp);
+const validCols = Math.max(1, Math.min(6, cols));
+
+if (!images || images.length === 0) {
+  throw new Error('Gallery must have at least one image');
+}
+---
+
+<div class="gallery-wrapper" data-gallery-container>
+  <div class="gallery-grid" style={`--gallery-cols: ${validCols}`}>
+  {
+    images.map((src, index) => (
+      <img
+        src={src}
+        alt={`Gallery image ${index + 1}`}
+        class="gallery-image"
+        data-gallery-index={index}
+        data-gallery-total={images.length}
+      />
+    ))
+  }
+</div>
+
+<div class="gallery-modal-overlay" data-gallery-overlay>
+  <div class="gallery-modal-content" data-gallery-modal>
+    <button class="gallery-modal-close" aria-label="Close gallery" data-gallery-close> ✕ </button>
+
+    <button
+      class="gallery-modal-nav gallery-modal-prev"
+      aria-label="Previous image"
+      data-gallery-prev
+    >
+      ←
+    </button>
+
+    <div class="gallery-modal-image-container">
+      <img src="" alt="Gallery image" class="gallery-modal-image" data-gallery-modal-image />
+    </div>
+
+    <button class="gallery-modal-nav gallery-modal-next" aria-label="Next image" data-gallery-next>
+      →
+    </button>
+
+    <div class="gallery-modal-counter" data-gallery-counter></div>
+  </div>
+</div>
+</div>
+
+<script define:vars={{ images }}>
+  class GalleryController {
+    constructor(containerElement) {
+      this.container = containerElement;
+      this.images = images;
+      this.selectedIndex = null;
+      this.overlay = this.container.querySelector('[data-gallery-overlay]');
+      this.modal = this.container.querySelector('[data-gallery-modal]');
+      this.modalImage = this.container.querySelector('[data-gallery-modal-image]');
+      this.counter = this.container.querySelector('[data-gallery-counter]');
+      this.closeBtn = this.container.querySelector('[data-gallery-close]');
+      this.prevBtn = this.container.querySelector('[data-gallery-prev]');
+      this.nextBtn = this.container.querySelector('[data-gallery-next]');
+      this.galleryImages = this.container.querySelectorAll('.gallery-image');
+
+      this.init();
+    }
+
+    init() {
+      // Image click handlers
+      this.galleryImages.forEach((img, index) => {
+        img.addEventListener('click', () => this.open(index));
+        img.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.open(index);
+          }
+        });
+        img.style.cursor = 'pointer';
+        img.setAttribute('tabindex', '0');
+        img.setAttribute('role', 'button');
+      });
+
+      // Modal interaction handlers
+      this.closeBtn.addEventListener('click', () => this.close());
+      this.prevBtn.addEventListener('click', () => this.prev());
+      this.nextBtn.addEventListener('click', () => this.next());
+      this.overlay.addEventListener('click', (e) => {
+        if (e.target === this.overlay) {
+          this.close();
+        }
+      });
+
+      // Prevent modal from closing when clicking content
+      this.modal.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => this.handleKeydown(e));
+    }
+
+    open(index) {
+      this.selectedIndex = index;
+      this.updateModal();
+      this.overlay.classList.add('gallery-modal-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    close() {
+      this.selectedIndex = null;
+      this.overlay.classList.remove('gallery-modal-open');
+      document.body.style.overflow = '';
+    }
+
+    prev() {
+      if (this.selectedIndex === null) return;
+      this.selectedIndex = (this.selectedIndex - 1 + this.images.length) % this.images.length;
+      this.updateModal();
+    }
+
+    next() {
+      if (this.selectedIndex === null) return;
+      this.selectedIndex = (this.selectedIndex + 1) % this.images.length;
+      this.updateModal();
+    }
+
+    updateModal() {
+      const src = this.images[this.selectedIndex];
+      this.modalImage.src = src;
+      this.modalImage.alt = `Gallery image ${this.selectedIndex + 1}`;
+      this.counter.textContent = `${this.selectedIndex + 1} / ${this.images.length}`;
+    }
+
+    handleKeydown(e) {
+      if (this.selectedIndex === null) return;
+
+      if (e.key === 'Escape') {
+        this.close();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        this.prev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        this.next();
+      }
+    }
+  }
+
+  // Initialize gallery when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const galleryContainers = document.querySelectorAll('[data-gallery-container]');
+    galleryContainers.forEach((container) => {
+      new GalleryController(container);
+    });
+  });
+
+  // Also initialize if already loaded (for SPAs or dynamic content)
+  const galleryContainers = document.querySelectorAll('[data-gallery-container]');
+  if (galleryContainers.length > 0) {
+    galleryContainers.forEach((container) => {
+      new GalleryController(container);
+    });
+  }
+</script>
