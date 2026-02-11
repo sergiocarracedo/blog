@@ -1,75 +1,92 @@
 ---
 interface Props {
-  images: string[] | string;
+  images?: string;
   cols?: number;
 }
 
-function parseImages(imagesProp: string[] | string): string[] {
-  if (typeof imagesProp === 'string') {
-    try {
-      return JSON.parse(imagesProp);
-    } catch {
-      return [];
-    }
+function parseImages(imagesProp: string | undefined): string[] {
+  if (!imagesProp) {
+    return [];
   }
-  return imagesProp || [];
+  try {
+    const parsed = JSON.parse(imagesProp);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }
 
 const { images: imagesProp, cols = 3 } = Astro.props;
-const images = parseImages(imagesProp);
+const imageUrls = parseImages(imagesProp);
 const validCols = Math.max(1, Math.min(6, cols));
 
-if (!images || images.length === 0) {
+if (!imageUrls || imageUrls.length === 0) {
   throw new Error('Gallery must have at least one image');
 }
+
+// Render slot content to get processed image sources
+const slotContent = await Astro.slots.render('default');
+
+// Extract img src attributes from the rendered HTML
+const srcRegex = /<img[^>]+src="([^"]+)"/g;
+const processedImages: string[] = [];
+let match;
+while ((match = srcRegex.exec(slotContent)) !== null) {
+  processedImages.push(match[1]);
+}
+
+// Use processed images if available, otherwise fall back to raw URLs
+const images = processedImages.length > 0 ? processedImages : imageUrls;
 ---
 
 <div class="gallery-wrapper" data-gallery-container>
   <div class="gallery-grid" style={`--gallery-cols: ${validCols}`}>
-  {
-    images.map((src, index) => (
-      <img
-        src={src}
-        alt={`Gallery image ${index + 1}`}
-        class="gallery-image"
-        data-gallery-index={index}
-        data-gallery-total={images.length}
-      />
-    ))
-  }
-</div>
+    {
+      images.map((src: string, index: number) => (
+        <img
+          src={src}
+          alt={`Gallery image ${index + 1}`}
+          class="gallery-image"
+          data-gallery-index={index}
+          data-gallery-total={images.length}
+        />
+      ))
+    }
+  </div>
 
-<div class="gallery-modal-overlay" data-gallery-overlay>
-  <div class="gallery-modal-content" data-gallery-modal>
-    <button class="gallery-modal-close" aria-label="Close gallery" data-gallery-close> ✕ </button>
+  <div class="gallery-modal-overlay" data-gallery-overlay>
+    <div class="gallery-modal-content" data-gallery-modal>
+      <button class="gallery-modal-close" aria-label="Close gallery" data-gallery-close> ✕ </button>
 
-    <button
-      class="gallery-modal-nav gallery-modal-prev"
-      aria-label="Previous image"
-      data-gallery-prev
-    >
-      ←
-    </button>
+      <button
+        class="gallery-modal-nav gallery-modal-prev"
+        aria-label="Previous image"
+        data-gallery-prev
+      >
+        ←
+      </button>
 
-    <div class="gallery-modal-image-container">
-      <img src="" alt="Gallery image" class="gallery-modal-image" data-gallery-modal-image />
+      <div class="gallery-modal-image-container">
+        <img src="" alt="Gallery image" class="gallery-modal-image" data-gallery-modal-image />
+      </div>
+
+      <button
+        class="gallery-modal-nav gallery-modal-next"
+        aria-label="Next image"
+        data-gallery-next
+      >
+        →
+      </button>
+
+      <div class="gallery-modal-counter" data-gallery-counter></div>
     </div>
-
-    <button class="gallery-modal-nav gallery-modal-next" aria-label="Next image" data-gallery-next>
-      →
-    </button>
-
-    <div class="gallery-modal-counter" data-gallery-counter></div>
   </div>
 </div>
-</div>
 
-<script define:vars={{ images }}>
+<script>
   class GalleryController {
     constructor(containerElement) {
       this.container = containerElement;
-      this.images = images;
-      this.selectedIndex = null;
       this.overlay = this.container.querySelector('[data-gallery-overlay]');
       this.modal = this.container.querySelector('[data-gallery-modal]');
       this.modalImage = this.container.querySelector('[data-gallery-modal-image]');
@@ -78,6 +95,14 @@ if (!images || images.length === 0) {
       this.prevBtn = this.container.querySelector('[data-gallery-prev]');
       this.nextBtn = this.container.querySelector('[data-gallery-next]');
       this.galleryImages = this.container.querySelectorAll('.gallery-image');
+
+      // Extract actual image sources from rendered img elements
+      this.imageSources = Array.from(this.galleryImages).map((img) => img.getAttribute('src'));
+
+      // Move modal overlay to body (portal pattern) to escape any positioning context
+      if (this.overlay && this.overlay.parentElement !== document.body) {
+        document.body.appendChild(this.overlay);
+      }
 
       this.init();
     }
@@ -125,27 +150,33 @@ if (!images || images.length === 0) {
 
     close() {
       this.selectedIndex = null;
-      this.overlay.classList.remove('gallery-modal-open');
-      document.body.style.overflow = '';
+      // Animate out before removing
+      this.overlay.style.animation = 'fadeOut 0.3s ease forwards';
+      setTimeout(() => {
+        this.overlay.classList.remove('gallery-modal-open');
+        this.overlay.style.animation = '';
+        document.body.style.overflow = '';
+      }, 300);
     }
 
     prev() {
       if (this.selectedIndex === null) return;
-      this.selectedIndex = (this.selectedIndex - 1 + this.images.length) % this.images.length;
+      this.selectedIndex =
+        (this.selectedIndex - 1 + this.imageSources.length) % this.imageSources.length;
       this.updateModal();
     }
 
     next() {
       if (this.selectedIndex === null) return;
-      this.selectedIndex = (this.selectedIndex + 1) % this.images.length;
+      this.selectedIndex = (this.selectedIndex + 1) % this.imageSources.length;
       this.updateModal();
     }
 
     updateModal() {
-      const src = this.images[this.selectedIndex];
+      const src = this.imageSources[this.selectedIndex];
       this.modalImage.src = src;
       this.modalImage.alt = `Gallery image ${this.selectedIndex + 1}`;
-      this.counter.textContent = `${this.selectedIndex + 1} / ${this.images.length}`;
+      this.counter.textContent = `${this.selectedIndex + 1} / ${this.imageSources.length}`;
     }
 
     handleKeydown(e) {

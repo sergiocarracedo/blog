@@ -56,16 +56,23 @@ export function remarkDirectiveGallery() {
       // Validate cols is between 1 and 6
       const validCols = Math.max(1, Math.min(6, cols));
 
-      // Transform to MDX JSX component
-      const data = node.data || (node.data = {});
-      data.hName = 'GalleryModal';
-      data.hProperties = {
-        images: JSON.stringify(images),
-        cols: validCols,
-      };
+      // Create image nodes - let the markdown pipeline handle URL resolution
+      const imageNodes = images.map((src) => ({
+        type: 'image',
+        url: src,
+        alt: 'Gallery image',
+        title: null,
+      }));
 
-      // Clear children - we don't need them anymore
-      node.children = [];
+      // Transform to MDX JSX component with image children
+      // The markdown pipeline will process image nodes and resolve relative paths
+      node.type = 'mdxJsxFlowElement';
+      node.name = 'GalleryModal';
+      node.attributes = [
+        { type: 'mdxJsxAttribute', name: 'images', value: JSON.stringify(images) },
+        { type: 'mdxJsxAttribute', name: 'cols', value: validCols },
+      ];
+      node.children = imageNodes;
     });
   };
 }
