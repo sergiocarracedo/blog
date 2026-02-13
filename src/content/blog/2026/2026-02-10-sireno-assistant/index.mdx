@@ -12,7 +12,9 @@ tags:
   - productivity  
 ---
 
-Imagine yourself writting a LinkedIn post, you want to correct it, or improve the styling, or even translate it to another language. Now you are coping the text to chatGPT, Gemini, or any other LLM, ask it to do the changes and then you are pasting the improved version back to LinkedIn. This is a common workflow for many of us, but it can be time-consuming and inefficient.
+[:float-image[]{src="./chromewebstore.png" maxWidth="220px" float="right"}](https://chromewebstore.google.com/detail/sireno-assistant/ppnecnomfnadhbcpacgkfldiapoejogo)
+Imagine yourself writting a LinkedIn post, you want to correct it, or improve the styling, or even translate it to another language. 
+Now you are coping the text to chatGPT, Gemini, or any other LLM, ask it to do the changes and then you are pasting the improved version back to LinkedIn. This is a common workflow for many of us, but it can be time-consuming and inefficient.
 
 
 # Product definition
@@ -50,9 +52,21 @@ But why just limit it to just one input field? Using the side panel, you can sel
 
 # How to use it
 
+:float-image[]{src="./extensions.png" maxWidth="220px" float="right"}
 
+You can install the extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/sireno-assistant/ppnecnomfnadhbcpacgkfldiapoejogo). Once installed, you will see a new extension button in the extension bar. You can click it to open the side panel, where you can configure the AI provider in the settings tab. This requires an API key from any AI provider you want to use, which have cost, not to much, but if you don't have it, I plan to release an update in the coming weeks with support for Groq (not to be confused with Grok), which offers a free tier that can be used with this extension.
 
+You can also manage your skills in the skills tab, check the fields available in the current page in the fields tab, and finally interact with the assistant in the chat tab.
 
+I recommend you to review the default skills, and update the one with yout basic info: name, job, etc. This will allow the assistant to write more personalized content for you. You can also create new skills for specific websites or use cases.
+
+From this moment all the features I described before are available for you to use in any website, just click the button next to any text input field, or use the side panel chat to start interacting with the assistant.
 
 
 # Technical details
+
+I decided to use this project to experiment OpenCode as vibecoding tool, so YEs, this is a vibecoding project. This allowed me to iterate very quickly and to build the MVP in a very short time, but I must get my hands dirty, because the llm can not understand all the cases, for example it was challenging set the icon position correctly, or to make the assistant work in iframes, shadowdom, etc. (I will talk about my experience with OpenCode in another post).
+
+This extension was also released as open source in GitHub, so you can check the code and contribute if you want: https://github.com/sergiocarracedo?tab=repositories
+
+If you like it and find any issue or have any suggestion, please let me know in the [GitHub repo issues](https://github.com/sergiocarracedo/sireno-assistant/issues]

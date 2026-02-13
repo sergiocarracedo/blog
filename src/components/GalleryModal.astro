@@ -1,4 +1,7 @@
 ---
+import GalleryButton from './gallery/GalleryButton.astro';
+import GalleryCloseButton from './gallery/GalleryCloseButton.astro';
+
 interface Props {
   images?: string;
   cols?: number;
@@ -54,34 +57,102 @@ const images = processedImages.length > 0 ? processedImages : imageUrls;
     }
   </div>
 
-  <div class="gallery-modal-overlay" data-gallery-overlay>
-    <div class="gallery-modal-content" data-gallery-modal>
-      <button class="gallery-modal-close" aria-label="Close gallery" data-gallery-close> ✕ </button>
+  <!-- Modal Overlay - Will be moved to body via JavaScript -->
+  <div
+    class:list={[
+      // Fixed overlay covering entire viewport
+      'fixed top-0 left-0 right-0 bottom-0',
+      'w-screen h-screen',
+      'bg-black/70 backdrop-blur-xl',
+      'hidden items-center justify-center',
+      'z-[9999] p-4',
+      'opacity-0 transition-opacity duration-300',
+      'overflow-auto',
+      'm-0 transform-none',
+    ]}
+    data-gallery-overlay
+  >
+    <!-- Modal Content Container -->
+    <div
+      class:list={[
+        'relative flex items-center justify-center',
+        'gap-12 max-w-[calc(95vw-120px)] max-h-[95vh]',
+        // Tablet/mobile: remove gap and expand
+        'max-lg:gap-0 max-lg:max-w-[95vw]',
+      ]}
+      data-gallery-modal
+    >
+      <GalleryCloseButton />
 
-      <button
-        class="gallery-modal-nav gallery-modal-prev"
-        aria-label="Previous image"
-        data-gallery-prev
-      >
-        ←
-      </button>
+      <GalleryButton direction="prev" />
 
-      <div class="gallery-modal-image-container">
-        <img src="" alt="Gallery image" class="gallery-modal-image" data-gallery-modal-image />
+      <!-- Image Container -->
+      <div class="flex items-center justify-center relative">
+        <img
+          src=""
+          alt="Gallery image"
+          class:list={[
+            'max-w-full max-h-[95vh] w-auto h-auto',
+            'rounded-lg object-contain block',
+            'animate-[imageChange_0.3s_ease]',
+          ]}
+          data-gallery-modal-image
+        />
       </div>
 
-      <button
-        class="gallery-modal-nav gallery-modal-next"
-        aria-label="Next image"
-        data-gallery-next
-      >
-        →
-      </button>
+      <GalleryButton direction="next" />
 
-      <div class="gallery-modal-counter" data-gallery-counter></div>
+      <!-- Image Counter -->
+      <div
+        class:list={[
+          'absolute bottom-4 left-1/2 -translate-x-1/2',
+          'bg-black/70 text-white px-4 py-2 rounded-md text-sm',
+          'z-[10000]',
+          'max-lg:bottom-2 max-lg:text-xs max-lg:px-3 max-lg:py-1.5',
+          'max-[480px]:bottom-1 max-[480px]:text-[0.7rem] max-[480px]:px-2 max-[480px]:py-1',
+        ]}
+        data-gallery-counter
+      >
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  @keyframes imageChange {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  [data-gallery-overlay].gallery-modal-open {
+    display: flex;
+    animation: fadeIn 0.3s ease forwards;
+  }
+</style>
 
 <script>
   class GalleryController {
