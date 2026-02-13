@@ -1,6 +1,6 @@
 ---
 title: 'Sireno: Your AI Assistant for Forms - Write, Translate & Correct Anywhere'
-pubDate: 2026-02-15
+pubDate: 2026-02-13
 slug: sireno-assistant
 heroVideo: ./cover.webm
 heroImage: ./cover.png
@@ -9,21 +9,21 @@ heroImageMeta:
   author: 'Gemini Nano Banana Pro'
 tags:
   - ai
-  - productivity  
+  - productivity
 ---
 
 [:float-image[]{src="./chromewebstore.png" maxWidth="220px" float="right"}](https://chromewebstore.google.com/detail/sireno-assistant/ppnecnomfnadhbcpacgkfldiapoejogo)
-Imagine yourself writting a LinkedIn post, you want to correct it, or improve the styling, or even translate it to another language. 
-Now you are coping the text to chatGPT, Gemini, or any other LLM, ask it to do the changes and then you are pasting the improved version back to LinkedIn. This is a common workflow for many of us, but it can be time-consuming and inefficient.
+Imagine you're writing a LinkedIn post. You want to correct it, improve the styling, or even translate it to another language.
+The usual workflow is to copy the text into ChatGPT, Gemini, or any other LLM, ask for changes, and then paste the improved version back. It works, but it's time-consuming and a bit clunky.
 
 
 # Product definition
 
-I wanted to solve this problem, and make this workflow more seamless and efficient. 
+I wanted to make this workflow seamless: no tab switching, no extra copy/paste.
 
-The simpliest and most natural solutions was to create a browser extension that can be used on any website, and can interact with any text input field. This way, you can simply select the input you want to improve, and ask the assistant to do the changes without leaving the website.
+The simplest and most natural solution was a browser extension that works on any website and can interact with text input fields. You select the input you want to improve and ask the assistant to make the changes without leaving the page.
 
-The extension adds a button next to any text input field, and when you click it, pops up a modal with a chat interface where you can interact with the assistant, ask it to correct the style, improve the grammar, translate it to another language, etc. The assistant will then update the field field content acording your instructions.
+The extension adds a button next to text inputs. Click it and a chat modal pops up: you can ask the assistant to fix grammar, improve style, translate, etc. The assistant then updates the field content according to your instructions.
 :::gallery
 ./inline01.png
 ./inline02.png
@@ -31,16 +31,16 @@ The extension adds a button next to any text input field, and when you click it,
 :::
 
 
-I also wanted to give users the ability to customize the assistant's behavior and personality depending on the website, for example it is not the same when you want to correct the style in linkedin, than in a more informal website like twitter. Also to provide a assistant more context, for example providing your basic personal data, so the assistant can use it to write more personalized content for you.
+I also wanted users to customize the assistant's tone per website. For example, what you want on LinkedIn is usually different from what you want on a more informal website like Twitter. And if you give the assistant a bit of context (like your basic personal info), it can write in a more personal and consistent voice.
 
-To achieve this, I provide the assistant with skills support. Skills are just small text files, that can be used to provide the assistant with specific instructions, for example a skill for linkedin can include instructions to write in a more formal style, and to include some specific information about the user. Those skills are active only in the websites (domains) you want, so you can have a more formal assistant in linkedin, and a more informal one in twitter or provide it with different information depending on the website.
+To achieve this, Sireno supports skills. Skills are small instruction files that tell the assistant how to behave. For example, a LinkedIn skill can ask for a more formal style and include a few details about you. Skills are only active on the domains you choose, so you can keep a formal assistant on LinkedIn and a more informal one on Twitter (or provide different context depending on the site).
 
 :::gallery
 ./skill01.png
 ./skill02.png
 :::
 
-But why just limit it to just one input field? Using the side panel, you can select or deselect which field of the page you want to interact with, and can get the context (you can configure easily the access level) and fill multiple fields at the same time, for example if you are filling a sign up form, using an skill with your personal data, you can fill all the fields of the form at the same time, without having to copy and paste the information multiple times.
+And why stop at a single input field? In the side panel, you can select which fields on the page you want to interact with, configure how much page context the assistant can access, and fill multiple fields at once. For example, when you're filling out a sign-up form, you can use a personal-data skill to fill everything in one go.
 
 :::gallery
 ./chat01.png
@@ -54,19 +54,22 @@ But why just limit it to just one input field? Using the side panel, you can sel
 
 :float-image[]{src="./extensions.png" maxWidth="220px" float="right"}
 
-You can install the extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/sireno-assistant/ppnecnomfnadhbcpacgkfldiapoejogo). Once installed, you will see a new extension button in the extension bar. You can click it to open the side panel, where you can configure the AI provider in the settings tab. This requires an API key from any AI provider you want to use, which have cost, not to much, but if you don't have it, I plan to release an update in the coming weeks with support for Groq (not to be confused with Grok), which offers a free tier that can be used with this extension.
+You can install the extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/sireno-assistant/ppnecnomfnadhbcpacgkfldiapoejogo). Once installed, you will see a new extension button in the extension bar. You can click it to open the side panel, where you can configure the AI provider in the settings tab. This requires an API key from any AI provider you want to use, which has a cost—not too much—but if you don't have one, I plan to release an update in the coming weeks with support for Groq (not to be confused with Grok), which offers a free tier that can be used with this extension.
 
-You can also manage your skills in the skills tab, check the fields available in the current page in the fields tab, and finally interact with the assistant in the chat tab.
+You can also manage your skills in the skills tab, check the fields available on the current page in the fields tab, and finally interact with the assistant in the chat tab.
 
-I recommend you to review the default skills, and update the one with yout basic info: name, job, etc. This will allow the assistant to write more personalized content for you. You can also create new skills for specific websites or use cases.
+I recommend reviewing the default skills and updating the one with your basic info (name, job, etc.). This helps the assistant write more personalized content. You can also create new skills for specific websites or use cases.
 
-From this moment all the features I described before are available for you to use in any website, just click the button next to any text input field, or use the side panel chat to start interacting with the assistant.
+From there, you're ready to use everything on any website. Click the button next to any text input field, or use the side panel chat to start interacting with the assistant.
 
 
 # Technical details
 
-I decided to use this project to experiment OpenCode as vibecoding tool, so YEs, this is a vibecoding project. This allowed me to iterate very quickly and to build the MVP in a very short time, but I must get my hands dirty, because the llm can not understand all the cases, for example it was challenging set the icon position correctly, or to make the assistant work in iframes, shadowdom, etc. (I will talk about my experience with OpenCode in another post).
+I built this project as an experiment with OpenCode as a vibe-coding tool. It helped me iterate quickly and ship an MVP fast, but I still had to get my hands dirty on the tricky parts that LLMs tend to miss: positioning the icon reliably, handling iframes, Shadow DOM, and so on. (I'll talk about my experience with OpenCode in another post.)
 
-This extension was also released as open source in GitHub, so you can check the code and contribute if you want: https://github.com/sergiocarracedo?tab=repositories
+This extension is open source on GitHub, so you can check the code and contribute if you want: https://github.com/sergiocarracedo/sireno-assistant
 
-If you like it and find any issue or have any suggestion, please let me know in the [GitHub repo issues](https://github.com/sergiocarracedo/sireno-assistant/issues]
+If you like it and find any issue or have any suggestions, please let me know in the [GitHub repo issues](https://github.com/sergiocarracedo/sireno-assistant/issues)
+
+> This is a side project that I built in my free time just to enjoy doing things, but it is an early MVP, so it may have some rough edges and bugs, but I hope to improve it over time based on user feedback and contributions.
+

@@ -47,7 +47,7 @@ export default defineConfig({
       [remarkDirectiveFloatImage, {}],
       [remarkDirectiveGallery, {}],
       [emoji, {}],
-      [imgAttr, {}],
+      [imgAttr, { extendWithLink: true }],
     ],
     rehypePlugins: [
       rehypeHeadingIds,
