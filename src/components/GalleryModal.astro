@@ -1,0 +1,283 @@
+---
+import GalleryButton from './gallery/GalleryButton.astro';
+import GalleryCloseButton from './gallery/GalleryCloseButton.astro';
+
+interface Props {
+  images?: string;
+  cols?: number;
+}
+
+function parseImages(imagesProp: string | undefined): string[] {
+  if (!imagesProp) {
+    return [];
+  }
+  try {
+    const parsed = JSON.parse(imagesProp);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+const { images: imagesProp, cols = 3 } = Astro.props;
+const imageUrls = parseImages(imagesProp);
+const validCols = Math.max(1, Math.min(6, cols));
+
+if (!imageUrls || imageUrls.length === 0) {
+  throw new Error('Gallery must have at least one image');
+}
+
+// Render slot content to get processed image sources
+const slotContent = await Astro.slots.render('default');
+
+// Extract img src attributes from the rendered HTML
+const srcRegex = /<img[^>]+src="([^"]+)"/g;
+const processedImages: string[] = [];
+let match;
+while ((match = srcRegex.exec(slotContent)) !== null) {
+  processedImages.push(match[1]);
+}
+
+// Use processed images if available, otherwise fall back to raw URLs
+const images = processedImages.length > 0 ? processedImages : imageUrls;
+---
+
+<div class="gallery-wrapper" data-gallery-container>
+  <div class="gallery-grid" style={`--gallery-cols: ${validCols}`}>
+    {
+      images.map((src: string, index: number) => (
+        <img
+          src={src}
+          alt={`Gallery image ${index + 1}`}
+          class="gallery-image"
+          data-gallery-index={index}
+          data-gallery-total={images.length}
+        />
+      ))
+    }
+  </div>
+
+  <!-- Modal Overlay - Will be moved to body via JavaScript -->
+  <div
+    class:list={[
+      // Fixed overlay covering entire viewport
+      'fixed top-0 left-0 right-0 bottom-0',
+      'w-screen h-screen',
+      'bg-black/70 backdrop-blur-xl',
+      'hidden items-center justify-center',
+      'z-[9999] p-4',
+      'opacity-0 transition-opacity duration-300',
+      'overflow-auto',
+      'm-0 transform-none',
+    ]}
+    data-gallery-overlay
+  >
+    <!-- Modal Content Container -->
+    <div
+      class:list={[
+        'relative flex items-center justify-center',
+        'gap-12 max-w-[calc(95vw-120px)] max-h-[95vh]',
+        // Tablet/mobile: remove gap and expand
+        'max-lg:gap-0 max-lg:max-w-[95vw]',
+      ]}
+      data-gallery-modal
+    >
+      <GalleryCloseButton />
+
+      <GalleryButton direction="prev" />
+
+      <!-- Image Container -->
+      <div class="flex items-center justify-center relative">
+        <img
+          src=""
+          alt="Gallery image"
+          class:list={[
+            'max-w-full max-h-[95vh] w-auto h-auto',
+            'rounded-lg object-contain block',
+            'animate-[imageChange_0.3s_ease]',
+          ]}
+          data-gallery-modal-image
+        />
+      </div>
+
+      <GalleryButton direction="next" />
+
+      <!-- Image Counter -->
+      <div
+        class:list={[
+          'absolute bottom-4 left-1/2 -translate-x-1/2',
+          'bg-black/70 text-white px-4 py-2 rounded-md text-sm',
+          'z-[10000]',
+          'max-lg:bottom-2 max-lg:text-xs max-lg:px-3 max-lg:py-1.5',
+          'max-[480px]:bottom-1 max-[480px]:text-[0.7rem] max-[480px]:px-2 max-[480px]:py-1',
+        ]}
+        data-gallery-counter
+      >
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes imageChange {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  [data-gallery-overlay].gallery-modal-open {
+    display: flex;
+    animation: fadeIn 0.3s ease forwards;
+  }
+</style>
+
+<script>
+  class GalleryController {
+    constructor(containerElement) {
+      this.container = containerElement;
+      this.overlay = this.container.querySelector('[data-gallery-overlay]');
+      this.modal = this.container.querySelector('[data-gallery-modal]');
+      this.modalImage = this.container.querySelector('[data-gallery-modal-image]');
+      this.counter = this.container.querySelector('[data-gallery-counter]');
+      this.closeBtn = this.container.querySelector('[data-gallery-close]');
+      this.prevBtn = this.container.querySelector('[data-gallery-prev]');
+      this.nextBtn = this.container.querySelector('[data-gallery-next]');
+      this.galleryImages = this.container.querySelectorAll('.gallery-image');
+
+      // Extract actual image sources from rendered img elements
+      this.imageSources = Array.from(this.galleryImages).map((img) => img.getAttribute('src'));
+
+      // Move modal overlay to body (portal pattern) to escape any positioning context
+      if (this.overlay && this.overlay.parentElement !== document.body) {
+        document.body.appendChild(this.overlay);
+      }
+
+      this.init();
+    }
+
+    init() {
+      // Image click handlers
+      this.galleryImages.forEach((img, index) => {
+        img.addEventListener('click', () => this.open(index));
+        img.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.open(index);
+          }
+        });
+        img.style.cursor = 'pointer';
+        img.setAttribute('tabindex', '0');
+        img.setAttribute('role', 'button');
+      });
+
+      // Modal interaction handlers
+      this.closeBtn.addEventListener('click', () => this.close());
+      this.prevBtn.addEventListener('click', () => this.prev());
+      this.nextBtn.addEventListener('click', () => this.next());
+      this.overlay.addEventListener('click', (e) => {
+        if (e.target === this.overlay) {
+          this.close();
+        }
+      });
+
+      // Prevent modal from closing when clicking content
+      this.modal.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => this.handleKeydown(e));
+    }
+
+    open(index) {
+      this.selectedIndex = index;
+      this.updateModal();
+      this.overlay.classList.add('gallery-modal-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    close() {
+      this.selectedIndex = null;
+      // Animate out before removing
+      this.overlay.style.animation = 'fadeOut 0.3s ease forwards';
+      setTimeout(() => {
+        this.overlay.classList.remove('gallery-modal-open');
+        this.overlay.style.animation = '';
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    prev() {
+      if (this.selectedIndex === null) return;
+      this.selectedIndex =
+        (this.selectedIndex - 1 + this.imageSources.length) % this.imageSources.length;
+      this.updateModal();
+    }
+
+    next() {
+      if (this.selectedIndex === null) return;
+      this.selectedIndex = (this.selectedIndex + 1) % this.imageSources.length;
+      this.updateModal();
+    }
+
+    updateModal() {
+      const src = this.imageSources[this.selectedIndex];
+      this.modalImage.src = src;
+      this.modalImage.alt = `Gallery image ${this.selectedIndex + 1}`;
+      this.counter.textContent = `${this.selectedIndex + 1} / ${this.imageSources.length}`;
+    }
+
+    handleKeydown(e) {
+      if (this.selectedIndex === null) return;
+
+      if (e.key === 'Escape') {
+        this.close();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        this.prev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        this.next();
+      }
+    }
+  }
+
+  // Initialize gallery when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const galleryContainers = document.querySelectorAll('[data-gallery-container]');
+    galleryContainers.forEach((container) => {
+      new GalleryController(container);
+    });
+  });
+
+  // Also initialize if already loaded (for SPAs or dynamic content)
+  const galleryContainers = document.querySelectorAll('[data-gallery-container]');
+  if (galleryContainers.length > 0) {
+    galleryContainers.forEach((container) => {
+      new GalleryController(container);
+    });
+  }
+</script>

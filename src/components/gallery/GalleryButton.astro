@@ -1,0 +1,42 @@
+---
+interface Props {
+  direction: 'prev' | 'next';
+  class?: string;
+}
+
+const { direction, class: className = '' } = Astro.props;
+const arrow = direction === 'prev' ? '←' : '→';
+const label = direction === 'prev' ? 'Previous image' : 'Next image';
+const order = direction === 'prev' ? '-order-1' : 'order-1';
+---
+
+<button
+  class:list={[
+    // Base styles
+    'relative flex items-center justify-center flex-shrink-0',
+    'w-11 h-11 p-0 m-0',
+    'bg-white/10 text-white border-2 border-white/30 rounded-md',
+    'text-2xl leading-11 text-center',
+    'cursor-pointer transition-all duration-200',
+    'hover:bg-white/20 hover:border-white/50 hover:scale-105',
+    'active:bg-white/30 active:scale-95',
+    'font-sans align-middle',
+    // Desktop positioning (outside image)
+    order,
+    // Tablet/mobile overlay positioning
+    'max-lg:absolute max-lg:top-1/2 max-lg:-translate-y-1/2',
+    direction === 'prev' ? 'max-lg:left-2' : 'max-lg:right-2',
+    'max-lg:w-10 max-lg:h-10 max-lg:text-xl max-lg:leading-10',
+    'max-lg:hover:-translate-y-1/2 max-lg:hover:scale-105',
+    'max-lg:active:-translate-y-1/2 max-lg:active:scale-95',
+    // Mobile
+    'max-[480px]:w-9 max-[480px]:h-9 max-[480px]:text-lg max-[480px]:leading-9',
+    direction === 'prev' ? 'max-[480px]:left-1' : 'max-[480px]:right-1',
+    className,
+  ]}
+  aria-label={label}
+  data-gallery-prev={direction === 'prev' ? '' : undefined}
+  data-gallery-next={direction === 'next' ? '' : undefined}
+>
+  <span>{arrow}</span>
+</button>
