@@ -1,8 +1,24 @@
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join } from 'path';
-import { parse as parseFrontmatter } from 'gray-matter';
+import * as dotenv from 'dotenv';
+import matter from 'gray-matter';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+
+function loadEnv() {
+  const cwd = process.cwd();
+  const mode = process.env.NODE_ENV || 'development';
+
+  const envFiles = ['.env', '.env.local', `.env.${mode}`, `.env.${mode}.local`];
+
+  for (const file of envFiles) {
+    const envPath = resolve(cwd, file);
+    if (!existsSync(envPath)) continue;
+    dotenv.config({ path: envPath, override: false });
+  }
+}
+
+loadEnv();
 
 export interface BlogPost {
   title: string;
@@ -32,7 +48,47 @@ export interface NewsletterContent {
 /**
  * Get all blog posts from the last N days that haven't been sent in a newsletter
  */
-export function getRecentPosts(daysBack: number = 30): BlogPost[] {
+function processPostDir(postPath: string, postDir: string, cutoffDate: Date, posts: BlogPost[]) {
+  const indexPath = join(postPath, 'index.mdx');
+
+  if (!statSync(postPath).isDirectory()) return;
+
+  try {
+    const fileContent = readFileSync(indexPath, 'utf-8');
+    const { data, content } = matter(fileContent);
+
+    const pubDate = new Date(data.pubDate);
+
+    // Skip if older than cutoff date
+    if (pubDate < cutoffDate) return;
+
+    // Skip if already sent in newsletter
+    if (data.newsletterSent === true) return;
+
+    // Get excerpt (first 500 characters of content, excluding frontmatter)
+    const excerpt = content
+      .replace(/^import .+$/gm, '') // Remove imports
+      .replace(/^#+ .+$/gm, '') // Remove headings
+      .replace(/\n+/g, ' ') // Replace newlines
+      .trim()
+      .slice(0, 500);
+
+    posts.push({
+      title: data.title,
+      slug: data.slug || `/blog/${postDir}`,
+      description: data.description || excerpt,
+      pubDate,
+      heroImage: data.heroImage,
+      tags: data.tags || [],
+      content: excerpt,
+      filePath: indexPath,
+    });
+  } catch (error: unknown) {
+    console.error(`Error reading post ${postDir}:`, error);
+  }
+}
+
+export function getRecentPosts(daysBack = 30): BlogPost[] {
   const postsDir = join(process.cwd(), 'src', 'content', 'blog');
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - daysBack);
@@ -51,43 +107,7 @@ export function getRecentPosts(daysBack: number = 30): BlogPost[] {
 
     for (const postDir of postDirs) {
       const postPath = join(yearDir, postDir);
-      const indexPath = join(postPath, 'index.mdx');
-
-      if (!statSync(postPath).isDirectory()) continue;
-
-      try {
-        const fileContent = readFileSync(indexPath, 'utf-8');
-        const { data, content } = parseFrontmatter(fileContent);
-
-        const pubDate = new Date(data.pubDate);
-
-        // Skip if older than cutoff date
-        if (pubDate < cutoffDate) continue;
-
-        // Skip if already sent in newsletter
-        if (data.newsletterSent === true) continue;
-
-        // Get excerpt (first 500 characters of content, excluding frontmatter)
-        const excerpt = content
-          .replace(/^import .+$/gm, '') // Remove imports
-          .replace(/^#+ .+$/gm, '') // Remove headings
-          .replace(/\n+/g, ' ') // Replace newlines
-          .trim()
-          .slice(0, 500);
-
-        posts.push({
-          title: data.title,
-          slug: data.slug || `/blog/${postDir}`,
-          description: data.description || excerpt,
-          pubDate,
-          heroImage: data.heroImage,
-          tags: data.tags || [],
-          content: excerpt,
-          filePath: indexPath,
-        });
-      } catch (error) {
-        console.error(`Error reading post ${postDir}:`, error);
-      }
+      processPostDir(postPath, postDir, cutoffDate, posts);
     }
   }
 
@@ -103,7 +123,13 @@ export async function generateNewsletterContent(posts: BlogPost[]): Promise<News
     throw new Error('No posts to generate newsletter from');
   }
 
-  const model = google('gemini-2.0-flash-exp');
+  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    throw new Error(
+      'Missing GOOGLE_GENERATIVE_AI_API_KEY. Ensure it is set in your environment or in a .env file.'
+    );
+  }
+
+  const model = google('gemini-3-flash-preview');
   const siteUrl = process.env.SITE_URL || 'https://sergiocarracedo.es';
 
   // Generate monthly summary
@@ -125,7 +151,7 @@ Requirements:
   const { text: summary } = await generateText({
     model,
     prompt: summaryPrompt,
-    maxTokens: 200,
+    maxOutputTokens: 500,
   });
 
   // Generate teasers for each post
@@ -150,7 +176,7 @@ Requirements:
       const { text: teaser } = await generateText({
         model,
         prompt: teaserPrompt,
-        maxTokens: 150,
+        maxOutputTokens: 450,
       });
 
       return {
@@ -183,7 +209,7 @@ Requirements:
 /**
  * Main function to generate newsletter
  */
-export async function generateNewsletter(daysBack: number = 30) {
+export async function generateNewsletter(daysBack = 30) {
   console.log(`🔍 Searching for posts from the last ${daysBack} days...`);
 
   const posts = getRecentPosts(daysBack);
@@ -225,7 +251,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       }
       process.exit(0);
     })
-    .catch((error) => {
+    .catch((error: unknown) => {
       console.error('❌ Error generating newsletter:', error);
       process.exit(1);
     });

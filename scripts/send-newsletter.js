@@ -5,7 +5,6 @@ import { join } from 'path';
 import { generateNewsletter } from './generate-newsletter.ts';
 import MonthlyNewsletter from '../src/emails/MonthlyNewsletter.tsx';
 
-const SUBSCRIBERS_FILE = join(process.cwd(), 'subscribers', 'subscribers.json');
 const LOG_FILE = `newsletter-${new Date().toISOString().split('T')[0]}.log`;
 
 // Logging helper
@@ -16,14 +15,24 @@ function log(message) {
   appendFileSync(LOG_FILE, logMessage);
 }
 
-// Load confirmed subscribers
-function loadConfirmedSubscribers() {
+// Load subscribers from Resend
+async function loadSubscribers(resend) {
   try {
-    const data = readFileSync(SUBSCRIBERS_FILE, 'utf-8');
-    const subscribers = JSON.parse(data);
-    return subscribers.filter((s) => s.confirmed === true);
+    log('📋 Fetching subscribers from Resend...');
+    const { data } = await resend.contacts.list();
+    
+    if (!data?.data) {
+      log('⚠️  No data returned from Resend');
+      return [];
+    }
+
+    // Filter out unsubscribed contacts
+    const activeSubscribers = data.data.filter((contact) => !contact.unsubscribed);
+    
+    log(`✅ Found ${activeSubscribers.length} active subscriber(s)`);
+    return activeSubscribers;
   } catch (error) {
-    log(`⚠️  Error loading subscribers: ${error.message}`);
+    log(`⚠️  Error loading subscribers from Resend: ${error.message}`);
     return [];
   }
 }
@@ -73,17 +82,6 @@ async function main() {
 
   const { content, posts } = result;
 
-  // Load subscribers
-  log('\n📋 Loading confirmed subscribers...');
-  const subscribers = loadConfirmedSubscribers();
-
-  if (subscribers.length === 0) {
-    log('⚠️  No confirmed subscribers found. Exiting.');
-    process.exit(0);
-  }
-
-  log(`✅ Found ${subscribers.length} confirmed subscriber(s)`);
-
   // Initialize Resend
   if (!process.env.RESEND_API_KEY) {
     log('❌ RESEND_API_KEY not found in environment variables');
@@ -91,6 +89,14 @@ async function main() {
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
+  
+  // Load subscribers from Resend
+  const subscribers = await loadSubscribers(resend);
+
+  if (subscribers.length === 0) {
+    log('⚠️  No subscribers found. Exiting.');
+    process.exit(0);
+  }
   const fromEmail = process.env.FROM_EMAIL || 'newsletter@sergiocarracedo.es';
   const siteUrl = process.env.SITE_URL || 'https://sergiocarracedo.es';
 

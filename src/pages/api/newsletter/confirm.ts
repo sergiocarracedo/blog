@@ -1,4 +1,7 @@
 import type { APIRoute } from 'astro';
+import { Resend } from 'resend';
+
+const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const GET: APIRoute = async ({ url, redirect }) => {
   const token = url.searchParams.get('token');
@@ -43,22 +46,18 @@ export const GET: APIRoute = async ({ url, redirect }) => {
       );
     }
 
-    // Trigger GitHub Action to confirm subscriber
-    if (import.meta.env.GITHUB_TOKEN) {
-      const { Octokit } = await import('@octokit/rest');
-      const github = new Octokit({
-        auth: import.meta.env.GITHUB_TOKEN,
-      });
+    // Add contact to Resend
+    const { error } = await resend.contacts.create({
+      email,
+      unsubscribed: false,
+    });
 
-      await github.repos.createDispatchEvent({
-        owner: import.meta.env.GITHUB_OWNER || 'sergiocarracedo',
-        repo: import.meta.env.GITHUB_REPO || 'sergiocarracedo.es',
-        event_type: 'newsletter-confirm',
-        client_payload: {
-          email,
-          timestamp: Date.now(),
-        },
-      });
+    if (error) {
+      console.error('Error adding contact to Resend:', error);
+      // Don't fail if contact already exists
+      if (!error.message?.includes('already exists')) {
+        throw error;
+      }
     }
 
     // Return success page

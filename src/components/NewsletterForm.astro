@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 interface Props {
   placement?: 'footer' | 'toast';
 }
@@ -6,195 +7,60 @@ interface Props {
 const { placement = 'footer' } = Astro.props;
 ---
 
-<newsletter-form data-placement={placement}>
-  <form class="newsletter-form">
-    <div class="newsletter-form__content">
-      <div class="newsletter-form__header">
-        <span class="newsletter-form__icon">📧</span>
-        <h3 class="newsletter-form__title">Stay Updated</h3>
+<newsletter-form data-placement={placement} class="block">
+  <form class="w-full" data-newsletter-form>
+    <div class="flex flex-col gap-3">
+      <div class="flex items-center gap-2">
+        <Icon name="outline/mail-outline" />
+        <h3 class="m-0 text-xl font-bold text-primary">Stay Updated</h3>
       </div>
-      <p class="newsletter-form__description">
+
+      <p class="m-0 text-sm text-slate-600">
         Get monthly digests of new posts delivered to your inbox
       </p>
-      <div class="newsletter-form__input-group">
+
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-stretch">
         <input
           type="email"
           name="email"
           placeholder="your@email.com"
           required
-          class="newsletter-form__input"
+          class="w-full rounded-lg border-2 border-primary-lighter bg-white px-3.5 py-2.5 text-[15px] transition-all duration-200 ease-in-out placeholder:text-slate-400 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary-lighter sm:min-w-50 sm:flex-1"
           aria-label="Email address"
         />
-        <button type="submit" class="newsletter-form__button">
-          <span class="newsletter-form__button-text">Subscribe</span>
-          <span class="newsletter-form__button-arrow">→</span>
+
+        <button type="submit" class="btn flex w-full items-center justify-center gap-2 sm:w-auto">
+          <span data-newsletter-button-text>Subscribe</span>
         </button>
       </div>
-      <div class="newsletter-form__message" role="status" aria-live="polite">
+
+      <div
+        data-newsletter-message
+        class="hidden rounded-md border px-2 py-2 text-sm"
+        role="status"
+        aria-live="polite"
+      >
       </div>
     </div>
   </form>
 </newsletter-form>
 
-<style>
-  newsletter-form {
-    display: block;
-  }
-
-  .newsletter-form {
-    width: 100%;
-  }
-
-  .newsletter-form__content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .newsletter-form__header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .newsletter-form__icon {
-    font-size: 1.5rem;
-  }
-
-  .newsletter-form__title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    margin: 0;
-  }
-
-  .newsletter-form__description {
-    font-size: 0.875rem;
-    color: #4b5563;
-    margin: 0;
-  }
-
-  .newsletter-form__input-group {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .newsletter-form__input {
-    flex: 1;
-    min-width: 200px;
-    padding: 0.625rem 0.875rem;
-    border: 2px solid var(--color-primary-lighter);
-    border-radius: 8px;
-    font-size: 0.9375rem;
-    transition: all 0.2s ease-in-out;
-    background: white;
-  }
-
-  .newsletter-form__input:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px var(--color-primary-lighter);
-  }
-
-  .newsletter-form__input::placeholder {
-    color: #9ca3af;
-  }
-
-  .newsletter-form__button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.625rem 1.25rem;
-    background: var(--color-secondary);
-    color: var(--color-primary);
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    box-shadow: var(--color-primary) 0 5px 0 0;
-  }
-
-  .newsletter-form__button:hover {
-    box-shadow: var(--color-primary) 0 0 0 0;
-    transform: translateY(5px);
-  }
-
-  .newsletter-form__button:active {
-    box-shadow: var(--color-primary) 0 0 0 0;
-    transform: translateY(5px);
-  }
-
-  .newsletter-form__button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  .newsletter-form__button-arrow {
-    transition: transform 0.2s ease-in-out;
-  }
-
-  .newsletter-form__button:hover .newsletter-form__button-arrow {
-    transform: translateX(4px);
-  }
-
-  .newsletter-form__message {
-    font-size: 0.875rem;
-    padding: 0.5rem;
-    border-radius: 6px;
-    display: none;
-  }
-
-  .newsletter-form__message--visible {
-    display: block;
-  }
-
-  .newsletter-form__message--success {
-    background: #d1fae5;
-    color: #065f46;
-    border: 1px solid #10b981;
-  }
-
-  .newsletter-form__message--error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #ef4444;
-  }
-
-  .newsletter-form__message--loading {
-    background: #dbeafe;
-    color: #1e40af;
-    border: 1px solid #3b82f6;
-  }
-
-  @media (max-width: 640px) {
-    .newsletter-form__input-group {
-      flex-direction: column;
-    }
-
-    .newsletter-form__input {
-      width: 100%;
-    }
-
-    .newsletter-form__button {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-</style>
-
 <script>
   class NewsletterForm extends HTMLElement {
+    form!: HTMLFormElement;
+    emailInput!: HTMLInputElement;
+    submitButton!: HTMLButtonElement;
+    messageEl!: HTMLElement;
+    buttonTextEl!: HTMLElement;
+
     constructor() {
       super();
+
       this.form = this.querySelector('form')!;
-      this.emailInput = this.querySelector<HTMLInputElement>(
-        'input[name="email"]'
-      )!;
-      this.submitButton = this.querySelector('button[type="submit"]')!;
-      this.messageEl = this.querySelector('.newsletter-form__message')!;
+      this.emailInput = this.querySelector<HTMLInputElement>('input[name="email"]')!;
+      this.submitButton = this.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      this.messageEl = this.querySelector<HTMLElement>('[data-newsletter-message]')!;
+      this.buttonTextEl = this.querySelector<HTMLElement>('[data-newsletter-button-text]')!;
 
       this.form.addEventListener('submit', this.handleSubmit.bind(this));
     }
@@ -224,22 +90,13 @@ const { placement = 'footer' } = Astro.props;
         const data = await response.json();
 
         if (response.ok) {
-          this.showMessage(
-            'Success! Check your email to confirm your subscription.',
-            'success'
-          );
+          this.showMessage('Success! Check your email to confirm your subscription.', 'success');
           this.emailInput.value = '';
         } else {
-          this.showMessage(
-            data.error || 'Something went wrong. Please try again.',
-            'error'
-          );
+          this.showMessage(data.error || 'Something went wrong. Please try again.', 'error');
         }
       } catch (error) {
-        this.showMessage(
-          'Network error. Please check your connection and try again.',
-          'error'
-        );
+        this.showMessage('Network error. Please check your connection and try again.', 'error');
       } finally {
         this.setLoading(false);
       }
@@ -250,15 +107,24 @@ const { placement = 'footer' } = Astro.props;
     }
 
     showMessage(message: string, type: 'success' | 'error' | 'loading') {
+      const base = ['rounded-md', 'border', 'px-2', 'py-2', 'text-sm', 'block'];
+      const variants: Record<typeof type, string[]> = {
+        success: ['bg-emerald-100', 'text-emerald-900', 'border-emerald-500'],
+        error: ['bg-red-100', 'text-red-900', 'border-red-500'],
+        loading: ['bg-blue-100', 'text-blue-900', 'border-blue-500'],
+      };
+
+      const allVariantClasses = Object.values(variants).flat();
+
       this.messageEl.textContent = message;
-      this.messageEl.className = `newsletter-form__message newsletter-form__message--visible newsletter-form__message--${type}`;
+      this.messageEl.classList.remove('hidden', ...allVariantClasses);
+      this.messageEl.classList.add(...base, ...variants[type]);
     }
 
     setLoading(loading: boolean) {
       this.submitButton.disabled = loading;
       this.emailInput.disabled = loading;
-      this.submitButton.querySelector('.newsletter-form__button-text')!.textContent =
-        loading ? 'Subscribing...' : 'Subscribe';
+      this.buttonTextEl.textContent = loading ? 'Subscribing...' : 'Subscribe';
     }
   }
 

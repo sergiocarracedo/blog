@@ -1,18 +1,12 @@
 ---
 import AboutMe from './AboutMe.astro';
 import SocialLinks from './SocialLinks.astro';
-import NewsletterForm from './NewsletterForm.astro';
 const today = new Date();
 ---
 
 <footer
   class="pt-8 pb-10 text-gray-700 background-paper-secondary border-t border-primary border-t-6 border-solid wrapper rounded-xl mb-3"
 >
-  <!-- Newsletter Subscription Section -->
-  <div class="mb-8 pb-8 border-b border-primary-lighter">
-    <NewsletterForm placement="footer" />
-  </div>
-
   <div class="flex flex-wrap items-center justify-between gap-4 text-md">
     <div>
       <AboutMe />

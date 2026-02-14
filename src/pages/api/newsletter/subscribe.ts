@@ -31,6 +31,27 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    // Check if contact already exists in Resend
+    const { data: existingContacts } = await resend.contacts.list();
+    const contactExists = existingContacts?.data?.some(
+      (contact) => contact.email === email
+    );
+
+    if (contactExists) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: 'You are already subscribed!',
+        }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+
     // Generate confirmation token
     const token = Buffer.from(
       JSON.stringify({
@@ -63,26 +84,6 @@ export const POST: APIRoute = async ({ request }) => {
         status: 500,
         headers: {
           'Content-Type': 'application/json',
-        },
-      });
-    }
-
-    // Trigger GitHub Action to store subscriber
-    // This will be handled by the GitHub Action workflow
-    if (import.meta.env.GITHUB_TOKEN) {
-      const octokit = await import('@octokit/rest').then((m) => m.Octokit);
-      const github = new octokit({
-        auth: import.meta.env.GITHUB_TOKEN,
-      });
-
-      await github.repos.createDispatchEvent({
-        owner: import.meta.env.GITHUB_OWNER || 'sergiocarracedo',
-        repo: import.meta.env.GITHUB_REPO || 'sergiocarracedo.es',
-        event_type: 'newsletter-subscribe',
-        client_payload: {
-          email,
-          token,
-          timestamp: Date.now(),
         },
       });
     }

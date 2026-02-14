@@ -46,7 +46,7 @@
 }
 
 @utility btn-bottom-shadow-* {
-  box-shadow: var(--color-primary) 0 --value(integer) px 0 0;
+  box-shadow: var(--color-primary) 0 calc(--value(integer) * 1px) 0 0;
 }
 
 @utility btn {

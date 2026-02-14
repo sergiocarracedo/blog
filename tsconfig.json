@@ -5,8 +5,9 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*", "tailwind.config.ts"]
+      "@/*": ["./src/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
