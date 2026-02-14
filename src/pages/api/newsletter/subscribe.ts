@@ -3,6 +3,8 @@ import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import WelcomeEmail from '../../../emails/WelcomeEmail';
 
+export const prerender = false;
+
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const POST: APIRoute = async ({ request }) => {

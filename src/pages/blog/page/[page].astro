@@ -6,8 +6,6 @@ import PostTeaser from '../../../components/posts/PostTeaser.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getSortedCollection } from '../../../utils/getSortedCollection';
 
-export const prerender = true;
-
 export async function getStaticPaths({ paginate }) {
   const posts = await getSortedCollection('blog');
   return paginate(posts, { pageSize: 10 });

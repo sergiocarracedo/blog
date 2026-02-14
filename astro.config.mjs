@@ -29,7 +29,6 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server',
   site: 'https://sergiocarracedo.es',
   integrations: [mdx(), sitemap(), icon(), pagefind(), cookieconsent(cookieConsentConfig), react()],
   image: {
