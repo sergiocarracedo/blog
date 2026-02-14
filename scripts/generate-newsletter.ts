@@ -181,10 +181,10 @@ Requirements:
 
       return {
         title: post.title,
-        url: `${siteUrl}${post.slug}`,
+        url: `${siteUrl}${post.slug.startsWith('/') ? post.slug : `/${post.slug}`}`,
         description: post.description,
         teaser: teaser.trim(),
-        image: post.heroImage ? `${siteUrl}${post.heroImage}` : undefined,
+        image: post.heroImage ? `${siteUrl}${post.heroImage.startsWith('/') ? post.heroImage : `/${post.heroImage}`}` : undefined,
         date: post.pubDate.toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',

@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
@@ -74,27 +73,33 @@ export const MonthlyNewsletter = ({
         <Section style={content}>
           {posts.map((post, index) => (
             <Section key={index} style={postCard}>
-              {post.image && (
-                <Img 
-                  src={post.image} 
-                  alt={post.title} 
-                  style={postImage} 
-                  width="600" 
-                  height="300"
-                />
-              )}
-
-              <Heading style={postTitle}>{post.title}</Heading>
-
-              <Text style={postDate}>{post.date}</Text>
-
-              <Text style={postTeaser}>{post.teaser}</Text>
-
-              <Section style={buttonContainer}>
-                <Button style={button} href={post.url}>
-                  Read more →
-                </Button>
-              </Section>
+              <table style={postTable}>
+                <tr>
+                  {post.image && (
+                    <td style={postImageCell}>
+                      <Link href={post.url}>
+                        <Img 
+                          src={post.image} 
+                          alt={post.title} 
+                          style={postImage} 
+                          width="300" 
+                          height="150"
+                        />
+                      </Link>
+                    </td>
+                  )}
+                  <td style={postContentCell}>
+                    <Link href={post.url} style={postTitleLink}>
+                      <Heading style={postTitle}>{post.title}</Heading>
+                    </Link>
+                    <Text style={postDate}>{post.date}</Text>
+                    <Text style={postTeaser}>{post.teaser}</Text>
+                    <Link href={post.url} style={readMoreLink}>
+                      Read more →
+                    </Link>
+                  </td>
+                </tr>
+              </table>
 
               {index < posts.length - 1 && <Hr style={postDivider} />}
             </Section>
@@ -135,6 +140,8 @@ const main = {
   backgroundColor: '#f8f5ed',
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect width=\'20\' height=\'20\' fill=\'%23f8f5ed\'/%3E%3Cpath d=\'M0 0h20v20H0z\' fill=\'none\' stroke=\'%23e8e1d4\' stroke-width=\'0.5\'/%3E%3C/svg%3E")',
+  backgroundSize: '20px 20px',
 };
 
 const container = {
@@ -206,19 +213,37 @@ const postCard = {
   margin: '24px 0',
 };
 
-const postImage = {
+const postTable = {
   width: '100%',
-  maxWidth: '600px',
-  height: 'auto',
+  borderCollapse: 'collapse' as const,
+};
+
+const postImageCell = {
+  width: '300px',
+  verticalAlign: 'top' as const,
+  paddingRight: '16px',
+};
+
+const postContentCell = {
+  verticalAlign: 'top' as const,
+};
+
+const postImage = {
+  width: '300px',
+  height: '150px',
   borderRadius: '8px',
-  marginBottom: '16px',
   objectFit: 'cover' as const,
   display: 'block',
 };
 
+const postTitleLink = {
+  textDecoration: 'none',
+  color: '#213b4a',
+};
+
 const postTitle = {
   color: '#213b4a',
-  fontSize: '24px',
+  fontSize: '20px',
   fontWeight: '700',
   lineHeight: '1.3',
   margin: '0 0 8px 0',
@@ -231,28 +256,17 @@ const postDate = {
 };
 
 const postTeaser = {
-  fontSize: '16px',
+  fontSize: '14px',
   lineHeight: '1.6',
   color: '#404040',
-  margin: '0 0 20px 0',
+  margin: '0 0 12px 0',
 };
 
-const buttonContainer = {
-  margin: '20px 0',
-};
-
-const button = {
-  backgroundColor: '#90c6be',
-  color: '#213b4a',
-  fontSize: '16px',
-  fontWeight: '600',
+const readMoreLink = {
+  color: '#90c6be',
   textDecoration: 'none',
-  textAlign: 'center' as const,
-  display: 'inline-block',
-  padding: '12px 32px',
-  borderRadius: '8px',
-  border: 'none',
-  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px',
 };
 
 const postDivider = {

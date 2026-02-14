@@ -40,3 +40,24 @@
 [2026-02-14T18:52:19.299Z] 
 🎉 Newsletter process complete!
 [2026-02-14T18:52:19.299Z] ✅ Process finished successfully
+[2026-02-14T18:58:59.446Z] 🚀 Starting newsletter generation and sending process...
+[2026-02-14T18:58:59.446Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-14T18:58:59.446Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-14T18:59:08.832Z] 📋 Fetching subscribers from Resend...
+[2026-02-14T18:59:09.064Z] ⚠️  No data returned from Resend
+[2026-02-14T18:59:09.064Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-14T18:59:09.064Z] 
+📧 Rendering email template...
+[2026-02-14T18:59:09.130Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-14T18:59:09.322Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-14T18:59:09.322Z] 
+📊 Sending complete:
+[2026-02-14T18:59:09.322Z]    ✅ Success: 1
+[2026-02-14T18:59:09.323Z]    ❌ Failed: 0
+[2026-02-14T18:59:09.323Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-14T18:59:09.323Z] 
+🎉 Newsletter process complete!
+[2026-02-14T18:59:09.323Z] ✅ Process finished successfully
