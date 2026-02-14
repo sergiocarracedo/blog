@@ -16,7 +16,7 @@
     "lint:md:fix": "markdownlint --fix \"**/*.md\" \"**/*.mdx\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "newsletter:test": "node scripts/send-newsletter.js --test"
+    "newsletter:test": "tsx scripts/send-newsletter.js --test"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.23",

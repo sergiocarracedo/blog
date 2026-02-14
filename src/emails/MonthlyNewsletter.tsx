@@ -46,8 +46,15 @@ export const MonthlyNewsletter = ({
     </Preview>
     <Body style={main}>
       <Container style={container}>
-        {/* Header */}
+        {/* Header with profile picture */}
         <Section style={header}>
+          <Img 
+            src="https://sergiocarracedo.es/i/sergiocarracedo-alt-optimized.png" 
+            alt="Sergio Carracedo" 
+            width="80" 
+            height="80" 
+            style={profileImage}
+          />
           <Heading style={h1}>📬 Monthly Digest</Heading>
           <Text style={subtitle}>
             {month} {year}
@@ -68,7 +75,13 @@ export const MonthlyNewsletter = ({
           {posts.map((post, index) => (
             <Section key={index} style={postCard}>
               {post.image && (
-                <Img src={post.image} alt={post.title} style={postImage} width="536" height="300" />
+                <Img 
+                  src={post.image} 
+                  alt={post.title} 
+                  style={postImage} 
+                  width="600" 
+                  height="300"
+                />
               )}
 
               <Heading style={postTitle}>{post.title}</Heading>
@@ -119,7 +132,7 @@ export const MonthlyNewsletter = ({
 export default MonthlyNewsletter;
 
 const main = {
-  backgroundColor: '#f3f4f6',
+  backgroundColor: '#f8f5ed',
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
 };
@@ -131,6 +144,14 @@ const container = {
   marginBottom: '64px',
   borderRadius: '12px',
   maxWidth: '600px',
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+};
+
+const profileImage = {
+  borderRadius: '50%',
+  margin: '0 auto 16px',
+  display: 'block',
+  border: '3px solid #213b4a',
 };
 
 const header = {
@@ -187,10 +208,12 @@ const postCard = {
 
 const postImage = {
   width: '100%',
+  maxWidth: '600px',
   height: 'auto',
   borderRadius: '8px',
   marginBottom: '16px',
   objectFit: 'cover' as const,
+  display: 'block',
 };
 
 const postTitle = {

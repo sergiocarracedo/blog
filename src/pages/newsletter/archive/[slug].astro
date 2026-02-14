@@ -6,52 +6,46 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Newsletter Archive" description="Browse past newsletters">
-  <main class="container mx-auto px-4 py-16 max-w-4xl">
-    <div class="text-center mb-12">
+  <section class="wrapper">
+    <div class="text-center mb-12 max-w-4xl mx-auto">
       <h1 class="text-4xl font-bold mb-4">Newsletter Archive</h1>
-      <p class="text-gray-600 dark:text-gray-400 text-lg">
+      <p class="text-lg opacity-80">
         Past newsletters will appear here once the feature is implemented.
       </p>
     </div>
 
-    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-8 mb-8">
+    <div class="bg-secondary/60 backdrop-blur-xs rounded-lg p-8 mb-8 max-w-4xl mx-auto">
       <div class="flex items-start">
-        <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 text-primary mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
         </svg>
         <div>
           <h2 class="text-xl font-semibold mb-2">Archive Coming Soon</h2>
-          <p class="text-gray-700 dark:text-gray-300">
+          <p>
             The newsletter archive feature is planned for a future update. For now, all newsletter content is available on the blog.
           </p>
         </div>
       </div>
     </div>
 
-    <div class="text-center space-y-4">
-      <div>
-        <a 
-          href="/blog" 
-          class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors mr-4"
-        >
+    <div class="text-center space-y-4 max-w-4xl mx-auto">
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href="/blog" class="btn">
           Browse All Posts
         </a>
-        <a 
-          href="/" 
-          class="inline-block bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-        >
+        <a href="/" class="btn btn-secondary">
           Back to Homepage
         </a>
       </div>
       
-      <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-        <p class="text-gray-600 dark:text-gray-400 mb-4">
+      <div class="mt-8 pt-8 border-t border-primary/20">
+        <p class="mb-4">
           Haven't subscribed yet?
         </p>
-        <p class="text-sm text-gray-500 dark:text-gray-500">
+        <p class="text-sm opacity-70">
           Scroll to the footer to subscribe to the monthly newsletter.
         </p>
       </div>
     </div>
-  </main>
+  </section>
 </BaseLayout>

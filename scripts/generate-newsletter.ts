@@ -184,7 +184,7 @@ Requirements:
         url: `${siteUrl}${post.slug}`,
         description: post.description,
         teaser: teaser.trim(),
-        image: post.heroImage ? `${siteUrl}${post.slug}/cover.png` : undefined,
+        image: post.heroImage ? `${siteUrl}${post.heroImage}` : undefined,
         date: post.pubDate.toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
