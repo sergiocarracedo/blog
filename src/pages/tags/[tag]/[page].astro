@@ -28,6 +28,8 @@ export interface StaticPath {
 
 const tags = (await getTags()) || new Map();
 
+export const prerender = true;
+
 export const getStaticPaths = async ({
   paginate,
 }: {
