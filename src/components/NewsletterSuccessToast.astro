@@ -1,0 +1,98 @@
+---
+// Success toast that appears after newsletter subscription
+---
+
+<newsletter-success-toast id="newsletter-success-toast" class="hidden fixed bottom-4 right-4 z-50">
+  <div
+    class="bg-primary text-white rounded-lg shadow-lg px-6 py-4 flex items-center gap-3 max-w-md animate-slide-in"
+  >
+    <svg
+      class="w-6 h-6 flex-shrink-0"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <div class="flex-1">
+      <p class="font-semibold mb-1">Subscription Successful!</p>
+      <p class="text-sm opacity-90">Check your email to confirm your subscription.</p>
+    </div>
+    <button
+      class="text-white hover:text-white/80 transition-colors"
+      aria-label="Close notification"
+      data-close-toast
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+</newsletter-success-toast>
+
+<style>
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+  }
+</style>
+
+<script>
+  class NewsletterSuccessToast extends HTMLElement {
+    closeButton!: HTMLButtonElement;
+
+    constructor() {
+      super();
+      this.closeButton = this.querySelector('[data-close-toast]')!;
+      this.closeButton.addEventListener('click', this.hide.bind(this));
+    }
+
+    show() {
+      this.classList.remove('hidden');
+
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        this.hide();
+      }, 5000);
+    }
+
+    hide() {
+      this.classList.add('hidden');
+    }
+  }
+
+  customElements.define('newsletter-success-toast', NewsletterSuccessToast);
+
+  // Listen for success event from newsletter form
+  document.addEventListener('newsletter:success', () => {
+    const toast = document.getElementById('newsletter-success-toast') as NewsletterSuccessToast;
+    if (toast) {
+      toast.show();
+    }
+  });
+</script>

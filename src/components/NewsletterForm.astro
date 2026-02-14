@@ -92,6 +92,21 @@ const { placement = 'footer' } = Astro.props;
         if (response.ok) {
           this.showMessage('Success! Check your email to confirm your subscription.', 'success');
           this.emailInput.value = '';
+          
+          // Emit success event for toast
+          const successEvent = new CustomEvent('newsletter:success');
+          document.dispatchEvent(successEvent);
+          
+          // Close toast popup after short delay
+          const placement = this.getAttribute('data-placement');
+          if (placement === 'toast') {
+            setTimeout(() => {
+              const toast = document.querySelector('newsletter-toast');
+              if (toast && typeof (toast as any).hide === 'function') {
+                (toast as any).hide();
+              }
+            }, 2000);
+          }
         } else {
           this.showMessage(data.error || 'Something went wrong. Please try again.', 'error');
         }
