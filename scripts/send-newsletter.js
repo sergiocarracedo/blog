@@ -63,10 +63,10 @@ async function main() {
   log('🚀 Starting newsletter generation and sending process...');
 
   const daysBack = parseInt(process.env.DAYS_BACK || '30', 10);
-  const testMode = process.env.TEST_MODE === 'true';
+  const testMode = process.argv.includes('--test');
 
   if (testMode) {
-    log('🧪 Running in TEST MODE - emails will not be sent');
+    log('🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only');
   }
 
   // Generate newsletter content
@@ -90,9 +90,13 @@ async function main() {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   // Load subscribers from Resend
-  const subscribers = await loadSubscribers(resend);
+  let subscribers = await loadSubscribers(resend);
 
-  if (subscribers.length === 0) {
+  // In test mode, override subscribers with test email
+  if (testMode) {
+    log('🧪 Overriding subscribers with test email: hi@sergiocarracedo.es');
+    subscribers = [{ email: 'hi@sergiocarracedo.es' }];
+  } else if (subscribers.length === 0) {
     log('⚠️  No subscribers found. Exiting.');
     process.exit(0);
   }
@@ -113,13 +117,6 @@ async function main() {
       viewOnlineUrl,
     })
   );
-
-  if (testMode) {
-    log('\n📄 Newsletter preview:');
-    log(JSON.stringify(content, null, 2));
-    log(`\n✅ Test mode complete. Email HTML rendered (${emailHtml.length} chars)`);
-    process.exit(0);
-  }
 
   // Send emails
   log('\n📤 Sending newsletter to subscribers...');
@@ -169,10 +166,12 @@ async function main() {
   log(`   ✅ Success: ${successCount}`);
   log(`   ❌ Failed: ${failCount}`);
 
-  // Mark posts as sent
-  if (successCount > 0) {
+  // Mark posts as sent (skip in test mode)
+  if (successCount > 0 && !testMode) {
     log('\n📝 Marking posts as sent in frontmatter...');
     markPostsAsSent(posts);
+  } else if (testMode) {
+    log('\n⏭️  Skipping marking posts as sent (test mode)');
   }
 
   log('\n🎉 Newsletter process complete!');
