@@ -1,9 +1,8 @@
-import { Resend } from 'resend';
 import { render } from '@react-email/components';
-import { readFileSync, writeFileSync, appendFileSync } from 'fs';
-import { join } from 'path';
-import { generateNewsletter } from './generate-newsletter.ts';
+import { appendFileSync, readFileSync, writeFileSync } from 'fs';
+import { Resend } from 'resend';
 import MonthlyNewsletter from '../src/emails/MonthlyNewsletter.tsx';
+import { generateNewsletter } from './generate-newsletter.ts';
 
 const LOG_FILE = `newsletter-${new Date().toISOString().split('T')[0]}.log`;
 
@@ -20,7 +19,7 @@ async function loadSubscribers(resend) {
   try {
     log('📋 Fetching subscribers from Resend...');
     const { data } = await resend.contacts.list();
-    
+
     if (!data?.data) {
       log('⚠️  No data returned from Resend');
       return [];
@@ -28,7 +27,7 @@ async function loadSubscribers(resend) {
 
     // Filter out unsubscribed contacts
     const activeSubscribers = data.data.filter((contact) => !contact.unsubscribed);
-    
+
     log(`✅ Found ${activeSubscribers.length} active subscriber(s)`);
     return activeSubscribers;
   } catch (error) {
@@ -89,7 +88,7 @@ async function main() {
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  
+
   // Load subscribers from Resend
   const subscribers = await loadSubscribers(resend);
 
