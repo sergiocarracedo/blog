@@ -1,12 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 ---
 
 <BaseLayout title="Unsubscribe - Newsletter" description="Manage your newsletter subscription">
   <section class="wrapper">
-    <div class="text-center max-w-2xl mx-auto">
-      <h1 class="text-4xl font-bold mb-6">Newsletter Unsubscribe</h1>
+    <SectionHeader
+      title="Newsletter Unsubscribe"
+      description="Manage your newsletter subscription"
+      class="mb-10"
+    />
 
+    <div class="text-center max-w-2xl mx-auto">
       <div class="bg-secondary/60 backdrop-blur-xs rounded-lg p-8 mb-8">
         <svg
           class="w-16 h-16 mx-auto mb-4 text-primary"
