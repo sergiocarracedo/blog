@@ -12,7 +12,6 @@ import {
   Section,
   Text,
 } from '@react-email/components';
-import * as React from 'react';
 
 export interface BlogPost {
   title: string;
@@ -33,22 +32,12 @@ interface MonthlyNewsletterProps {
 }
 
 export const MonthlyNewsletter = ({
-  month = 'January',
-  year = '2026',
-  summary = 'This month I wrote about web development, TypeScript patterns, and modern frontend tooling.',
-  posts = [
-    {
-      title: 'How to Know Your Frontend Version',
-      url: 'https://sergiocarracedo.es/blog/how-to-know-your-frontend-version',
-      description: 'Learn how to automatically inject version info...',
-      teaser:
-        'Discover a simple technique to always know which version of your frontend is deployed in production.',
-      image: 'https://sergiocarracedo.es/blog/cover.png',
-      date: 'Jan 30, 2026',
-    },
-  ],
-  unsubscribeUrl = 'https://sergiocarracedo.es/newsletter/unsubscribe?token=xxx',
-  viewOnlineUrl = 'https://sergiocarracedo.es/newsletter/archive/2026-01',
+  month,
+  year,
+  summary,
+  posts,
+  unsubscribeUrl,
+  viewOnlineUrl,
 }: MonthlyNewsletterProps) => (
   <Html>
     <Head />
