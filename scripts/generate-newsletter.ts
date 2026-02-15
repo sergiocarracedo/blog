@@ -217,18 +217,24 @@ Requirements:
             const outputFilename = `${basename(filename, extname(filename))}.jpg`;
             const destPath = join(destDir, outputFilename);
 
-            // Optimize image: resize to 300x150, convert to JPEG, quality 80
-            await sharp(sourcePath)
-              .resize(300, 150, {
-                fit: 'cover',
-                position: 'center',
-              })
-              .jpeg({ quality: 80 })
-              .toFile(destPath);
+            // Skip if already exists
+            if (existsSync(destPath)) {
+              console.log(`⏭️  Image already exists: ${outputFilename}`);
+            } else {
+              // Optimize image: resize to 300x150, convert to JPEG, quality 80
+              await sharp(sourcePath)
+                .resize(300, 150, {
+                  fit: 'cover',
+                  position: 'center',
+                })
+                .jpeg({ quality: 80 })
+                .toFile(destPath);
+
+              console.log(`✅ Optimized image: ${filename} -> ${outputFilename} (300x150)`);
+            }
 
             // Generate URL
             imageUrl = `${siteUrl}/newsletter-images/${post.fullBlogPath}/${outputFilename}`;
-            console.log(`✅ Optimized image: ${filename} -> ${outputFilename} (300x150)`);
           } else {
             console.warn(`⚠️  Image not found: ${sourcePath}`);
           }
