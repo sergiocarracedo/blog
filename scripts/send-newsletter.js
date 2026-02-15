@@ -21,7 +21,7 @@ function parseArgs() {
     testMode: false,
     dataFile: null,
   };
-  
+
   for (const arg of args) {
     if (arg === '--test') {
       result.testMode = true;
@@ -29,7 +29,7 @@ function parseArgs() {
       result.dataFile = arg.split('=')[1];
     }
   }
-  
+
   return result;
 }
 
@@ -147,45 +147,57 @@ async function main() {
     })
   );
 
-  // Send emails
+  // Send emails using batch API (up to 100 per request)
   log('\n📤 Sending newsletter to subscribers...');
 
   let successCount = 0;
   let failCount = 0;
 
-  // Send in batches of 10 to avoid rate limits
-  const batchSize = 10;
+  // Resend batch API supports up to 100 emails per request
+  const batchSize = 100;
+
   for (let i = 0; i < subscribers.length; i += batchSize) {
     const batch = subscribers.slice(i, i + batchSize);
 
-    await Promise.all(
-      batch.map(async (subscriber) => {
-        try {
-          const { error } = await resend.emails.send({
-            from: fromEmail,
-            to: subscriber.email,
-            subject: `${content.month} ${content.year} - New posts from sergiocarracedo.es`,
-            html: emailHtml,
-            headers: {
-              'List-Unsubscribe': `<${unsubscribeUrl}>`,
-            },
-          });
+    // Prepare batch of emails
+    const emails = batch.map((subscriber) => ({
+      from: fromEmail,
+      to: subscriber.email,
+      subject: `${content.month} ${content.year} - New posts from sergiocarracedo.es`,
+      html: emailHtml,
+      headers: {
+        'List-Unsubscribe': `<${unsubscribeUrl}>`,
+      },
+    }));
 
-          if (error) {
-            log(`❌ Failed to send to ${subscriber.email}: ${error.message}`);
-            failCount++;
-          } else {
-            log(`✅ Sent to ${subscriber.email}`);
+    try {
+      log(`📨 Sending batch of ${emails.length} email(s)...`);
+      const { data, error } = await resend.batch.send(emails);
+
+      if (error) {
+        log(`❌ Batch send failed: ${error.message}`);
+        failCount += emails.length;
+      } else {
+        // data.data contains array of results for each email
+        const results = data?.data || [];
+        for (let j = 0; j < results.length; j++) {
+          const result = results[j];
+          const email = batch[j]?.email;
+          if (result.id) {
+            log(`✅ Sent to ${email}`);
             successCount++;
+          } else {
+            log(`❌ Failed to send to ${email}`);
+            failCount++;
           }
-        } catch (error) {
-          log(`❌ Error sending to ${subscriber.email}: ${error.message}`);
-          failCount++;
         }
-      })
-    );
+      }
+    } catch (error) {
+      log(`❌ Batch error: ${error.message}`);
+      failCount += emails.length;
+    }
 
-    // Wait 1 second between batches
+    // Small delay between batches if there are more
     if (i + batchSize < subscribers.length) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
