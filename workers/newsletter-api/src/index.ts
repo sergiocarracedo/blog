@@ -175,33 +175,42 @@ async function handleConfirm(request: Request, env: Env): Promise<Response> {
     const resend = new Resend(env.RESEND_API_KEY);
     const tokenHash = await hashToken(token);
 
-    // Find the contact
-    const { data: contacts } = await resend.contacts.list({
+    // Find the contact by email using get endpoint
+    const { data: contact, error: getError } = await resend.contacts.get({
       audienceId: env.RESEND_AUDIENCE_ID,
+      email: email,
     });
 
-    const contact = contacts?.data?.find(
-      (c: { email: string }) => c.email.toLowerCase() === email.toLowerCase()
-    );
+    console.log('Contact lookup:', { email, contact, getError });
 
-    if (!contact) {
+    if (getError || !contact) {
+      console.error('Contact not found:', getError);
       return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=not_found`, 302);
     }
 
     // Verify token from firstName field
+    console.log('Contact firstName:', contact.first_name);
+
+    let tokenData;
     try {
-      const tokenData = JSON.parse(contact.firstName || '{}');
-
-      if (tokenData.hash !== tokenHash) {
-        return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=invalid_token`, 302);
-      }
-
-      if (Date.now() > tokenData.exp) {
-        return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=expired`, 302);
-      }
-    } catch {
+      tokenData = JSON.parse(contact.first_name || '{}');
+      console.log('Parsed tokenData:', tokenData);
+    } catch (parseError) {
+      console.error('Failed to parse token data:', parseError);
       return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=invalid_token`, 302);
     }
+
+    if (tokenData.hash !== tokenHash) {
+      console.error('Token hash mismatch:', { expected: tokenData.hash, got: tokenHash });
+      return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=invalid_token`, 302);
+    }
+
+    if (Date.now() > tokenData.exp) {
+      return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=expired`, 302);
+    }
+
+    // Small delay to avoid rate limiting
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
     // Update contact: mark as subscribed and clear token
     await resend.contacts.update({
@@ -210,6 +219,9 @@ async function handleConfirm(request: Request, env: Env): Promise<Response> {
       unsubscribed: false,
       firstName: '', // Clear token data
     });
+
+    // Small delay to avoid rate limiting
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
     // Send welcome email
     await resend.emails.send({
