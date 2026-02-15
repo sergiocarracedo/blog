@@ -10,12 +10,12 @@ heroImageMeta:
 tags:
   - ai
   - productivity
+excerpt: 'A browser extension that brings AI directly to any text field on the web, eliminating the copy-paste workflow when improving, translating, or correcting text.'
 ---
 
 [:float-image[]{src="./chromewebstore.png" maxWidth="220px" float="right"}](https://chromewebstore.google.com/detail/sireno-assistant/ppnecnomfnadhbcpacgkfldiapoejogo)
 Imagine you're writing a LinkedIn post. You want to correct it, improve the styling, or even translate it to another language.
 The usual workflow is to copy the text into ChatGPT, Gemini, or any other LLM, ask for changes, and then paste the improved version back. It works, but it's time-consuming and a bit clunky.
-
 
 # Product definition
 
@@ -29,7 +29,6 @@ The extension adds a button next to text inputs. Click it and a chat modal pops 
 ./inline02.png
 ./inline03.png
 :::
-
 
 I also wanted users to customize the assistant's tone per website. For example, what you want on LinkedIn is usually different from what you want on a more informal website like Twitter. And if you give the assistant a bit of context (like your basic personal info), it can write in a more personal and consistent voice.
 
@@ -49,7 +48,6 @@ And why stop at a single input field? In the side panel, you can select which fi
 ./chat04.png
 :::
 
-
 # How to use it
 
 :float-image[]{src="./extensions.png" maxWidth="220px" float="right"}
@@ -62,7 +60,6 @@ I recommend reviewing the default skills and updating the one with your basic in
 
 From there, you're ready to use everything on any website. Click the button next to any text input field, or use the side panel chat to start interacting with the assistant.
 
-
 # Technical details
 
 I built this project as an experiment with OpenCode as a vibe-coding tool. It helped me iterate quickly and ship an MVP fast, but I still had to get my hands dirty on the tricky parts that LLMs tend to miss: positioning the icon reliably, handling iframes, Shadow DOM, and so on. (I'll talk about my experience with OpenCode in another post.)
@@ -72,4 +69,3 @@ This extension is open source on GitHub, so you can check the code and contribut
 If you like it and find any issue or have any suggestions, please let me know in the [GitHub repo issues](https://github.com/sergiocarracedo/sireno-assistant/issues)
 
 > This is a side project that I built in my free time just to enjoy doing things, but it is an early MVP, so it may have some rough edges and bugs, but I hope to improve it over time based on user feedback and contributions.
-

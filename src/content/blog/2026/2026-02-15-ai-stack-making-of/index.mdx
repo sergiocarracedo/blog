@@ -1,6 +1,6 @@
 ---
 title: "From Chatbot to Coworker's Post Making Of: How I Used AI to Write an AI Blog Post"
-pubDate: 2026-02-15
+pubDate: 2026-02-15 01:00:00
 slug: understanding-ai-stack-making-of
 heroVideo: ./cover.webm
 heroImage: ./cover.png
@@ -9,15 +9,25 @@ heroImageMeta:
   author: 'Gemini Nano Banana Pro'
 tags:
   - ai
+  - experiment
+excerpt: 'A behind-the-scenes look at using Gemini Deep Research to generate an entire blog post, including all the prompts and iterations along the way.'
 ---
 
-I was experimenting with AI usages and I thought: Why not use Gemini Deep research to write a blog post about the AI engineering stack for junior/mid engineers using it? 
+> This post is part of an experiment in AI-generated content. 
+> This is the making of but you can :astro-ref[read the generated post]{path="blog/2026/2026-02-15-ai-stack"}) 
 
-This is the making of that experiment, where I will explain you all the steps and share the prompts I used to create the post. (I will share then with the typos and syntactical errors, to be more transparent about the process).
 
-## First step: Ask Gemini 
+:::codeblock{maxHeight=300}
 
-I asked Gemini to write the prompt I should use with Gemini Deep Research feature.
+I was experimenting with AI use cases and I thought: why not use Gemini Deep Research to write a blog post about the AI engineering stack for junior/mid engineers?
+
+This is the making-of of that experiment, where I’ll explain all the steps and share the prompts I used to create the post. (I’ll share them with the typos and syntax errors too, to be transparent about the process.)
+
+## First step: Ask Gemini
+
+I asked Gemini to write the prompt I should use with the Gemini Deep Research feature.
+
+:man: Me:
 
 ```markdown
 I want to create a full AI generated post for my blog.
@@ -30,7 +40,9 @@ a secondary goal is to create another post explaining the steps I or you followe
 Before start, ask me anything can improve the outcome
 ```
 
-The LLMs did a summary and asked me some questions to clarify as I asked in the previous  prompt's last line. 
+The LLM summarized the request and asked a few questions, as I requested in the last line of the previous prompt.
+
+:robot: Gemini:
 
 ```markdown
 This is a fantastic topic. The AI-for-developers landscape is evolving so fast that terms like "MCP," "Agent," and "Orchestrator" are often used interchangeably, confusing many junior and mid-level developers. A clear, layered explanation will be very high-value.
@@ -38,7 +50,7 @@ This is a fantastic topic. The AI-for-developers landscape is evolving so fast t
 To make sure the Deep Research prompt I generate for you hits exactly the right notes (and to ensure the secondary "meta-post" is accurate), I have a few clarifying questions:
 
 1. The "Layers" Hierarchy
-You mentioned several concepts (LLM, Agent, CLI/IDE, Tools, MCPs, skill.md, Orchestrator). To structure the research correctly, how do you visualize the relationship?
+   You mentioned several concepts (LLM, Agent, CLI/IDE, Tools, MCPs, skill.md, Orchestrator). To structure the research correctly, how do you visualize the relationship?
 
 Option A (The Stack): LLM is the bottom (Foundation), Agents sit on top, Tools are what Agents use, and the IDE is the interface where the human sits.
 
@@ -47,7 +59,7 @@ Option B (The Workflow): Grouped by phase of work (e.g., "Planning" vs. "Coding"
 My assumption: Option A is usually clearer for this audience. Is that your preference?
 
 2. Specific Technologies & Examples
-You mentioned vibekanban.com (which appears to be a newer or niche visual orchestrator), skill.md, and agents.md.
+   You mentioned vibekanban.com (which appears to be a newer or niche visual orchestrator), skill.md, and agents.md.
 
 Context: Are skill.md and agents.md references to specific standards (like the ones used in Cline/Roo Code or similar agentic tools), or are you referring to general documentation practices?
 
@@ -56,19 +68,21 @@ Standard Tools: Should the research explicitly include widely known tools to anc
 VibeKanban: Is this post specifically to highlight VibeKanban (e.g., a spotlight or sponsored context), or is it just one example among many orchestrators?
 
 3. The Tone and "Takeaway"
-Tone: "Not too technical" can mean "explain it like I'm 5" or "explain it like I'm a smart developer who just hasn't used AI agents yet." I assume the latter?
+   Tone: "Not too technical" can mean "explain it like I'm 5" or "explain it like I'm a smart developer who just hasn't used AI agents yet." I assume the latter?
 
 Actionable Advice: Do you want the post to just explain the terms, or do you want to recommend a specific "Getting Started" stack? (e.g., "Start with Cursor, then try building an Agent").
 
 4. The Meta-Post (Secondary Goal)
-For the second post about how we built this:
+   For the second post about how we built this:
 
 Do you want the "Deep Research" prompt to explicitly include instructions to log its own process for this purpose? (i.e., "As you research, keep a diary of what search terms failed and which succeeded").
 
 Once you answer these, I will craft a comprehensive Deep Research Prompt that you can copy-paste, designed to yield a perfectly structured blog post.
 ```
 
-I give it the extra context
+I gave it the extra context:
+
+:man: Me:
 
 ```markdown
 1. Both but not mixed
@@ -76,12 +90,12 @@ I give it the extra context
 3. the audicence are junior / mid who know a little bit about AI and used copilot or similar tools
 4. yes
 
-
 I forgot to mention i want you to explain the modes: ask, agent, plan, debug, etc
 ```
 
+It return an explanation and the final prompt to use with Gemini Deep Research in markdown.
 
-It return an explanation and the final prompt to use with Gemini Deep Research in markdown. 
+:robot: Gemini:
 
 ```markdown
 This is a perfect structure. By distinguishing between the Stack (the technical layers) and the Workflow (the functional modes), we can give junior/mid developers a mental model that actually makes sense of the chaos.
@@ -89,8 +103,10 @@ This is a perfect structure. By distinguishing between the Stack (the technical 
 Here is the Deep Research Prompt optimized for Gemini. You can copy and paste this directly.
 
 1. The Deep Research Prompt
-Copy and paste this into Gemini:
+   Copy and paste this into Gemini:
 ```
+
+:robot: Gemini:
 
 ```
 I need you to research and write a comprehensive, educational blog post (approx. 12-minute read) targeting junior-to-mid-level software developers. The goal is to demystify the "AI Engineering Stack" by breaking it down into clear layers and explaining the specific purpose of each tool or standard.
@@ -143,9 +159,11 @@ Explain the different ways a dev interacts with these layers (referencing tools 
 * Verify `VibeKanban`'s specific workflow (git worktree isolation) as a prime example of orchestration.
 ```
 
+:robot: Gemini:
+
 ```markdown
 2. Explanation of the Prompt Strategy
-Here is why I designed the prompt this way, so you know what to expect:
+   Here is why I designed the prompt this way, so you know what to expect:
 
 The "Context vs. Capability" Distinction: I explicitly asked the model to research the difference between agents.md (Project Context) and skill.md (Reusable Skills). This is often confused, and clarifying it will make your post authoritative.
 
@@ -159,16 +177,21 @@ Next Step:
 Once you run this prompt and get the blog post, paste the result (or the "Search Journey" section) back here. I will then help you format the Secondary Post about "How we wrote this using AI."
 ```
 
+## Second step: Ask Gemini Deep Research
+
 With the prompt I opened a new Gemini conversation with the Deep Research feature and paste it there. I wait for the result.
 
 After a few minutes of work it returns [the report](https://gemini.google.com/share/0a834d55074c) and I just asked to export it in markdown format to be able to use it in the blog post.
 
-
 Just for reference, it used 24 sources to generate the report
+
+## Third step: Refine the output
 
 The output was good, but too long for a blog post, and some references were outdated (it mentioned Gemini 1.5, but we are in Gemini 3 Pro), so I went back to the initial convesation, and asked to summarize it and update the references.
 
 Note I didn't paste the repost, I just mentioned and it get it from other conversation.
+
+:man: Me:
 
 ```markdown
 the report generated is too long and seems partially outdated, talkss about gemini1.5 and now we have gemini 3, same with claude and openai model, i can no trust in a report not updated
@@ -176,15 +199,21 @@ the report generated is too long and seems partially outdated, talkss about gemi
 
 And finally it gave me this awnser:
 
+:robot: Gemini:
+
 ```markdown
 Here is the comprehensive, ready-to-publish blog post. It is structured to be clear, actionable, and uses the latest terminology for 2026.
 
 Following that, I have included the "Meta-Post" detailing exactly how we built this.
 ```
+
 (and the blog post content but I will not reproduce it here as you already have it in the :astro-ref[final post]{path="blog/2026/2026-02-15-ai-stack"})
 
+## Fourth step: Generate the cover image
 
 And as last step I asked it to generate a cover image:
+
+:man: Me:
 
 ```markdown
 ok, i need to generate the cover for the posts, write a prompt based in previous request, and generate it
@@ -198,4 +227,4 @@ Even if I don't want to read AI generated posts, I wanted to experiment with the
 
 The result is a readable post, something probably I will never write in the same way, and that is what makes the difference. I think the content creation value in general is trending to 0, and the results is good, but this make more valuable the "hand-made" content as has behind it the writter life-expecience, the personal touch, hisd opinions.
 
-
+:::

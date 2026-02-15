@@ -3,6 +3,7 @@ import { enrichBlogPost } from '@/utils/enrichBlogPost';
 import { truncate } from '@/utils/truncate';
 import { Picture } from 'astro:assets';
 import type { CollectionEntry, CollectionKey } from 'astro:content';
+import AIGeneratedBadge from './AIGeneratedBadge.astro';
 
 interface Props<C extends CollectionKey = 'blog'> {
   post: CollectionEntry<C>;
@@ -46,6 +47,11 @@ const enrichedPost = enrichBlogPost(post);
     ]}
     transition:name={`post-title-${enrichedPost.sanitizedId}`}
   >
+    {
+      enrichedPost.data.aiGenerated && (
+        <AIGeneratedBadge class="align-middle inline-block" />
+      )
+    }
     {truncate(enrichedPost.data.title, 50)}
   </div>
 </a>

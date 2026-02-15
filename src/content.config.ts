@@ -9,6 +9,7 @@ const blog = defineCollection({
     z.object({
       title: z.string(),
       description: z.string().optional(),
+      excerpt: z.string().optional(),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       heroImage: image().optional(),
@@ -24,6 +25,7 @@ const blog = defineCollection({
           licence: z.string().optional(),
         })
         .optional(),
+      aiGenerated: z.boolean().optional().default(false),
     }),
 });
 

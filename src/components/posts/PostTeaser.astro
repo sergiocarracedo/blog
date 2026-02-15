@@ -11,6 +11,7 @@ import { enrichBlogPost } from '../../utils/enrichBlogPost';
 import { truncate } from '../../utils/truncate';
 import PostMainMedia from './parts/PostMainMedia.astro';
 import PostMetadata from './parts/PostMetadata.astro';
+import AIGeneratedBadge from './parts/AIGeneratedBadge.astro';
 
 const enrichedPost = enrichBlogPost(post);
 const postUrl = enrichedPost.slug;
@@ -73,6 +74,11 @@ const { readingTime, excerpt } = enrichedPost;
           style === 'default' && 'max-w-md',
         ]}
       >
+        {
+          enrichedPost.data.aiGenerated && (
+            <AIGeneratedBadge class="mr-0.5 align-middle" />
+          )
+        }
         <a class="link" href={postUrl} title={title}>
           {title}
         </a>

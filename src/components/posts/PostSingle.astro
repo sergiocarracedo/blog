@@ -11,6 +11,7 @@ import PostNav from './parts/PostNav.astro';
 import PostTags from './parts/PostTags.astro';
 import ReadingTime from './parts/ReadingTime.astro';
 import PostMainMedia from './parts/PostMainMedia.astro';
+import AIGeneratedBadge from './parts/AIGeneratedBadge.astro';
 
 type Props = {
   post: CollectionEntry<'blog'>;
@@ -19,7 +20,7 @@ type Props = {
 const { post } = Astro.props;
 
 const enrichedPost = enrichBlogPost(post);
-const { title, pubDate, heroImage, tags, heroImageMeta } = enrichedPost.data;
+const { title, pubDate, heroImage, tags, heroImageMeta, aiGenerated } = enrichedPost.data;
 const { readingTime } = enrichedPost;
 // Sanitize post.id for view transition name
 const sanitizedId = post.id.replaceAll('/', '-');
@@ -44,6 +45,11 @@ const { Content } = await render(post);
     </div>
     <header class="mb-3">
       <h1 class="text-3xl md:text-4xl font-impact font-bold mb-2" transition:name={`post-title-${enrichedPost.sanitizedId}`}>
+        {
+          aiGenerated && (
+            <AIGeneratedBadge class="mr-0.5 align-middle" />
+          )
+        }
         {title}
       </h1>
 

@@ -9,7 +9,8 @@ heroImageMeta:
   author: 'Gemini Nano Banana Pro'
 tags:
   - ai
-  - productivity  
+  - productivity
+excerpt: 'How I built a CLI tool with GitHub Copilot to automatically generate daily work summaries from GitHub stats and store them in Obsidian.'
 ---
 
 As someone who is always looking for the next challenge, I don't usually bother keeping track of completed tasks. Still, it's very useful to be able to look back and see what I have achieved in the past.
@@ -41,6 +42,7 @@ Pull request #3242 introduces this new hook, showcasing a more streamlined appro
 ## Going further
 
 I understood the potential of these tools, so I rethought the architecture to make it more flexible and extensible. I found that:
+
 - not only GitHub stats are useful; other sources like Slack, email, and Jira can also be valuable
 - the output format doesn't always need to be Markdown
 - sometimes I might want to send the summary to different places like email or Slack instead of (or in addition to) a file
@@ -80,10 +82,10 @@ inputs:
       secure: true
       user: env:IMAP_USER
       password: env:IMAP_PASSWORD
-      mailbox: "[Gmail]/Todos"   # pulls everything
-      sentMailbox: "[Gmail]/Enviados"  # typical Gmail sent folder
+      mailbox: '[Gmail]/Todos' # pulls everything
+      sentMailbox: '[Gmail]/Enviados' # typical Gmail sent folder
       maxMessages: 200
-      
+
 formatter:
   plugin: markdown
 
@@ -92,8 +94,9 @@ outputs:
   - plugin: file
     config:
       path: '~/workdiary-{date}.md'
-      mode: merge # Don't be worried if the file exists, just append the new summary or update the previous one as it wraps the content with markers  
+      mode: merge # Don't be worried if the file exists, just append the new summary or update the previous one as it wraps the content with markers
 ```
+
 > Note the use of `env:` to get the API keys and other sensitive data from environment variables, so they are not stored in plain text in the workflow file. When the tool runs, it replaces these placeholders with the actual values from the environment.
 
 Then run the tool to generate the work diary:
@@ -101,6 +104,7 @@ Then run the tool to generate the work diary:
 ```
 $ work-diary --workflow ./workflow.yaml
 ```
+
 ## Show me the code!
 
 I thought this tool could be useful for other people, so I released it as open source: https://github.com/sergiocarracedo/work-diary. If you want to run it on your machine you can follow the instructions in [SETUP.md](https://github.com/sergiocarracedo/work-diary/blob/main/SETUP.md).
@@ -119,11 +123,11 @@ name: Work Diary
 
 on:
   schedule:
-    - cron: "30 23 * * *"
+    - cron: '30 23 * * *'
   workflow_dispatch:
     inputs:
       date:
-        description: "Target date (YYYY-MM-DD, UTC). Defaults to today."
+        description: 'Target date (YYYY-MM-DD, UTC). Defaults to today.'
         required: false
         type: string
 
@@ -189,12 +193,11 @@ jobs:
 This workflow runs every day at 23:30 UTC, and you can adjust the cron expression to fit your needs. It checks out the repository, runs the work-diary tool with the specified configuration, and then commits and pushes any changes to the repository.
 
 ## Conclusion
+
 Automating my work diary with AI has been a great experience. It has saved me time and effort and allowed me to focus on more important tasks. It also gives me a better overview of my work, and I'm pretty sure it will help me a lot in the future when I need to prepare my performance reviews. :wink::wink:
 
 > If you are interested in other input sources, formatters or output plugins, feel free to open an issue or a PR in the [work-diary](https://github.com/sergiocarracedo/work-diary/issues). Providing feedback and suggestions is always welcome!
 
-
 ## Disclaimer
+
 No AI models were harmed during the making of this tool, well I stressed them a little bit :joy:
-
-

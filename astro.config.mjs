@@ -12,6 +12,7 @@ import imgAttr from 'remark-imgattr';
 import './src/middleware';
 import { remarkDirectiveASCIInema } from './src/remark-plugins/remark-directive-asciinema';
 import { remarkDirectiveAstroEntryRef } from './src/remark-plugins/remark-directive-astro-entry-ref';
+import { remarkDirectiveCodeblock } from './src/remark-plugins/remark-directive-codeblock';
 import { remarkDirectiveFloatImage } from './src/remark-plugins/remark-directive-float-image';
 import { remarkDirectiveGallery } from './src/remark-plugins/remark-directive-gallery';
 import { remarkDirectiveIframe } from './src/remark-plugins/remark-directive-iframe';
@@ -46,6 +47,7 @@ export default defineConfig({
       [remarkDirectiveASCIInema, {}],
       [remarkDirectiveFloatImage, {}],
       [remarkDirectiveGallery, {}],
+      [remarkDirectiveCodeblock, {}],
       [emoji, {}],
       [imgAttr, { extendWithLink: true }],
     ],

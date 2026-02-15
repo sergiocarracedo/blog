@@ -13,11 +13,12 @@ export interface EnrichedPost<T = any> {
 export function enrichBlogPost<T = any>(entry: {
   id: string;
   body?: string;
-  data: T;
+  data: T & { excerpt?: string };
 }): EnrichedPost<T> {
   const words = entry.body?.trim().split(/\s+/).length || 0;
   const readingTime = Math.ceil(words / 200);
-  const excerpt = createExcerpt(entry?.body || '');
+  // Use manual excerpt from frontmatter if available, otherwise generate from body
+  const excerpt = entry.data.excerpt || createExcerpt(entry?.body || '');
 
   return {
     ...entry,
