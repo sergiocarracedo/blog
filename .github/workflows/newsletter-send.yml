@@ -68,7 +68,7 @@ jobs:
             echo "❌ GOOGLE_GENERATIVE_AI_API_KEY is NOT set"
           fi
 
-          # Run generation script
+          # Run generation script and save output to file for later use
           pnpm tsx scripts/generate-newsletter.ts $DAYS_BACK > newsletter-output.txt 2>&1
           cat newsletter-output.txt
 
@@ -78,6 +78,14 @@ jobs:
             echo "📭 No new posts found. Skipping newsletter."
           else
             echo "has_posts=true" >> $GITHUB_OUTPUT
+            # Extract JSON content and save to file for send step
+            pnpm tsx -e "
+              import { generateNewsletter } from './scripts/generate-newsletter.ts';
+              const result = await generateNewsletter($DAYS_BACK);
+              if (result) {
+                console.log(JSON.stringify(result));
+              }
+            " > newsletter-data.json 2>/dev/null || true
             echo "✅ Newsletter content generated"
           fi
 
@@ -165,6 +173,7 @@ jobs:
         if: steps.generate.outputs.has_posts == 'true'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
           FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
           SITE_URL: 'https://sergiocarracedo.es'
           DAYS_BACK: ${{ github.event.inputs.days_back || '30' }}
