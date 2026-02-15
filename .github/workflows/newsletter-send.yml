@@ -61,6 +61,13 @@ jobs:
           SITE_URL: 'https://sergiocarracedo.es'
           DAYS_BACK: ${{ github.event.inputs.days_back || '30' }}
         run: |
+          # Debug: Check if env var is set (without revealing value)
+          if [ -n "$GOOGLE_GENERATIVE_AI_API_KEY" ]; then
+            echo "✅ GOOGLE_GENERATIVE_AI_API_KEY is set (length: ${#GOOGLE_GENERATIVE_AI_API_KEY})"
+          else
+            echo "❌ GOOGLE_GENERATIVE_AI_API_KEY is NOT set"
+          fi
+
           # Run generation script
           pnpm tsx scripts/generate-newsletter.ts $DAYS_BACK > newsletter-output.txt 2>&1
           cat newsletter-output.txt
