@@ -101,7 +101,7 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
     // Send confirmation email - URL points to Worker's /confirm endpoint
     const confirmUrl = `${env.WORKER_URL}/confirm?token=${token}&email=${encodeURIComponent(email)}`;
 
-    await resend.emails.send({
+    const { data: emailResult, error: emailError } = await resend.emails.send({
       from: env.FROM_EMAIL,
       to: email,
       subject: 'Confirm your subscription to sergiocarracedo.es',
@@ -135,6 +135,22 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
         </html>
       `,
     });
+
+    if (emailError || !emailResult) {
+      console.error('Failed to send confirmation email:', emailError);
+      // Delete the contact since we couldn't send the email
+      await resend.contacts.remove({
+        audienceId: env.RESEND_AUDIENCE_ID,
+        email,
+      });
+      return jsonResponse(
+        { error: 'Failed to send confirmation email. Please try again.' },
+        500,
+        cors
+      );
+    }
+
+    console.log('Confirmation email sent:', emailResult.id);
 
     return jsonResponse(
       { message: 'Confirmation email sent! Please check your inbox.' },
