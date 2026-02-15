@@ -61,19 +61,6 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
 
     const resend = new Resend(env.RESEND_API_KEY);
 
-    // Check if already subscribed
-    const { data: contactsList } = await resend.contacts.list({
-      audienceId: env.RESEND_AUDIENCE_ID,
-    });
-
-    const existingContact = contactsList?.data?.find(
-      (c: { email: string }) => c.email.toLowerCase() === email.toLowerCase()
-    );
-
-    if (existingContact) {
-      return jsonResponse({ message: 'You are already subscribed!' }, 200, cors);
-    }
-
     // Generate confirmation token
     const token = await generateToken();
     const tokenHash = await hashToken(token);
@@ -81,9 +68,9 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
 
     // Store pending subscription in Resend contact with metadata
     // We'll use first_name field temporarily to store token data
-    // This is a workaround since Cloudflare Workers don't have built-in KV in free tier
     const tokenData = JSON.stringify({ hash: tokenHash, exp: expiresAt });
 
+    // Try to create contact - if it already exists, Resend will return an error
     const { data: createdContact, error: createError } = await resend.contacts.create({
       email,
       unsubscribed: true, // Mark as unsubscribed until confirmed
@@ -91,12 +78,23 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
       firstName: tokenData, // Store token temporarily
     });
 
-    if (createError || !createdContact) {
+    if (createError) {
+      // If contact already exists, tell user they're already subscribed
+      if (createError.message?.includes('already exists')) {
+        return jsonResponse({ message: 'You are already subscribed!' }, 200, cors);
+      }
       console.error('Failed to create contact:', createError);
       return jsonResponse({ error: 'Failed to create subscription. Please try again.' }, 500, cors);
     }
 
+    if (!createdContact) {
+      return jsonResponse({ error: 'Failed to create subscription. Please try again.' }, 500, cors);
+    }
+
     console.log('Contact created:', createdContact.id);
+
+    // Small delay to avoid rate limiting (Resend allows 2 req/sec)
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
     // Send confirmation email - URL points to Worker's /confirm endpoint
     const confirmUrl = `${env.WORKER_URL}/confirm?token=${token}&email=${encodeURIComponent(email)}`;
