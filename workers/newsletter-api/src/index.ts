@@ -2,6 +2,7 @@ import { Resend } from 'resend';
 
 export interface Env {
   RESEND_API_KEY: string;
+  RESEND_AUDIENCE_ID: string;
   SITE_URL: string;
   FROM_EMAIL: string;
   ALLOWED_ORIGIN: string;
@@ -61,7 +62,7 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
 
     // Check if already subscribed
     const { data: contacts } = await resend.contacts.list({
-      audienceId: undefined, // Uses default audience
+      audienceId: env.RESEND_AUDIENCE_ID,
     });
 
     const existingContact = contacts?.data?.find(
@@ -69,11 +70,7 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
     );
 
     if (existingContact) {
-      return jsonResponse(
-        { message: 'You are already subscribed!' },
-        200,
-        cors
-      );
+      return jsonResponse({ message: 'You are already subscribed!' }, 200, cors);
     }
 
     // Generate confirmation token
@@ -89,7 +86,7 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
     await resend.contacts.create({
       email,
       unsubscribed: true, // Mark as unsubscribed until confirmed
-      audienceId: process.env.RESEND_AUDIENCE_ID || '',
+      audienceId: env.RESEND_AUDIENCE_ID,
       firstName: tokenData, // Store token temporarily
     });
 
@@ -138,11 +135,7 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
     );
   } catch (error) {
     console.error('Subscribe error:', error);
-    return jsonResponse(
-      { error: 'Failed to process subscription. Please try again.' },
-      500,
-      cors
-    );
+    return jsonResponse({ error: 'Failed to process subscription. Please try again.' }, 500, cors);
   }
 }
 
@@ -162,7 +155,7 @@ async function handleConfirm(request: Request, env: Env): Promise<Response> {
 
     // Find the contact
     const { data: contacts } = await resend.contacts.list({
-      audienceId: undefined,
+      audienceId: env.RESEND_AUDIENCE_ID,
     });
 
     const contact = contacts?.data?.find(
@@ -176,7 +169,7 @@ async function handleConfirm(request: Request, env: Env): Promise<Response> {
     // Verify token from firstName field
     try {
       const tokenData = JSON.parse(contact.firstName || '{}');
-      
+
       if (tokenData.hash !== tokenHash) {
         return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=invalid_token`, 302);
       }
@@ -191,7 +184,7 @@ async function handleConfirm(request: Request, env: Env): Promise<Response> {
     // Update contact: mark as subscribed and clear token
     await resend.contacts.update({
       id: contact.id,
-      audienceId: '',
+      audienceId: env.RESEND_AUDIENCE_ID,
       unsubscribed: false,
       firstName: '', // Clear token data
     });
