@@ -62,9 +62,9 @@ jobs:
           DAYS_BACK: ${{ github.event.inputs.days_back || '30' }}
         run: |
           # Run generation script
-          node --experimental-strip-types scripts/generate-newsletter.ts $DAYS_BACK > newsletter-output.txt 2>&1
+          pnpm tsx scripts/generate-newsletter.ts $DAYS_BACK > newsletter-output.txt 2>&1
           cat newsletter-output.txt
-          
+
           # Check if posts were found
           if grep -q "No new posts found" newsletter-output.txt; then
             echo "has_posts=false" >> $GITHUB_OUTPUT
@@ -79,15 +79,15 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          
+
           # Add newsletter images if any were generated
           if [ -d "public/newsletter-images" ]; then
             git add public/newsletter-images/
           fi
-          
+
           # Add posts marked as sent
           git add src/content/blog/
-          
+
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
@@ -108,11 +108,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           echo "⏳ Waiting for 'Deploy to GitHub Pages' workflow to complete..."
-          
+
           # Get the commit SHA we just pushed
           COMMIT_SHA=$(git rev-parse HEAD)
           echo "Looking for workflow run for commit: $COMMIT_SHA"
-          
+
           # Wait up to 10 minutes for deployment workflow to complete
           for i in {1..60}; do
             echo "Checking workflow status (attempt $i/60)..."
@@ -148,7 +148,7 @@ jobs:
             
             sleep 10
           done
-          
+
           # Verify site is accessible
           echo "🔍 Verifying site accessibility..."
           sleep 10
@@ -167,7 +167,7 @@ jobs:
             TEST_FLAG="--test"
             echo "🧪 Running in TEST MODE"
           fi
-          
+
           node --experimental-strip-types scripts/send-newsletter.js $TEST_FLAG
 
       - name: Mark posts as sent
