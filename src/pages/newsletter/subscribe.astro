@@ -2,6 +2,21 @@
 import NewsletterForm from '../../components/NewsletterForm.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Get URL params for status messages
+const url = new URL(Astro.request.url);
+const success = url.searchParams.get('success') === 'true';
+const error = url.searchParams.get('error');
+
+const errorMessages: Record<string, string> = {
+  invalid: 'Invalid confirmation link. Please try subscribing again.',
+  not_found: 'Email not found. Please subscribe again.',
+  invalid_token: 'Invalid or corrupted confirmation link. Please try subscribing again.',
+  expired: 'Confirmation link has expired. Please subscribe again.',
+  server: 'Something went wrong. Please try again later.',
+};
+
+const errorMessage = error ? errorMessages[error] || 'An error occurred. Please try again.' : null;
 ---
 
 <BaseLayout title="Subscribe to Newsletter" description="Get monthly digests of new posts">
@@ -13,77 +28,95 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     />
 
     <div class="max-w-2xl mx-auto">
-      <div class="bg-secondary/60 backdrop-blur-xs rounded-lg p-8 mb-8">
-        <div class="mb-6">
-          <h2 class="text-2xl font-semibold mb-4">What You'll Get</h2>
-          <ul class="space-y-3 text-left">
-            <li class="flex items-start gap-3">
-              <svg
-                class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>Monthly digest of new blog posts</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <svg
-                class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>AI-generated summaries of each post</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <svg
-                class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>No spam, only quality content about web development</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <svg
-                class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>Unsubscribe anytime with one click</span>
-            </li>
-          </ul>
+      {success && (
+        <div class="bg-emerald-100 border border-emerald-500 text-emerald-900 rounded-lg p-6 mb-8">
+          <h2 class="text-xl font-semibold mb-2">Subscription Confirmed!</h2>
+          <p>Thank you for subscribing! You'll receive monthly digests of new posts.</p>
         </div>
-      </div>
+      )}
 
-      <div class="bg-secondary/30 rounded-lg p-8">
-        <NewsletterForm placement="footer" />
-      </div>
+      {errorMessage && (
+        <div class="bg-red-100 border border-red-500 text-red-900 rounded-lg p-6 mb-8">
+          <h2 class="text-xl font-semibold mb-2">Subscription Error</h2>
+          <p>{errorMessage}</p>
+        </div>
+      )}
+
+      {!success && (
+        <>
+          <div class="bg-secondary/60 backdrop-blur-xs rounded-lg p-8 mb-8">
+            <div class="mb-6">
+              <h2 class="text-2xl font-semibold mb-4">What You'll Get</h2>
+              <ul class="space-y-3 text-left">
+                <li class="flex items-start gap-3">
+                  <svg
+                    class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Monthly digest of new blog posts</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg
+                    class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>AI-generated summaries of each post</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg
+                    class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>No spam, only quality content about web development</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg
+                    class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Unsubscribe anytime with one click</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-secondary/30 rounded-lg p-8">
+            <NewsletterForm placement="footer" />
+          </div>
+        </>
+      )}
 
       <div class="mt-8 text-center">
         <p class="text-sm opacity-70 mb-4">

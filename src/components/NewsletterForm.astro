@@ -5,9 +5,12 @@ interface Props {
 }
 
 const { placement = 'footer' } = Astro.props;
+
+// API URL - uses Cloudflare Worker in production
+const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-api.sergiocarracedo.workers.dev';
 ---
 
-<newsletter-form data-placement={placement} class="block">
+<newsletter-form data-placement={placement} data-api-url={apiUrl} class="block">
   <form class="w-full" data-newsletter-form>
     <div class="flex flex-col gap-3">
       <div class="flex items-center gap-2">
@@ -52,6 +55,7 @@ const { placement = 'footer' } = Astro.props;
     submitButton!: HTMLButtonElement;
     messageEl!: HTMLElement;
     buttonTextEl!: HTMLElement;
+    apiUrl!: string;
 
     constructor() {
       super();
@@ -61,6 +65,7 @@ const { placement = 'footer' } = Astro.props;
       this.submitButton = this.querySelector<HTMLButtonElement>('button[type="submit"]')!;
       this.messageEl = this.querySelector<HTMLElement>('[data-newsletter-message]')!;
       this.buttonTextEl = this.querySelector<HTMLElement>('[data-newsletter-button-text]')!;
+      this.apiUrl = this.getAttribute('data-api-url') || '';
 
       this.form.addEventListener('submit', this.handleSubmit.bind(this));
     }
@@ -79,7 +84,7 @@ const { placement = 'footer' } = Astro.props;
       this.showMessage('Subscribing...', 'loading');
 
       try {
-        const response = await fetch('/api/newsletter/subscribe', {
+        const response = await fetch(`${this.apiUrl}/subscribe`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -90,23 +95,12 @@ const { placement = 'footer' } = Astro.props;
         const data = await response.json();
 
         if (response.ok) {
-          this.showMessage('Success! Check your email to confirm your subscription.', 'success');
+          this.showMessage(data.message || 'Success! Check your email to confirm your subscription.', 'success');
           this.emailInput.value = '';
           
           // Emit success event for toast
           const successEvent = new CustomEvent('newsletter:success');
           document.dispatchEvent(successEvent);
-          
-          // Close toast popup after short delay
-          const placement = this.getAttribute('data-placement');
-          if (placement === 'toast') {
-            setTimeout(() => {
-              const toast = document.querySelector('newsletter-toast');
-              if (toast && typeof (toast as any).hide === 'function') {
-                (toast as any).hide();
-              }
-            }, 2000);
-          }
         } else {
           this.showMessage(data.error || 'Something went wrong. Please try again.', 'error');
         }

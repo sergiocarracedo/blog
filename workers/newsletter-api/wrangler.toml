@@ -1,0 +1,16 @@
+name = "newsletter-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# Custom domain (configure after first deploy)
+# routes = [
+#   { pattern = "api.sergiocarracedo.es/*", zone_name = "sergiocarracedo.es" }
+# ]
+
+[vars]
+SITE_URL = "https://sergiocarracedo.es"
+FROM_EMAIL = "newsletter@sergiocarracedo.es"
+ALLOWED_ORIGIN = "https://sergiocarracedo.es"
+
+# Secrets (set via `wrangler secret put RESEND_API_KEY`)
+# RESEND_API_KEY = "re_xxx"

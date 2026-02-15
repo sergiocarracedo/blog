@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # Newsletter logs
 newsletter-*.log
+
+# Wrangler (Cloudflare Workers)
+.wrangler/
