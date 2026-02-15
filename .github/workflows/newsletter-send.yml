@@ -11,15 +11,17 @@ on:
         required: false
         default: '30'
       test_mode:
-        description: 'Test mode (only log, dont send)'
+        description: 'Test mode (send only to test email)'
         required: false
         default: 'false'
 
 permissions:
   contents: write
+  actions: read
+  deployments: read
 
 jobs:
-  send-newsletter:
+  newsletter:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -52,19 +54,124 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate and send newsletter
+      - name: Generate newsletter content and optimize images
+        id: generate
         env:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+          SITE_URL: 'https://sergiocarracedo.es'
+          DAYS_BACK: ${{ github.event.inputs.days_back || '30' }}
+        run: |
+          # Run generation script
+          node --experimental-strip-types scripts/generate-newsletter.ts $DAYS_BACK > newsletter-output.txt 2>&1
+          cat newsletter-output.txt
+          
+          # Check if posts were found
+          if grep -q "No new posts found" newsletter-output.txt; then
+            echo "has_posts=false" >> $GITHUB_OUTPUT
+            echo "📭 No new posts found. Skipping newsletter."
+          else
+            echo "has_posts=true" >> $GITHUB_OUTPUT
+            echo "✅ Newsletter content generated"
+          fi
+
+      - name: Commit and push newsletter images
+        if: steps.generate.outputs.has_posts == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          
+          # Add newsletter images if any were generated
+          if [ -d "public/newsletter-images" ]; then
+            git add public/newsletter-images/
+          fi
+          
+          # Add posts marked as sent
+          git add src/content/blog/
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: add newsletter images for $(date +%Y-%m)"
+            git push
+            echo "✅ Changes pushed to repository"
+          fi
+
+      - name: Wait for deploy workflow to trigger
+        if: steps.generate.outputs.has_posts == 'true' && github.event.inputs.test_mode != 'true'
+        run: |
+          echo "⏳ Waiting for deploy workflow to start..."
+          sleep 30
+
+      - name: Wait for deploy workflow to complete
+        if: steps.generate.outputs.has_posts == 'true' && github.event.inputs.test_mode != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "⏳ Waiting for 'Deploy to GitHub Pages' workflow to complete..."
+          
+          # Get the commit SHA we just pushed
+          COMMIT_SHA=$(git rev-parse HEAD)
+          echo "Looking for workflow run for commit: $COMMIT_SHA"
+          
+          # Wait up to 10 minutes for deployment workflow to complete
+          for i in {1..60}; do
+            echo "Checking workflow status (attempt $i/60)..."
+            
+            # Find the workflow run for our commit
+            RUN_STATUS=$(gh run list \
+              --workflow=deploy.yml \
+              --limit=10 \
+              --json headSha,status,conclusion \
+              --jq ".[] | select(.headSha == \"$COMMIT_SHA\") | .status" 2>/dev/null | head -1)
+            
+            RUN_CONCLUSION=$(gh run list \
+              --workflow=deploy.yml \
+              --limit=10 \
+              --json headSha,status,conclusion \
+              --jq ".[] | select(.headSha == \"$COMMIT_SHA\") | .conclusion" 2>/dev/null | head -1)
+            
+            if [ -n "$RUN_STATUS" ]; then
+              echo "Workflow status: $RUN_STATUS, conclusion: $RUN_CONCLUSION"
+              
+              if [ "$RUN_STATUS" = "completed" ]; then
+                if [ "$RUN_CONCLUSION" = "success" ]; then
+                  echo "✅ Deploy workflow completed successfully!"
+                  break
+                else
+                  echo "❌ Deploy workflow failed with conclusion: $RUN_CONCLUSION"
+                  exit 1
+                fi
+              fi
+            else
+              echo "Workflow run not found yet..."
+            fi
+            
+            sleep 10
+          done
+          
+          # Verify site is accessible
+          echo "🔍 Verifying site accessibility..."
+          sleep 10
+          curl -sSf "https://sergiocarracedo.es" > /dev/null && echo "✅ Site is accessible"
+
+      - name: Send newsletter
+        if: steps.generate.outputs.has_posts == 'true'
+        env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
           SITE_URL: 'https://sergiocarracedo.es'
           DAYS_BACK: ${{ github.event.inputs.days_back || '30' }}
-          TEST_MODE: ${{ github.event.inputs.test_mode || 'false' }}
         run: |
-          node scripts/send-newsletter.js
+          TEST_FLAG=""
+          if [ "${{ github.event.inputs.test_mode }}" = "true" ]; then
+            TEST_FLAG="--test"
+            echo "🧪 Running in TEST MODE"
+          fi
+          
+          node --experimental-strip-types scripts/send-newsletter.js $TEST_FLAG
 
       - name: Mark posts as sent
-        if: env.TEST_MODE != 'true'
+        if: steps.generate.outputs.has_posts == 'true' && github.event.inputs.test_mode != 'true'
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
@@ -82,3 +189,13 @@ jobs:
         with:
           name: newsletter-log
           path: newsletter-*.log
+          if-no-files-found: ignore
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.generate.outputs.has_posts }}" = "true" ]; then
+            echo "### Newsletter sent successfully! 🎉" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### No new posts found for newsletter 📭" >> $GITHUB_STEP_SUMMARY
+          fi

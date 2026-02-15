@@ -1,5 +1,5 @@
 import { render } from '@react-email/components';
-import { appendFileSync, readFileSync, writeFileSync } from 'fs';
+import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import { Resend } from 'resend';
 import MonthlyNewsletter from '../src/emails/MonthlyNewsletter.tsx';
 import { generateNewsletter } from './generate-newsletter.ts';
@@ -12,6 +12,25 @@ function log(message) {
   const logMessage = `[${timestamp}] ${message}\n`;
   console.log(message);
   appendFileSync(LOG_FILE, logMessage);
+}
+
+// Parse command line arguments
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const result = {
+    testMode: false,
+    dataFile: null,
+  };
+  
+  for (const arg of args) {
+    if (arg === '--test') {
+      result.testMode = true;
+    } else if (arg.startsWith('--data-file=')) {
+      result.dataFile = arg.split('=')[1];
+    }
+  }
+  
+  return result;
 }
 
 // Load subscribers from Resend
@@ -60,26 +79,36 @@ function markPostsAsSent(postFilePaths) {
 
 // Main function
 async function main() {
-  log('🚀 Starting newsletter generation and sending process...');
+  log('🚀 Starting newsletter sending process...');
 
+  const { testMode, dataFile } = parseArgs();
   const daysBack = parseInt(process.env.DAYS_BACK || '30', 10);
-  const testMode = process.argv.includes('--test');
 
   if (testMode) {
     log('🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only');
   }
 
-  // Generate newsletter content
-  log(`\n📝 Generating newsletter content (looking back ${daysBack} days)...`);
+  let content;
+  let posts = [];
 
-  const result = await generateNewsletter(daysBack);
+  // Load newsletter content from file or generate it
+  if (dataFile && existsSync(dataFile)) {
+    log(`📂 Loading newsletter data from ${dataFile}...`);
+    content = JSON.parse(readFileSync(dataFile, 'utf-8'));
+  } else {
+    // Generate newsletter content
+    log(`\n📝 Generating newsletter content (looking back ${daysBack} days)...`);
 
-  if (!result) {
-    log('📭 No new posts found. Exiting.');
-    process.exit(0);
+    const result = await generateNewsletter(daysBack);
+
+    if (!result) {
+      log('📭 No new posts found. Exiting.');
+      process.exit(0);
+    }
+
+    content = result.content;
+    posts = result.posts;
   }
-
-  const { content, posts } = result;
 
   // Initialize Resend
   if (!process.env.RESEND_API_KEY) {
@@ -166,8 +195,8 @@ async function main() {
   log(`   ✅ Success: ${successCount}`);
   log(`   ❌ Failed: ${failCount}`);
 
-  // Mark posts as sent (skip in test mode)
-  if (successCount > 0 && !testMode) {
+  // Mark posts as sent (skip in test mode and when using data file - already marked)
+  if (successCount > 0 && !testMode && posts.length > 0) {
     log('\n📝 Marking posts as sent in frontmatter...');
     markPostsAsSent(posts);
   } else if (testMode) {

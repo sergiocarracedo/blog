@@ -2,8 +2,9 @@ import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 import * as dotenv from 'dotenv';
 import matter from 'gray-matter';
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { basename, dirname, extname, join, resolve } from 'node:path';
+import sharp from 'sharp';
 
 function loadEnv() {
   const cwd = process.cwd();
@@ -29,6 +30,7 @@ export interface BlogPost {
   tags?: string[];
   content: string;
   filePath: string;
+  fullBlogPath?: string; // e.g., "2025/post-slug"
 }
 
 export interface NewsletterContent {
@@ -48,7 +50,7 @@ export interface NewsletterContent {
 /**
  * Get all blog posts from the last N days that haven't been sent in a newsletter
  */
-function processPostDir(postPath: string, postDir: string, cutoffDate: Date, posts: BlogPost[]) {
+function processPostDir(postPath: string, postDir: string, year: string, cutoffDate: Date, posts: BlogPost[]) {
   const indexPath = join(postPath, 'index.mdx');
 
   if (!statSync(postPath).isDirectory()) return;
@@ -73,6 +75,9 @@ function processPostDir(postPath: string, postDir: string, cutoffDate: Date, pos
       .trim()
       .slice(0, 500);
 
+    // Store the full blog path for image resolution
+    const fullBlogPath = `${year}/${postDir}`;
+
     posts.push({
       title: data.title,
       slug: data.slug || `/blog/${postDir}`,
@@ -82,6 +87,7 @@ function processPostDir(postPath: string, postDir: string, cutoffDate: Date, pos
       tags: data.tags || [],
       content: excerpt,
       filePath: indexPath,
+      fullBlogPath, // Store full path including year
     });
   } catch (error: unknown) {
     console.error(`Error reading post ${postDir}:`, error);
@@ -107,7 +113,7 @@ export function getRecentPosts(daysBack = 30): BlogPost[] {
 
     for (const postDir of postDirs) {
       const postPath = join(yearDir, postDir);
-      processPostDir(postPath, postDir, cutoffDate, posts);
+      processPostDir(postPath, postDir, year, cutoffDate, posts);
     }
   }
 
@@ -179,12 +185,53 @@ Requirements:
         maxOutputTokens: 450,
       });
 
+      // Handle image URL - optimize and copy to public folder
+      // heroImage is usually "./filename.ext" relative to post directory
+      // We optimize to 300x150 and save as JPEG for email compatibility
+      let imageUrl: string | undefined;
+      if (post.heroImage) {
+        if (post.heroImage.startsWith('http')) {
+          // Already absolute URL
+          imageUrl = post.heroImage;
+        } else {
+          // Local image - optimize and copy to public folder
+          const filename = post.heroImage.replace('./', '');
+          const postDir = dirname(post.filePath);
+          const sourcePath = join(postDir, filename);
+          
+          if (existsSync(sourcePath)) {
+            // Create destination directory structure
+            const destDir = join(process.cwd(), 'public', 'newsletter-images', post.fullBlogPath || '');
+            mkdirSync(destDir, { recursive: true });
+            
+            // Output as optimized JPEG for best email compatibility
+            const outputFilename = `${basename(filename, extname(filename))}.jpg`;
+            const destPath = join(destDir, outputFilename);
+            
+            // Optimize image: resize to 300x150, convert to JPEG, quality 80
+            await sharp(sourcePath)
+              .resize(300, 150, {
+                fit: 'cover',
+                position: 'center',
+              })
+              .jpeg({ quality: 80 })
+              .toFile(destPath);
+            
+            // Generate URL
+            imageUrl = `${siteUrl}/newsletter-images/${post.fullBlogPath}/${outputFilename}`;
+            console.log(`✅ Optimized image: ${filename} -> ${outputFilename} (300x150)`);
+          } else {
+            console.warn(`⚠️  Image not found: ${sourcePath}`);
+          }
+        }
+      }
+
       return {
         title: post.title,
         url: `${siteUrl}${post.slug.startsWith('/') ? post.slug : `/${post.slug}`}`,
         description: post.description,
         teaser: teaser.trim(),
-        image: post.heroImage ? `${siteUrl}${post.heroImage.startsWith('/') ? post.heroImage : `/${post.heroImage}`}` : undefined,
+        image: imageUrl,
         date: post.pubDate.toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',

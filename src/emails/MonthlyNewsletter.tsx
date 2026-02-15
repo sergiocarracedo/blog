@@ -47,17 +47,25 @@ export const MonthlyNewsletter = ({
       <Container style={container}>
         {/* Header with profile picture */}
         <Section style={header}>
-          <Img 
-            src="https://sergiocarracedo.es/i/sergiocarracedo-alt-optimized.png" 
-            alt="Sergio Carracedo" 
-            width="80" 
-            height="80" 
-            style={profileImage}
-          />
-          <Heading style={h1}>📬 Monthly Digest</Heading>
-          <Text style={subtitle}>
-            {month} {year}
-          </Text>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <tr>
+              <td style={{ width: '100px', verticalAlign: 'middle', paddingRight: '16px' }}>
+                <Img 
+                  src="https://sergiocarracedo.es/i/sergiocarracedo-alt-optimized.png" 
+                  alt="Sergio Carracedo" 
+                  width="80" 
+                  height="80" 
+                  style={profileImage}
+                />
+              </td>
+              <td style={{ verticalAlign: 'middle' }}>
+                <Heading style={h1}>Monthly Digest</Heading>
+                <Text style={subtitle}>
+                  {month} {year}
+                </Text>
+              </td>
+            </tr>
+          </table>
         </Section>
 
         {/* Introduction */}
@@ -137,17 +145,18 @@ export const MonthlyNewsletter = ({
 export default MonthlyNewsletter;
 
 const main = {
-  backgroundColor: '#f8f5ed',
+  backgroundColor: '#cce1e0',
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
-  backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect width=\'20\' height=\'20\' fill=\'%23f8f5ed\'/%3E%3Cpath d=\'M0 0h20v20H0z\' fill=\'none\' stroke=\'%23e8e1d4\' stroke-width=\'0.5\'/%3E%3C/svg%3E")',
+  backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect width=\'20\' height=\'20\' fill=\'%23cce1e0\'/%3E%3Cpath d=\'M0 0h20v20H0z\' fill=\'none\' stroke=\'%23b3d4d2\' stroke-width=\'0.5\'/%3E%3C/svg%3E")',
   backgroundSize: '20px 20px',
+  padding: '20px 0',
 };
 
 const container = {
   backgroundColor: '#ffffff',
   margin: '0 auto',
-  padding: '20px 0 48px',
+  padding: '0 0 48px',
   marginBottom: '64px',
   borderRadius: '12px',
   maxWidth: '600px',
@@ -156,14 +165,14 @@ const container = {
 
 const profileImage = {
   borderRadius: '50%',
-  margin: '0 auto 16px',
   display: 'block',
-  border: '3px solid #213b4a',
+  border: '4.5px solid #213b4a',
+  backgroundColor: '#ffffff',
+  padding: '5px',
 };
 
 const header = {
   padding: '32px 32px 16px',
-  textAlign: 'center' as const,
   backgroundColor: '#90c6be',
   borderRadius: '12px 12px 0 0',
 };
@@ -172,7 +181,7 @@ const h1 = {
   color: '#213b4a',
   fontSize: '32px',
   fontWeight: '700',
-  margin: '0',
+  margin: '0 0 4px 0',
   padding: '0',
   lineHeight: '1.2',
 };
@@ -181,7 +190,7 @@ const subtitle = {
   color: '#213b4a',
   fontSize: '18px',
   fontWeight: '400',
-  margin: '8px 0 0 0',
+  margin: '0',
   opacity: 0.8,
 };
 
