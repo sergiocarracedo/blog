@@ -62,11 +62,11 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
     const resend = new Resend(env.RESEND_API_KEY);
 
     // Check if already subscribed
-    const { data: contacts } = await resend.contacts.list({
+    const { data: contactsList } = await resend.contacts.list({
       audienceId: env.RESEND_AUDIENCE_ID,
     });
 
-    const existingContact = contacts?.data?.find(
+    const existingContact = contactsList?.data?.find(
       (c: { email: string }) => c.email.toLowerCase() === email.toLowerCase()
     );
 
@@ -84,12 +84,19 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
     // This is a workaround since Cloudflare Workers don't have built-in KV in free tier
     const tokenData = JSON.stringify({ hash: tokenHash, exp: expiresAt });
 
-    await resend.contacts.create({
+    const { data: createdContact, error: createError } = await resend.contacts.create({
       email,
       unsubscribed: true, // Mark as unsubscribed until confirmed
       audienceId: env.RESEND_AUDIENCE_ID,
       firstName: tokenData, // Store token temporarily
     });
+
+    if (createError || !createdContact) {
+      console.error('Failed to create contact:', createError);
+      return jsonResponse({ error: 'Failed to create subscription. Please try again.' }, 500, cors);
+    }
+
+    console.log('Contact created:', createdContact.id);
 
     // Send confirmation email - URL points to Worker's /confirm endpoint
     const confirmUrl = `${env.WORKER_URL}/confirm?token=${token}&email=${encodeURIComponent(email)}`;
