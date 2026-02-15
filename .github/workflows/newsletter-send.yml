@@ -75,22 +75,26 @@ jobs:
           # Check if posts were found
           if grep -q "No new posts found" newsletter-output.txt; then
             echo "has_posts=false" >> $GITHUB_OUTPUT
+            echo "has_new_images=false" >> $GITHUB_OUTPUT
             echo "📭 No new posts found. Skipping newsletter."
           else
             echo "has_posts=true" >> $GITHUB_OUTPUT
-            # Extract JSON content and save to file for send step
-            pnpm tsx -e "
-              import { generateNewsletter } from './scripts/generate-newsletter.ts';
-              const result = await generateNewsletter($DAYS_BACK);
-              if (result) {
-                console.log(JSON.stringify(result));
-              }
-            " > newsletter-data.json 2>/dev/null || true
+            
+            # Check if new images were optimized (not skipped)
+            if grep -q "✅ Optimized image:" newsletter-output.txt; then
+              echo "has_new_images=true" >> $GITHUB_OUTPUT
+              echo "📸 New images were optimized"
+            else
+              echo "has_new_images=false" >> $GITHUB_OUTPUT
+              echo "⏭️ No new images to deploy"
+            fi
+            
             echo "✅ Newsletter content generated"
           fi
 
       - name: Commit and push newsletter images
-        if: steps.generate.outputs.has_posts == 'true'
+        id: push
+        if: steps.generate.outputs.has_posts == 'true' && steps.generate.outputs.has_new_images == 'true'
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
@@ -100,25 +104,24 @@ jobs:
             git add public/newsletter-images/
           fi
 
-          # Add posts marked as sent
-          git add src/content/blog/
-
           if git diff --staged --quiet; then
             echo "No changes to commit"
+            echo "pushed=false" >> $GITHUB_OUTPUT
           else
             git commit -m "chore: add newsletter images for $(date +%Y-%m)"
             git push
+            echo "pushed=true" >> $GITHUB_OUTPUT
             echo "✅ Changes pushed to repository"
           fi
 
       - name: Wait for deploy workflow to trigger
-        if: steps.generate.outputs.has_posts == 'true' && github.event.inputs.test_mode != 'true'
+        if: steps.push.outputs.pushed == 'true' && github.event.inputs.test_mode != 'true'
         run: |
           echo "⏳ Waiting for deploy workflow to start..."
           sleep 30
 
       - name: Wait for deploy workflow to complete
-        if: steps.generate.outputs.has_posts == 'true' && github.event.inputs.test_mode != 'true'
+        if: steps.push.outputs.pushed == 'true' && github.event.inputs.test_mode != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
