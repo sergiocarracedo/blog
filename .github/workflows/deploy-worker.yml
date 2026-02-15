@@ -28,7 +28,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: workers/newsletter-api
-          secrets: |
-            RESEND_API_KEY
+          command: deploy --keep-vars
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
