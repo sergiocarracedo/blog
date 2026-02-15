@@ -168,7 +168,7 @@ jobs:
             echo "🧪 Running in TEST MODE"
           fi
 
-          node --experimental-strip-types scripts/send-newsletter.js $TEST_FLAG
+          pnpm tsx scripts/send-newsletter.js $TEST_FLAG
 
       - name: Mark posts as sent
         if: steps.generate.outputs.has_posts == 'true' && github.event.inputs.test_mode != 'true'
