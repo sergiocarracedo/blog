@@ -50,11 +50,11 @@ export const MonthlyNewsletter = ({
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <tr>
               <td style={{ width: '100px', verticalAlign: 'middle', paddingRight: '16px' }}>
-                <Img 
-                  src="https://sergiocarracedo.es/i/sergiocarracedo-alt-optimized.png" 
-                  alt="Sergio Carracedo" 
-                  width="80" 
-                  height="80" 
+                <Img
+                  src="https://sergiocarracedo.es/i/sergiocarracedo-alt-optimized.png"
+                  alt="Sergio Carracedo"
+                  width="80"
+                  height="80"
                   style={profileImage}
                 />
               </td>
@@ -81,25 +81,28 @@ export const MonthlyNewsletter = ({
         <Section style={content}>
           {posts.map((post, index) => (
             <Section key={index} style={postCard}>
+              {/* Title on full line */}
+              <Link href={post.url} style={postTitleLink}>
+                <Heading style={postTitle}>{post.title}</Heading>
+              </Link>
+
+              {/* Image left, date + summary right */}
               <table style={postTable}>
                 <tr>
                   {post.image && (
                     <td style={postImageCell}>
                       <Link href={post.url}>
-                        <Img 
-                          src={post.image} 
-                          alt={post.title} 
-                          style={postImage} 
-                          width="300" 
-                          height="150"
+                        <Img
+                          src={post.image}
+                          alt={post.title}
+                          style={postImage}
+                          width="180"
+                          height="90"
                         />
                       </Link>
                     </td>
                   )}
                   <td style={postContentCell}>
-                    <Link href={post.url} style={postTitleLink}>
-                      <Heading style={postTitle}>{post.title}</Heading>
-                    </Link>
                     <Text style={postDate}>{post.date}</Text>
                     <Text style={postTeaser}>{post.teaser}</Text>
                     <Link href={post.url} style={readMoreLink}>
@@ -148,7 +151,8 @@ const main = {
   backgroundColor: '#cce1e0',
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
-  backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect width=\'20\' height=\'20\' fill=\'%23cce1e0\'/%3E%3Cpath d=\'M0 0h20v20H0z\' fill=\'none\' stroke=\'%23b3d4d2\' stroke-width=\'0.5\'/%3E%3C/svg%3E")',
+  backgroundImage:
+    "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='20' height='20' fill='%23cce1e0'/%3E%3Cpath d='M0 0h20v20H0z' fill='none' stroke='%23b3d4d2' stroke-width='0.5'/%3E%3C/svg%3E\")",
   backgroundSize: '20px 20px',
   padding: '20px 0',
 };
@@ -228,7 +232,7 @@ const postTable = {
 };
 
 const postImageCell = {
-  width: '300px',
+  width: '180px',
   verticalAlign: 'top' as const,
   paddingRight: '16px',
 };
@@ -238,8 +242,8 @@ const postContentCell = {
 };
 
 const postImage = {
-  width: '300px',
-  height: '150px',
+  width: '180px',
+  height: '90px',
   borderRadius: '8px',
   objectFit: 'cover' as const,
   display: 'block',
@@ -272,10 +276,15 @@ const postTeaser = {
 };
 
 const readMoreLink = {
-  color: '#90c6be',
+  display: 'inline-block',
+  backgroundColor: '#90c6be',
+  color: '#213b4a',
   textDecoration: 'none',
   fontWeight: '600',
   fontSize: '14px',
+  padding: '8px 16px',
+  borderRadius: '10px',
+  boxShadow: '#213b4a 0 4px 0 0',
 };
 
 const postDivider = {

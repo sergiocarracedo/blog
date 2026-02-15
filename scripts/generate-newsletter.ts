@@ -50,7 +50,13 @@ export interface NewsletterContent {
 /**
  * Get all blog posts from the last N days that haven't been sent in a newsletter
  */
-function processPostDir(postPath: string, postDir: string, year: string, cutoffDate: Date, posts: BlogPost[]) {
+function processPostDir(
+  postPath: string,
+  postDir: string,
+  year: string,
+  cutoffDate: Date,
+  posts: BlogPost[]
+) {
   const indexPath = join(postPath, 'index.mdx');
 
   if (!statSync(postPath).isDirectory()) return;
@@ -157,7 +163,6 @@ Requirements:
   const { text: summary } = await generateText({
     model,
     prompt: summaryPrompt,
-    maxOutputTokens: 500,
   });
 
   // Generate teasers for each post
@@ -182,7 +187,6 @@ Requirements:
       const { text: teaser } = await generateText({
         model,
         prompt: teaserPrompt,
-        maxOutputTokens: 450,
       });
 
       // Handle image URL - optimize and copy to public folder
@@ -198,16 +202,21 @@ Requirements:
           const filename = post.heroImage.replace('./', '');
           const postDir = dirname(post.filePath);
           const sourcePath = join(postDir, filename);
-          
+
           if (existsSync(sourcePath)) {
             // Create destination directory structure
-            const destDir = join(process.cwd(), 'public', 'newsletter-images', post.fullBlogPath || '');
+            const destDir = join(
+              process.cwd(),
+              'public',
+              'newsletter-images',
+              post.fullBlogPath || ''
+            );
             mkdirSync(destDir, { recursive: true });
-            
+
             // Output as optimized JPEG for best email compatibility
             const outputFilename = `${basename(filename, extname(filename))}.jpg`;
             const destPath = join(destDir, outputFilename);
-            
+
             // Optimize image: resize to 300x150, convert to JPEG, quality 80
             await sharp(sourcePath)
               .resize(300, 150, {
@@ -216,7 +225,7 @@ Requirements:
               })
               .jpeg({ quality: 80 })
               .toFile(destPath);
-            
+
             // Generate URL
             imageUrl = `${siteUrl}/newsletter-images/${post.fullBlogPath}/${outputFilename}`;
             console.log(`✅ Optimized image: ${filename} -> ${outputFilename} (300x150)`);
