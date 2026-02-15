@@ -1,0 +1,201 @@
+---
+title: "From Chatbot to Coworker's Post Making Of: How I Used AI to Write an AI Blog Post"
+pubDate: 2026-02-15
+slug: understanding-ai-stack-making-of
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+heroImageMeta:
+  prompt: ''
+  author: 'Gemini Nano Banana Pro'
+tags:
+  - ai
+---
+
+I was experimenting with AI usages and I thought: Why not use Gemini Deep research to write a blog post about the AI engineering stack for junior/mid engineers using it? 
+
+This is the making of that experiment, where I will explain you all the steps and share the prompts I used to create the post. (I will share then with the typos and syntactical errors, to be more transparent about the process).
+
+## First step: Ask Gemini 
+
+I asked Gemini to write the prompt I should use with Gemini Deep Research feature.
+
+```markdown
+I want to create a full AI generated post for my blog.
+The topic is an explanation (not too much thecnical, for a junior or mid software developer) about the different layers in software development with AI: LLM, agent, CLI or IDE, tools, mcps, skill.md, agents.md, orchestrators like https://www.vibekanban.com/, etc. The goal is allow the audience to understand what is the use case or what is each tool used for.
+The outcome should be a markdown file, an user could read in a max of 12m, 
+I need a prompt for gemini Deep Research to investigate and create this post
+
+a secondary goal is to create another post explaining the steps I or you followed  to create the post, from this prompt i am writing , passing by the deep research prompt you will generate and the steps it followed to gather the information necessary to write the post.
+
+Before start, ask me anything can improve the outcome
+```
+
+The LLMs did a summary and asked me some questions to clarify as I asked in the previous  prompt's last line. 
+
+```markdown
+This is a fantastic topic. The AI-for-developers landscape is evolving so fast that terms like "MCP," "Agent," and "Orchestrator" are often used interchangeably, confusing many junior and mid-level developers. A clear, layered explanation will be very high-value.
+
+To make sure the Deep Research prompt I generate for you hits exactly the right notes (and to ensure the secondary "meta-post" is accurate), I have a few clarifying questions:
+
+1. The "Layers" Hierarchy
+You mentioned several concepts (LLM, Agent, CLI/IDE, Tools, MCPs, skill.md, Orchestrator). To structure the research correctly, how do you visualize the relationship?
+
+Option A (The Stack): LLM is the bottom (Foundation), Agents sit on top, Tools are what Agents use, and the IDE is the interface where the human sits.
+
+Option B (The Workflow): Grouped by phase of work (e.g., "Planning" vs. "Coding" vs. "Testing").
+
+My assumption: Option A is usually clearer for this audience. Is that your preference?
+
+2. Specific Technologies & Examples
+You mentioned vibekanban.com (which appears to be a newer or niche visual orchestrator), skill.md, and agents.md.
+
+Context: Are skill.md and agents.md references to specific standards (like the ones used in Cline/Roo Code or similar agentic tools), or are you referring to general documentation practices?
+
+Standard Tools: Should the research explicitly include widely known tools to anchor the reader? (e.g., Anthropic's MCP, Cursor, Windsurf, LangChain, or Cline)?
+
+VibeKanban: Is this post specifically to highlight VibeKanban (e.g., a spotlight or sponsored context), or is it just one example among many orchestrators?
+
+3. The Tone and "Takeaway"
+Tone: "Not too technical" can mean "explain it like I'm 5" or "explain it like I'm a smart developer who just hasn't used AI agents yet." I assume the latter?
+
+Actionable Advice: Do you want the post to just explain the terms, or do you want to recommend a specific "Getting Started" stack? (e.g., "Start with Cursor, then try building an Agent").
+
+4. The Meta-Post (Secondary Goal)
+For the second post about how we built this:
+
+Do you want the "Deep Research" prompt to explicitly include instructions to log its own process for this purpose? (i.e., "As you research, keep a diary of what search terms failed and which succeeded").
+
+Once you answer these, I will craft a comprehensive Deep Research Prompt that you can copy-paste, designed to yield a perfectly structured blog post.
+```
+
+I give it the extra context
+
+```markdown
+1. Both but not mixed
+2. Skill is https://agentskills.io/home and agent.md is https://agents.md/. research widely known tools. Not about vibekanvan specifically, about the workspaces and agent orchestrator
+3. the audicence are junior / mid who know a little bit about AI and used copilot or similar tools
+4. yes
+
+
+I forgot to mention i want you to explain the modes: ask, agent, plan, debug, etc
+```
+
+
+It return an explanation and the final prompt to use with Gemini Deep Research in markdown. 
+
+```markdown
+This is a perfect structure. By distinguishing between the Stack (the technical layers) and the Workflow (the functional modes), we can give junior/mid developers a mental model that actually makes sense of the chaos.
+
+Here is the Deep Research Prompt optimized for Gemini. You can copy and paste this directly.
+
+1. The Deep Research Prompt
+Copy and paste this into Gemini:
+```
+
+```
+I need you to research and write a comprehensive, educational blog post (approx. 12-minute read) targeting junior-to-mid-level software developers. The goal is to demystify the "AI Engineering Stack" by breaking it down into clear layers and explaining the specific purpose of each tool or standard.
+
+**Critical Instruction for Meta-Analysis:**
+As you perform this research, strictly log your process. I need a record of:
+1. The specific search queries you used.
+2. Which concepts were initially ambiguous and how you clarified them.
+3. How you structured the information (e.g., did you change the outline based on findings?).
+*I will ask for this "Search Journey" log after the blog post is written.*
+
+### The Blog Post Requirements:
+
+**Title Idea:** "From Chatbot to Coworker: Understanding the AI Dev Layers" (or similar)
+
+**Tone:**
+* Clear, "senior engineer mentor" vibe.
+* Not too academic, but technically accurate.
+* Avoid hype; focus on utility.
+
+**Structure & Key Concepts to Cover:**
+
+**Part 1: The Stack (The "What")**
+Explain the hierarchy using a "Brain -> Hands -> Worker -> Manager" analogy or similar:
+1.  **The Foundation (LLM):** Briefly explain this is just the raw intelligence (Claude 3.7, Gemini 1.5, GPT-4). It has no memory or hands yet.
+2.  **The Context & Capabilities (Standards & Protocols):**
+    * **MCP (Model Context Protocol):** Explain this as the "USB-C for AI"—a standard way for AIs to connect to data sources (Postgres, Slack, GitHub) without custom code.
+    * **Context Files (`agents.md`):** Explain this as "README for Robots." It tells the AI *about* the project (rules, stack, conventions) so it doesn't hallucinate. (Source: agents.md).
+    * **Skill Definitions (`skill.md`):** Explain this as "Training Modules." It tells the AI *how* to perform specific tasks (e.g., "How to run a migration"). (Source: agentskills.io).
+    * *Key distinction:* `agents.md` is project context; `skill.md` is reusable capability.
+3.  **The Worker (The Agent):**
+    * Explain the "Agentic Loop": It doesn't just talk; it **Plans**, uses **Tools** (CLI, File edit), and **Debugs** its own mistakes.
+    * Mention tools like **Cline** (formerly Roo Code) or **Windsurf** as examples of agents that live in your editor.
+4.  **The Workspace (The Orchestrator):**
+    * Explain that as agents get better, we stop just "chatting" and start "managing" them.
+    * **Orchestrators:** Tools like **VibeKanban** (visualize agents working in parallel on a board) or **OpenDevin/AllHands**.
+    * **The concept:** You assign a ticket to an agent, it creates a git worktree, tries to fix it, and requests review. You are the manager; the AI is the junior dev.
+
+**Part 2: The Modes (The "How")**
+Explain the different ways a dev interacts with these layers (referencing tools like Cursor/Windsurf/Cline):
+1.  **Ask/Chat Mode:** "What does this function do?" (Context lookup).
+2.  **Plan/Architect Mode:** "Read all these files and propose a refactor strategy." (Reasoning without editing).
+3.  **Agent/Edit Mode:** "Implement the plan, run the tests, and fix errors until green." (Autonomous loop).
+
+**Part 3: The Takeaway**
+* How a junior dev should start: Don't jump straight to orchestrating 10 agents. Start with `Ask`, then master `Agent` mode in IDE, then look at `Orchestrators`.
+
+**Research Verification:**
+* Verify the current state/definition of `agents.md` vs `skill.md` to ensure the distinction is accurate.
+* Verify `VibeKanban`'s specific workflow (git worktree isolation) as a prime example of orchestration.
+```
+
+```markdown
+2. Explanation of the Prompt Strategy
+Here is why I designed the prompt this way, so you know what to expect:
+
+The "Context vs. Capability" Distinction: I explicitly asked the model to research the difference between agents.md (Project Context) and skill.md (Reusable Skills). This is often confused, and clarifying it will make your post authoritative.
+
+The "USB-C" Analogy for MCP: I included this specific analogy instruction because MCP can be abstract. Framing it as a standard connector helps the audience grasp it immediately.
+
+VibeKanban as a Concept, not just a Tool: I framed VibeKanban specifically around its "Git Worktree" feature. This is the "technical nugget" that makes the post valuable to developers—it explains how parallel agents actually work without breaking your code.
+
+The "Search Journey" Log: I added the Critical Instruction at the very top. This ensures Gemini "remembers" to track its own thinking process, which we need for your second blog post.
+
+Next Step:
+Once you run this prompt and get the blog post, paste the result (or the "Search Journey" section) back here. I will then help you format the Secondary Post about "How we wrote this using AI."
+```
+
+With the prompt I opened a new Gemini conversation with the Deep Research feature and paste it there. I wait for the result.
+
+After a few minutes of work it returns [the report](https://gemini.google.com/share/0a834d55074c) and I just asked to export it in markdown format to be able to use it in the blog post.
+
+
+Just for reference, it used 24 sources to generate the report
+
+The output was good, but too long for a blog post, and some references were outdated (it mentioned Gemini 1.5, but we are in Gemini 3 Pro), so I went back to the initial convesation, and asked to summarize it and update the references.
+
+Note I didn't paste the repost, I just mentioned and it get it from other conversation.
+
+```markdown
+the report generated is too long and seems partially outdated, talkss about gemini1.5 and now we have gemini 3, same with claude and openai model, i can no trust in a report not updated
+```
+
+And finally it gave me this awnser:
+
+```markdown
+Here is the comprehensive, ready-to-publish blog post. It is structured to be clear, actionable, and uses the latest terminology for 2026.
+
+Following that, I have included the "Meta-Post" detailing exactly how we built this.
+```
+(and the blog post content but I will not reproduce it here as you already have it in the :astro-ref[final post]{path="blog/2026/2026-02-15-ai-stack"})
+
+
+And as last step I asked it to generate a cover image:
+
+```markdown
+ok, i need to generate the cover for the posts, write a prompt based in previous request, and generate it
+```
+
+And that's all, I have the blog post and the cover image ready to be published.
+
+## Conclusion
+
+Even if I don't want to read AI generated posts, I wanted to experiment with the process of creating one. I know this process can be fully automated using agents in a loop of generation, corrections, SEO improvements, image generation, etc. but I wanted keep it simple.
+
+The result is a readable post, something probably I will never write in the same way, and that is what makes the difference. I think the content creation value in general is trending to 0, and the results is good, but this make more valuable the "hand-made" content as has behind it the writter life-expecience, the personal touch, hisd opinions.
+
+
