@@ -1,11 +1,11 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionHeader from '../../components/SectionHeader.astro';
 import NewsletterForm from '../../components/NewsletterForm.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Subscribe to Newsletter" description="Get monthly digests of new posts">
-  <section class="wrapper">
+  <section class="wrapper mb-10">
     <SectionHeader
       title="Subscribe to Newsletter"
       description="Get monthly digests of new posts delivered to your inbox"
@@ -18,26 +18,62 @@ import NewsletterForm from '../../components/NewsletterForm.astro';
           <h2 class="text-2xl font-semibold mb-4">What You'll Get</h2>
           <ul class="space-y-3 text-left">
             <li class="flex items-start gap-3">
-              <svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              <svg
+                class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Monthly digest of new blog posts</span>
             </li>
             <li class="flex items-start gap-3">
-              <svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              <svg
+                class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"></path>
               </svg>
               <span>AI-generated summaries of each post</span>
             </li>
             <li class="flex items-start gap-3">
-              <svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              <svg
+                class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"></path>
               </svg>
               <span>No spam, only quality content about web development</span>
             </li>
             <li class="flex items-start gap-3">
-              <svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              <svg
+                class="w-6 h-6 text-primary flex-shrink-0 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Unsubscribe anytime with one click</span>
             </li>
@@ -54,13 +90,9 @@ import NewsletterForm from '../../components/NewsletterForm.astro';
           We respect your privacy. Your email will only be used for this newsletter.
         </p>
         <div class="flex gap-4 justify-center flex-wrap text-sm">
-          <a href="/newsletter/unsubscribe" class="link">
-            How to unsubscribe
-          </a>
+          <a href="/newsletter/unsubscribe" class="link"> How to unsubscribe </a>
           <span class="opacity-50">•</span>
-          <a href="/" class="link">
-            Back to homepage
-          </a>
+          <a href="/" class="link"> Back to homepage </a>
         </div>
       </div>
     </div>

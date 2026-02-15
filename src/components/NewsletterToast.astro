@@ -133,6 +133,9 @@ import NewsletterForm from './NewsletterForm.astro';
       this.closeButton.addEventListener('click', () => this.dismiss(false));
       this.dismissButton.addEventListener('click', () => this.dismiss(true));
 
+      // Listen for successful subscription to close the toast
+      document.addEventListener('newsletter:success', () => this.onSubscribed());
+
       // Check if should show
       if (!this.shouldShow()) {
         return;
@@ -194,6 +197,18 @@ import NewsletterForm from './NewsletterForm.astro';
         localStorage.setItem(STORAGE_KEY, new Date().toISOString());
       }
 
+      this.toast.classList.add('closing');
+      setTimeout(() => {
+        this.toast.hidden = true;
+        this.toast.classList.remove('closing');
+      }, 300);
+    }
+
+    onSubscribed() {
+      // Remember dismissal permanently (user subscribed)
+      localStorage.setItem(STORAGE_KEY, new Date().toISOString());
+      
+      // Close the toast immediately
       this.toast.classList.add('closing');
       setTimeout(() => {
         this.toast.hidden = true;
