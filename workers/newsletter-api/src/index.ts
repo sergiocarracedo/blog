@@ -4,6 +4,7 @@ export interface Env {
   RESEND_API_KEY: string;
   RESEND_AUDIENCE_ID: string;
   SITE_URL: string;
+  WORKER_URL: string;
   FROM_EMAIL: string;
   ALLOWED_ORIGIN: string;
 }
@@ -90,8 +91,8 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
       firstName: tokenData, // Store token temporarily
     });
 
-    // Send confirmation email
-    const confirmUrl = `${env.SITE_URL}/newsletter/confirm?token=${token}&email=${encodeURIComponent(email)}`;
+    // Send confirmation email - URL points to Worker's /confirm endpoint
+    const confirmUrl = `${env.WORKER_URL}/confirm?token=${token}&email=${encodeURIComponent(email)}`;
 
     await resend.emails.send({
       from: env.FROM_EMAIL,
