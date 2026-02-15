@@ -86,31 +86,25 @@ export const MonthlyNewsletter = ({
                 <Heading style={postTitle}>{post.title}</Heading>
               </Link>
 
-              {/* Image left, date + summary right */}
-              <table style={postTable}>
-                <tr>
-                  {post.image && (
-                    <td style={postImageCell}>
-                      <Link href={post.url}>
-                        <Img
-                          src={post.image}
-                          alt={post.title}
-                          style={postImage}
-                          width="180"
-                          height="90"
-                        />
-                      </Link>
-                    </td>
-                  )}
-                  <td style={postContentCell}>
-                    <Text style={postDate}>{post.date}</Text>
-                    <Text style={postTeaser}>{post.teaser}</Text>
-                    <Link href={post.url} style={readMoreLink}>
-                      Read more →
-                    </Link>
-                  </td>
-                </tr>
-              </table>
+              {/* Image full width */}
+              {post.image && (
+                <Link href={post.url}>
+                  <Img
+                    src={post.image}
+                    alt={post.title}
+                    style={postImage}
+                    width="536"
+                    height="268"
+                  />
+                </Link>
+              )}
+
+              {/* Date and summary full width */}
+              <Text style={postDate}>{post.date}</Text>
+              <Text style={postTeaser}>{post.teaser}</Text>
+              <Link href={post.url} style={readMoreLink}>
+                Read more →
+              </Link>
 
               {index < posts.length - 1 && <Hr style={postDivider} />}
             </Section>
@@ -226,27 +220,12 @@ const postCard = {
   margin: '24px 0',
 };
 
-const postTable = {
-  width: '100%',
-  borderCollapse: 'collapse' as const,
-};
-
-const postImageCell = {
-  width: '180px',
-  verticalAlign: 'top' as const,
-  paddingRight: '16px',
-};
-
-const postContentCell = {
-  verticalAlign: 'top' as const,
-};
-
 const postImage = {
-  width: '180px',
-  height: '90px',
+  width: '100%',
+  height: 'auto',
   borderRadius: '8px',
-  objectFit: 'cover' as const,
   display: 'block',
+  marginBottom: '12px',
 };
 
 const postTitleLink = {
