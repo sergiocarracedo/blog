@@ -175,21 +175,32 @@ async function handleConfirm(request: Request, env: Env): Promise<Response> {
     const resend = new Resend(env.RESEND_API_KEY);
     const tokenHash = await hashToken(token);
 
-    // Find the contact by email using get endpoint
-    const { data: contact, error: getError } = await resend.contacts.get({
+    // Find the contact by listing all and filtering by email
+    const { data: contactsList, error: listError } = await resend.contacts.list({
       audienceId: env.RESEND_AUDIENCE_ID,
-      email: email,
     });
 
-    console.log('Contact lookup:', { email, contact, getError });
+    console.log('Contacts list response:', { contactsList, listError });
 
-    if (getError || !contact) {
-      console.error('Contact not found:', getError);
+    if (listError || !contactsList) {
+      console.error('Failed to list contacts:', listError);
+      return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=server`, 302);
+    }
+
+    // contactsList.data contains the array of contacts
+    const contact = contactsList.data?.find(
+      (c: { email: string }) => c.email.toLowerCase() === email.toLowerCase()
+    );
+
+    console.log('Found contact:', contact);
+
+    if (!contact) {
+      console.error('Contact not found for email:', email);
       return Response.redirect(`${env.SITE_URL}/newsletter/subscribe?error=not_found`, 302);
     }
 
-    // Verify token from firstName field
-    console.log('Contact firstName:', contact.first_name);
+    // Verify token from first_name field
+    console.log('Contact first_name:', contact.first_name);
 
     let tokenData;
     try {
