@@ -98,6 +98,26 @@
     pre code {
       @apply bg-transparent text-white p-0 shadow-none;
     }
+
+    .code-block {
+      position: relative;
+    }
+
+    .code-copy-button {
+      @apply absolute top-2 right-2 z-10 rounded-md px-2 py-1 text-xs font-sans text-white;
+      @apply bg-primary/80 backdrop-blur-sm border border-white/15;
+      @apply opacity-0 pointer-events-none transition-opacity duration-150;
+    }
+
+    .code-copy-button:focus-visible {
+      @apply opacity-100 outline-2 outline-primary-light;
+      pointer-events: auto;
+    }
+
+    .code-block:hover .code-copy-button {
+      @apply opacity-100;
+      pointer-events: auto;
+    }
     pre::-webkit-scrollbar {
       width: 10px;
       height: 10px;
@@ -170,6 +190,11 @@
       scrollbar-width: thin;
       scrollbar-color: theme('colors.white') transparent;
     }
+
+    .code-block-max-300 pre {
+      max-height: 300px;
+    }
+
     pre code {
       @apply bg-transparent text-white p-0 shadow-none;
     }
