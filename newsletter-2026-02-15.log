@@ -1,0 +1,168 @@
+[2026-02-15T11:03:03.136Z] 🚀 Starting newsletter generation and sending process...
+[2026-02-15T11:03:03.137Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-15T11:03:03.137Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-15T11:03:11.409Z] 📋 Fetching subscribers from Resend...
+[2026-02-15T11:03:11.860Z] ⚠️  No data returned from Resend
+[2026-02-15T11:03:11.860Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-15T11:03:11.861Z] 
+📧 Rendering email template...
+[2026-02-15T11:03:11.927Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-15T11:03:12.132Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-15T11:03:12.132Z] 
+📊 Sending complete:
+[2026-02-15T11:03:12.132Z]    ✅ Success: 1
+[2026-02-15T11:03:12.132Z]    ❌ Failed: 0
+[2026-02-15T11:03:12.132Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-15T11:03:12.132Z] 
+🎉 Newsletter process complete!
+[2026-02-15T11:03:12.132Z] ✅ Process finished successfully
+[2026-02-15T11:08:40.103Z] 🚀 Starting newsletter generation and sending process...
+[2026-02-15T11:08:40.103Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-15T11:08:40.103Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-15T11:08:48.404Z] 📋 Fetching subscribers from Resend...
+[2026-02-15T11:08:48.913Z] ⚠️  No data returned from Resend
+[2026-02-15T11:08:48.914Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-15T11:08:48.914Z] 
+📧 Rendering email template...
+[2026-02-15T11:08:48.980Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-15T11:08:49.199Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-15T11:08:49.199Z] 
+📊 Sending complete:
+[2026-02-15T11:08:49.199Z]    ✅ Success: 1
+[2026-02-15T11:08:49.199Z]    ❌ Failed: 0
+[2026-02-15T11:08:49.199Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-15T11:08:49.199Z] 
+🎉 Newsletter process complete!
+[2026-02-15T11:08:49.199Z] ✅ Process finished successfully
+[2026-02-15T11:10:58.823Z] 🚀 Starting newsletter generation and sending process...
+[2026-02-15T11:10:58.824Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-15T11:10:58.824Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-15T11:11:06.690Z] 📋 Fetching subscribers from Resend...
+[2026-02-15T11:11:07.142Z] ⚠️  No data returned from Resend
+[2026-02-15T11:11:07.142Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-15T11:11:07.142Z] 
+📧 Rendering email template...
+[2026-02-15T11:11:07.212Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-15T11:11:07.695Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-15T11:11:07.695Z] 
+📊 Sending complete:
+[2026-02-15T11:11:07.695Z]    ✅ Success: 1
+[2026-02-15T11:11:07.695Z]    ❌ Failed: 0
+[2026-02-15T11:11:07.695Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-15T11:11:07.695Z] 
+🎉 Newsletter process complete!
+[2026-02-15T11:11:07.695Z] ✅ Process finished successfully
+[2026-02-15T13:10:39.443Z] 🚀 Starting newsletter sending process...
+[2026-02-15T13:10:39.443Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-15T13:10:39.443Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-15T13:10:47.727Z] 📋 Fetching subscribers from Resend...
+[2026-02-15T13:10:48.161Z] ✅ Found 1 active subscriber(s)
+[2026-02-15T13:10:48.161Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-15T13:10:48.161Z] 
+📧 Rendering email template...
+[2026-02-15T13:10:48.220Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-15T13:10:49.329Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-15T13:10:49.329Z] 
+📊 Sending complete:
+[2026-02-15T13:10:49.329Z]    ✅ Success: 1
+[2026-02-15T13:10:49.329Z]    ❌ Failed: 0
+[2026-02-15T13:10:49.329Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-15T13:10:49.329Z] 
+🎉 Newsletter process complete!
+[2026-02-15T13:10:49.330Z] ✅ Process finished successfully
+[2026-02-15T13:11:52.815Z] 🚀 Starting newsletter sending process...
+[2026-02-15T13:11:52.815Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-15T13:11:52.815Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-15T13:12:05.249Z] 📋 Fetching subscribers from Resend...
+[2026-02-15T13:12:05.794Z] ✅ Found 1 active subscriber(s)
+[2026-02-15T13:12:05.794Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-15T13:12:05.794Z] 
+📧 Rendering email template...
+[2026-02-15T13:12:05.861Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-15T13:12:06.062Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-15T13:12:06.063Z] 
+📊 Sending complete:
+[2026-02-15T13:12:06.063Z]    ✅ Success: 1
+[2026-02-15T13:12:06.063Z]    ❌ Failed: 0
+[2026-02-15T13:12:06.063Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-15T13:12:06.063Z] 
+🎉 Newsletter process complete!
+[2026-02-15T13:12:06.063Z] ✅ Process finished successfully
+[2026-02-15T13:13:56.130Z] 🚀 Starting newsletter sending process...
+[2026-02-15T13:13:56.130Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-15T13:13:56.130Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-15T13:14:07.342Z] 📋 Fetching subscribers from Resend...
+[2026-02-15T13:14:07.804Z] ✅ Found 1 active subscriber(s)
+[2026-02-15T13:14:07.804Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-15T13:14:07.804Z] 
+📧 Rendering email template...
+[2026-02-15T13:14:07.868Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-15T13:14:08.088Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-15T13:14:08.088Z] 
+📊 Sending complete:
+[2026-02-15T13:14:08.089Z]    ✅ Success: 1
+[2026-02-15T13:14:08.089Z]    ❌ Failed: 0
+[2026-02-15T13:14:08.089Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-15T13:14:08.089Z] 
+🎉 Newsletter process complete!
+[2026-02-15T13:14:08.089Z] ✅ Process finished successfully
+[2026-02-15T13:14:14.134Z] 🚀 Starting newsletter sending process...
+[2026-02-15T13:14:14.134Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-15T13:14:14.134Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-15T13:14:29.874Z] 📋 Fetching subscribers from Resend...
+[2026-02-15T13:14:30.401Z] ✅ Found 1 active subscriber(s)
+[2026-02-15T13:14:30.401Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-15T13:14:30.401Z] 
+📧 Rendering email template...
+[2026-02-15T13:14:30.471Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-15T13:14:30.919Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-15T13:14:30.919Z] 
+📊 Sending complete:
+[2026-02-15T13:14:30.919Z]    ✅ Success: 1
+[2026-02-15T13:14:30.919Z]    ❌ Failed: 0
+[2026-02-15T13:14:30.919Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-15T13:14:30.919Z] 
+🎉 Newsletter process complete!
+[2026-02-15T13:14:30.920Z] ✅ Process finished successfully
+[2026-02-15T13:16:26.844Z] 🚀 Starting newsletter sending process...
+[2026-02-15T13:16:26.844Z] 🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only
+[2026-02-15T13:16:26.844Z] 
+📝 Generating newsletter content (looking back 30 days)...
+[2026-02-15T13:16:39.577Z] 📋 Fetching subscribers from Resend...
+[2026-02-15T13:16:40.043Z] ✅ Found 1 active subscriber(s)
+[2026-02-15T13:16:40.043Z] 🧪 Overriding subscribers with test email: hi@sergiocarracedo.es
+[2026-02-15T13:16:40.043Z] 
+📧 Rendering email template...
+[2026-02-15T13:16:40.097Z] 
+📤 Sending newsletter to subscribers...
+[2026-02-15T13:16:40.336Z] ✅ Sent to hi@sergiocarracedo.es
+[2026-02-15T13:16:40.337Z] 
+📊 Sending complete:
+[2026-02-15T13:16:40.337Z]    ✅ Success: 1
+[2026-02-15T13:16:40.337Z]    ❌ Failed: 0
+[2026-02-15T13:16:40.337Z] 
+⏭️  Skipping marking posts as sent (test mode)
+[2026-02-15T13:16:40.337Z] 
+🎉 Newsletter process complete!
+[2026-02-15T13:16:40.337Z] ✅ Process finished successfully
