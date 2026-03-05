@@ -20,7 +20,7 @@ const tagsMap = new Map<string, string>((tags || []).map((tag) => [createSlug(ta
       {Array.from(tagsMap).map(([slug, tag]) => (
         <a
           href={`/tags/${slug}/`}
-          class="parallelogram bg-primary text-white px-6 py-0 rounded-sm hover:bg-primary-600 transition-colors hover:bg-secondary hover:text-primary-600 text-sm font-semibold"
+          class="parallelogram bg-primary dark:bg-secondary text-white dark:text-primary px-6 py-0 rounded-sm hover:bg-primary-600 dark:hover:bg-secondary-light transition-colors hover:bg-secondary hover:text-primary-600 text-sm font-semibold"
         >
           <span>{tag}</span>
         </a>

@@ -32,7 +32,7 @@ const { Content } = await render(post);
   <div class="wrapper">
     <div class="mb-6">
       <a
-        class="text-primary link mb-9 group"
+        class="text-primary dark:text-secondary link mb-9 group"
         href="/blog"
         aria-label="Back to blog"
         title="Back to blog"
@@ -75,18 +75,18 @@ const { Content } = await render(post);
             heroImageMeta?.prompt ||
             heroImageMeta?.source ||
             heroImageMeta?.licence) && (
-            <div class="text-xs text-gray-500 absolute bottom-0 left-0 right-0 group-hover:translate-y-0 translate-y-[calc(100%-10px)] transition-transform duration-300 z-10">
-              <div class="bg-gray-100/90 p-2">
+            <div class="text-xs text-gray-500 dark:text-gray-400 absolute bottom-0 left-0 right-0 group-hover:translate-y-0 translate-y-[calc(100%-10px)] transition-transform duration-300 z-10">
+              <div class="bg-gray-100/90 dark:bg-primary-700/90 p-2">
                 <em>Picture by</em> <strong>
                   {heroImageMeta.source && (
-                    <a
-                      href={heroImageMeta.source}
-                      class="text-primary link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {heroImageMeta.author}
-                    </a>
+                  <a
+                    href={heroImageMeta.source}
+                    class="text-primary dark:text-secondary link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {heroImageMeta.author}
+                  </a>
                   ) || (
                     <strong>{heroImageMeta.author}</strong>
                   )}
@@ -129,8 +129,8 @@ const { Content } = await render(post);
   <Search className="pagefind-ui-dark" />
 </aside>
 
-<aside class="wrapper mb-6 rounded-xl bg-[#8BC2B933] text-[#333] py-6 backdrop-blur-sm">
-  <div id="disqus_thread" class="p-4 text-center text-[#333]">
+<aside class="wrapper mb-6 rounded-xl bg-[#8BC2B933] dark:bg-primary-600/50 text-[#333] dark:text-gray-300 py-6 backdrop-blur-sm">
+  <div id="disqus_thread" class="p-4 text-center text-[#333] dark:text-gray-300">
     To comment or view comments you need to to accept cookie policy.
   </div>
 </aside>

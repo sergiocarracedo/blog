@@ -34,26 +34,51 @@ const menu: Array<{ label: string; href: string }> = Array.isArray(menuRaw) ? me
   </nav>
 </div>
 
-<script client:load>
-  (function () {
+<script is:inline>
+  function initMenu() {
     const btn = document.getElementById('menu-toggle');
     const closeBtn = document.getElementById('close-menu');
     const overlay = document.getElementById('menu-overlay');
+    
+    if (!btn || !closeBtn || !overlay) return;
+    
     let open = false;
+    
     function setMenuState(state) {
       open = state;
       overlay.classList.toggle('translate-x-0', open);
       overlay.classList.toggle('translate-x-full', !open);
-      overlay.setAttribute('aria-hidden', !open);
+      overlay.setAttribute('aria-hidden', !open ? 'true' : 'false');
       btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       closeBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       document.body.classList.toggle('overflow-hidden', open);
     }
-    btn.addEventListener('click', () => setMenuState(!open));
-    closeBtn.addEventListener('click', () => setMenuState(false));
+    
+    // Remove old listeners if any
+    btn.replaceWith(btn.cloneNode(true));
+    closeBtn.replaceWith(closeBtn.cloneNode(true));
+    
+    // Get fresh references
+    const newBtn = document.getElementById('menu-toggle');
+    const newCloseBtn = document.getElementById('close-menu');
+    const newOverlay = document.getElementById('menu-overlay');
+    
+    newBtn.addEventListener('click', () => setMenuState(!open));
+    newCloseBtn.addEventListener('click', () => setMenuState(false));
+    
     // Close menu on nav click
-    overlay.addEventListener('click', function (e) {
+    newOverlay.addEventListener('click', function (e) {
       if (e.target.classList.contains('menu-link')) setMenuState(false);
     });
-  })();
+  }
+  
+  // Initialize on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMenu);
+  } else {
+    initMenu();
+  }
+  
+  // Re-initialize after view transitions
+  document.addEventListener('astro:after-swap', initMenu);
 </script>

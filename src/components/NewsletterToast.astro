@@ -34,6 +34,11 @@ import NewsletterForm from './NewsletterForm.astro';
     animation: slideIn 0.3s ease-out;
   }
 
+  :global(.dark) .newsletter-toast {
+    background: var(--color-primary);
+    border-color: var(--color-secondary-light);
+  }
+
   .newsletter-toast[hidden] {
     display: none;
   }
@@ -82,6 +87,14 @@ import NewsletterForm from './NewsletterForm.astro';
     color: var(--color-primary);
   }
 
+  :global(.dark) .newsletter-toast__close {
+    color: var(--color-secondary);
+  }
+
+  :global(.dark) .newsletter-toast__close:hover {
+    color: white;
+  }
+
   .newsletter-toast__content {
     display: flex;
     flex-direction: column;
@@ -101,6 +114,14 @@ import NewsletterForm from './NewsletterForm.astro';
 
   .newsletter-toast__dismiss:hover {
     color: var(--color-primary);
+  }
+
+  :global(.dark) .newsletter-toast__dismiss {
+    color: var(--color-secondary-light);
+  }
+
+  :global(.dark) .newsletter-toast__dismiss:hover {
+    color: var(--color-secondary);
   }
 
   @media (max-width: 640px) {
