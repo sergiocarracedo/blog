@@ -220,14 +220,10 @@
     blockquote {
       @apply bg-primary-lighter dark:bg-secondary-lighter;
       @apply text-primary dark:text-white;
+      @apply shadow-[-7px_0_0_0_var(--color-primary)] dark:shadow-[-7px_0_0_0_var(--color-secondary-light)];
       margin: 0 0 1.1em;
-      box-shadow: var(--color-primary) -7px 0 0 0;
       border-radius: 5px;
       padding: 15px 20px;
-
-      :global(.dark) & {
-        box-shadow: var(--color-secondary) -7px 0 0 0;
-      }
 
       a {
         @apply link;
