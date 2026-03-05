@@ -227,7 +227,7 @@
 
       :global(.dark) & {
         box-shadow: var(--color-secondary) -7px 0 0 0;
-        color: var(--color-secondary);
+        color: white;
       }
 
       a {

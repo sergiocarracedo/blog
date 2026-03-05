@@ -70,6 +70,8 @@ const { Content } = await render(post);
             transitionName={`post-picture-${enrichedPost.sanitizedId}`}
             video={enrichedPost.data.heroVideo}
             basePath={post.filePath}
+            autoplay={true}
+            noHover={true}
           />
           {(heroImageMeta?.author ||
             heroImageMeta?.prompt ||

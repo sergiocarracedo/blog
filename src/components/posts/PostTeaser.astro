@@ -2,10 +2,10 @@
 interface Props {
   post: CollectionEntry<'blog'>;
   style?: 'default' | 'highlighted';
-  showVideo?: boolean;
 }
 
-const { post, style = 'default', showVideo = false } = Astro.props;
+const { post, style = 'default' } = Astro.props;
+const isHighlighted = style === 'highlighted';
 import type { CollectionEntry } from 'astro:content';
 import { enrichBlogPost } from '../../utils/enrichBlogPost';
 import { truncate } from '../../utils/truncate';
@@ -17,44 +17,69 @@ const enrichedPost = enrichBlogPost(post);
 const postUrl = enrichedPost.slug;
 const { title, heroImage, heroVideo, pubDate } = enrichedPost.data;
 const { readingTime, excerpt } = enrichedPost;
+
+// Only default posts need lazy video loading on hover
+const needsLazyVideo = !isHighlighted && heroVideo;
+
+// Build video path for lazy loading (same logic as PostMainMedia)
+let lazyVideoPath: string | undefined;
+if (needsLazyVideo && post.filePath) {
+  const postDir = post.filePath.replace('./', '').replace('/index.mdx', '');
+  lazyVideoPath = `/src/content/blog/${postDir}/${heroVideo.replace('./', '')}`;
+}
 ---
 
 <article
   class:list={[
-    'md:flex mb-10',
-    style === 'highlighted' &&
+    'md:flex mb-10 post-teaser',
+    isHighlighted &&
       'flex-col content-center bg-secondary/60 dark:bg-primary-600/60 rounded-lg gap-2 backdrop-blur-xs',
     style === 'default' && 'gap-4',
   ]}
+  data-post-id={enrichedPost.sanitizedId}
+  data-has-lazy-video={needsLazyVideo ? 'true' : undefined}
+  data-video-path={lazyVideoPath}
 >
   <div class:list={['flex-1 max-w-full mb-3', style === 'default' && 'basis-[300px]']}>
     <a class:list={['btn-img block']} href={postUrl} title={title}>
-      <PostMainMedia
-        className={[style === 'highlighted' ? 'md:hidden' : '']}
-        src={heroImage}
-        decoding="async"
-        loading="lazy"
-        width={500}
-        height={250}
-        alt={title}
-        transitionName={`post-picture-${enrichedPost.sanitizedId}`}
-      />
-      {
-        style === 'highlighted' && (
-          <>
-            <PostMainMedia
-              className={['hidden', 'md:block']}
-              src={heroImage}
-              alt={title}
-              width={800}
-              height={300}
-              transitionName={`post-picture-${enrichedPost.sanitizedId}`}
-              video={showVideo ? heroVideo : undefined}
-              basePath={post.filePath}
-            />
-          </>
-        )
-      }
+      {isHighlighted ? (
+        <>
+          <PostMainMedia
+            className={['md:hidden']}
+            src={heroImage}
+            decoding="async"
+            loading="lazy"
+            width={500}
+            height={250}
+            alt={title}
+            transitionName={`post-picture-${enrichedPost.sanitizedId}`}
+          />
+          <PostMainMedia
+            className={['hidden', 'md:block']}
+            src={heroImage}
+            alt={title}
+            width={800}
+            height={300}
+            transitionName={`post-picture-${enrichedPost.sanitizedId}`}
+            video={heroVideo}
+            basePath={post.filePath}
+            autoplay={true}
+          />
+        </>
+      ) : (
+        <PostMainMedia
+          src={heroImage}
+          decoding="async"
+          loading="lazy"
+          width={500}
+          height={250}
+          alt={title}
+          transitionName={`post-picture-${enrichedPost.sanitizedId}`}
+          video={heroVideo}
+          basePath={post.filePath}
+          autoplay={false}
+        />
+      )}
     </a>
   </div>
 
@@ -62,7 +87,7 @@ const { readingTime, excerpt } = enrichedPost;
     class:list={[
       'px-3 flex-1',
       style === 'default' && 'basis-[300px] py-3',
-      style === 'highlighted' && 'py-1',
+      isHighlighted && 'py-1',
     ]}
   >
     <header>
@@ -70,7 +95,7 @@ const { readingTime, excerpt } = enrichedPost;
         transition:name={`post-title-${enrichedPost.sanitizedId}`}
         class:list={[
           'm-0 font-impact font-bold text-2xl md:text-3xl mb-4',
-          style === 'highlighted' && 'md:px-20 flex justify-center text-center',
+          isHighlighted && 'md:px-20 flex justify-center text-center',
           style === 'default' && 'max-w-md',
         ]}
       >
@@ -90,12 +115,12 @@ const { readingTime, excerpt } = enrichedPost;
       tags={style === 'default' ? enrichedPost.data.tags : []}
       readingTime={readingTime}
       postId={enrichedPost.sanitizedId}
-      class:list={[style === 'highlighted' ? 'flex justify-center' : 'mb-2']}
+      class:list={[isHighlighted ? 'flex justify-center' : 'mb-2']}
     />
     <div
       aria-label={truncate(excerpt, 40)}
       transition:name={`post-body-${enrichedPost.sanitizedId}`}
-      class:list={['mb-5 text-md text-gray-700 dark:text-gray-300', style === 'highlighted' && 'text-center text-sm']}
+      class:list={['mb-5 text-md text-gray-700 dark:text-gray-300', isHighlighted && 'text-center text-sm']}
     >
       <p>{truncate(excerpt, 100)}</p>
     </div>
@@ -111,3 +136,122 @@ const { readingTime, excerpt } = enrichedPost;
     }
   </div>
 </article>
+
+{needsLazyVideo && (
+  <script is:inline>
+    (function() {
+      // Video URL cache
+      const videoCache = new Map();
+      
+      // Initialize lazy videos on all teaser articles
+      function initLazyVideos() {
+        const articles = document.querySelectorAll('article[data-has-lazy-video="true"]');
+        
+        articles.forEach(article => {
+          const videoPath = article.getAttribute('data-video-path');
+          if (!videoPath) return;
+          
+          const mediaContainer = article.querySelector('.media-container');
+          if (!mediaContainer) return;
+          
+          const videoEl = mediaContainer.querySelector('video');
+          const videoLayer = mediaContainer.querySelector('.video-layer');
+          const imageLayer = mediaContainer.querySelector('.image-layer');
+          const loadingIndicator = mediaContainer.querySelector('.loading-indicator');
+          
+          if (!videoEl || !videoLayer || !imageLayer) return;
+          
+          let isLoading = false;
+          let isPlaying = false;
+          
+          // Load and play video
+          async function loadAndPlayVideo() {
+            if (isPlaying || isLoading) return;
+            
+            isLoading = true;
+            loadingIndicator?.classList.remove('opacity-0');
+            
+            try {
+              let videoUrl = videoCache.get(videoPath);
+              
+              if (!videoUrl) {
+                // Dynamic import of video
+                const videoModules = await import(/* @vite-ignore */ videoPath + '?url');
+                videoUrl = videoModules.default || videoModules;
+                videoCache.set(videoPath, videoUrl);
+              }
+              
+              // Set video source
+              if (!videoEl.querySelector('source')) {
+                const source = document.createElement('source');
+                source.src = videoUrl;
+                source.type = 'video/webm';
+                videoEl.appendChild(source);
+              }
+              
+              // Load and play
+              await videoEl.load();
+              await videoEl.play();
+              
+              // Fade in video
+              videoLayer.classList.remove('opacity-0');
+              imageLayer.classList.add('opacity-0');
+              isPlaying = true;
+              
+            } catch (error) {
+              console.warn('Failed to load video:', error);
+              // Keep showing image (fallback)
+            } finally {
+              isLoading = false;
+              loadingIndicator?.classList.add('opacity-0');
+            }
+          }
+          
+          // Pause and show image
+          function pauseAndShowImage() {
+            if (!isPlaying) return;
+            
+            videoEl.pause();
+            videoLayer.classList.add('opacity-0');
+            imageLayer.classList.remove('opacity-0');
+            isPlaying = false;
+          }
+          
+          // Hover on entire article triggers video
+          article.addEventListener('mouseenter', loadAndPlayVideo);
+          article.addEventListener('mouseleave', pauseAndShowImage);
+          
+          // Touch events for mobile
+          let touchStartY = 0;
+          article.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+          }, { passive: true });
+          
+          article.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diff = touchStartY - touchEndY;
+            
+            // Only trigger if not scrolling
+            if (Math.abs(diff) < 10) {
+              if (isPlaying) {
+                pauseAndShowImage();
+              } else {
+                loadAndPlayVideo();
+              }
+            }
+          });
+        });
+      }
+      
+      // Initialize on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLazyVideos);
+      } else {
+        initLazyVideos();
+      }
+      
+      // Re-initialize after Astro view transitions
+      document.addEventListener('astro:after-swap', initLazyVideos);
+    })();
+  </script>
+)}

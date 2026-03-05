@@ -1,57 +1,91 @@
 ---
 import { Picture } from 'astro:assets';
 import path from 'node:path';
-const { src, alt, transitionName, width, height, className = [], video, basePath } = Astro.props;
+const { src, alt, transitionName, width, height, className = [], video, basePath, autoplay = false, noHover = false } = Astro.props;
 
-// Resolve video path if it exists
-let resolvedVideoUrl;
-if (video) {
-  const videoModules: Record<string, string> = import.meta.glob(
-    '/src/content/blog/**/*.{mp4,webm,webp}',
-    {
-      eager: true,
-      query: '?url',
-      import: 'default',
-    }
-  );
-
-  // Get the directory of the current post
+// Store video path for lazy loading
+let videoPath: string | undefined;
+if (video && basePath) {
   const postDir = path.dirname(basePath ?? '');
-  const videoPath = `/${postDir}/${video.replace('./', '')}`;
-  resolvedVideoUrl = videoModules[videoPath];
+  videoPath = `/${postDir}/${video.replace('./', '')}`;
 }
 ---
 
 {
-  video ? (
-    <div>
-      <video
-        style={{ aspectRatio: `${width} / ${height}`, objectFit: 'cover' }}
-        class:list={['w-full h-auto overflow-hidden object-cover', ...className]}
-        autoplay
-        muted
-        width={width}
-        height={height}
-        loop
-        playsinline
-        transition:name={transitionName}
+  videoPath ? (
+    autoplay ? (
+      <!-- Autoplay version for highlighted posts -->
+      <div 
+        class:list={['media-container-autoplay relative overflow-hidden', noHover && 'no-hover', ...className]}
+        style={{ aspectRatio: `${width} / ${height}` }}
       >
-        <source src={resolvedVideoUrl} type="video/webm" />
-
-        <Picture
-          class:list={className}
-          src={src}
-          decoding="async"
-          loading="lazy"
-          formats={['jpeg', 'webp']}
-          width={width}
-          height={height}
-          fit="cover"
-          alt={alt}
-          transition:name={transitionName}
-        />
-      </video>
-    </div>
+        <video
+          class="w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          transition:name={transitionName ? `${transitionName}-video` : undefined}
+        >
+          <source src={videoPath} type="video/webm" />
+          <Picture
+            class:list={className}
+            src={src}
+            decoding="async"
+            loading="lazy"
+            formats={['jpeg', 'webp']}
+            width={width}
+            height={height}
+            fit="cover"
+            alt={alt}
+            transition:name={transitionName}
+          />
+        </video>
+      </div>
+    ) : (
+      <!-- Lazy load version for default posts -->
+      <div 
+        class:list={['media-container relative overflow-hidden', noHover && 'no-hover', ...className]}
+        data-video-path={videoPath}
+        style={{ aspectRatio: `${width} / ${height}` }}
+      >
+        <!-- Static image (always visible, serves as fallback) -->
+        <div class="image-layer absolute inset-0 z-10 transition-opacity duration-300">
+          <Picture
+            class:list={['w-full h-full object-cover', ...className]}
+            src={src}
+            decoding="async"
+            loading="lazy"
+            formats={['jpeg', 'webp']}
+            width={width}
+            height={height}
+            fit="cover"
+            alt={alt}
+            transition:name={transitionName}
+          />
+        </div>
+        
+        <!-- Video layer (hidden until hover) -->
+        <div class="video-layer absolute inset-0 z-20 opacity-0 transition-opacity duration-300">
+          <video
+            class="w-full h-full object-cover"
+            muted
+            loop
+            playsinline
+            preload="none"
+            transition:name={transitionName ? `${transitionName}-video` : undefined}
+          >
+            <!-- Source will be injected dynamically -->
+          </video>
+        </div>
+        
+        <!-- Loading indicator -->
+        <div class="loading-indicator absolute inset-0 z-30 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
+          <div class="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+        </div>
+      </div>
+    )
   ) : (
     <Picture
       class:list={className}
@@ -67,3 +101,33 @@ if (video) {
     />
   )
 }
+
+<style>
+  .media-container {
+    cursor: pointer;
+  }
+  
+  .media-container:hover:not(.no-hover) {
+    /* Optional: subtle scale effect on hover */
+    transform: scale(1.01);
+    transition: transform 0.3s ease;
+  }
+  
+  .media-container-autoplay:not(.no-hover) {
+    cursor: pointer;
+  }
+  
+  .media-container-autoplay.no-hover {
+    cursor: default;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+</style>
