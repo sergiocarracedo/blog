@@ -25,7 +25,7 @@ const needsLazyVideo = !isHighlighted && heroVideo;
 let lazyVideoPath: string | undefined;
 if (needsLazyVideo && post.filePath) {
   const postDir = post.filePath.replace('./', '').replace('/index.mdx', '');
-  lazyVideoPath = `/src/content/blog/${postDir}/${heroVideo.replace('./', '')}`;
+  lazyVideoPath = `/${postDir}/${heroVideo.replace('./', '')}`;
 }
 ---
 
