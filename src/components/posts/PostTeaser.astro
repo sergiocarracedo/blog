@@ -23,7 +23,7 @@ const { readingTime, excerpt } = enrichedPost;
   class:list={[
     'md:flex mb-10',
     style === 'highlighted' &&
-      'flex-col content-center bg-secondary/60 rounded-lg gap-2 backdrop-blur-xs',
+      'flex-col content-center bg-secondary/60 dark:bg-primary-600/60 rounded-lg gap-2 backdrop-blur-xs',
     style === 'default' && 'gap-4',
   ]}
 >
@@ -95,7 +95,7 @@ const { readingTime, excerpt } = enrichedPost;
     <div
       aria-label={truncate(excerpt, 40)}
       transition:name={`post-body-${enrichedPost.sanitizedId}`}
-      class:list={['mb-5 text-md text-gray-700', style === 'highlighted' && 'text-center text-sm']}
+      class:list={['mb-5 text-md text-gray-700 dark:text-gray-300', style === 'highlighted' && 'text-center text-sm']}
     >
       <p>{truncate(excerpt, 100)}</p>
     </div>

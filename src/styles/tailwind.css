@@ -21,6 +21,8 @@
   --skew-x: 20deg;
 }
 
+@variant dark (&:is(.dark *));
+
 @utility wrapper {
   @apply max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8;
 }
@@ -42,16 +44,20 @@
 }
 
 @utility link {
-  @apply underline decoration-4 decoration-primary-light hover:decoration-primary-lighter transition-all duration-200 ease-in-out;
+  @apply underline decoration-4 decoration-primary-light dark:decoration-secondary-light hover:decoration-primary-lighter dark:hover:decoration-secondary-lighter transition-all duration-200 ease-in-out;
 }
 
 @utility btn-bottom-shadow-* {
   box-shadow: var(--color-primary) 0 calc(--value(integer) * 1px) 0 0;
 }
 
+@utility btn-bottom-shadow-dark-* {
+  box-shadow: rgba(0, 0, 0, 0.5) 0 calc(--value(integer) * 1px) 0 0;
+}
+
 @utility btn {
   @apply rounded-[10px] border-0 px-3 py-2 text-[15px] tracking-wide transition-all duration-300 ease-in-out cursor-pointer no-underline font-sans shadow-md
-    bg-secondary btn-bottom-shadow-7 hover:btn-bottom-shadow-0 active:btn-bottom-shadow-0;
+    bg-secondary text-primary dark:text-primary btn-bottom-shadow-7 dark:btn-bottom-shadow-dark-7 hover:btn-bottom-shadow-0 dark:hover:btn-bottom-shadow-dark-0 active:btn-bottom-shadow-0 dark:active:btn-bottom-shadow-dark-0;
 }
 
 @utility btn-outlined {
@@ -116,24 +122,30 @@
 
 @layer components {
   .pagination-link {
-    @apply py-1 px-3 hover:bg-primary hover:text-secondary transition-all duration-200 ease-in-out inline-block [--skew-x:10deg] parallelogram rounded-md;
+    @apply py-1 px-3 hover:bg-primary hover:text-secondary dark:hover:bg-secondary dark:hover:text-primary transition-all duration-200 ease-in-out inline-block [--skew-x:10deg] parallelogram rounded-md;
   }
 
   .background-diagonal-primary {
     @apply [--background-diagonal-bg:var(--color-primary)]
     [--background-diagonal-lines:var(--color-primary-lighter)]
+    dark:[--background-diagonal-bg:#1a2d38]
+    dark:[--background-diagonal-lines:#90c6be33]
     background-diagonal;
   }
 
   .background-diagonal-secondary {
     @apply [--background-diagonal-bg:var(--color-secondary)]
     [--background-diagonal-lines:var(--color-primary-lighter)]
+    dark:[--background-diagonal-bg:#2a4a5a]
+    dark:[--background-diagonal-lines:#90c6be44]
     background-diagonal;
   }
 
   .background-paper-secondary {
     @apply [--background-paper-bg:var(--color-secondary)]
     [--background-paper-lines:var(--color-secondary-lighter)]
+    dark:[--background-paper-bg:#2a4a5a]
+    dark:[--background-paper-lines:#90c6be33]
     background-paper;
   }
 
@@ -161,16 +173,19 @@
   h4,
   h5,
   h6 {
-    @apply font-impact text-primary leading-none font-bold tracking-tight;
+    @apply font-impact text-primary dark:text-secondary leading-none font-bold tracking-tight;
   }
   html {
-    @apply font-primary text-[#404040];
+    @apply font-primary text-[#404040] dark:text-gray-200;
   }
 
   body {
-    @apply font-primary text-[#404040] bg-[#f3f4f6] text-lg 
+    @apply font-primary text-[#404040] dark:text-gray-200 
+    bg-[#f3f4f6] dark:bg-primary text-lg 
     [--background-paper-bg:#f3f4f6]
     [--background-paper-lines:#8BC2B933]
+    dark:[--background-paper-bg:#213b4a]
+    dark:[--background-paper-lines:#90c6be22]
     background-paper;
     background-attachment: fixed;
 

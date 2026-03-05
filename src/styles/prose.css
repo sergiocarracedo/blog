@@ -1,9 +1,9 @@
 @layer components {
   .prose {
-    @apply backdrop-blur-md bg-neutral-100/60 text-gray-900 rounded-md text-base;
+    @apply backdrop-blur-md bg-neutral-100/60 dark:bg-primary-600/60 text-gray-900 dark:text-gray-200 rounded-md text-base;
 
     *::selection {
-      @apply bg-primary text-white;
+      @apply bg-primary dark:bg-secondary text-white dark:text-primary;
     }
 
     iframe {
@@ -50,7 +50,7 @@
     h4,
     h5,
     h6 {
-      @apply before:font-bold before:text-primary-light before:mr-2;
+      @apply before:font-bold before:text-primary-light dark:before:text-secondary-light before:mr-2;
     }
 
     > h1,
@@ -86,7 +86,7 @@
     }
 
     hr {
-      @apply border-t border-primary my-6;
+      @apply border-t border-primary dark:border-secondary my-6;
     }
 
     pre,
@@ -218,12 +218,17 @@
     }
 
     blockquote {
-      @apply bg-primary-lighter;
+      @apply bg-primary-lighter dark:bg-secondary-lighter;
       margin: 0 0 1.1em;
       box-shadow: var(--color-primary) -7px 0 0 0;
       border-radius: 5px;
       padding: 15px 20px;
       color: var(--color-primary);
+
+      :global(.dark) & {
+        box-shadow: var(--color-secondary) -7px 0 0 0;
+        color: var(--color-secondary);
+      }
 
       a {
         @apply link;

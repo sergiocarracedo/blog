@@ -3,11 +3,12 @@ import { Image } from 'astro:assets';
 import { SITE_TITLE } from '../consts';
 import MenuMenu from './menu/Menu.astro';
 import MenuOverlay from './menu/MenuOverlay.astro';
+import ThemeToggle from './ThemeToggle.astro';
 ---
 
 <header
   id="site-header"
-  class="sticky top-0 z-50 backdrop-blur-xs bg-secondary/40 mb-6 md:mb-15 transition-all duration-500 max-w-full mx-auto print:static"
+  class="sticky top-0 z-50 backdrop-blur-xs bg-secondary/40 dark:bg-primary-700 mb-6 md:mb-15 transition-all duration-500 max-w-full mx-auto print:static"
 >
   <nav class="flex gap-4 p-4 items-center justify-between wrapper">
     <h2 class="text-sm md:text-xl">
@@ -17,13 +18,14 @@ import MenuOverlay from './menu/MenuOverlay.astro';
           alt="Image of Sergio Carracedo, the blog author"
           width={50}
           height={50}
-          class="inline-block mr-2 rounded-full border-solid border-primary border-4 w-11 h-11 md:w-13 md:h-13"
+          class="inline-block mr-2 rounded-full border-solid border-primary dark:border-secondary border-4 w-11 h-11 md:w-13 md:h-13"
         />
         {SITE_TITLE}
       </a>
     </h2>
 
-    <div class="internal-links">
+    <div class="internal-links flex items-center gap-2">
+      <ThemeToggle />
       <MenuMenu />
     </div>
   </nav>
@@ -42,7 +44,7 @@ import MenuOverlay from './menu/MenuOverlay.astro';
     'px-4',
     'rounded-lg',
   ];
-  const scrolledClasses = ['max-w-full', 'bg-white/40', 'backdrop-blur-xs', 'top-0'];
+  const scrolledClasses = ['max-w-full', 'bg-white/40', 'dark:bg-primary-600', 'backdrop-blur-xs', 'top-0'];
   const onScroll = () => {
     if (!header) return;
     if (window.scrollY === 0) {

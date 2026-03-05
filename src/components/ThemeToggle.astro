@@ -1,0 +1,65 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<button
+  id="theme-toggle"
+  class="p-2 rounded-full hover:bg-primary/10 dark:hover:bg-secondary/10 transition-colors cursor-pointer"
+  aria-label="Toggle dark mode"
+  title="Toggle dark mode"
+>
+  <Icon name="outline/sun-outline" class="w-5 h-5 hidden dark:block text-secondary" />
+  <Icon name="outline/moon-outline" class="w-5 h-5 block dark:hidden text-primary" />
+</button>
+
+<script is:inline>
+  function initThemeToggle() {
+    console.log('[ThemeToggle] Initializing...');
+    const toggle = document.getElementById('theme-toggle');
+    
+    if (!toggle) {
+      console.error('[ThemeToggle] Button not found!');
+      return;
+    }
+    
+    console.log('[ThemeToggle] Button found:', toggle);
+
+    function setTheme(theme) {
+      console.log('[ThemeToggle] Setting theme to:', theme);
+      const isDark =
+        theme === 'dark' ||
+        (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+      document.documentElement.classList.toggle('dark', isDark);
+      localStorage.setItem('theme', theme === 'system' ? '' : theme);
+      console.log('[ThemeToggle] Theme set. isDark:', isDark);
+    }
+
+    toggle.addEventListener('click', () => {
+      console.log('[ThemeToggle] Button clicked!');
+      const isDark = document.documentElement.classList.contains('dark');
+      console.log('[ThemeToggle] Current mode is dark:', isDark);
+      setTheme(isDark ? 'light' : 'dark');
+    });
+
+    // Listen for system preference changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      console.log('[ThemeToggle] System preference changed');
+      if (!localStorage.getItem('theme')) {
+        setTheme('system');
+      }
+    });
+    
+    console.log('[ThemeToggle] Event listeners attached successfully');
+  }
+
+  // Initialize on load
+  console.log('[ThemeToggle] Script loaded');
+  initThemeToggle();
+
+  // Re-initialize after view transitions
+  document.addEventListener('astro:after-swap', () => {
+    console.log('[ThemeToggle] View transition detected, re-initializing');
+    initThemeToggle();
+  });
+</script>

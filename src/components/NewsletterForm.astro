@@ -15,10 +15,10 @@ const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-
     <div class="flex flex-col gap-3">
       <div class="flex items-center gap-2">
         <Icon name="outline/mail-outline" />
-        <h3 class="m-0 text-xl font-bold text-primary">Stay Updated</h3>
+        <h3 class="m-0 text-xl font-bold text-primary dark:text-secondary">Stay Updated</h3>
       </div>
 
-      <p class="m-0 text-sm text-slate-600">
+      <p class="m-0 text-sm text-slate-600 dark:text-gray-300">
         Get monthly digests of new posts delivered to your inbox
       </p>
 
@@ -28,7 +28,7 @@ const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-
           name="email"
           placeholder="your@email.com"
           required
-          class="w-full rounded-lg border-2 border-primary-lighter bg-white px-3.5 py-2.5 text-[15px] transition-all duration-200 ease-in-out placeholder:text-slate-400 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary-lighter sm:min-w-50 sm:flex-1"
+          class="w-full rounded-lg border-2 border-primary-lighter dark:border-secondary-light bg-white dark:bg-primary-600 px-3.5 py-2.5 text-[15px] transition-all duration-200 ease-in-out placeholder:text-slate-400 dark:placeholder:text-gray-400 focus:outline-none focus:border-primary dark:focus:border-secondary focus:ring-4 focus:ring-primary-lighter dark:focus:ring-secondary-light sm:min-w-50 sm:flex-1"
           aria-label="Email address"
         />
 

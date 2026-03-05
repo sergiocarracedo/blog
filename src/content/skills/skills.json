@@ -1,5 +1,18 @@
 [
   {
+    "name": "AI-Native Development",
+    "color": "#10a37f",
+    "textColor": "white",
+    "id": "ai-native-dev",
+    "icon": "tech/ai"
+  },
+  {
+    "name": "Spec Driven Development",
+    "color": "#3b82f6",
+    "textColor": "white",
+    "id": "sdd"
+  },
+  {
     "name": "TypeScript",
     "color": "#007acc",
     "textColor": "white",
@@ -20,26 +33,30 @@
     "id": "vue",
     "icon": "tech/vue"
   },
-   {
-    "name": "JS",
-    "color": "#F0DB4F",
-    "textColor": "black",
-    "id": "js",
-    "icon": "tech/js"
-  },
-  {
-    "name": "Clean architectures",
-    "id": "clean-architectures",
-    "icon": "tech/hexagon"
-
-  },
   {
     "name": "Golang",
     "color": "#29BEB0",
     "textColor": "black",
     "id": "golang",
     "icon": "tech/golang"
-
+  },
+  {
+    "name": "AI Agents",
+    "color": "#8b5cf6",
+    "textColor": "white",
+    "id": "ai-agents"
+  },
+  {
+    "name": "Clean architectures",
+    "id": "clean-architectures",
+    "icon": "tech/hexagon"
+  },
+  {
+    "name": "JS",
+    "color": "#F0DB4F",
+    "textColor": "black",
+    "id": "js",
+    "icon": "tech/js"
   },
   {
     "name": "Node.js",
@@ -78,21 +95,6 @@
     "id": "echarts"
   },
   {
-    "name": "PHP",
-    "color": "#787CB5",
-    "textColor": "black",
-    "id": "php",
-    "icon": "tech/php"
-  },
-  {
-    "name": "Symfony",
-    "textColor": "white",
-    "color": "#333",
-    "id": "symfony",
-    "icon": "tech/symfony"
-
-  },
-  {
     "name": "Linux",
     "color": "#f99",
     "textColor": "black",
@@ -107,7 +109,6 @@
     "name": "Docker",
     "id": "docker",
     "icon": "tech/docker"
-
   },
   {
     "name": "GitHub Actions",
