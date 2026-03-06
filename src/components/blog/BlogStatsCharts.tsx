@@ -136,7 +136,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         </div>
       </section>
 
-      <section className="bg-gray-50/80 dark:bg-primary-900/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
+      <section className="bg-gray-50/80 dark:bg-primary/95 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
@@ -157,7 +157,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         />
       </section>
 
-      <section className="bg-gray-50/80 dark:bg-primary-900/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
+      <section className="bg-gray-50/80 dark:bg-primary/95 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
@@ -185,7 +185,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         />
       </section>
 
-      <section className="bg-gray-50/80 dark:bg-primary-900/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
+      <section className="bg-gray-50/80 dark:bg-primary/95 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
@@ -211,7 +211,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         />
       </section>
 
-      <section className="bg-gray-50/80 dark:bg-primary-900/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
+      <section className="bg-gray-50/80 dark:bg-primary/95 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
@@ -238,7 +238,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         />
       </section>
 
-      <section className="bg-gray-50/80 dark:bg-primary-900/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
+      <section className="bg-gray-50/80 dark:bg-primary/95 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
@@ -277,7 +277,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         />
       </section>
 
-      <section className="bg-gray-50/80 dark:bg-primary-900/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
+      <section className="bg-gray-50/80 dark:bg-primary/95 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 420 }}
           option={{

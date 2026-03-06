@@ -31,7 +31,16 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://sergiocarracedo.es',
-  integrations: [mdx(), sitemap(), icon(), pagefind(), cookieconsent(cookieConsentConfig), react()],
+  integrations: [
+    mdx(),
+    sitemap(),
+    icon(),
+    pagefind(),
+    cookieconsent(cookieConsentConfig),
+    react({
+      experimentalReactChildren: true,
+    }),
+  ],
   image: {
     // Enable image optimization
     domains: ['sergiocarracedo.es'],
