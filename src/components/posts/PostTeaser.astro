@@ -1,4 +1,12 @@
 ---
+import type { CollectionEntry } from 'astro:content';
+import path from 'node:path';
+import { enrichBlogPost } from '../../utils/enrichBlogPost';
+import { truncate } from '../../utils/truncate';
+import PostMainMedia from './parts/PostMainMedia.astro';
+import PostMetadata from './parts/PostMetadata.astro';
+import AIGeneratedBadge from './parts/AIGeneratedBadge.astro';
+
 interface Props {
   post: CollectionEntry<'blog'>;
   style?: 'default' | 'highlighted';
@@ -6,12 +14,6 @@ interface Props {
 
 const { post, style = 'default' } = Astro.props;
 const isHighlighted = style === 'highlighted';
-import type { CollectionEntry } from 'astro:content';
-import { enrichBlogPost } from '../../utils/enrichBlogPost';
-import { truncate } from '../../utils/truncate';
-import PostMainMedia from './parts/PostMainMedia.astro';
-import PostMetadata from './parts/PostMetadata.astro';
-import AIGeneratedBadge from './parts/AIGeneratedBadge.astro';
 
 const enrichedPost = enrichBlogPost(post);
 const postUrl = enrichedPost.slug;
@@ -24,7 +26,7 @@ const needsLazyVideo = !isHighlighted && heroVideo;
 // Build video path for lazy loading (same logic as PostMainMedia)
 let lazyVideoPath: string | undefined;
 if (needsLazyVideo && post.filePath) {
-  const postDir = post.filePath.replace('./', '').replace('/index.mdx', '');
+  const postDir = path.dirname(post.filePath);
   lazyVideoPath = `/${postDir}/${heroVideo.replace('./', '')}`;
 }
 ---
