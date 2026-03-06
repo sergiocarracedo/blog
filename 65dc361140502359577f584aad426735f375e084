@@ -1,0 +1,23 @@
+src/components/blog/BlogStatsCharts.tsx
+  365f58d0d0859a5b 139,160,188,214,241,280
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "65dc361140502359577f584aad426735f375e084",
+  "prompts": {
+    "365f58d0d0859a5b": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_340e174a5ffe3MhNmDwgaAkjDz",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 6,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    }
+  }
+}
