@@ -1,5 +1,5 @@
 import ReactECharts from 'echarts-for-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { BlogStats } from '@/utils/getBlogStats';
 
@@ -7,38 +7,37 @@ interface BlogStatsChartsProps {
   stats: BlogStats;
 }
 
-// #213B4A
 const numberFormatter = new Intl.NumberFormat('en-US');
 
-const toChartTitle = (title: string, subtitle?: string) => ({
+const toChartTitle = (title: string, subtitle?: string, isDark = false) => ({
   title: {
     text: title,
     subtext: subtitle,
     left: 'center',
     textStyle: {
-      color: '#333',
+      color: isDark ? '#e5e7eb' : '#333',
       fontWeight: 600,
       fontSize: 16,
     },
     subtextStyle: {
-      color: '#666',
+      color: isDark ? '#9ca3af' : '#666',
     },
   },
 });
 
-const axisStyles = {
-  axisLine: { lineStyle: { color: '#374151' } },
-  axisTick: { lineStyle: { color: '#374151' } },
-  axisLabel: { color: '#9ca3af' },
-  splitLine: { lineStyle: { color: '#1f2937' } },
-};
+const getAxisStyles = (isDark = false) => ({
+  axisLine: { lineStyle: { color: isDark ? '#4b5563' : '#d1d5db' } },
+  axisTick: { lineStyle: { color: isDark ? '#4b5563' : '#d1d5db' } },
+  axisLabel: { color: isDark ? '#9ca3af' : '#6b7280' },
+  splitLine: { lineStyle: { color: isDark ? '#374151' : '#e5e7eb' } },
+});
 
-const tooltip = {
+const getTooltip = (isDark = false) => ({
   trigger: 'axis' as const,
-  backgroundColor: '#111827',
-  borderColor: '#374151',
-  textStyle: { color: '#f9fafb' },
-};
+  backgroundColor: isDark ? '#1f2937' : '#ffffff',
+  borderColor: isDark ? '#4b5563' : '#d1d5db',
+  textStyle: { color: isDark ? '#f9fafb' : '#111827' },
+});
 
 const formatTagTooltip = (
   params: Array<{ axisValue?: string; seriesName?: string; value?: number }>
@@ -55,6 +54,29 @@ const formatTagTooltip = (
 };
 
 const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    // Check initial dark mode
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+
+    checkDarkMode();
+
+    // Watch for dark mode changes
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const axisStyles = getAxisStyles(isDark);
+  const tooltip = getTooltip(isDark);
+
   const yearLabels = stats.perYear.map((item) => item.year.toString());
   const yearPosts = stats.perYear.map((item) => item.posts);
   const yearWords = stats.perYear.map((item) => item.words);
@@ -83,27 +105,29 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
 
   return (
     <div className="grid gap-10">
-      <section className="bg-secondary/40 border rounded-2xl p-6 backdrop-blur-sm">
-        <div className="flex flex-wrap items-center justify-between gap-4 text-primary">
+      <section className="bg-secondary/40 dark:bg-primary-700/40 border border-secondary dark:border-primary-600 rounded-2xl p-6 backdrop-blur-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-primary dark:text-secondary">
           <div>
             <h3 className="text-xl font-semibold">Overview</h3>
-            <p className="text-primary text-sm">Generated at {stats.generatedAt}</p>
+            <p className="text-primary dark:text-gray-400 text-sm">
+              Generated at {stats.generatedAt}
+            </p>
           </div>
           <div className="flex flex-wrap gap-6 text-sm text-right">
             <div>
-              <div className="text-primary">Posts</div>
+              <div className="text-primary dark:text-gray-400">Posts</div>
               <div className="text-lg font-semibold">
                 {numberFormatter.format(stats.totals.posts)}
               </div>
             </div>
             <div>
-              <div className="text-primary">Words</div>
+              <div className="text-primary dark:text-gray-400">Words</div>
               <div className="text-lg font-semibold">
                 {numberFormatter.format(stats.totals.words)}
               </div>
             </div>
             <div>
-              <div className="text-primary">Avg words</div>
+              <div className="text-primary dark:text-gray-400">Avg words</div>
               <div className="text-lg font-semibold">
                 {numberFormatter.format(stats.totals.avgWords)}
               </div>
@@ -112,11 +136,11 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         </div>
       </section>
 
-      <section className="bg-white/50 backdrop-blur-sm rounded-2xl p-4">
+      <section className="bg-white/50 dark:bg-primary-800/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
-            ...toChartTitle('Posts per year', 'Yearly volume across the archive'),
+            ...toChartTitle('Posts per year', 'Yearly volume across the archive', isDark),
             tooltip,
             grid: { left: 40, right: 20, bottom: 40, top: 70 },
             xAxis: { type: 'category', data: yearLabels, ...axisStyles },
@@ -133,11 +157,11 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         />
       </section>
 
-      <section className="bg-white/50 backdrop-blur-sm rounded-2xl p-4">
+      <section className="bg-white/50 dark:bg-primary-800/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
-            ...toChartTitle('Posts per month', 'Totals per month across all years'),
+            ...toChartTitle('Posts per month', 'Totals per month across all years', isDark),
             tooltip,
             grid: { left: 50, right: 20, bottom: 60, top: 70 },
             xAxis: {
@@ -161,11 +185,11 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         />
       </section>
 
-      <section className="bg-white/50 backdrop-blur-sm rounded-2xl p-4">
+      <section className="bg-white/50 dark:bg-primary-800/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
-            ...toChartTitle('Posts per day of week', 'Totals by weekday across all years'),
+            ...toChartTitle('Posts per day of week', 'Totals by weekday across all years', isDark),
             tooltip,
             grid: { left: 50, right: 20, bottom: 60, top: 70 },
             xAxis: {
@@ -187,11 +211,11 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
         />
       </section>
 
-      <section className="bg-white/50 backdrop-blur-sm rounded-2xl p-4">
+      <section className="bg-white/50 dark:bg-primary-800/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
-            ...toChartTitle('Words per year'),
+            ...toChartTitle('Words per year', undefined, isDark),
             tooltip,
             grid: { left: 50, right: 20, bottom: 40, top: 70 },
             xAxis: { type: 'category', data: yearLabels, ...axisStyles },
@@ -201,24 +225,24 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
                 name: 'Words',
                 type: 'bar',
                 data: yearWords,
-                itemStyle: { color: '#213B4A70' },
+                itemStyle: { color: isDark ? '#90c6be70' : '#213B4A70' },
               },
               {
                 name: 'Avg words',
                 type: 'line',
                 data: yearAvg,
-                itemStyle: { color: '#213B4A' },
+                itemStyle: { color: isDark ? '#90c6be' : '#213B4A' },
               },
             ],
           }}
         />
       </section>
 
-      <section className="bg-white/50 backdrop-blur-sm rounded-2xl p-4">
+      <section className="bg-white/50 dark:bg-primary-800/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 360 }}
           option={{
-            ...toChartTitle('Words per month'),
+            ...toChartTitle('Words per month', undefined, isDark),
             tooltip,
             grid: { left: 50, right: 20, bottom: 60, top: 70 },
             xAxis: {
@@ -230,7 +254,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
             yAxis: { type: 'value', ...axisStyles },
             legend: {
               top: 45,
-              textStyle: { color: '#666' },
+              textStyle: { color: isDark ? '#9ca3af' : '#666' },
             },
             series: [
               {
@@ -246,18 +270,18 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
                 type: 'line',
                 smooth: true,
                 data: monthAvg,
-                itemStyle: { color: '#213B4A' },
+                itemStyle: { color: isDark ? '#e5e7eb' : '#213B4A' },
               },
             ],
           }}
         />
       </section>
 
-      <section className="bg-white/50 backdrop-blur-sm rounded-2xl p-4">
+      <section className="bg-white/50 dark:bg-primary-800/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-primary-700">
         <ReactECharts
           style={{ height: 420 }}
           option={{
-            ...toChartTitle('Tags usage by year', 'All tags stacked by year'),
+            ...toChartTitle('Tags usage by year', 'All tags stacked by year', isDark),
             tooltip: {
               ...tooltip,
               formatter: formatTagTooltip,
@@ -269,7 +293,7 @@ const BlogStatsCharts: React.FC<BlogStatsChartsProps> = ({ stats }) => {
               left: 'center',
               width: '80%',
               data: allTags,
-              textStyle: { color: '#666' },
+              textStyle: { color: isDark ? '#9ca3af' : '#666' },
             },
             grid: { left: 50, right: 20, bottom: 50, top: 90 },
             xAxis: {
