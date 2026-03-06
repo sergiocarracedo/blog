@@ -6,21 +6,36 @@ import NewsletterToast from '../components/NewsletterToast.astro';
 import NewsletterSuccessToast from '../components/NewsletterSuccessToast.astro';
 
 import { DISQUS, GA } from '../consts';
+import { getLangFromUrl, type Locale } from '@/i18n';
 
-const { meta } = Astro.props;
+interface Props {
+  meta: {
+    title: string;
+    description?: string;
+    image?: string;
+    canonicalUrl?: string;
+    canonical?: string;
+  };
+  lang?: Locale;
+  hreflangOverride?: Record<string, string>;
+  translations?: Partial<Record<Locale, string>>;
+}
+
+const { meta, lang: propLang, hreflangOverride, translations } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
-    <BaseHead meta={meta} />
+    <BaseHead meta={meta} lang={lang} hreflangOverride={hreflangOverride} />
   </head>
   <body class="max-w-full overflow-x-hidden">
-    <Header />
+    <Header lang={lang} translations={translations} />
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
     <NewsletterToast />
     <NewsletterSuccessToast />
 

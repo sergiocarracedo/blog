@@ -4,6 +4,17 @@ import { SITE_TITLE } from '../consts';
 import MenuMenu from './menu/Menu.astro';
 import MenuOverlay from './menu/MenuOverlay.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { getLangFromUrl, useTranslatedPath, type Locale } from '@/i18n';
+
+interface Props {
+  lang?: Locale;
+  translations?: Partial<Record<Locale, string>>;
+}
+
+const { lang: propLang, translations } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
 ---
 
 <header
@@ -12,7 +23,7 @@ import ThemeToggle from './ThemeToggle.astro';
 >
   <nav class="flex gap-4 p-4 items-center justify-between wrapper">
     <h2 class="text-sm md:text-xl">
-      <a href="/">
+      <a href={translatePath('/')}>
         <Image
           src="/i/sergiocarracedo.jpg"
           alt="Image of Sergio Carracedo, the blog author"
@@ -25,13 +36,14 @@ import ThemeToggle from './ThemeToggle.astro';
     </h2>
 
     <div class="internal-links flex items-center gap-2">
+      <LanguageSwitcher lang={lang} translations={translations} size="sm" />
       <ThemeToggle />
-      <MenuMenu />
+      <MenuMenu lang={lang} />
     </div>
   </nav>
 </header>
 
-<MenuOverlay />
+<MenuOverlay lang={lang} />
 
 <script set:script>
   const header = document.getElementById('site-header');

@@ -1,12 +1,16 @@
 ---
+import { getLangFromUrl, getLocalizedDate } from '@/i18n';
+
 interface Props {
   date: Date;
   class?: string;
   prepend?: string | Astro.JSX.Element;
   postId?: string;
+  lang?: 'en' | 'es';
 }
 
-const { date, postId } = Astro.props;
+const { date, postId, lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
 ---
 
 <time
@@ -15,11 +19,5 @@ const { date, postId } = Astro.props;
   transition:name={`post-date-${postId}`}
 >
   {Astro.props.prepend && <span class="prepend">{Astro.props.prepend}</span>}
-  {
-    date.toLocaleDateString('en-us', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
-  }
+  {getLocalizedDate(date, lang)}
 </time>

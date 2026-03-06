@@ -3,7 +3,29 @@ import { defineCollection, z } from 'astro:content';
 
 const blog = defineCollection({
   // Load Markdown and MDX files in the `src/content/blog/` directory.
-  loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
+  // Custom generateId: for co-located translation files (index.es.mdx, index.en.mdx),
+  // always use the path-based ID (ignoring frontmatter `slug`) to avoid ID collisions
+  // with the base post that shares the same `slug` value.
+  loader: glob({
+    base: './src/content/blog',
+    pattern: '**/*.{md,mdx}',
+    generateId: ({ entry, base, data }) => {
+      // Check if this is a translation file by its filename pattern
+      if (/\/index\.(en|es)\.(md|mdx)$/.test(entry)) {
+        // Strip the base path prefix and file extension to get a path-based ID
+        // e.g. "2026/2026-01-31-mac-mierda/index.es.mdx" → "2026/2026-01-31-mac-mierda/index.es"
+        const relativePath = entry.replace(/\.(md|mdx)$/, '');
+        return relativePath;
+      }
+      // Default: use frontmatter slug if present, otherwise path-based
+      if (data.slug) {
+        return data.slug as string;
+      }
+      // Path-based ID (strip extension, collapse /index at end)
+      const withoutExt = entry.replace(/\.(md|mdx)$/, '');
+      return withoutExt.replace(/\/index$/, '');
+    },
+  }),
   // Type-check frontmatter using a schema
   schema: ({ image }) =>
     z.object({
@@ -26,6 +48,13 @@ const blog = defineCollection({
         })
         .optional(),
       aiGenerated: z.boolean().optional().default(false),
+      // slug is used by generateId for base posts; also mirrored on translation files
+      // so that getSlug() can recover the correct URL without a base-post lookup
+      slug: z.string().optional(),
+      // i18n fields
+      lang: z.enum(['en', 'es']).optional(), // Original language of the post
+      autoTranslated: z.boolean().optional().default(false), // Flag for AI-translated content
+      originalLang: z.enum(['en', 'es']).optional(), // Original language if this is a translation
     }),
 });
 

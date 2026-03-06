@@ -2,8 +2,15 @@
 import { Icon } from 'astro-icon/components';
 import { SITE_TITLE } from '../../consts';
 import HeaderLink from './HeaderLink.astro';
-import menuRaw from './menu.json';
-const menu: Array<{ label: string; href: string }> = Array.isArray(menuRaw) ? menuRaw : [];
+import { getLangFromUrl, getLocalizedMenuItems } from '@/i18n';
+
+interface Props {
+  lang?: 'en' | 'es';
+}
+
+const { lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const menu = getLocalizedMenuItems(lang);
 ---
 
 <div

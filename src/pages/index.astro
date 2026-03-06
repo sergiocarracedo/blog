@@ -2,32 +2,30 @@
 import Hero from '@/components/home/Hero.astro';
 import SectionHeader from '@/components/SectionHeader.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSortedCollection } from '@/utils/getSortedCollection';
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
 import Search from 'astro-pagefind/components/Search';
 import PostTeaser from '../components/posts/PostTeaser.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_TITLE } from '../consts';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@/i18n';
 
-const posts = await getSortedCollection('blog');
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
+const posts = await getLocalizedPosts(lang);
 const homePosts = posts.slice(0, 5);
-
-const meta = {
-  title: SITE_TITLE,
-  description: SITE_DESCRIPTION,
-  keywords: ['blog', 'articles', 'insights'],
-};
 ---
 
-<BaseLayout meta={{ title: SITE_TITLE, description: SITE_DESCRIPTION }}>
+<BaseLayout meta={{ title: SITE_TITLE, description: t('site.description') }} lang={lang}>
   <main>
-    <Hero />
+    <Hero lang={lang} />
 
     <section class="wrapper">
       <div class="md:flex gap-7 mb-10 justify-between">
         <SectionHeader
-          title="Blog"
-          subtitle="Latest Posts"
-          description="Explore my latest articles and insights."
+          title={t('blog.title')}
+          subtitle={t('blog.latestPosts')}
+          description={t('site.description')}
           class="mb-2"
         />
         <div class="flex-1 items-end md:max-w-[350px]">
@@ -42,6 +40,7 @@ const meta = {
               <PostTeaser
                 style={index === 0 ? 'highlighted' : 'default'}
                 post={post}
+                lang={lang}
               />
             </li>
           ))
@@ -49,8 +48,8 @@ const meta = {
       </ul>
 
       <div class="text-center mt-8 mb-10">
-        <a class="btn text-xl" href="/blog" title={`All Blog posts [${posts.length}]`}>
-          All Blog posts [{posts.length}]
+        <a class="btn text-xl" href={translatePath('/blog')} title={`${t('post.allPosts')} [${posts.length}]`}>
+          {t('post.allPosts')} [{posts.length}]
         </a>
       </div>
     </section>

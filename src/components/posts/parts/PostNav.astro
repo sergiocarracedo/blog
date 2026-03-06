@@ -2,13 +2,18 @@
 import type { CollectionKey } from 'astro:content';
 import { getSortedCollection } from '../../../utils/getSortedCollection';
 import PostMiniNav from './PostMiniNav.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@/i18n';
 
 interface Props {
   collection?: CollectionKey;
   id: string;
+  lang?: 'en' | 'es';
 }
 
-const { collection = 'blog', id } = Astro.props;
+const { collection = 'blog', id, lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
 const posts = await getSortedCollection('blog');
 
@@ -27,7 +32,7 @@ const prevPost = posts[prevIndex];
   {
     nextPost ? (
       <div class="order-1 grow-1">
-        <PostMiniNav post={nextPost} direction="next" />
+        <PostMiniNav post={nextPost} direction="next" lang={lang} />
       </div>
     ) : (
       <div class="order-1 grow-1 w-[200px]" aria-hidden="true" />
@@ -37,12 +42,12 @@ const prevPost = posts[prevIndex];
   <div
     class="flex-1 flex justify-center items-center min-w-40 py-10 order-10 sm:order-4 w-full sm:w-auto basis-full sm:basis-auto"
   >
-    <a class="btn-outlined" href="/blog" title="All Blog posts"> All Blog posts </a>
+    <a class="btn-outlined" href={translatePath('/blog')} title={t('post.allPosts')}> {t('post.allPosts')} </a>
   </div>
   {
     prevPost ? (
       <div class="order-5 grow-1">
-        <PostMiniNav post={prevPost} direction="prev" class="order-6 justify-self-end" />
+        <PostMiniNav post={prevPost} direction="prev" lang={lang} class="order-6 justify-self-end" />
       </div>
     ) : (
       <div class="order-5 grow-1 w-[200px]" aria-hidden="true" />

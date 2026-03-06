@@ -16,10 +16,16 @@
     "lint:md:fix": "markdownlint --fix \"**/*.md\" \"**/*.mdx\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "newsletter:test": "tsx scripts/send-newsletter.js --test"
+    "newsletter:test": "tsx scripts/send-newsletter.js --test",
+    "translate": "tsx scripts/translate-post.ts",
+    "translate:all": "tsx scripts/translate-all-posts.ts",
+    "translate:missing": "tsx scripts/translate-all-posts.ts --missing-only",
+    "detect-lang": "tsx scripts/detect-language.ts"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.58",
     "@ai-sdk/google": "^3.0.23",
+    "@ai-sdk/openai": "^3.0.41",
     "@astrojs/markdown-remark": "^6.3.10",
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/react": "^4.4.2",

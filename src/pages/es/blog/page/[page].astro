@@ -1,0 +1,52 @@
+---
+import SectionHeader from '@/components/SectionHeader.astro';
+import Search from 'astro-pagefind/components/Search';
+import Pagination from '@/components/Pagination.astro';
+import PostTeaser from '@/components/posts/PostTeaser.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
+import { useTranslations, type Locale } from '@/i18n';
+
+const lang: Locale = 'es';
+const t = useTranslations(lang);
+
+export async function getStaticPaths({ paginate }) {
+  const { getLocalizedPosts } = await import('@/utils/getLocalizedPosts');
+  const posts = await getLocalizedPosts('es');
+  return paginate(posts, { pageSize: 10 });
+}
+
+const urlPattern = `/es/blog/page/{}`;
+
+const { page } = Astro.props;
+const { data: posts } = page;
+
+const totalPosts = (await getLocalizedPosts(lang)).length;
+---
+
+<BaseLayout meta={{ title: t('blog.title'), description: t('site.description') }} lang={lang}>
+  <section class="wrapper">
+    <div class="md:flex gap-7 mb-10 justify-between">
+      <SectionHeader
+        title={t('blog.title')}
+        subtitle={page.currentPage > 1 ? t('pagination.page', { current: page.currentPage.toString(), total: page.lastPage.toString() }) : ''}
+        description={t('site.description')}
+        class="mb-2"
+      />
+      <div class="flex-1 items-end md:max-w-[350px]">
+        <Search className="pagefind-ui-dark pagefind-ui-floating" />
+      </div>
+    </div>
+
+    <ul>
+      {
+        posts.map((post) => (
+          <li>
+            <PostTeaser post={post} lang={lang} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+  <Pagination page={page} urlPattern={urlPattern} lang={lang} />
+</BaseLayout>

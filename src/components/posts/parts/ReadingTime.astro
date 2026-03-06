@@ -1,25 +1,26 @@
 ---
+import { getLangFromUrl, getReadingTimeText } from '@/i18n';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
   readingTime?: number;
   class?: string;
   postId?: string;
+  lang?: 'en' | 'es';
 }
 
-const { readingTime, class: className, postId } = Astro.props;
+const { readingTime, class: className, postId, lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
 ---
 
 {
   readingTime && (
     <span
-      class:list={[`text-sm text-gray-600 flex items-center gap-1`, className]}
+      class:list={[`text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1`, className]}
       transition:name={`post-reading-time-${postId}`}
     >
       <Icon name="outline/clock-outline" class="w-4 h-4" />
-      <span>
-        {readingTime}&nbsp;{readingTime === 1 ? 'minute' : 'minutes'} read
-      </span>
+      <span>{getReadingTimeText(readingTime, lang)}</span>
     </span>
   )
 }

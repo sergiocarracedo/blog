@@ -1,22 +1,42 @@
 ---
 import { enrichBlogPost } from '@/utils/enrichBlogPost';
+import { isTranslationFile, getTranslationLocale, getPostSwitcherUrls } from '@/utils/getLocalizedPosts';
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PostSingle from '../components/posts/PostSingle.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { truncate } from '../utils/truncate';
+import { defaultLocale, type Locale } from '@/i18n';
+
+const lang: Locale = defaultLocale; // English for root paths
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: post,
-  }));
+  
+  // For English (default locale), show:
+  // - Base posts with no lang or lang: 'en'
+  // - Co-located English translation files (index.en.mdx)
+  // Exclude Spanish translation files and Spanish-only posts
+  return posts
+    .filter((post) => {
+      // Co-located translation files: only include English ones at root
+      if (isTranslationFile(post)) {
+        return getTranslationLocale(post) === 'en';
+      }
+      // Include posts without lang or with lang: 'en'
+      return !post.data.lang || post.data.lang === 'en';
+    })
+    .map((post) => ({
+      params: { slug: post.id },
+      props: post,
+    }));
 }
+
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 
 const enrichedPost = enrichBlogPost(post);
+const switcher = await getPostSwitcherUrls(post);
 
 const meta = {
   title: enrichedPost.data.title,
@@ -29,6 +49,6 @@ const meta = {
 };
 ---
 
-<BaseLayout meta={meta}>
-  <PostSingle post={post} />
+<BaseLayout meta={meta} lang={lang} translations={switcher}>
+  <PostSingle post={post} lang={lang} />
 </BaseLayout>

@@ -1,0 +1,57 @@
+---
+import Hero from '@/components/home/Hero.astro';
+import SectionHeader from '@/components/SectionHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
+import Search from 'astro-pagefind/components/Search';
+import PostTeaser from '@/components/posts/PostTeaser.astro';
+import { SITE_TITLE } from '@/consts';
+import { useTranslations, useTranslatedPath, type Locale } from '@/i18n';
+
+const lang: Locale = 'es';
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const posts = await getLocalizedPosts(lang);
+const homePosts = posts.slice(0, 5);
+---
+
+<BaseLayout meta={{ title: SITE_TITLE, description: t('site.description') }} lang={lang}>
+  <main>
+    <Hero lang={lang} />
+
+    <section class="wrapper">
+      <div class="md:flex gap-7 mb-10 justify-between">
+        <SectionHeader
+          title={t('blog.title')}
+          subtitle={t('blog.latestPosts')}
+          description={t('site.description')}
+          class="mb-2"
+        />
+        <div class="flex-1 items-end md:max-w-[350px]">
+          <Search className="pagefind-ui-dark pagefind-ui-floating" />
+        </div>
+      </div>
+
+      <ul>
+        {
+          homePosts.map((post, index) => (
+            <li>
+              <PostTeaser
+                style={index === 0 ? 'highlighted' : 'default'}
+                post={post}
+                lang={lang}
+              />
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="text-center mt-8 mb-10">
+        <a class="btn text-xl" href={translatePath('/blog')} title={`${t('post.allPosts')} [${posts.length}]`}>
+          {t('post.allPosts')} [{posts.length}]
+        </a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

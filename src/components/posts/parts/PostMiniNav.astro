@@ -4,21 +4,26 @@ import { truncate } from '@/utils/truncate';
 import { Picture } from 'astro:assets';
 import type { CollectionEntry, CollectionKey } from 'astro:content';
 import AIGeneratedBadge from './AIGeneratedBadge.astro';
+import { getLangFromUrl, useTranslatedPath, type Locale } from '@/i18n';
 
 interface Props<C extends CollectionKey = 'blog'> {
   post: CollectionEntry<C>;
   direction?: 'next' | 'prev';
   class?: string;
+  lang?: Locale;
 }
 
-const { post, direction } = Astro.props;
+const { post, direction, lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
 
 const enrichedPost = enrichBlogPost(post);
+const postUrl = translatePath(enrichedPost.slug ?? '/');
 ---
 
 <a
   class:list={['flex flex-col p-2 max-w-[200px] btn-img-child', Astro.props.class]}
-  href={`${enrichedPost.slug}?ref=footer`}
+  href={`${postUrl}?ref=footer`}
 >
   <div class="mb-4 btn-img btn-hover-parent">
     {

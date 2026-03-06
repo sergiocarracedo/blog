@@ -6,17 +6,22 @@ import { truncate } from '../../utils/truncate';
 import PostMainMedia from './parts/PostMainMedia.astro';
 import PostMetadata from './parts/PostMetadata.astro';
 import AIGeneratedBadge from './parts/AIGeneratedBadge.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@/i18n';
 
 interface Props {
   post: CollectionEntry<'blog'>;
   style?: 'default' | 'highlighted';
+  lang?: 'en' | 'es';
 }
 
-const { post, style = 'default' } = Astro.props;
+const { post, style = 'default', lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 const isHighlighted = style === 'highlighted';
 
 const enrichedPost = enrichBlogPost(post);
-const postUrl = enrichedPost.slug;
+const postUrl = translatePath(enrichedPost.slug ?? '/');
 const { title, heroImage, heroVideo, pubDate } = enrichedPost.data;
 const { readingTime, excerpt } = enrichedPost;
 
@@ -135,7 +140,7 @@ if (needsLazyVideo && post.filePath && heroVideo) {
       style === 'default' && (
         <footer>
           <a class="btn" href={postUrl} title={title}>
-            Read more
+            {t('post.readMore')}
           </a>
         </footer>
       )

@@ -2,11 +2,14 @@
 import SectionHeader from '@/components/SectionHeader.astro';
 import { createSlug } from '@/utils/createSlug';
 import type { CollectionEntry } from 'astro:content';
-import Pagination from '../../../components/Pagination.astro';
-import PostTeaser from '../../../components/posts/PostTeaser.astro';
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getPostsByTag } from '../../../utils/getPostsByTag';
-import { getTags } from '../../../utils/getTags';
+import Pagination from '@/components/Pagination.astro';
+import PostTeaser from '@/components/posts/PostTeaser.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getLocalizedPostsByTag, getLocalizedTags } from '@/utils/getLocalizedPosts';
+import { useTranslations, defaultLocale, type Locale } from '@/i18n';
+
+const lang: Locale = defaultLocale;
+const t = useTranslations(lang);
 
 // Represents the params object for your [tag]/[page].astro route
 export interface TagPageParams {
@@ -16,7 +19,7 @@ export interface TagPageParams {
 
 // Represents the props you might want to pass to each page
 export interface TagPageProps {
-  posts: any[]; // Replace 'any' with your actual post type if you have one
+  posts: any[];
   tag: string;
 }
 
@@ -26,8 +29,6 @@ export interface StaticPath {
   props: TagPageProps;
 }
 
-const tags = (await getTags()) || new Map();
-
 export const getStaticPaths = async ({
   paginate,
 }: {
@@ -36,13 +37,18 @@ export const getStaticPaths = async ({
     options: { pageSize: number; params: { tag: string } }
   ) => StaticPath[];
 }) => {
+  const { getLocalizedTags, getLocalizedPostsByTag } = await import('@/utils/getLocalizedPosts');
+  const { createSlug } = await import('@/utils/createSlug');
+  
   const paths: StaticPath[] = [];
-  const tags = (await getTags()) || new Map();
-  for (const [slug, tag] of tags) {
-    const tagPosts = await getPostsByTag(tag, 'blog');
+  const tags = await getLocalizedTags('en');
+  
+  for (const tag of tags) {
+    const tagPosts = await getLocalizedPostsByTag('en', tag);
+    const slug = createSlug(tag);
     const paginated = paginate(tagPosts, { pageSize: 10, params: { tag: slug } });
     paginated.forEach((page) => {
-      paths.push(page);
+      paths.push({ ...page, props: { ...page.props, tag } });
     });
   }
 
@@ -50,24 +56,20 @@ export const getStaticPaths = async ({
 };
 
 const { tag: tagSlug } = Astro.params;
-const { page } = Astro.props;
+const { page, tag } = Astro.props;
 const { data: posts } = page;
-
-const tag = tags.get(tagSlug) || tagSlug; // Fallback to slug if tag not found
-
-console.log(tagSlug, tag);
 
 const filteredPosts = posts.filter((post) => post.data.tags?.includes(tag));
 
 const urlPattern = `/tags/${createSlug(tag)}/{}`;
 ---
 
-<BaseLayout>
+<BaseLayout meta={{ title: t('blog.postsWithTag', { tag }), description: t('site.description') }} lang={lang}>
   <section class="wrapper">
     <SectionHeader
-      title={`Posts tagged with "${tag}"`}
+      title={t('blog.postsWithTag', { tag })}
       subtitle={`[${filteredPosts.length} post${filteredPosts.length !== 1 ? 's' : ''}]`}
-      description="Explore posts related to this tag."
+      description={t('site.description')}
       class="mb-6"
     />
     <ul>
@@ -75,12 +77,12 @@ const urlPattern = `/tags/${createSlug(tag)}/{}`;
         {
           filteredPosts.map((post) => (
             <li>
-              <PostTeaser post={post} />
+              <PostTeaser post={post} lang={lang} />
             </li>
           ))
         }
       </ul>
     </ul>
   </section>
-  <Pagination page={page} urlPattern={urlPattern} />
+  <Pagination page={page} urlPattern={urlPattern} lang={lang} />
 </BaseLayout>

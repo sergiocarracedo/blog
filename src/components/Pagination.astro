@@ -1,12 +1,16 @@
 ---
 import type { Page } from 'astro';
+import { getLangFromUrl, useTranslations } from '@/i18n';
 
 type Props = {
   page: Page<unknown>;
   urlPattern: string;
+  lang?: 'en' | 'es';
 };
 
-const { page, urlPattern } = Astro.props;
+const { page, urlPattern, lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 // Calculate a window of up to 5 pages centered on the current page
 let start = Math.max(1, page.currentPage - 2);
@@ -21,13 +25,13 @@ const getPage = (num: number) => {
 };
 ---
 
-<nav aria-label="Pages" class="wrapper bg-secondary-light p-4 backdrop-blur-xs m-4 rounded-lg">
+<nav aria-label={t('a11y.pages')} class="wrapper bg-secondary-light p-4 backdrop-blur-xs m-4 rounded-lg">
   <ul class="flex items-center justify-center gap-1 flex-wrap max-w-[800px] mx-auto">
     {
       page.url.first && page.url.first !== page.url.current && (
         <li>
-          <a href={page.url.first} class="pagination-link" area-label="First page">
-            <span area-hidden="true">««</span>
+          <a href={page.url.first} class="pagination-link" aria-label={t('pagination.first')}>
+            <span aria-hidden="true">««</span>
           </a>
         </li>
       )
@@ -36,8 +40,8 @@ const getPage = (num: number) => {
     {
       page.url.prev && (
         <li>
-          <a href={page.url.prev} class="pagination-link" aria-label="Previous page">
-            <span area-hidden="true">«</span>
+          <a href={page.url.prev} class="pagination-link" aria-label={t('pagination.previous')}>
+            <span aria-hidden="true">«</span>
           </a>
         </li>
       )
@@ -52,7 +56,7 @@ const getPage = (num: number) => {
             <a
               href={`${getPage(num)}`}
               class={`pagination-link ${page.currentPage === num ? 'pagination__item--active' : ''}`}
-              aria-label={`Page ${num}`}
+              aria-label={t('pagination.goToPage', { num: num.toString() })}
             >
               {num}
             </a>
@@ -64,7 +68,7 @@ const getPage = (num: number) => {
     {
       page.url.next && (
         <li>
-          <a href={page.url.next} class="pagination-link" aria-label="Next page">
+          <a href={page.url.next} class="pagination-link" aria-label={t('pagination.next')}>
             <span aria-hidden="true">»</span>
           </a>
         </li>
@@ -74,7 +78,7 @@ const getPage = (num: number) => {
     {
       page.url.last && page.url.last !== page.url.current && (
         <li>
-          <a href={page.url.last} class="pagination-link" aria-label="Last page">
+          <a href={page.url.last} class="pagination-link" aria-label={t('pagination.last')}>
             <span aria-hidden="true">»»</span>
           </a>
         </li>

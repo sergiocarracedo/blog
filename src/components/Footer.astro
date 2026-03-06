@@ -1,6 +1,16 @@
 ---
 import AboutMe from './AboutMe.astro';
 import SocialLinks from './SocialLinks.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@/i18n';
+
+interface Props {
+  lang?: 'en' | 'es';
+}
+
+const { lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 const today = new Date();
 ---
 
@@ -9,14 +19,14 @@ const today = new Date();
 >
   <div class="flex flex-wrap items-center justify-between gap-4 text-md">
     <div>
-      <AboutMe />
+      <AboutMe lang={lang} />
       <div class="mt-2 text-sm">
-        &copy; {today.getFullYear()} Sergio Carracedo. All rights reserved.
+        {t('footer.copyright', { year: today.getFullYear().toString() })}
       </div>
       <div class="mt-2 text-sm">
-        <a class="text-primary dark:text-secondary link" href="/blog/stats">Blog stats</a>
+        <a class="text-primary dark:text-secondary link" href={translatePath('/blog/stats')}>{t('footer.blogStats')}</a>
         <span class="mx-2 opacity-50">•</span>
-        <a class="text-primary dark:text-secondary link" href="/newsletter/subscribe">Newsletter</a>
+        <a class="text-primary dark:text-secondary link" href={translatePath('/newsletter/subscribe')}>{t('footer.newsletter')}</a>
       </div>
     </div>
     <SocialLinks />

@@ -1,0 +1,111 @@
+---
+import { enrichBlogPost } from '@/utils/enrichBlogPost';
+import { isTranslationFile, getTranslationLocale, getPostDirectory, getPostSwitcherUrls } from '@/utils/getLocalizedPosts';
+import { type CollectionEntry, getCollection } from 'astro:content';
+import PostSingle from '@/components/posts/PostSingle.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { truncate } from '@/utils/truncate';
+import { type Locale } from '@/i18n';
+import { SITE_URL } from '@/consts';
+
+const lang: Locale = 'es';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+
+  // Build a map: directory → base post (non-translation), so we can look up base slugs
+  const dirToBasePost = new Map<string, CollectionEntry<'blog'>>();
+  for (const post of allPosts) {
+    if (!isTranslationFile(post)) {
+      dirToBasePost.set(getPostDirectory(post), post);
+    }
+  }
+
+  // Collect which base slugs have a Spanish version (translation file or lang: es original)
+  const hasSpanishVersion = new Set<string>();
+  for (const post of allPosts) {
+    if (isTranslationFile(post) && getTranslationLocale(post) === 'es') {
+      const basePost = dirToBasePost.get(getPostDirectory(post));
+      if (basePost) hasSpanishVersion.add(basePost.id);
+    } else if (!isTranslationFile(post) && post.data.lang === 'es') {
+      hasSpanishVersion.add(post.id);
+    }
+  }
+
+  const paths: { params: { slug: string }; props: { post: CollectionEntry<'blog'>; isFallback: boolean } }[] = [];
+  const seenSlugs = new Set<string>();
+
+  for (const post of allPosts) {
+    // Skip co-located EN translation files — they belong at root only
+    if (isTranslationFile(post) && getTranslationLocale(post) === 'en') continue;
+
+    // Spanish translation file → serve under /es/{basePost.id}
+    if (isTranslationFile(post) && getTranslationLocale(post) === 'es') {
+      const basePost = dirToBasePost.get(getPostDirectory(post));
+      const routeSlug = basePost?.id ?? getPostDirectory(post);
+      if (!seenSlugs.has(routeSlug)) {
+        seenSlugs.add(routeSlug);
+        paths.push({ params: { slug: routeSlug }, props: { post, isFallback: false } });
+      }
+      continue;
+    }
+
+    // Base post with lang: es or no lang → serve under /es/{post.id} directly
+    if (!post.data.lang || post.data.lang === 'es') {
+      const routeSlug = post.id;
+      if (!seenSlugs.has(routeSlug)) {
+        seenSlugs.add(routeSlug);
+        paths.push({ params: { slug: routeSlug }, props: { post, isFallback: false } });
+      }
+      continue;
+    }
+
+    // EN-only base post → serve as fallback under /es/{post.id}
+    if (post.data.lang === 'en') {
+      const routeSlug = post.id;
+      const isFallback = !hasSpanishVersion.has(post.id);
+      if (!seenSlugs.has(routeSlug)) {
+        seenSlugs.add(routeSlug);
+        paths.push({ params: { slug: routeSlug }, props: { post, isFallback } });
+      }
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  isFallback: boolean;
+}
+
+const { post, isFallback } = Astro.props;
+
+const enrichedPost = enrichBlogPost(post);
+const switcher = await getPostSwitcherUrls(post);
+
+// For fallback pages (English post shown under /es/), canonical points to the EN URL
+const canonicalUrl = isFallback
+  ? new URL(`/${Astro.params.slug}`, SITE_URL).toString()
+  : undefined;
+
+// hreflang: for fallback pages, both EN and ES point to the same EN URL (no ES version)
+// for translated pages, hreflang works normally via BaseHead's getAlternateLocaleUrls
+const hreflangOverride = isFallback ? { en: canonicalUrl!, es: canonicalUrl!, 'x-default': canonicalUrl! } : undefined;
+
+const meta = {
+  title: enrichedPost.data.title,
+  description: truncate(enrichedPost.excerpt, 180),
+  image: enrichedPost.data.heroImage?.src,
+  url: Astro.params.slug,
+  date: post.data.pubDate,
+  tags: post.data.tags || [],
+  type: 'article' as const,
+  ...(canonicalUrl ? { canonical: canonicalUrl } : {}),
+};
+---
+
+<BaseLayout meta={meta} lang={lang} hreflangOverride={hreflangOverride} translations={switcher}>
+  <PostSingle post={post} lang={lang} isFallback={isFallback} />
+</BaseLayout>
+

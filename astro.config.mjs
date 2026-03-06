@@ -31,6 +31,16 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://sergiocarracedo.es',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es'],
+    routing: {
+      prefixDefaultLocale: false, // /post-slug for English, /es/post-slug for Spanish
+    },
+    fallback: {
+      es: 'en', // Fall back to English if Spanish page missing
+    },
+  },
   integrations: [
     mdx(),
     sitemap(),

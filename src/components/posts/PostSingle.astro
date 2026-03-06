@@ -5,6 +5,7 @@ import { Picture } from 'astro:assets';
 import { type CollectionEntry, render } from 'astro:content';
 import { mdxComponents } from '../../mdx-components';
 import { enrichBlogPost } from '../../utils/enrichBlogPost';
+import { isTranslationFile, getPostSwitcherUrls } from '@/utils/getLocalizedPosts';
 import FormattedDate from '../FormattedDate.astro';
 import YearsNav from '../YearsNav.astro';
 import PostNav from './parts/PostNav.astro';
@@ -12,15 +13,30 @@ import PostTags from './parts/PostTags.astro';
 import ReadingTime from './parts/ReadingTime.astro';
 import PostMainMedia from './parts/PostMainMedia.astro';
 import AIGeneratedBadge from './parts/AIGeneratedBadge.astro';
+import AutoTranslatedNotice from '../AutoTranslatedNotice.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath, type Locale } from '@/i18n';
 
 type Props = {
   post: CollectionEntry<'blog'>;
+  lang?: Locale;
+  isFallback?: boolean;
 };
 
-const { post } = Astro.props;
+const { post, lang: propLang, isFallback = false } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
 const enrichedPost = enrichBlogPost(post);
-const { title, pubDate, heroImage, tags, heroImageMeta, aiGenerated } = enrichedPost.data;
+const { title, pubDate, heroImage, tags, heroImageMeta, aiGenerated, autoTranslated, originalLang } = enrichedPost.data;
+
+// Derive original post URL via co-location: use base post's slug for the EN URL
+const originalPostUrl = await (async () => {
+  if (!autoTranslated || !isTranslationFile(post)) return undefined;
+  const switcher = await getPostSwitcherUrls(post);
+  const srcLang = originalLang ?? (lang === 'es' ? 'en' : 'es');
+  return srcLang === 'en' ? switcher.en : switcher.es;
+})();
 const { readingTime } = enrichedPost;
 // Sanitize post.id for view transition name
 const sanitizedId = post.id.replaceAll('/', '-');
@@ -28,19 +44,19 @@ const sanitizedId = post.id.replaceAll('/', '-');
 const { Content } = await render(post);
 ---
 
-<article class="post">
+<article class="post" data-pagefind-filter={`language[${lang}]`}>
   <div class="wrapper">
     <div class="mb-6">
       <a
         class="text-primary dark:text-secondary link mb-9 group"
-        href="/blog"
-        aria-label="Back to blog"
-        title="Back to blog"
+        href={translatePath('/blog')}
+        aria-label={t('post.backToBlog')}
+        title={t('post.backToBlog')}
       >
         <Icon
           name="outline/arrow-left-outline"
           class="inline-block mr-2 transition-transform duration-300 group-hover:-translate-x-2"
-        />Back to blog
+        />{t('post.backToBlog')}
       </a>
     </div>
     <header class="mb-3">
@@ -54,8 +70,8 @@ const { Content } = await render(post);
       </h1>
 
       <aside class="flex gap-2 flex-wrap w-full">
-        <FormattedDate date={pubDate} class="flex-1" postId={enrichedPost.sanitizedId} />
-        <ReadingTime readingTime={readingTime} class="flex-1 justify-end text-right" postId={enrichedPost.sanitizedId} />
+        <FormattedDate date={pubDate} class="flex-1" postId={enrichedPost.sanitizedId} lang={lang} />
+        <ReadingTime readingTime={readingTime} class="flex-1 justify-end text-right" postId={enrichedPost.sanitizedId} lang={lang} />
       </aside>
     </header>
 
@@ -79,7 +95,7 @@ const { Content } = await render(post);
             heroImageMeta?.licence) && (
             <div class="text-xs text-gray-500 dark:text-gray-400 absolute bottom-0 left-0 right-0 group-hover:translate-y-0 translate-y-[calc(100%-10px)] transition-transform duration-300 z-10">
               <div class="bg-gray-100/90 dark:bg-primary-700/90 p-2">
-                <em>Picture by</em> <strong>
+                <em>{t('post.pictureBy')}</em> <strong>
                   {heroImageMeta.source && (
                   <a
                     href={heroImageMeta.source}
@@ -97,14 +113,14 @@ const { Content } = await render(post);
                 {heroImageMeta.prompt && (
                   <span>
                     {' '}
-                    - <em>Prompt</em>: {heroImageMeta.prompt}
+                    - <em>{t('post.prompt')}</em>: {heroImageMeta.prompt}
                   </span>
                 )}
                 
                 {heroImageMeta.licence && (
                   <span>
                     {' '}
-                    - <em>Licence</em>: {heroImageMeta.licence}
+                    - <em>{t('post.licence')}</em>: {heroImageMeta.licence}
                   </span>
                 )}
               </div>
@@ -114,6 +130,22 @@ const { Content } = await render(post);
       )
     }
     <PostTags tags={tags} class="mb-6" postId={enrichedPost.sanitizedId} />
+    
+    {isFallback && (
+      <aside class="mb-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700">
+        <div class="flex items-center gap-3">
+          <Icon name="outline/arrow-right-left-outline" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+          <p class="text-sm text-blue-800 dark:text-blue-200">{t('translation.notAvailable')}</p>
+        </div>
+      </aside>
+    )}
+    {autoTranslated && originalLang && originalPostUrl && (
+      <AutoTranslatedNotice
+        originalLang={originalLang}
+        originalUrl={originalPostUrl}
+        lang={lang}
+      />
+    )}
   </div>
   <div class="wrapper-no-padding">
     <div class="prose p-6 sm:p-6 lg:p-8" transition:name={`post-body-${enrichedPost.sanitizedId}`}>
@@ -128,11 +160,11 @@ const { Content } = await render(post);
 </aside>
 
 <aside class="background-diagonal-primary py-7 wrapper mb-6 rounded-b-xl">
-  <Search className="pagefind-ui-dark" />
+  <Search className="pagefind-ui-dark" uiOptions={{ filters: { language: lang } }} />
 </aside>
 
 <aside class="wrapper mb-6 rounded-xl bg-[#8BC2B933] dark:bg-primary-600/50 text-[#333] dark:text-gray-300 py-6 backdrop-blur-sm">
   <div id="disqus_thread" class="p-4 text-center text-[#333] dark:text-gray-300">
-    To comment or view comments you need to to accept cookie policy.
+    {t('post.commentsCookiePolicy')}
   </div>
 </aside>

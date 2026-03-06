@@ -1,12 +1,18 @@
 ---
 // Import the main.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '../consts';
 import '../styles/tailwind.css';
 
 import copyCodeUrl from '../scripts/copy-code.ts?url';
 
 import { ClientRouter } from 'astro:transitions';
+import { 
+  getLangFromUrl, 
+  useTranslations, 
+  getAlternateLocaleUrls,
+  type Locale 
+} from '@/i18n';
 
 export interface Meta {
   title?: string;
@@ -22,15 +28,22 @@ export interface Meta {
 
 interface Props {
   meta: Meta;
+  lang?: Locale;
+  hreflangOverride?: Record<string, string>;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { meta: metaProp } = Astro.props;
+const { meta: metaProp, lang: propLang, hreflangOverride } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Get alternate locale URLs for hreflang tags
+const alternateUrls = hreflangOverride ?? getAlternateLocaleUrls(Astro.url.pathname, SITE_URL);
 
 const meta = {
   title: SITE_TITLE,
-  description: SITE_DESCRIPTION,
+  description: t('site.description'),
   type: 'website',
   canonical: canonicalURL.toString(),
   keywords: ['web development', 'programming', 'technology'],
@@ -71,8 +84,8 @@ const image = meta.image || '/i/sergiocarracedo-og.png';
 <link
   rel="alternate"
   type="application/rss+xml"
-  title={SITE_TITLE}
-  href={new URL('rss.xml', Astro.site)}
+  title={`${SITE_TITLE} | ${lang === 'es' ? 'ES' : 'EN'}`}
+  href={new URL(lang === 'es' ? 'es/rss.xml' : 'rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
@@ -92,6 +105,11 @@ const image = meta.image || '/i/sergiocarracedo-og.png';
 <!-- Canonical URL -->
 <link rel="canonical" href={meta.canonical || Astro.url} />
 
+<!-- hreflang tags for i18n -->
+<link rel="alternate" hreflang="en" href={alternateUrls.en} />
+<link rel="alternate" hreflang="es" href={alternateUrls.es} />
+<link rel="alternate" hreflang="x-default" href={alternateUrls['x-default']} />
+
 <!-- Primary Meta Tags -->
 <title>{SITE_TITLE} | {meta.title}</title>
 <meta name="title" content={meta.title} />
@@ -105,6 +123,8 @@ const image = meta.image || '/i/sergiocarracedo-og.png';
 <meta property="og:title" content={meta.title} />
 <meta property="og:description" content={meta.description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+<meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_ES'} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />

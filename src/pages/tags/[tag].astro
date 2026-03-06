@@ -1,20 +1,23 @@
 ---
-import { getTags } from '../../utils/getTags';
+import { getLocalizedTags } from '@/utils/getLocalizedPosts';
+import { createSlug } from '@/utils/createSlug';
 
 export async function getStaticPaths() {
-  const tags = await getTags();
+  const { getLocalizedTags } = await import('@/utils/getLocalizedPosts');
+  const { createSlug } = await import('@/utils/createSlug');
+  
+  const tags = await getLocalizedTags('en');
 
   const paths = [];
-  for (const [slug] of tags) {
+  for (const tag of tags) {
+    const slug = createSlug(tag);
     paths.push({
       params: { tag: slug },
-      rewrite: `/tags/${slug}`,
     });
   }
   return paths;
 }
 
 const { tag } = Astro.params;
-console.log('----', tag);
 return Astro.rewrite(`/tags/${tag}/1`);
 ---

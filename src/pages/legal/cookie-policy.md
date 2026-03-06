@@ -1,266 +1,105 @@
 ---
 layout: ../../layouts/PageLayout.astro
-title: Cookies
-description: 'How we can use the cookies'
-keyworks:
+title: Cookie Policy
+description: 'How we use cookies on this website.'
+keywords:
   - legal
   - cookies
 ---
 
-Esta web, como otras muchas, utiliza cookies que permitirán mejorar su experiencia como usuario y en cumplimiento de la
-LSSI (LEY 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico), vamos a
-informarle sobre que son, cuales utilizamos en nuestra web, como eliminarlas y le pediremos el consentimiento para su
-uso.
+This website, like many others, uses cookies to improve your experience as a user. In compliance with applicable law,
+we will inform you about what they are, which ones we use, how to delete them, and we will ask for your consent for
+their use.
 
-## INFORMACIÓN
+## INFORMATION
 
-### ¿Qué son las cookies?
+### What are cookies?
 
-Son pequeños archivos de texto que se descargan e instalan en su ordenador o en su móvil a través de su navegador (
-Internet Explorer, Firefox, Chrome, Safari…) o a través de una aplicación Flash. Las cookies permiten que las webs le
-“recuerden”, ya sea durante una visita (mediante las llamadas “cookies de sesión”) o durante varias visitas (mediante
-las llamadas “cookies persistentes”) y almacenen información sobre sus preferencias para ofrecerle una experiencia
-personalizada, más fácil y más rápida. Solamente el servidor que la instaló podrá leer su contenido, que por otra parte,
-será anónimo. Aunque se instalen en su disco duro, al ser solo texto, no son capaces por sí mismas de acceder a
-información personal de su ordenador, ni a trasmitir virus, tan solo rastrean la navegación sobre un sitio web. A
-continuación le explicamos cuales son las cookies según su función:
+Cookies are small text files that are downloaded and installed on your computer or mobile device through your browser
+(Internet Explorer, Firefox, Chrome, Safari…). Cookies allow websites to "remember" you, either during a visit (via
+"session cookies") or across multiple visits (via "persistent cookies"), storing your preferences to offer a
+personalized, easier, and faster experience. Only the server that installed them can read their content, which is
+anonymous. Although they are stored on your hard drive, being only text they cannot access personal information on
+your computer, transmit viruses, or do anything other than track navigation on a website.
 
-## COOKIES SEGÚN EL PLAZO DE TIEMPO
+## COOKIES BY DURATION
 
-### COOKIES DE SESIÓN
+### SESSION COOKIES
 
-Son cookies diseñadas para recabar y almacenar datos mientras el usuario accede a una página web. Se suelen emplear para
-almacenar información que solo interesa conservar para la prestación del servicio solicitado por el usuario en una sola
-ocasión.
+Designed to collect and store data while the user accesses a web page. They are used to store information that is only
+needed for a single session.
 
-### COOKIES PERSISTENTES
+### PERSISTENT COOKIES
 
-Son un tipo de cookies en el que los datos siguen almacenados en el terminal y a los que se puede acceder y tratar
-durante un periodo definido por el responsable de la cookie, y que puede ir de unos minutos a varios años.
+A type of cookie in which data remains stored on the device and can be accessed and processed for a period defined by
+the cookie controller, ranging from a few minutes to several years.
 
-## COOKIES SEGÚN LA ENTIDAD QUE LAS GESTIONE
+## COOKIES BY CONTROLLER
 
-### COOKIES PROPIAS
+### FIRST-PARTY COOKIES
 
-Son las creadas por el responsable de la página web.
+Cookies created by the owner of the website.
 
-### COOKIES DE TERCEROS
+### THIRD-PARTY COOKIES
 
-Son las creadas y gestionas por otras entidades, como prestadores de servicios publicitarios, de personalización o
-análisis, estos terceros pueden reportar datos anónimos.
+Cookies created and managed by other entities, such as advertising, personalization, or analytics service providers.
+These third parties may report anonymous data.
 
-## COOKIES SEGÚN FINALIDAD
+## COOKIES BY PURPOSE
 
-### COOKIES TÉCNICAS
+### TECHNICAL COOKIES
 
-Son aquéllas que permiten al usuario la navegación a través de una página web,plataforma o aplicación y la utilización
-de las diferentes opciones o servicios que en ella existan como, por ejemplo, controlar el tráfico y la comunicación de
-datos, identificar la sesión, acceder a partes de acceso restringido, recordar los elementos que integran un pedido,
-realizar el proceso de compra de un pedido, realizar la solicitud de inscripción o participación en un evento, utilizar
-elementos de seguridad durante la navegación, almacenar contenidos para la difusión de videos o sonido o compartir
-contenidos a través de redes sociales
+Enable the user to navigate the website, platform or application and use its different options or services.
 
-### COOKIES DE PERSONALIZACIÓN
+### PERSONALIZATION COOKIES
 
-Son aquéllas que permiten al usuario acceder al servicio con algunas características de carácter general predefinidas en
-función de una serie de criterios en el terminal del usuario como por ejemplo serian el idioma, el tipo de navegador a
-través del cual accede al servicio, la configuración regional desde donde accede al servicio, etc.
+Allow the user to access the service with predefined general characteristics based on criteria on the user's terminal,
+such as language, browser type, regional settings, etc.
 
-### COOKIES DE ANÁLISIS
+### ANALYTICS COOKIES
 
-Son aquéllas que permiten al responsable de las mismas, el seguimiento y análisis del comportamiento de los usuarios de
-los sitios web a los que están vinculadas. La información recogida mediante este tipo de cookies se utiliza en la
-medición de la actividad de los sitios web, aplicación o plataforma y para la elaboración de perfiles de navegación de
-los usuarios de dichos sitios, aplicaciones y plataformas, con el fin de introducir mejoras en función del análisis de
-los datos de uso que hacen los usuarios del servicio.
+Allow the cookie controller to track and analyze the behavior of website users. Information collected through these
+cookies is used to measure website activity and create browsing profiles.
 
-### COOKIES PUBLICITARIAS
+### ADVERTISING COOKIES
 
-Son aquéllas que permiten la gestión, de la forma más eficaz posible, de los espacios publicitarios que, en su caso, el
-editor haya incluido en una página web, aplicación o plataforma desde la que presta el servicio solicitado en base a
-criterios como el contenido editado o la frecuencia en la que se muestran los anuncios.
+Allow the most efficient management of advertising spaces that the publisher has included on a web page.
 
-### COOKIES DE PUBLICIDAD COMPORTAMENTAL
+### BEHAVIORAL ADVERTISING COOKIES
 
-Son aquéllas que permiten la gestión, de la forma más eficaz posible, de los espacios publicitarios que, en su caso, el
-editor haya incluido en una página web, aplicación o plataforma desde la que presta el servicio solicitado. Estas
-cookies almacenan información del comportamiento de los usuarios obtenida a través de la observación continuada de sus
-hábitos de navegación, lo que permite desarrollar un perfil específico para mostrar publicidad en función del mismo.
+Allow management of advertising spaces by storing information about user behavior obtained through continuous
+observation of their browsing habits.
 
-## ¿Qué tipo de cookies utiliza esta web ?
+## What cookies does this website use?
 
-A continuación te definimos las funciones y el tipo de cookies que utilizamos en esta web y su finalidad:
-
-### COOKIES PROPIAS
+### FIRST-PARTY COOKIES
 
 ##### cookieconsent_status
 
-Almacena la respuesta al consentimiento de uso de cookies durante 1 año.
+Stores the cookie consent response for 1 year.
 
-### COOKIES DE TERCEROS
+### THIRD-PARTY COOKIES
 
-#### Google Analitycs:
+#### Google Analytics
 
-Tipo: Cookie analítica de terceros utilizadas por nosotros y por Google
-[Más Información](https://developers.google.com/analytics/devguides/collection/gajs/cookie-usage?hl=es):
-Definición: Las Cookies analíticas son aquéllas que permiten al responsable de las mismas, el seguimiento y análisis del
-comportamiento de los usuarios de los sitios web a los que están vinculadas.
-Finalidad: La información recogida mediante este tipo de cookies se utiliza en la medición de la actividad de los sitios
-web, aplicación o plataforma y para la elaboración de perfiles de navegación de los usuarios de dichos sitios,
-aplicaciones y plataformas, con el fin de introducir mejoras en función del análisis de los datos de uso que hacen los
-usuarios del servicio.
+Third-party analytics cookies used by us and Google.
+[More information](https://developers.google.com/analytics/devguides/collection/gajs/cookie-usage)
 
-#### Cookies:
+#### Disqus
 
-##### \_utma:
+Cookies required by the Disqus comment system.
+[More information](https://help.disqus.com/en/articles/1717103-disqus-privacy-policy)
 
-**Finalidad**: Registra la fecha de la primera y última vez que el usuario visito el sitio web. **Expira**: 2 años
+## Revoking consent
 
-##### \_utmb:
+If you later decide to revoke your consent, configure your browser to reject cookies and clear your browsing history
+to remove already installed cookies.
 
-**Finalidad**: Calcula el tiempo que dura la visita de un usuario almacenando el momento que entro en la página. **
-Expira**: 30 minutos
+## Disabling cookies
 
-##### \_utmc:
+- Internet Explorer: [More information](http://windows.microsoft.com/en-us/windows-vista/block-or-allow-cookies)
+- Firefox: [More information](http://support.mozilla.org/en/kb/enable-and-disable-cookies-website-preferences)
+- Chrome: [More information](https://support.google.com/chrome/answer/95647?hl=en)
+- Safari: [More information](http://www.apple.com/legal/privacy/en/cookies/)
 
-**Finalidad**: Calcula el tiempo que dura la visita de un usuario almacenando el momento que sale de la página. **
-Expira**: Al finalizar la sesión
-
-##### \_utmz:
-
-**Finalidad**: Mantiene un seguimiento de donde proviene el visitante, que motor de búsqueda se utilizó, en que enlace
-hizo click, que palabras claves utilizo y desde en qué lugar del mundo se accedió a la página. **Expira**: 6 meses
-
-##### \_ga
-
-**Finalidad**: Se utiliza para distinguir a los usuarios **Expira**: 2 años
-
-##### \_gid
-
-**Finalidad**: Se usa para distinguir a los usuarios. **Expira**: 24 horas
-
-##### \_gat
-
-**Finalidad**: Se usa para limitar el porcentaje de solicitudes. **Expira**: 1 minuto
-
-##### AMP_TOKEN
-
-**Finalidad**: Incluye un token que se puede utilizar para recuperar un ID de cliente del servicio de ID de cliente de
-AMP. Otros posibles valores indican inhabilitaciones, solicitudes en curso o errores obtenidos al recuperar un ID del
-servicio de ID de cliente de AMP. **Expira**: 30 segundos a 1 año
-
-##### _gac_<property-id>
-
-**Finalidad**: Incluye información de la campaña relativa al usuario. Si has vinculado tus cuentas de Google Analytics y
-AdWords, las etiquetas de conversión de sitios web leerán esta cookie, a menos que la
-inhabilites. [Más información](https://support.google.com/adwords/answer/7521212?hl=es) **Expira**: 90 días
-
-#### Disqus:
-
-Tipo: Cookies necesarias por el sistema de comentarios Disqus
-[Más Información](https://help.disqus.com/en/articles/1717103-disqus-privacy-policy):
-Definición:Estas cookies son aquéllas que permiten al responsable de las mismas, la gestión del sistema de comentarios.
-Finalidad: La información recogida mediante este tipo de cookies se utiliza en la medición de la actividad de los sitios
-web, aplicación o plataforma y para la elaboración de perfiles de navegación de los usuarios de dichos sitios,
-aplicaciones y plataformas, con el fin de introducir mejoras en función del análisis de los datos de uso que hacen los
-usuarios del servicio.
-
-#### Cookies:
-
-##### \_\_qca:
-
-**Finalidad**: Registra la fecha de la primera y última vez que el usuario visito el sitio web. **Expira**: 2 años
-
-##### \_\_jid
-
-**Finalidad**: Identificar al usuario logueado en Disqus. **Expira**: 30 minutos
-
-##### \_utma:
-
-**Finalidad**: Registra la fecha de la primera y última vez que el usuario visito el sitio web. **Expira**: 2 años
-
-##### \_utmb:
-
-**Finalidad**: Calcula el tiempo que dura la visita de un usuario almacenando el momento que entro en la página. **
-Expira**: 30 minutos
-
-##### \_utmc:
-
-**Finalidad**: Calcula el tiempo que dura la visita de un usuario almacenando el momento que sale de la página. **
-Expira**: Al finalizar la sesión
-
-##### \_utmz:
-
-**Finalidad**: Mantiene un seguimiento de donde proviene el visitante, que motor de búsqueda se utilizó, en que enlace
-hizo click, que palabras claves utilizo y desde en qué lugar del mundo se accedió a la página. **Expira**: 6 meses
-
-##### mc
-
-**Finalidad**: Mantiene un seguimiento de donde proviene el visitante, que motor de búsqueda se utilizó, en que enlace
-hizo click, que palabras claves utilizo y desde en qué lugar del mundo se accedió a la página. **Expira**: 6 meses
-
-##### \_ga.js:
-
-**Finalidad**: cookies de origen para: determinar el dominio que se medirá, distinguir a los usuarios únicos, recordar
-el número y la duración de las visitas anteriores, recordar la información de las fuentes de tráfico, determinar el
-inicio y el fin de una sesión, recordar el valor de las variables personalizadas de visitante. **Expira**: 2 años
-
-##### \_ga:
-
-**Finalidad**: Se utiliza para distinguir a los usuarios. **Expira**: 2 años
-
-##### disqus_unique:
-
-**Finalidad**: Estadisticas internas de Disqus usadas para visitantes anónimos. **Expira**:: 1 año
-
-##### testCookie:
-
-**Finalidad**: Usada por Disqus para comprobar si el navegador permite cookies de terceros. **Expira**: Sesión
-
-## Revocación del consentimiento:
-
-Si más adelante decides revocar el consentimiento configurar tu navegador para que rechace las cookies y también deberás
-borrar elhistorial para eliminar las ya instaladas.
-
-Si por cualquier motivo decides que no quieres que se instalen las cookies en tu ordenador tenemos obligación de
-informarte sobre cómo hacerlo y para ello deberás configurar tu navegador. A continuación te facilitamos los enlaces
-para la configuración de las cookies en los principales navegadores.
-
-## Desactivación de las cookies.
-
-A continuación te facilitamos los enlaces con la información necesaria para desactivar las cookies de los navegadores
-más utilizados:
-
-- Internet Explorer [Más información](http://windows.microsoft.com/es-es/windows-vista/block-or-allow-cookies)
-- Firefox [Más Información](http://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-que-los-sitios-we)
-- Chrome [Más información](https://support.google.com/chrome/answer/95647?hl=es)
-- Opera [Más información](http://help.opera.com/Linux/10.60/es-ES/cookies.html)
-- Safari [Más información](http://www.apple.com/legal/privacy/es/cookies/)
-- Safari para IOS [Más información](https://support.apple.com/es-es/HT201265)
-- Chrome para Android [Más Información](https://support.google.com/chrome/answer/2392971?hl=es)
-
-Enlaces: Cuando enlaza con noticias o vídeos externos a nuestra web, la página enlazada puede contener otras cookies y
-deberá visitar su propia política de cookies para ajustar la configuración, ya que son completamente ajenas a nosotros.
-
-Si quiere eliminar la publicidad originada por las cookies de tercera parte, también tiene la opción de instalar en su
-navegador un plugin como Adblock, que bloquee los anuncios.
-
-También puedes aplicar la extensión “Ghostery” a su navegador y bloquear individualmente aquellas cookies, plugins y
-widgest que no le interesen.
-
-En cualquier caso recomendamos hacer una limpieza del historial de navegación y de las cookies de su ordenador de manera
-sistemática.
-
-Tambien puedes obtener más información en:
-
-- http://www.youronlinechoices.com/es/
-- https://cookiesandyou.com/
-
-Por último, puede gestionar las cookies instaladas por Adobe Flash Player desde la web de Adobe. Las cookies de terceros
-podrán ser modificadas, implementadas o anuladas por ellos mismos sin que nos lo notifiquen, por lo que no podemos
-hacernos responsables de que la información esté perfectamente actualizada en todo momento según la ley establece. No
-obstante para ofrecerle un mejor servicio de información hemos enlazado las políticas de cookies y privacidad de estos
-terceros con la finalidad de que se puedan consultar en cualquier momento en su versión más actualizada y por nuestra
-parte iremos revisándola periódicamente para actualizar nuestros textos.
-
-Actualización: 1/12/2019
+Updated: 1/12/2019
