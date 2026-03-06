@@ -1,0 +1,123 @@
+src/pages/es/tags/[tag].astro
+  610f36855df90cf4 1-23
+src/components/posts/PostSingle.astro
+  610f36855df90cf4 8,16-17,21-22,25-28,31-39,47,52-54,59,73-74,98,116,123,133-148,163,168
+src/utils/enrichBlogPost.ts
+  610f36855df90cf4 16,24-28,34-35
+scripts/translate-all-posts.ts
+  610f36855df90cf4 1-184
+src/pages/es/blog/page/[page].astro
+  610f36855df90cf4 1-52
+src/pages/rss.xml.js
+  610f36855df90cf4 7-9,11,14
+src/pages/tags/[tag]/[page].astro
+  610f36855df90cf4 5-12,22,40-42,44-48,51,59,67,70,72,80,87
+src/components/Footer.astro
+  610f36855df90cf4 4-13,22,24,27,29
+src/components/BaseHead.astro
+  610f36855df90cf4 4,10-15,31-32,37-39,41-42,46,87-88,108-112,126-127
+src/pages/blog/by-year.astro
+  610f36855df90cf4 6,8,10-12,14,21,24-25,59,63
+src/layouts/BaseLayout.astro
+  610f36855df90cf4 9,11-25,29,31,34,38
+package.json
+  610f36855df90cf4 19-23
+src/components/posts/parts/PostNav.astro
+  610f36855df90cf4 5,10,13-16,35,45,50
+src/components/LanguageSwitcher.astro
+  610f36855df90cf4 1-68
+src/pages/[...slug].astro
+  610f36855df90cf4 3,8,10,14-27,33,39,52-53
+src/pages/es/blog/by-year.astro
+  610f36855df90cf4 1-77
+src/pages/es/about.mdx
+  610f36855df90cf4 1-46
+src/i18n/utils.ts
+  610f36855df90cf4 1-184
+src/pages/es/legal/cookie-policy.md
+  610f36855df90cf4 1-110
+src/components/posts/parts/PostMiniNav.astro
+  610f36855df90cf4 7,13,16-18,21,26
+scripts/translate-post.ts
+  610f36855df90cf4 1-318
+src/utils/getSlug.ts
+  610f36855df90cf4 3-34
+src/components/FormattedDate.astro
+  610f36855df90cf4 2-3,9,12-13,22
+astro.config.mjs
+  610f36855df90cf4 34-43
+src/i18n/config.ts
+  610f36855df90cf4 1-47
+src/components/posts/parts/ReadingTime.astro
+  610f36855df90cf4 2,9,12-13,23
+src/components/AboutMe.astro
+  610f36855df90cf4 6,10,12-14,29,32
+src/pages/404.astro
+  610f36855df90cf4 5-9,12,15-17,21,25,27,36-37
+src/components/menu/MenuOverlay.astro
+  610f36855df90cf4 5-13
+src/utils/getLocalizedPosts.ts
+  610f36855df90cf4 1-223
+src/pages/blog/page/[page].astro
+  610f36855df90cf4 4-8,10-11,14-15,24,27,31-33,45,51
+src/i18n/ui.ts
+  610f36855df90cf4 1-204
+src/pages/es/blog/index.astro
+  610f36855df90cf4 1-3
+src/pages/es/index.astro
+  610f36855df90cf4 1-57
+src/components/menu/Menu.astro
+  610f36855df90cf4 4-12
+src/pages/tags/[tag].astro
+  610f36855df90cf4 2-3,6-9,12-13
+src/components/AutoTranslatedNotice.astro
+  610f36855df90cf4 1,3-30,32-35,38-39,41-44,46-47
+src/components/Pagination.astro
+  610f36855df90cf4 3,8,11-13,28,33-34,43-44,59,71,81
+src/i18n/index.ts
+  610f36855df90cf4 1-37
+src/pages/es/rss.xml.js
+  610f36855df90cf4 1-20
+src/pages/index.astro
+  610f36855df90cf4 5,8-9,11-13,15,19,21,26-28,43,51-52
+src/content.config.ts
+  610f36855df90cf4 6-8,11-27,51-57
+src/components/posts/PostTeaser.astro
+  610f36855df90cf4 9,14,17-20,24,143
+src/components/home/Hero.astro
+  610f36855df90cf4 11,13-16,20-23,38,41,58,63
+src/components/Header.astro
+  610f36855df90cf4 7-17,26,39,41,46
+src/pages/es/[...slug].astro
+  610f36855df90cf4 1-111
+src/pages/legal/cookie-policy.md
+  610f36855df90cf4 3-5,10-12,14,16,18-23,25,27,29-30,32,34-35,37,39,41,43,45-46,48,50,52,54,56-57,59,61-62,64,66,68,70-71,73,75,79,81,83,85-86,88,90-91,93,95-96,98,100-103,105
+scripts/detect-language.ts
+  610f36855df90cf4 1-440
+src/middleware.js
+  610f36855df90cf4 14,18-21,23
+src/content/blog/2026/2026-01-31-mac-mierda/index.es.mdx
+  610f36855df90cf4 1-14,16-409
+src/content/blog/2013/el-uso-de-como-comodin-para-http-y-https/index.mdx
+  610f36855df90cf4 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "27e4c95b1be3d01287b7e46e2d3dfdba5eef0d02",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 3355,
+      "total_deletions": 600,
+      "accepted_lines": 3126,
+      "overriden_lines": 6
+    }
+  }
+}
