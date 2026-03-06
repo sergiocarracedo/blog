@@ -23,11 +23,15 @@ const { readingTime, excerpt } = enrichedPost;
 // Only default posts need lazy video loading on hover
 const needsLazyVideo = !isHighlighted && heroVideo;
 
-// Build video path for lazy loading (same logic as PostMainMedia)
-let lazyVideoPath: string | undefined;
-if (needsLazyVideo && post.filePath) {
+// Resolve video URL at build time using import.meta.glob
+let resolvedVideoUrl: string | undefined;
+if (needsLazyVideo && post.filePath && heroVideo) {
   const postDir = path.dirname(post.filePath);
-  lazyVideoPath = `/${postDir}/${heroVideo.replace('./', '')}`;
+  const videoSourcePath = `/${postDir}/${heroVideo.replace('./', '')}`;
+  
+  // Use import.meta.glob to get all videos and find the matching one
+  const videos = import.meta.glob('/src/content/blog/**/*.webm', { eager: true, import: 'default' });
+  resolvedVideoUrl = videos[videoSourcePath] as string | undefined;
 }
 ---
 
@@ -40,7 +44,7 @@ if (needsLazyVideo && post.filePath) {
   ]}
   data-post-id={enrichedPost.sanitizedId}
   data-has-lazy-video={needsLazyVideo ? 'true' : undefined}
-  data-video-path={lazyVideoPath}
+  data-video-url={resolvedVideoUrl}
 >
   <div class:list={['flex-1 max-w-full mb-3', style === 'default' && 'basis-[300px]']}>
     <a class:list={['btn-img block']} href={postUrl} title={title}>
@@ -142,16 +146,13 @@ if (needsLazyVideo && post.filePath) {
 {needsLazyVideo && (
   <script is:inline>
     (function() {
-      // Video URL cache
-      const videoCache = new Map();
-      
       // Initialize lazy videos on all teaser articles
       function initLazyVideos() {
         const articles = document.querySelectorAll('article[data-has-lazy-video="true"]');
         
         articles.forEach(article => {
-          const videoPath = article.getAttribute('data-video-path');
-          if (!videoPath) return;
+          const videoUrl = article.getAttribute('data-video-url');
+          if (!videoUrl) return;
           
           const mediaContainer = article.querySelector('.media-container');
           if (!mediaContainer) return;
@@ -165,6 +166,7 @@ if (needsLazyVideo && post.filePath) {
           
           let isLoading = false;
           let isPlaying = false;
+          let videoLoaded = false;
           
           // Load and play video
           async function loadAndPlayVideo() {
@@ -174,25 +176,17 @@ if (needsLazyVideo && post.filePath) {
             loadingIndicator?.classList.remove('opacity-0');
             
             try {
-              let videoUrl = videoCache.get(videoPath);
-              
-              if (!videoUrl) {
-                // Dynamic import of video
-                const videoModules = await import(/* @vite-ignore */ videoPath + '?url');
-                videoUrl = videoModules.default || videoModules;
-                videoCache.set(videoPath, videoUrl);
-              }
-              
-              // Set video source
-              if (!videoEl.querySelector('source')) {
+              // Set video source if not already loaded
+              if (!videoLoaded) {
                 const source = document.createElement('source');
                 source.src = videoUrl;
                 source.type = 'video/webm';
                 videoEl.appendChild(source);
+                videoEl.load();
+                videoLoaded = true;
               }
               
-              // Load and play
-              await videoEl.load();
+              // Play video
               await videoEl.play();
               
               // Fade in video

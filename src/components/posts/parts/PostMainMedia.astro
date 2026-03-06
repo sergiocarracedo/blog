@@ -3,16 +3,20 @@ import { Picture } from 'astro:assets';
 import path from 'node:path';
 const { src, alt, transitionName, width, height, className = [], video, basePath, autoplay = false, noHover = false } = Astro.props;
 
-// Store video path for lazy loading
-let videoPath: string | undefined;
+// Resolve video URL at build time using import.meta.glob
+let resolvedVideoUrl: string | undefined;
 if (video && basePath) {
-  const postDir = path.dirname(basePath ?? '');
-  videoPath = `/${postDir}/${video.replace('./', '')}`;
+  const postDir = path.dirname(basePath);
+  const videoSourcePath = `/${postDir}/${video.replace('./', '')}`;
+  
+  // Use import.meta.glob to get all videos and find the matching one
+  const videos = import.meta.glob('/src/content/blog/**/*.webm', { eager: true, import: 'default' });
+  resolvedVideoUrl = videos[videoSourcePath] as string | undefined;
 }
 ---
 
 {
-  videoPath ? (
+  resolvedVideoUrl ? (
     autoplay ? (
       <!-- Autoplay version for highlighted posts -->
       <div 
@@ -28,7 +32,7 @@ if (video && basePath) {
           preload="auto"
           transition:name={transitionName ? `${transitionName}-video` : undefined}
         >
-          <source src={videoPath} type="video/webm" />
+          <source src={resolvedVideoUrl} type="video/webm" />
           <Picture
             class:list={className}
             src={src}
@@ -47,7 +51,7 @@ if (video && basePath) {
       <!-- Lazy load version for default posts -->
       <div 
         class:list={['media-container relative overflow-hidden', noHover && 'no-hover', ...className]}
-        data-video-path={videoPath}
+        data-video-url={resolvedVideoUrl}
         style={{ aspectRatio: `${width} / ${height}` }}
       >
         <!-- Static image (always visible, serves as fallback) -->
