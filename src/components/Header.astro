@@ -40,11 +40,15 @@ import ThemeToggle from './ThemeToggle.astro';
     'bg-secondary/40',
     'md:top-6',
     'backdrop-blur-none',
-    'py-4',
-    'px-4',
     'rounded-lg',
   ];
-  const scrolledClasses = ['max-w-full', 'bg-white/40', 'dark:bg-primary-600', 'backdrop-blur-xs', 'top-0'];
+  const scrolledClasses = [
+    'max-w-full',
+    'bg-white/40',
+    'dark:bg-primary-600',
+    'backdrop-blur-xs',
+    'top-0',
+  ];
   const onScroll = () => {
     if (!header) return;
     if (window.scrollY === 0) {
