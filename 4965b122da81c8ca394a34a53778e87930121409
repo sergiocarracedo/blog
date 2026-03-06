@@ -1,0 +1,25 @@
+src/components/posts/PostTeaser.astro
+  365f58d0d0859a5b 26-28,30-34,47,154-155,169,179-180,185-186,189
+src/components/posts/parts/PostMainMedia.astro
+  365f58d0d0859a5b 6-7,10-14,19,35,54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "4965b122da81c8ca394a34a53778e87930121409",
+  "prompts": {
+    "365f58d0d0859a5b": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_340e174a5ffe3MhNmDwgaAkjDz",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 28,
+      "total_deletions": 30,
+      "accepted_lines": 27,
+      "overriden_lines": 0
+    }
+  }
+}
