@@ -62,7 +62,12 @@ function findBlogPosts(dir: string): PostInfo[] {
       if (sourceFile) {
         const content = fs.readFileSync(sourceFile, 'utf-8');
         const langMatch = content.match(/^lang:\s*(\w+)/m);
-        const lang = langMatch ? (langMatch[1] as Locale) : undefined;
+        // Infer lang from frontmatter first; fall back to filename suffix
+        // e.g. index.es.mdx → 'es', index.en.mdx → 'en'
+        const filenameLang = path.basename(sourceFile).match(/\.(\w{2})\.(t\.)?mdx?$/)?.[1] as
+          | Locale
+          | undefined;
+        const lang: Locale | undefined = langMatch ? (langMatch[1] as Locale) : filenameLang;
 
         // Detect EN version: index.en.mdx (original), index.en.t.mdx (translation), or legacy plain index.mdx
         const hasEn =
