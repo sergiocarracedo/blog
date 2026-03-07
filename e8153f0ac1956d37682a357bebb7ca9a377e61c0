@@ -1,0 +1,59 @@
+src/pages/[lang]/newsletter/archive.astro
+  610f36855df90cf4 1-58
+src/pages/blog/by-year.astro
+  610f36855df90cf4 2
+src/pages/tags/[tag].astro
+  610f36855df90cf4 2,8-9,13
+src/pages/[lang]/blog/page/[page].astro
+  610f36855df90cf4 7,13,28,30
+src/pages/tags/[tag]/[page].astro
+  610f36855df90cf4 2,4,6,9-11,13,16-17,24-25
+src/pages/newsletter/subscribe.astro
+  610f36855df90cf4 2
+src/pages/legal/cookie-policy.astro
+  610f36855df90cf4 1-3
+src/pages/[lang]/newsletter/subscribe.astro
+  610f36855df90cf4 1-152
+src/pages/blog/stats.astro
+  610f36855df90cf4 2
+src/pages/index.astro
+  610f36855df90cf4 2
+src/pages/[lang]/tags/[tag].astro
+  610f36855df90cf4 11
+src/pages/[lang]/blog/stats.astro
+  610f36855df90cf4 1-41
+src/pages/[lang]/index.astro
+  610f36855df90cf4 12
+src/pages/blog/page/[page].astro
+  610f36855df90cf4 2,11
+src/pages/newsletter/archive/index.astro
+  610f36855df90cf4 2
+src/pages/[lang]/about.astro
+  610f36855df90cf4 1-11
+src/pages/[lang]/blog/by-year.astro
+  610f36855df90cf4 10
+src/pages/[lang]/tags/[tag]/[page].astro
+  610f36855df90cf4 9,16,33,40
+src/pages/[lang]/legal/cookie-policy.astro
+  610f36855df90cf4 2-4,7,10-17,19-134
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "e8153f0ac1956d37682a357bebb7ca9a377e61c0",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 441,
+      "total_deletions": 516,
+      "accepted_lines": 426,
+      "overriden_lines": 0
+    }
+  }
+}
