@@ -1,5 +1,12 @@
 ---
 import NewsletterForm from './NewsletterForm.astro';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'en' } = Astro.props;
 ---
 
 <newsletter-toast>
@@ -8,7 +15,7 @@ import NewsletterForm from './NewsletterForm.astro';
       ✕
     </button>
     <div class="newsletter-toast__content">
-      <NewsletterForm placement="toast" />
+      <NewsletterForm placement="toast" lang={lang} />
       <button class="newsletter-toast__dismiss" type="button">
         Maybe later
       </button>

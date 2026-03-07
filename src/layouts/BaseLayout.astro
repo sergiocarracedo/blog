@@ -36,7 +36,7 @@ const lang = propLang ?? getLangFromUrl(Astro.url);
       <slot />
     </main>
     <Footer lang={lang} />
-    <NewsletterToast />
+    <NewsletterToast lang={lang} />
     <NewsletterSuccessToast />
 
     <script

@@ -1,10 +1,10 @@
 ---
-import SectionHeader from '@/components/SectionHeader.astro';
-import Search from 'astro-pagefind/components/Search';
 import Pagination from '@/components/Pagination.astro';
 import PostTeaser from '@/components/posts/PostTeaser.astro';
+import SectionHeader from '@/components/SectionHeader.astro';
+import { locales, useTranslatedPath, useTranslations, type Locale } from '@/i18n';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { locales, defaultLocale, useTranslations, useTranslatedPath, type Locale } from '@/i18n';
+import Search from 'astro-pagefind/components/Search';
 
 export async function getStaticPaths({ paginate }) {
   const { getLocalizedPosts } = await import('@/utils/getLocalizedPosts');
@@ -38,11 +38,16 @@ const { data: posts } = page;
     <div class="md:flex gap-7 mb-10 justify-between">
       <SectionHeader
         title={t('blog.title')}
-        subtitle={page.currentPage > 1 ? t('pagination.page', { current: page.currentPage.toString(), total: page.lastPage.toString() }) : ''}
+        subtitle={page.currentPage > 1
+          ? t('pagination.page', {
+              current: page.currentPage.toString(),
+              total: page.lastPage.toString(),
+            })
+          : ''}
         description={t('site.description')}
-        class="mb-2"
+        class="mb-2 md:flex-1 md:min-w-0"
       />
-      <div class="flex-1 items-end md:max-w-[350px]">
+      <div class="flex-1 items-end md:max-w-[350px] md:w-[200px] md:pt-7">
         <Search className="pagefind-ui-dark pagefind-ui-floating" />
       </div>
     </div>

@@ -28,7 +28,35 @@ interface MonthlyNewsletterProps {
   posts: BlogPost[];
   unsubscribeUrl: string;
   viewOnlineUrl: string;
+  locale?: 'en' | 'es';
 }
+
+const i18n = {
+  en: {
+    previewText: (month: string, year: string) =>
+      `${month} ${year} - New posts from sergiocarracedo.es`,
+    heading: 'Monthly Digest',
+    greeting: 'Hey there! 👋',
+    readMore: 'Read more →',
+    thanks: 'Thanks for reading!',
+    viewInBrowser: 'View in browser',
+    unsubscribe: 'Unsubscribe',
+    footer: 'sergiocarracedo.es • Monthly Newsletter',
+    receivingBecause: "You're receiving this because you subscribed to updates from",
+  },
+  es: {
+    previewText: (month: string, year: string) =>
+      `${month} ${year} - Nuevas entradas en sergiocarracedo.es`,
+    heading: 'Resumen mensual',
+    greeting: '¡Hola! 👋',
+    readMore: 'Leer más →',
+    thanks: '¡Gracias por leer!',
+    viewInBrowser: 'Ver en el navegador',
+    unsubscribe: 'Cancelar suscripción',
+    footer: 'sergiocarracedo.es • Newsletter mensual',
+    receivingBecause: 'Recibes esto porque te suscribiste a las actualizaciones de',
+  },
+} as const;
 
 export const MonthlyNewsletter = ({
   month,
@@ -37,107 +65,110 @@ export const MonthlyNewsletter = ({
   posts,
   unsubscribeUrl,
   viewOnlineUrl,
-}: MonthlyNewsletterProps) => (
-  <Html>
-    <Head />
-    <Preview>
-      {month} {year} - New posts from sergiocarracedo.es
-    </Preview>
-    <Body style={main}>
-      <Container style={container}>
-        {/* Header with profile picture */}
-        <Section style={header}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <tr>
-              <td style={{ width: '100px', verticalAlign: 'middle', paddingRight: '16px' }}>
-                <Img
-                  src="https://sergiocarracedo.es/i/sergiocarracedo-alt-optimized.png"
-                  alt="Sergio Carracedo"
-                  width="80"
-                  height="80"
-                  style={profileImage}
-                />
-              </td>
-              <td style={{ verticalAlign: 'middle' }}>
-                <Heading style={h1}>Monthly Digest</Heading>
-                <Text style={subtitle}>
-                  {month} {year}
-                </Text>
-              </td>
-            </tr>
-          </table>
-        </Section>
+  locale = 'en',
+}: MonthlyNewsletterProps) => {
+  const t = i18n[locale];
 
-        {/* Introduction */}
-        <Section style={content}>
-          <Text style={greeting}>Hey there! 👋</Text>
-
-          <Text style={paragraph}>{summary}</Text>
-
-          <Hr style={divider} />
-        </Section>
-
-        {/* Blog Posts */}
-        <Section style={content}>
-          {posts.map((post, index) => (
-            <Section key={index} style={postCard}>
-              {/* Title on full line */}
-              <Link href={post.url} style={postTitleLink}>
-                <Heading style={postTitle}>{post.title}</Heading>
-              </Link>
-
-              {/* Image full width */}
-              {post.image && (
-                <Link href={post.url}>
+  return (
+    <Html>
+      <Head />
+      <Preview>{t.previewText(month, year)}</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          {/* Header with profile picture */}
+          <Section style={header}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <tr>
+                <td style={{ width: '100px', verticalAlign: 'middle', paddingRight: '16px' }}>
                   <Img
-                    src={post.image}
-                    alt={post.title}
-                    style={postImage}
-                    width="536"
-                    height="268"
+                    src="https://sergiocarracedo.es/i/sergiocarracedo-alt-optimized.png"
+                    alt="Sergio Carracedo"
+                    width="80"
+                    height="80"
+                    style={profileImage}
                   />
+                </td>
+                <td style={{ verticalAlign: 'middle' }}>
+                  <Heading style={h1}>{t.heading}</Heading>
+                  <Text style={subtitle}>
+                    {month} {year}
+                  </Text>
+                </td>
+              </tr>
+            </table>
+          </Section>
+
+          {/* Introduction */}
+          <Section style={content}>
+            <Text style={greeting}>{t.greeting}</Text>
+
+            <Text style={paragraph}>{summary}</Text>
+
+            <Hr style={divider} />
+          </Section>
+
+          {/* Blog Posts */}
+          <Section style={content}>
+            {posts.map((post, index) => (
+              <Section key={index} style={postCard}>
+                {/* Title on full line */}
+                <Link href={post.url} style={postTitleLink}>
+                  <Heading style={postTitle}>{post.title}</Heading>
                 </Link>
-              )}
 
-              {/* Date and summary full width */}
-              <Text style={postDate}>{post.date}</Text>
-              <Text style={postTeaser}>{post.teaser}</Text>
-              <Link href={post.url} style={readMoreLink}>
-                Read more →
+                {/* Image full width */}
+                {post.image && (
+                  <Link href={post.url}>
+                    <Img
+                      src={post.image}
+                      alt={post.title}
+                      style={postImage}
+                      width="536"
+                      height="268"
+                    />
+                  </Link>
+                )}
+
+                {/* Date and summary full width */}
+                <Text style={postDate}>{post.date}</Text>
+                <Text style={postTeaser}>{post.teaser}</Text>
+                <Link href={post.url} style={readMoreLink}>
+                  {t.readMore}
+                </Link>
+
+                {index < posts.length - 1 && <Hr style={postDivider} />}
+              </Section>
+            ))}
+          </Section>
+
+          {/* Footer */}
+          <Section style={footer}>
+            <Text style={footerText}>{t.thanks}</Text>
+
+            <Text style={footerText}>
+              <Link href={viewOnlineUrl} style={footerLink}>
+                {t.viewInBrowser}
               </Link>
+              {' • '}
+              <Link href={unsubscribeUrl} style={footerLink}>
+                {t.unsubscribe}
+              </Link>
+            </Text>
 
-              {index < posts.length - 1 && <Hr style={postDivider} />}
-            </Section>
-          ))}
-        </Section>
+            <Text style={footerText}>{t.footer}</Text>
 
-        {/* Footer */}
-        <Section style={footer}>
-          <Text style={footerText}>Thanks for reading!</Text>
-
-          <Text style={footerText}>
-            <Link href={viewOnlineUrl} style={footerLink}>
-              View in browser
-            </Link>
-            {' • '}
-            <Link href={unsubscribeUrl} style={footerLink}>
-              Unsubscribe
-            </Link>
-          </Text>
-
-          <Text style={footerText}>sergiocarracedo.es • Monthly Newsletter</Text>
-
-          <Text style={footerSmall}>
-            You're receiving this because you subscribed to updates from{' '}
-            <Link href="https://sergiocarracedo.es" style={footerLink}>
-              sergiocarracedo.es
-            </Link>
-          </Text>
-        </Section>
-      </Container>
-    </Body>
-  </Html>
-);
+            <Text style={footerSmall}>
+              {t.receivingBecause}{' '}
+              <Link href="https://sergiocarracedo.es" style={footerLink}>
+                sergiocarracedo.es
+              </Link>
+            </Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  );
+};
 
 export default MonthlyNewsletter;
 

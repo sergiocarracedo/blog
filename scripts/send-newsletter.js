@@ -1,5 +1,6 @@
 import { render } from '@react-email/components';
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
 import { Resend } from 'resend';
 import MonthlyNewsletter from '../src/emails/MonthlyNewsletter.tsx';
 import { generateNewsletter } from './generate-newsletter.ts';
@@ -33,7 +34,7 @@ function parseArgs() {
   return result;
 }
 
-// Load subscribers from Resend
+// Load subscribers from Resend, grouped by language preference
 async function loadSubscribers(resend) {
   try {
     log('📋 Fetching subscribers from Resend...');
@@ -41,129 +42,60 @@ async function loadSubscribers(resend) {
 
     if (!data?.data) {
       log('⚠️  No data returned from Resend');
-      return [];
+      return { en: [], es: [] };
     }
 
     // Filter out unsubscribed contacts
     const activeSubscribers = data.data.filter((contact) => !contact.unsubscribed);
 
-    log(`✅ Found ${activeSubscribers.length} active subscriber(s)`);
-    return activeSubscribers;
+    // Group by language preference (custom property). Default to 'en' if absent.
+    const en = activeSubscribers.filter((c) => (c.properties?.lang ?? 'en') !== 'es');
+    const es = activeSubscribers.filter((c) => c.properties?.lang === 'es');
+
+    log(
+      `✅ Found ${activeSubscribers.length} active subscriber(s): ${en.length} EN, ${es.length} ES`
+    );
+    return { en, es };
   } catch (error) {
     log(`⚠️  Error loading subscribers from Resend: ${error.message}`);
-    return [];
+    return { en: [], es: [] };
   }
 }
 
-// Mark post files as sent
-function markPostsAsSent(postFilePaths) {
-  for (const filePath of postFilePaths) {
+/**
+ * Write a .newsletter.lock file to each post directory to mark the post as sent.
+ * The lock file contains the send timestamp as JSON.
+ * This replaces the old approach of mutating frontmatter in .mdx files.
+ */
+function markPostsAsSent(postPaths) {
+  const sentAt = new Date().toISOString();
+  for (const postPath of postPaths) {
     try {
-      let content = readFileSync(filePath, 'utf-8');
-
-      // Add newsletterSent: true to frontmatter
-      if (content.includes('newsletterSent:')) {
-        content = content.replace(/newsletterSent:\s*(false|true)/, 'newsletterSent: true');
-      } else {
-        // Add after the first --- block
-        content = content.replace(/^---\n/, '---\nnewsletterSent: true\n');
-      }
-
-      writeFileSync(filePath, content, 'utf-8');
-      log(`✅ Marked as sent: ${filePath}`);
+      const lockPath = join(postPath, '.newsletter.lock');
+      writeFileSync(lockPath, JSON.stringify({ sentAt }, null, 2) + '\n', 'utf-8');
+      log(`✅ Lock file written: ${lockPath}`);
     } catch (error) {
-      log(`⚠️  Error marking post as sent (${filePath}): ${error.message}`);
+      log(`⚠️  Error writing lock file (${postPath}): ${error.message}`);
     }
   }
 }
 
-// Main function
-async function main() {
-  log('🚀 Starting newsletter sending process...');
-
-  const { testMode, dataFile } = parseArgs();
-  const daysBack = parseInt(process.env.DAYS_BACK || '30', 10);
-
-  if (testMode) {
-    log('🧪 Running in TEST MODE - email will be sent to hi@sergiocarracedo.es only');
-  }
-
-  let content;
-  let posts = [];
-
-  // Load newsletter content from file or generate it
-  if (dataFile && existsSync(dataFile)) {
-    log(`📂 Loading newsletter data from ${dataFile}...`);
-    content = JSON.parse(readFileSync(dataFile, 'utf-8'));
-  } else {
-    // Generate newsletter content
-    log(`\n📝 Generating newsletter content (looking back ${daysBack} days)...`);
-
-    const result = await generateNewsletter(daysBack);
-
-    if (!result) {
-      log('📭 No new posts found. Exiting.');
-      process.exit(0);
-    }
-
-    content = result.content;
-    posts = result.posts;
-  }
-
-  // Initialize Resend
-  if (!process.env.RESEND_API_KEY) {
-    log('❌ RESEND_API_KEY not found in environment variables');
-    process.exit(1);
-  }
-
-  const resend = new Resend(process.env.RESEND_API_KEY);
-
-  // Load subscribers from Resend
-  let subscribers = await loadSubscribers(resend);
-
-  // In test mode, override subscribers with test email
-  if (testMode) {
-    log('🧪 Overriding subscribers with test email: hi@sergiocarracedo.es');
-    subscribers = [{ email: 'hi@sergiocarracedo.es' }];
-  } else if (subscribers.length === 0) {
-    log('⚠️  No subscribers found. Exiting.');
-    process.exit(0);
-  }
-  const fromEmail = process.env.FROM_EMAIL || 'newsletter@sergiocarracedo.es';
-  const siteUrl = process.env.SITE_URL || 'https://sergiocarracedo.es';
-
-  // Generate unsubscribe and view online URLs
-  const unsubscribeUrl = `${siteUrl}/newsletter/unsubscribe`;
-  const viewOnlineUrl = `${siteUrl}/newsletter/archive/${content.year}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
-
-  // Render email HTML
-  log('\n📧 Rendering email template...');
-
-  const emailHtml = await render(
-    MonthlyNewsletter({
-      ...content,
-      unsubscribeUrl,
-      viewOnlineUrl,
-    })
-  );
-
-  // Send emails using batch API (up to 100 per request)
-  log('\n📤 Sending newsletter to subscribers...');
-
+/**
+ * Send a batch of emails to a list of subscribers.
+ * Returns { successCount, failCount }.
+ */
+async function sendBatch(resend, subscribers, emailHtml, subject, fromEmail, unsubscribeUrl) {
   let successCount = 0;
   let failCount = 0;
-
-  // Resend batch API supports up to 100 emails per request
   const batchSize = 100;
 
   for (let i = 0; i < subscribers.length; i += batchSize) {
     const batch = subscribers.slice(i, i + batchSize);
 
-    // Prepare batch of emails
     const emails = batch.map((subscriber) => ({
       from: fromEmail,
       to: subscriber.email,
-      subject: `${content.month} ${content.year} - New posts from sergiocarracedo.es`,
+      subject,
       html: emailHtml,
       headers: {
         'List-Unsubscribe': `<${unsubscribeUrl}>`,
@@ -178,7 +110,6 @@ async function main() {
         log(`❌ Batch send failed: ${error.message}`);
         failCount += emails.length;
       } else {
-        // data.data contains array of results for each email
         const results = data?.data || [];
         for (let j = 0; j < results.length; j++) {
           const result = results[j];
@@ -203,16 +134,138 @@ async function main() {
     }
   }
 
-  log(`\n📊 Sending complete:`);
-  log(`   ✅ Success: ${successCount}`);
-  log(`   ❌ Failed: ${failCount}`);
+  return { successCount, failCount };
+}
 
-  // Mark posts as sent (skip in test mode and when using data file - already marked)
-  if (successCount > 0 && !testMode && posts.length > 0) {
-    log('\n📝 Marking posts as sent in frontmatter...');
+// Main function
+async function main() {
+  log('🚀 Starting newsletter sending process...');
+
+  const { testMode, dataFile } = parseArgs();
+  const daysBack = parseInt(process.env.DAYS_BACK || '30', 10);
+
+  if (testMode) {
+    log('🧪 Running in TEST MODE - emails will be sent to hi@sergiocarracedo.es only');
+  }
+
+  let contentEn;
+  let contentEs;
+  let posts = [];
+
+  // Load newsletter content from file or generate it
+  if (dataFile && existsSync(dataFile)) {
+    log(`📂 Loading newsletter data from ${dataFile}...`);
+    const data = JSON.parse(readFileSync(dataFile, 'utf-8'));
+    // Support both old single-content format and new bilingual format
+    contentEn = data.contentEn ?? data;
+    contentEs = data.contentEs ?? data;
+  } else {
+    log(`\n📝 Generating newsletter content (looking back ${daysBack} days)...`);
+
+    const result = await generateNewsletter(daysBack);
+
+    if (!result) {
+      log('📭 No new posts found. Exiting.');
+      process.exit(0);
+    }
+
+    contentEn = result.contentEn;
+    contentEs = result.contentEs;
+    posts = result.posts;
+  }
+
+  // Initialize Resend
+  if (!process.env.RESEND_API_KEY) {
+    log('❌ RESEND_API_KEY not found in environment variables');
+    process.exit(1);
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  // Load subscribers grouped by language
+  let { en: enSubscribers, es: esSubscribers } = await loadSubscribers(resend);
+
+  // In test mode, override subscribers with test email (receives EN version)
+  if (testMode) {
+    log('🧪 Overriding subscribers with test email: hi@sergiocarracedo.es');
+    enSubscribers = [{ email: 'hi@sergiocarracedo.es' }];
+    esSubscribers = [];
+  } else if (enSubscribers.length === 0 && esSubscribers.length === 0) {
+    log('⚠️  No subscribers found. Exiting.');
+    process.exit(0);
+  }
+
+  const fromEmail = process.env.FROM_EMAIL || 'newsletter@sergiocarracedo.es';
+  const siteUrl = process.env.SITE_URL || 'https://sergiocarracedo.es';
+
+  const unsubscribeUrl = `${siteUrl}/newsletter/unsubscribe`;
+  const viewOnlineUrl = `${siteUrl}/newsletter/archive/${contentEn.year}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
+
+  let totalSuccess = 0;
+  let totalFail = 0;
+
+  // ── EN subscribers ──────────────────────────────────────────────────────────
+  if (enSubscribers.length > 0) {
+    log(`\n📧 Rendering EN email template...`);
+    const emailHtmlEn = await render(
+      MonthlyNewsletter({
+        ...contentEn,
+        locale: 'en',
+        unsubscribeUrl,
+        viewOnlineUrl,
+      })
+    );
+
+    const subjectEn = `${contentEn.month} ${contentEn.year} - New posts from sergiocarracedo.es`;
+    log(`\n📤 Sending EN newsletter to ${enSubscribers.length} subscriber(s)...`);
+    const { successCount, failCount } = await sendBatch(
+      resend,
+      enSubscribers,
+      emailHtmlEn,
+      subjectEn,
+      fromEmail,
+      unsubscribeUrl
+    );
+    totalSuccess += successCount;
+    totalFail += failCount;
+  }
+
+  // ── ES subscribers ──────────────────────────────────────────────────────────
+  if (esSubscribers.length > 0) {
+    log(`\n📧 Rendering ES email template...`);
+    const emailHtmlEs = await render(
+      MonthlyNewsletter({
+        ...contentEs,
+        locale: 'es',
+        unsubscribeUrl,
+        viewOnlineUrl,
+      })
+    );
+
+    const subjectEs = `${contentEs.month} ${contentEs.year} - Nuevas entradas en sergiocarracedo.es`;
+    log(`\n📤 Sending ES newsletter to ${esSubscribers.length} subscriber(s)...`);
+    const { successCount, failCount } = await sendBatch(
+      resend,
+      esSubscribers,
+      emailHtmlEs,
+      subjectEs,
+      fromEmail,
+      unsubscribeUrl
+    );
+    totalSuccess += successCount;
+    totalFail += failCount;
+  }
+
+  log(`\n📊 Sending complete:`);
+  log(`   ✅ Success: ${totalSuccess}`);
+  log(`   ❌ Failed: ${totalFail}`);
+
+  // Mark posts as sent by writing .newsletter.lock files
+  if (totalSuccess > 0 && !testMode && posts.length > 0) {
+    log('\n📝 Writing .newsletter.lock files...');
     markPostsAsSent(posts);
   } else if (testMode) {
-    log('\n⏭️  Skipping marking posts as sent (test mode)');
+    log('\n⏭️  Skipping lock files (test mode)');
   }
 
   log('\n🎉 Newsletter process complete!');

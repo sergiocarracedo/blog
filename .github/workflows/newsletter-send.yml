@@ -194,11 +194,12 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add src/content/blog/
+          # Add any new .newsletter.lock files written by send-newsletter.js
+          git add 'src/content/blog/**/.newsletter.lock' 2>/dev/null || git add src/content/blog/
           if git diff --staged --quiet; then
-            echo "No posts to mark as sent"
+            echo "No lock files to commit"
           else
-            git commit -m "chore: mark newsletter posts as sent [skip ci]"
+            git commit -m "chore: add .newsletter.lock files for sent posts [skip ci]"
             git push
           fi
 

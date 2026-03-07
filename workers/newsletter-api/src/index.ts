@@ -53,11 +53,15 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
   const cors = corsHeaders(origin, env.ALLOWED_ORIGIN);
 
   try {
-    const { email } = await request.json<{ email: string }>();
+    const body = (await request.json()) as { email: string; lang?: string };
+    const { email, lang } = body;
 
     if (!email || !email.includes('@')) {
       return jsonResponse({ error: 'Valid email is required' }, 400, cors);
     }
+
+    // Validate lang — default to 'en' if missing or invalid
+    const subscriberLang = lang === 'es' ? 'es' : 'en';
 
     const resend = new Resend(env.RESEND_API_KEY);
 
@@ -71,12 +75,18 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
     const tokenData = JSON.stringify({ hash: tokenHash, exp: expiresAt });
 
     // Try to create contact - if it already exists, Resend will return an error
-    const { data: createdContact, error: createError } = await resend.contacts.create({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const createPayload: any = {
       email,
       unsubscribed: true, // Mark as unsubscribed until confirmed
       audienceId: env.RESEND_AUDIENCE_ID,
       firstName: tokenData, // Store token temporarily
-    });
+      // Store language preference as a custom property.
+      // Cast via `any` because the installed SDK typings predate the properties field.
+      properties: { lang: subscriberLang },
+    };
+    const { data: createdContact, error: createError } =
+      await resend.contacts.create(createPayload);
 
     if (createError) {
       // If contact already exists, tell user they're already subscribed

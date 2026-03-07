@@ -22,33 +22,62 @@ function loadEnv() {
 loadEnv();
 
 export interface BlogPost {
+  /** Title from the EN (canonical) file */
   title: string;
+  /** Slug used for URL construction */
   slug: string;
+  /** Description from the EN file */
   description: string;
   pubDate: Date;
   heroImage?: string;
   tags?: string[];
+  /** Excerpt from the EN file content */
   content: string;
-  filePath: string;
-  fullBlogPath?: string; // e.g., "2025/post-slug"
+  /** Absolute path to the post directory */
+  postPath: string;
+  /** e.g. "2025/post-slug" — used for image URL construction */
+  fullBlogPath?: string;
+  /** Path to the canonical EN file (index.en.mdx or index.en.t.mdx) */
+  enFile: string | null;
+  /** Path to the ES file (index.es.mdx or index.es.t.mdx) */
+  esFile: string | null;
+}
+
+export interface NewsletterPost {
+  title: string;
+  url: string;
+  description: string;
+  teaser: string;
+  image?: string;
+  date: string;
 }
 
 export interface NewsletterContent {
   month: string;
   year: string;
   summary: string;
-  posts: Array<{
-    title: string;
-    url: string;
-    description: string;
-    teaser: string;
-    image?: string;
-    date: string;
-  }>;
+  posts: NewsletterPost[];
 }
 
 /**
- * Get all blog posts from the last N days that haven't been sent in a newsletter
+ * Given a post directory, find the best candidate file for a given locale.
+ * Priority: index.{locale}.mdx > index.{locale}.t.mdx
+ * Returns null if neither exists.
+ */
+function findLocaleFile(postPath: string, locale: 'en' | 'es'): string | null {
+  const candidates = [
+    join(postPath, `index.${locale}.mdx`),
+    join(postPath, `index.${locale}.t.mdx`),
+  ];
+  for (const c of candidates) {
+    if (existsSync(c)) return c;
+  }
+  return null;
+}
+
+/**
+ * Scan a post directory and push a BlogPost entry if the post is new enough
+ * and has not been sent yet (no .newsletter.lock file present).
  */
 function processPostDir(
   postPath: string,
@@ -57,32 +86,65 @@ function processPostDir(
   cutoffDate: Date,
   posts: BlogPost[]
 ) {
-  const indexPath = join(postPath, 'index.mdx');
-
   if (!statSync(postPath).isDirectory()) return;
 
+  // Skip if already sent
+  if (existsSync(join(postPath, '.newsletter.lock'))) return;
+
+  const enFile = findLocaleFile(postPath, 'en');
+  const esFile = findLocaleFile(postPath, 'es');
+
+  // Need at least the EN file to include the post (it's the canonical source)
+  if (!enFile) {
+    // Fallback: try legacy index.mdx
+    const legacyPath = join(postPath, 'index.mdx');
+    if (!existsSync(legacyPath)) return;
+    // Treat the legacy file as EN
+    try {
+      const fileContent = readFileSync(legacyPath, 'utf-8');
+      const { data, content } = matter(fileContent);
+      const pubDate = new Date(data.pubDate);
+      if (pubDate < cutoffDate) return;
+
+      const excerpt = content
+        .replace(/^import .+$/gm, '')
+        .replace(/^#+ .+$/gm, '')
+        .replace(/\n+/g, ' ')
+        .trim()
+        .slice(0, 500);
+
+      posts.push({
+        title: data.title,
+        slug: data.slug || `/blog/${postDir}`,
+        description: data.description || excerpt,
+        pubDate,
+        heroImage: data.heroImage,
+        tags: data.tags || [],
+        content: excerpt,
+        postPath,
+        fullBlogPath: `${year}/${postDir}`,
+        enFile: legacyPath,
+        esFile,
+      });
+    } catch (error: unknown) {
+      console.error(`Error reading legacy post ${postDir}:`, error);
+    }
+    return;
+  }
+
   try {
-    const fileContent = readFileSync(indexPath, 'utf-8');
+    const fileContent = readFileSync(enFile, 'utf-8');
     const { data, content } = matter(fileContent);
 
     const pubDate = new Date(data.pubDate);
-
-    // Skip if older than cutoff date
     if (pubDate < cutoffDate) return;
 
-    // Skip if already sent in newsletter
-    if (data.newsletterSent === true) return;
-
-    // Get excerpt (first 500 characters of content, excluding frontmatter)
     const excerpt = content
-      .replace(/^import .+$/gm, '') // Remove imports
-      .replace(/^#+ .+$/gm, '') // Remove headings
-      .replace(/\n+/g, ' ') // Replace newlines
+      .replace(/^import .+$/gm, '')
+      .replace(/^#+ .+$/gm, '')
+      .replace(/\n+/g, ' ')
       .trim()
       .slice(0, 500);
-
-    // Store the full blog path for image resolution
-    const fullBlogPath = `${year}/${postDir}`;
 
     posts.push({
       title: data.title,
@@ -92,8 +154,10 @@ function processPostDir(
       heroImage: data.heroImage,
       tags: data.tags || [],
       content: excerpt,
-      filePath: indexPath,
-      fullBlogPath, // Store full path including year
+      postPath,
+      fullBlogPath: `${year}/${postDir}`,
+      enFile,
+      esFile,
     });
   } catch (error: unknown) {
     console.error(`Error reading post ${postDir}:`, error);
@@ -107,7 +171,6 @@ export function getRecentPosts(daysBack = 30): BlogPost[] {
 
   const posts: BlogPost[] = [];
 
-  // Recursively scan all year directories
   const years = readdirSync(postsDir).filter((dir) => {
     const fullPath = join(postsDir, dir);
     return statSync(fullPath).isDirectory() && /^\d{4}$/.test(dir);
@@ -123,14 +186,56 @@ export function getRecentPosts(daysBack = 30): BlogPost[] {
     }
   }
 
-  // Sort by date, newest first
   return posts.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
 }
 
 /**
- * Generate newsletter content using Gemini AI
+ * Optimise the hero image of a post for email use.
+ * Returns the absolute URL to the optimised image, or undefined.
  */
-export async function generateNewsletterContent(posts: BlogPost[]): Promise<NewsletterContent> {
+async function optimiseHeroImage(post: BlogPost, siteUrl: string): Promise<string | undefined> {
+  if (!post.heroImage) return undefined;
+
+  if (post.heroImage.startsWith('http')) return post.heroImage;
+
+  const filename = post.heroImage.replace('./', '');
+  // Resolve relative to the canonical (EN) file's directory
+  const sourceDir = dirname(post.enFile || join(post.postPath, 'index.en.mdx'));
+  const sourcePath = join(sourceDir, filename);
+
+  if (!existsSync(sourcePath)) {
+    console.warn(`⚠️  Image not found: ${sourcePath}`);
+    return undefined;
+  }
+
+  const destDir = join(process.cwd(), 'public', 'newsletter-images', post.fullBlogPath || '');
+  mkdirSync(destDir, { recursive: true });
+
+  const outputFilename = `${basename(filename, extname(filename))}.jpg`;
+  const destPath = join(destDir, outputFilename);
+
+  if (existsSync(destPath)) {
+    console.log(`⏭️  Image already exists: ${outputFilename}`);
+  } else {
+    await sharp(sourcePath)
+      .resize(300, 150, { fit: 'cover', position: 'center' })
+      .jpeg({ quality: 80 })
+      .toFile(destPath);
+    console.log(`✅ Optimized image: ${filename} -> ${outputFilename} (300x150)`);
+  }
+
+  return `${siteUrl}/newsletter-images/${post.fullBlogPath}/${outputFilename}`;
+}
+
+/**
+ * Generate newsletter content for a specific locale using Gemini AI.
+ * For each post the ES file is used when locale='es' if available;
+ * otherwise falls back to the EN file with a "respond in Spanish" instruction.
+ */
+export async function generateNewsletterContent(
+  posts: BlogPost[],
+  locale: 'en' | 'es' = 'en'
+): Promise<NewsletterContent> {
   if (posts.length === 0) {
     throw new Error('No posts to generate newsletter from');
   }
@@ -141,16 +246,45 @@ export async function generateNewsletterContent(posts: BlogPost[]): Promise<News
     );
   }
 
-  const model = google('gemini-3-flash-preview');
+  const model = google('gemini-2.0-flash');
   const siteUrl = process.env.SITE_URL || 'https://sergiocarracedo.es';
+  const langInstruction =
+    locale === 'es' ? 'Write your response in Spanish.' : 'Write your response in English.';
+  const dateLocale = locale === 'es' ? 'es-ES' : 'en-US';
 
-  // Generate monthly summary
+  // Read post data in the target locale
+  const localePosts = posts.map((post) => {
+    const targetFile = locale === 'es' ? (post.esFile ?? post.enFile) : post.enFile;
+    if (!targetFile)
+      return { title: post.title, description: post.description, content: post.content };
+
+    try {
+      const fileContent = readFileSync(targetFile, 'utf-8');
+      const { data, content } = matter(fileContent);
+      const excerpt = content
+        .replace(/^import .+$/gm, '')
+        .replace(/^#+ .+$/gm, '')
+        .replace(/\n+/g, ' ')
+        .trim()
+        .slice(0, 500);
+      return {
+        title: data.title || post.title,
+        description: data.description || post.description,
+        content: excerpt,
+      };
+    } catch {
+      return { title: post.title, description: post.description, content: post.content };
+    }
+  });
+
+  // Generate monthly intro summary
   const summaryPrompt = `
-You are writing a friendly newsletter introduction for a web development blog. 
+You are writing a friendly newsletter introduction for a web development blog.
 Generate a 2-3 sentence summary of this month's blog activity that sounds natural and engaging.
+${langInstruction}
 
 Posts published this month:
-${posts.map((p, i) => `${i + 1}. "${p.title}" - ${p.description}`).join('\n')}
+${localePosts.map((p, i) => `${i + 1}. "${p.title}" - ${p.description}`).join('\n')}
 
 Requirements:
 - Be conversational and friendly
@@ -160,21 +294,21 @@ Requirements:
 - 2-3 sentences maximum
 `;
 
-  const { text: summary } = await generateText({
-    model,
-    prompt: summaryPrompt,
-  });
+  const { text: summary } = await generateText({ model, prompt: summaryPrompt });
 
-  // Generate teasers for each post
+  // Generate teasers and optimise images in parallel
   const postsWithTeasers = await Promise.all(
-    posts.map(async (post) => {
+    posts.map(async (post, i) => {
+      const lp = localePosts[i];
+
       const teaserPrompt = `
 Create a compelling 1-2 sentence teaser for this blog post.
 Make it intriguing but don't give everything away. Use action-oriented language.
+${langInstruction}
 
-Title: "${post.title}"
-Description: "${post.description}"
-Excerpt: "${post.content}"
+Title: "${lp.title}"
+Description: "${lp.description}"
+Excerpt: "${lp.content}"
 
 Requirements:
 - 1-2 sentences only
@@ -184,70 +318,22 @@ Requirements:
 - Don't use clickbait language
 `;
 
-      const { text: teaser } = await generateText({
-        model,
-        prompt: teaserPrompt,
-      });
+      const [{ text: teaser }, imageUrl] = await Promise.all([
+        generateText({ model, prompt: teaserPrompt }),
+        optimiseHeroImage(post, siteUrl),
+      ]);
 
-      // Handle image URL - optimize and copy to public folder
-      // heroImage is usually "./filename.ext" relative to post directory
-      // We optimize to 300x150 and save as JPEG for email compatibility
-      let imageUrl: string | undefined;
-      if (post.heroImage) {
-        if (post.heroImage.startsWith('http')) {
-          // Already absolute URL
-          imageUrl = post.heroImage;
-        } else {
-          // Local image - optimize and copy to public folder
-          const filename = post.heroImage.replace('./', '');
-          const postDir = dirname(post.filePath);
-          const sourcePath = join(postDir, filename);
-
-          if (existsSync(sourcePath)) {
-            // Create destination directory structure
-            const destDir = join(
-              process.cwd(),
-              'public',
-              'newsletter-images',
-              post.fullBlogPath || ''
-            );
-            mkdirSync(destDir, { recursive: true });
-
-            // Output as optimized JPEG for best email compatibility
-            const outputFilename = `${basename(filename, extname(filename))}.jpg`;
-            const destPath = join(destDir, outputFilename);
-
-            // Skip if already exists
-            if (existsSync(destPath)) {
-              console.log(`⏭️  Image already exists: ${outputFilename}`);
-            } else {
-              // Optimize image: resize to 300x150, convert to JPEG, quality 80
-              await sharp(sourcePath)
-                .resize(300, 150, {
-                  fit: 'cover',
-                  position: 'center',
-                })
-                .jpeg({ quality: 80 })
-                .toFile(destPath);
-
-              console.log(`✅ Optimized image: ${filename} -> ${outputFilename} (300x150)`);
-            }
-
-            // Generate URL
-            imageUrl = `${siteUrl}/newsletter-images/${post.fullBlogPath}/${outputFilename}`;
-          } else {
-            console.warn(`⚠️  Image not found: ${sourcePath}`);
-          }
-        }
-      }
+      // Build the post URL: EN at /{slug}, ES at /es/{slug}
+      const slugPath = post.slug.startsWith('/') ? post.slug : `/${post.slug}`;
+      const url = locale === 'es' ? `${siteUrl}/es${slugPath}` : `${siteUrl}${slugPath}`;
 
       return {
-        title: post.title,
-        url: `${siteUrl}${post.slug.startsWith('/') ? post.slug : `/${post.slug}`}`,
-        description: post.description,
+        title: lp.title,
+        url,
+        description: lp.description,
         teaser: teaser.trim(),
         image: imageUrl,
-        date: post.pubDate.toLocaleDateString('en-US', {
+        date: post.pubDate.toLocaleDateString(dateLocale, {
           month: 'short',
           day: 'numeric',
           year: 'numeric',
@@ -257,7 +343,7 @@ Requirements:
   );
 
   const latestDate = posts[0].pubDate;
-  const month = latestDate.toLocaleDateString('en-US', { month: 'long' });
+  const month = latestDate.toLocaleDateString(dateLocale, { month: 'long' });
   const year = latestDate.getFullYear().toString();
 
   return {
@@ -269,7 +355,7 @@ Requirements:
 }
 
 /**
- * Main function to generate newsletter
+ * Main entry point: scan posts and generate both EN and ES newsletter content.
  */
 export async function generateNewsletter(daysBack = 30) {
   console.log(`🔍 Searching for posts from the last ${daysBack} days...`);
@@ -284,20 +370,27 @@ export async function generateNewsletter(daysBack = 30) {
   console.log(`📝 Found ${posts.length} post(s) to include:`);
   posts.forEach((post) => {
     console.log(`  - ${post.title} (${post.pubDate.toISOString().split('T')[0]})`);
+    console.log(`    EN: ${post.enFile ?? 'none'}`);
+    console.log(`    ES: ${post.esFile ?? 'none'}`);
   });
 
-  console.log('\n🤖 Generating newsletter content with Gemini AI...');
+  console.log('\n🤖 Generating EN newsletter content with Gemini AI...');
+  const contentEn = await generateNewsletterContent(posts, 'en');
 
-  const content = await generateNewsletterContent(posts);
+  console.log('\n🤖 Generating ES newsletter content with Gemini AI...');
+  const contentEs = await generateNewsletterContent(posts, 'es');
 
   console.log('\n✅ Newsletter content generated successfully!');
-  console.log(`📅 ${content.month} ${content.year}`);
-  console.log(`📝 Summary: ${content.summary}`);
-  console.log(`📬 ${content.posts.length} post(s) ready to send`);
+  console.log(`📅 ${contentEn.month} ${contentEn.year}`);
+  console.log(`📝 EN summary: ${contentEn.summary}`);
+  console.log(`📝 ES summary: ${contentEs.summary}`);
+  console.log(`📬 ${contentEn.posts.length} post(s) ready to send`);
 
   return {
-    content,
-    posts: posts.map((p) => p.filePath),
+    contentEn,
+    contentEs,
+    // Folder paths — used to write .newsletter.lock files after sending
+    posts: posts.map((p) => p.postPath),
   };
 }
 
@@ -308,8 +401,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   generateNewsletter(daysBack)
     .then((result) => {
       if (result) {
-        console.log('\n📄 Newsletter content:');
-        console.log(JSON.stringify(result.content, null, 2));
+        console.log('\n📄 EN Newsletter content:');
+        console.log(JSON.stringify(result.contentEn, null, 2));
+        console.log('\n📄 ES Newsletter content:');
+        console.log(JSON.stringify(result.contentEs, null, 2));
       }
       process.exit(0);
     })

@@ -12,34 +12,34 @@ const translatePath = useTranslatedPath(lang);
 <BaseLayout meta={{ title: t('404.title'), description: t('404.subtitle') }} lang={lang}>
   <main class="wrapper mb-20">
     <SectionHeader
-        title={t('404.title')}
-        subtitle={t('404.subtitle')}
-        description={t('404.message')}
-        class="mb-6"
+      title={t('404.title')}
+      subtitle={t('404.subtitle')}
+      description={t('404.message')}
+      class="mb-6"
     />
-    <div class=" mb-10">
+    <div class="mb-10">
       <p class="text-center mb-8 text-lg">{t('404.searchPrompt')}</p>
       <div class="flex justify-center mb-10">
-        <Search id="astro-404-search" className="pagefind-ui-dark pagefind-ui-floating"/>
+        <Search id="astro-404-search" className="pagefind-ui-dark pagefind-ui w-full" />
       </div>
-      <p class="mb-8  text-center text-lg">{t('404.orGoHome')}</p>
+      <p class="mb-8 text-center text-lg">{t('404.orGoHome')}</p>
       <div class="text-center">
         <a href={translatePath('/')} class="btn">{t('404.goHome')}</a>
       </div>
     </div>
   </main>
   <script is:inline>
-  window.addEventListener('DOMContentLoaded', () => {
-    let searchTerm = window.location.pathname.replace(/^\//, '');
-    // Convert slug to words: replace - and _ with spaces, remove trailing slash
-    searchTerm = searchTerm.replace(/[-_]/g, ' ').replace(/\/$/, '').trim();
-    // Remove locale prefix if present
-    searchTerm = searchTerm.replace(/^(en|es)\//, '');
-    const searchInput = document.querySelector('.pagefind-ui__search-input');
-    if (searchInput) {
-      searchInput.value = searchTerm;
-      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-  });
+    window.addEventListener('DOMContentLoaded', () => {
+      let searchTerm = window.location.pathname.replace(/^\//, '');
+      // Convert slug to words: replace - and _ with spaces, remove trailing slash
+      searchTerm = searchTerm.replace(/[-_]/g, ' ').replace(/\/$/, '').trim();
+      // Remove locale prefix if present
+      searchTerm = searchTerm.replace(/^(en|es)\//, '');
+      const searchInput = document.querySelector('.pagefind-ui__search-input');
+      if (searchInput) {
+        searchInput.value = searchTerm;
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
   </script>
 </BaseLayout>
