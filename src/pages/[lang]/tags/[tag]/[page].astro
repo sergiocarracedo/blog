@@ -6,15 +6,14 @@ import Pagination from '@/components/Pagination.astro';
 import PostTeaser from '@/components/posts/PostTeaser.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getLocalizedPostsByTag, getLocalizedTags } from '@/utils/getLocalizedPosts';
-import { locales, defaultLocale, useTranslations, type Locale } from '@/i18n';
+import { locales, defaultLocale, useTranslations, useTranslatedPath, type Locale } from '@/i18n';
 
 export const getStaticPaths = async ({ paginate }) => {
   const { getLocalizedTags, getLocalizedPostsByTag } = await import('@/utils/getLocalizedPosts');
   const { createSlug } = await import('@/utils/createSlug');
-  const nonDefaultLocales = locales.filter((l) => l !== defaultLocale);
 
   const paths = [];
-  for (const lang of nonDefaultLocales) {
+  for (const lang of locales) {
     const tags = await getLocalizedTags(lang);
     for (const tag of tags) {
       const tagPosts = await getLocalizedPostsByTag(lang, tag);
@@ -31,13 +30,14 @@ export const getStaticPaths = async ({ paginate }) => {
 const { lang: langParam, tag: tagSlug } = Astro.params;
 const lang = langParam as Locale;
 const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
 const { page, tag } = Astro.props;
 const { data: posts } = page;
 
 const filteredPosts = posts.filter((post) => post.data.tags?.includes(tag));
 
-const urlPattern = `/${lang}/tags/${createSlug(tag)}/{}`;
+const urlPattern = translatePath(`/tags/${createSlug(tag)}/{}`);
 ---
 
 <BaseLayout meta={{ title: t('blog.postsWithTag', { tag }), description: t('site.description') }} lang={lang}>

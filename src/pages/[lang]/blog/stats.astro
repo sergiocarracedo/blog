@@ -1,0 +1,41 @@
+---
+import SectionHeader from '@/components/SectionHeader.astro';
+import BlogStatsCharts from '@/components/blog/BlogStatsCharts';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getBlogStats } from '@/utils/getBlogStats';
+import { locales, useTranslations, type Locale } from '@/i18n';
+
+export function getStaticPaths() {
+  return locales.map((l) => ({ params: { lang: l } }));
+}
+
+const { lang: langParam } = Astro.params;
+const lang = langParam as Locale;
+const t = useTranslations(lang);
+
+const stats = await getBlogStats();
+const meta = {
+  title: t('footer.blogStats'),
+  description: 'Visual analytics for blog publishing cadence, words, and tags.',
+  keywords: ['blog stats', 'charts', 'analytics'],
+};
+---
+
+<BaseLayout meta={meta} lang={lang}>
+  <section class="wrapper">
+    <SectionHeader
+      title={t('footer.blogStats')}
+      subtitle="Publishing cadence and content breakdown"
+      description="Charts are generated from the static stats JSON produced at build time."
+    />
+  </section>
+
+  <section class="wrapper-no-padding">
+    <div class="p-6 sm:p-6 lg:p-8">
+      <BlogStatsCharts stats={stats} client:only="react" />
+      <div class="mt-8 text-sm text-slate-500">
+        Stats JSON: <a class="underline" href="/blog/stats.json">/blog/stats.json</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

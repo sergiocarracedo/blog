@@ -4,14 +4,13 @@ import Search from 'astro-pagefind/components/Search';
 import Pagination from '@/components/Pagination.astro';
 import PostTeaser from '@/components/posts/PostTeaser.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { locales, defaultLocale, useTranslations, type Locale } from '@/i18n';
+import { locales, defaultLocale, useTranslations, useTranslatedPath, type Locale } from '@/i18n';
 
 export async function getStaticPaths({ paginate }) {
   const { getLocalizedPosts } = await import('@/utils/getLocalizedPosts');
-  const nonDefaultLocales = locales.filter((l) => l !== defaultLocale);
 
   const allPaths = await Promise.all(
-    nonDefaultLocales.map(async (lang) => {
+    locales.map(async (lang) => {
       const posts = await getLocalizedPosts(lang);
       return paginate(posts, {
         pageSize: 10,
@@ -26,8 +25,9 @@ export async function getStaticPaths({ paginate }) {
 const { lang: langParam } = Astro.params;
 const lang = langParam as Locale;
 const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
-const urlPattern = `/${lang}/blog/page/{}`;
+const urlPattern = translatePath('/blog/page/{}');
 
 const { page } = Astro.props;
 const { data: posts } = page;
