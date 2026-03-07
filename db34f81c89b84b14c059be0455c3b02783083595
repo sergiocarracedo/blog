@@ -1,0 +1,25 @@
+src/content/I18N_INSTRUCTIONS.md
+  610f36855df90cf4 1-149
+src/remark-plugins/remark-directive-astro-entry-ref.js
+  610f36855df90cf4 7-12,14-93,95-98,100,102,106-107,110-111,120,122-124,137-138,144,146,148,152-153,158-159,161-162,171,173-176
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "db34f81c89b84b14c059be0455c3b02783083595",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 273,
+      "total_deletions": 40,
+      "accepted_lines": 266,
+      "overriden_lines": 0
+    }
+  }
+}
