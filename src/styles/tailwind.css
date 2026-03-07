@@ -156,6 +156,11 @@
     }
   }
 
+  /* Hide the language filter panel — language filtering is applied programmatically */
+  .pagefind-ui__filter-panel {
+    display: none !important;
+  }
+
   .pagefind-ui-floating {
     position: relative;
     .pagefind-ui__drawer {
