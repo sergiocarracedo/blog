@@ -176,6 +176,9 @@ export const ui: Record<Locale, Record<string, string>> = {
     'legal.cookie.disableSafari': 'More information',
     'legal.cookie.updated': 'Updated: 1/12/2019',
 
+    // About page
+    'about.connectWithMe': 'Connect with me',
+
     // Accessibility
     'a11y.skipToContent': 'Skip to content',
     'a11y.mainNavigation': 'Main navigation',
@@ -359,6 +362,9 @@ export const ui: Record<Locale, Record<string, string>> = {
     'legal.cookie.disableChrome': 'Más información',
     'legal.cookie.disableSafari': 'Más información',
     'legal.cookie.updated': 'Actualizado: 1/12/2019',
+
+    // About page
+    'about.connectWithMe': 'Conéctate conmigo',
 
     // Accessibility
     'a11y.skipToContent': 'Saltar al contenido',
