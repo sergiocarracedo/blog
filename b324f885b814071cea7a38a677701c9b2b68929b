@@ -1,0 +1,23 @@
+src/pages/404.astro
+  610f36855df90cf4 23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "b324f885b814071cea7a38a677701c9b2b68929b",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
