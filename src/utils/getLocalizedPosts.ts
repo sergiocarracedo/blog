@@ -3,12 +3,12 @@ import { getCollection } from 'astro:content';
 import type { Locale } from '@/i18n';
 
 /**
- * Check if a post is a locale-suffixed file (index.es.mdx or index.en.mdx).
- * Both ES-originals renamed to index.es.mdx AND EN translations of ES-originals (index.en.mdx)
- * are "locale files". Plain index.mdx is the legacy EN-original format.
+ * Check if a post is a locale-suffixed file (index.es.mdx, index.en.mdx, index.es.t.mdx, index.en.t.mdx).
+ * Both originals and auto-translated (.t) variants are "locale files".
+ * Plain index.mdx is the legacy EN-original format.
  */
 export function isLocaleFile(post: CollectionEntry<'blog'>): boolean {
-  return /\/index\.(en|es)\.(md|mdx)$/.test((post as any).filePath ?? '');
+  return /\/index\.(en|es)(\.t)?\.(md|mdx)$/.test((post as any).filePath ?? '');
 }
 
 /** @deprecated Use isLocaleFile */
@@ -16,10 +16,12 @@ export const isTranslationFile = isLocaleFile;
 
 /**
  * Derive the locale from a locale file's filePath.
- * Returns 'es' for `…/index.es.mdx`, 'en' for `…/index.en.mdx`, null for plain index.mdx.
+ * Returns 'es' for `…/index.es.mdx` or `…/index.es.t.mdx`,
+ * 'en' for `…/index.en.mdx` or `…/index.en.t.mdx`,
+ * null for plain index.mdx.
  */
 export function getFileLocale(post: CollectionEntry<'blog'>): Locale | null {
-  const match = ((post as any).filePath ?? '').match(/\/index\.(en|es)\.(md|mdx)$/);
+  const match = ((post as any).filePath ?? '').match(/\/index\.(en|es)(\.t)?\.(md|mdx)$/);
   return match ? (match[1] as Locale) : null;
 }
 
@@ -34,7 +36,9 @@ export const getTranslationLocale = getFileLocale;
  */
 export function getPostDirectory(post: CollectionEntry<'blog'>): string {
   const fp: string = (post as any).filePath ?? '';
-  return fp.replace(/^.*?src\/content\/blog\//, '').replace(/\/index(\.(en|es))?\.(md|mdx)$/, '');
+  return fp
+    .replace(/^.*?src\/content\/blog\//, '')
+    .replace(/\/index(\.(en|es)(\.t)?)?\.(md|mdx)$/, '');
 }
 
 /**
@@ -42,7 +46,7 @@ export function getPostDirectory(post: CollectionEntry<'blog'>): string {
  * Kept for backward compat; prefer getPostDirectory() for matching.
  */
 export function getBasePostId(postId: string): string {
-  return postId.replace(/\/index\.(en|es)$/, '');
+  return postId.replace(/\/index\.(en|es)(\.t)?$/, '');
 }
 
 /**

@@ -1,0 +1,55 @@
+---
+title: 'Improving Node.js: Faye'
+pubDate: 2011-07-11T00:00:00.000Z
+slug: mejorando-nodejs-faye
+heroImage: ./mejorando_node.js_faye.jpg
+tags:
+  - javascript
+  - node
+  - html
+  - backend
+
+excerpt: 'As we mentioned in a previous post, **node.js** is a very powerful tool that allows us to create servers using JavaScript as the server-side programming language, but it can be costly to create certain tools and protocols from scratch. **[Faye](http://faye.jcoglan.com/node.html ''Faye'')** is a layer (extension) on top of **node.js**, logically written in JavaScript, that creates a publish-subscribe system for message channels based on the **[Bayeux](http://svn.cometd.com/trunk/bayeux/bayeux.html)** protocol.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+As we mentioned in a previous post, **node.js** is a very powerful tool that allows us to create servers using JavaScript as the server-side programming language, but it can be costly to create certain tools and protocols from scratch. **[Faye](http://faye.jcoglan.com/node.html 'Faye')** is a layer (extension) on top of **node.js**, logically written in JavaScript, that creates a publish-subscribe system for message channels based on the **[Bayeux](http://svn.cometd.com/trunk/bayeux/bayeux.html)** protocol.
+
+In other words, **faye** is responsible for managing channels, message delivery, and reception by subscribers to those channels. **Faye** consists of two parts: one on the server side and another on the client side (also written in JavaScript). To explain how **faye** works more easily, let's look at an example: Imagine we are creating an application that needs to send real-time notifications to all users connected to a page. In our **node.js** _script_, we introduce the following:
+
+```javascript
+var Faye = require('faye'),
+  server = new Faye.NodeAdapter({ mount: '/' });
+server.listen(8000);
+```
+
+and we launch **node.js**
+
+```
+$ node faye.js
+```
+
+Now on the client, we load a JavaScript file with this content:
+
+```javascript
+var client = new Faye.Client('<a href="http://localhost:8000/">http://localhost:8000/</a>');
+client.subscribe('/messages', function (message) {
+  alert('Got a message: ' + message.text);
+});
+```
+
+With these two simple operations, all users connected to our website will be subscribed to the _messages_ channel and will be ready to receive information. To send a message from one of the clients, which could be our website's control panel, we execute the following JavaScript:
+
+```javascript
+client.publish('/messages', { text: 'Hello world' });
+```
+
+And immediately, an _alert_ with the message "Hello world" will appear in all the visitors' browsers. This is an example taken from the Faye website, but I wanted to explain it with a practical example. As you can see, the potential and simplicity of this system is great, since we can send more variables than just _message_ if needed (for example, number of unread messages, date, etc.); we can also have several different channels to send different types of information or only subscribe certain users to those channels. In a future post, I will explain how to manipulate messages on the server side—for example, to store them in a database, send messages from the server itself, etc.
+
+---

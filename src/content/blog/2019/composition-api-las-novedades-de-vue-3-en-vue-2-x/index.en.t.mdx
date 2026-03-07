@@ -1,0 +1,156 @@
+---
+title: 'Composition API: Vue 3 Features in Vue 2.x'
+pubDate: 2019-10-26T00:00:00.000Z
+slug: composition-api-las-novedades-de-vue-3-en-vue-2-x
+heroImage: ./composition-api-414579.jpg
+tags:
+  - javascript
+  - vue
+  - react
+  - api
+
+excerpt: 'Almost a year ago, **Evan You**, creator of Vue, presented a [preview at VueConf](https://medium.com/vue-mastery/evan-you-previews-vue-js-3-0-ab063dec3547) of what will be **Vue 3**, whose main pillars are:'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+Almost a year ago, **Evan You**, creator of Vue, presented a [preview at VueConf](https://medium.com/vue-mastery/evan-you-previews-vue-js-3-0-ab063dec3547) of what will be **Vue 3**, whose main pillars are:
+
+- Faster
+- Smaller
+- More maintainable code
+- Friendlier with native environments (Android, iOS, Desktop, etc.)
+- Easier to use
+
+One of the new features it will bring is what was called **Hooks API** at the time ([inspired by React Hooks](https://vue-composition-api-rfc.netlify.com/#comparison-with-react-hooks)), and has since been renamed to **Composition API**.
+
+This new API allows us to simplify components and make code reuse easier; it will especially impact medium and large components as it allows extracting parts of the logic easily into several files, reusing it, and organizing the code better by logical concepts instead of options. Currently, in Vue 2.x, we have to organize a component's code by options, in the following way:
+
+```javascript
+export default {
+    name: 'component-name',
+    props: {
+        ...
+    },
+    components: {
+
+    },
+    data () {
+        return { ... }
+    },
+    computed: {
+        ....
+    },
+    watch () {
+        ....
+    },
+    methods: {
+        ....
+    },
+    mounted () {
+
+    }
+    ....
+}
+```
+
+In components of a certain complexity, this causes variables and the methods that manage them to be separated, for example.
+
+Let's look at a simple example of what I mean: a component that shows what we type in an input, displays it in uppercase, and also has a button to add an emoji:
+
+::iframe[]{src="https://codesandbox.io/embed/vue-template-rg169?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FDemo2x.vue&view=editor"}
+
+If you notice, we have the `text` variable on one side, the `uppercase` computed variable on another, and the `addEmoji` method on another. In this component, they are all quite "close," but if we keep adding methods and variables, they start to drift apart.
+
+With **Composition API**, we can keep all these elements "close" by logic or functionality (this is shown very graphically in the video I linked at the end).
+
+Before continuing, we should know that in Vue 2.x, to use the _Composition API_, we need to install the [vue/composition-api](https://github.com/vuejs/composition-api) package with a simple:
+
+```
+yarn add @vue/composition-api
+```
+
+Once this is done, we refactor the component as follows:
+
+::iframe[]{src="https://codesandbox.io/embed/vue-template-rg169?fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FDemoCompositionApi.vue&view=editor"}
+
+Nothing significant has changed in the `<template>`, so let's go to the _javascript_, which is where the "meat" is.
+
+First, we see an `import` that _brings_ us: `reactive`, `computed`, and `ref`; we'll see what each one is in a moment.
+
+Next, we see a `setup()` method, none of the "traditional" options (_data_, _methods_, _computed_, etc.), and this is where we'll perform the **composition API** magic. Instead of having an option in the object for each thing: _data_, _computed_, _methods_, we define them directly in the `setup()` method and return them. **Let's go step by step:**
+
+```javascript
+const text = ref('');
+```
+
+_Vue_ needs the _reactive_ element to be [passed by reference](https://vue-composition-api-rfc.netlify.com/#computed-state-and-refs), which _javascript_ doesn't do with primitive types like in this case (a _String_). For this, _Composition API_ provides us with `ref()`.
+
+In case we used an object that we wanted to be reactive, we would use `reactive`:
+
+```javascript
+const state = reactive({
+  text: '',
+});
+```
+
+The next thing we find is the computed variable:
+
+```javascript
+const uppercase = computed(() => text.value.toUpperCase());
+```
+
+Simple: we use `computed`, pass it the _computed_ function, and transform the value of the `text` variable to uppercase.
+
+Here we can already see a couple of details:
+
+- The `.value`: this is because `ref` converts the primitive type into a plain object, storing the actual value in the `value` property. Note that in _templates_, it is not necessary to use `.value` as [_ref unwrapping_](https://vue-composition-api-rfc.netlify.com/#ref-unwrapping) is performed.
+- Another important detail is **where is _this_?** Well, basically it isn't there. `setup()` is called before mounting the component, so in that context, _this_ doesn't work as we knew it.
+
+A bit further down, we have what was previously the `addEmoji` method, which is now a function:
+
+```javascript
+function addEmoji() {
+  text.value += '😂';
+}
+```
+
+And finally, we return all the elements we are going to use:
+
+```javascript
+return {
+  text,
+  uppercase,
+  addEmoji,
+};
+```
+
+At first glance, it all seems a bit more complicated and cumbersome, and it surely is for small components, but as soon as the component starts to grow, this allows us to group the logic of each part of the component instead of having it separated in different object properties. Additionally, it simplifies extracting both reactive and computed variables, as well as methods, to an external file:
+
+```javascript
+import compositionFunction from './demoCompositionApi.js';
+export default {
+  setup() {
+    return {
+      ...compositionFunction(),
+    };
+  },
+};
+```
+
+It's worth noting that the traditional method will still be available and there are no long-term plans to remove it, so we can use one development method or the other. This is something **Evan You** made very clear after the so-called ["Vue Darkest Day"](https://dev.to/danielelkington/vue-s-darkest-day-3fgh), where, with the announcement of the Composition API, the community interpreted that the "traditional" system would be removed, generating quite a bit of controversy.
+
+I recommend watching this video to understand the advantages of the _Composition API_ in a very graphic way:
+
+::youtube[]{id="6HUjDKVn0e0"}
+
+Also, check the [Composition API RFC](https://vue-composition-api-rfc.netlify.com/#summary).
+
+I'll leave the _demo_ project on _codesandbox_:
+
+::iframe[]{src="https://codesandbox.io/embed/vue-template-rg169?fontsize=14" width="100%" height="600px"}

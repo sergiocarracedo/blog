@@ -1,0 +1,33 @@
+---
+title: '>-'
+pubDate: 2013-01-21T00:00:00.000Z
+slug: el-uso-de-como-comodin-para-http-y-https
+heroImage: ./el_uso_de_039039_como_comodin_para_039http039_y_039https039.jpg
+tags:
+  - javascript
+  - css
+  - html
+  - php
+description: Learn how to use protocol-relative URLs (//) to avoid mixed content warnings and handle HTTP/HTTPS resources efficiently.
+excerpt: A simple trick to make your website resources compatible with both HTTP and HTTPS without complex server-side logic.
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+  Using Protocol-Relative URLs for HTTP and HTTPS Compatibility
+
+
+
+Creating a website that can be browsed via both HTTP and HTTPS usually involves having some type of variable or modifier in the language that generates the website's HTML output, such as PHP, so that requests for resources like CSS, JS, images, etc., are made using the correct protocol.
+
+For example, if we are browsing a site via http:// (unencrypted mode) and we request an image via *http**s**://[www.misitio.com/imagen.png](http://www.misitio.com/imagen.png)*, at first it might seem like we shouldn't have any problems. However, if the visitor's network filters port 443 (HTTPS)—which happens in some companies (though less and less)—they wouldn't be able to access the resource. Furthermore, if the requested resource (which doesn't match the protocol) needs to use a cookie, depending on how it's configured, it might not be able to access it.
+
+But the most obvious problem is when the user is browsing our site using **HTTPS** and the page requests a resource via **HTTP**. No matter how good, expensive, or pretty our certificate is, the browser will display a warning that might make users distrust our website.
+
+To avoid these problems, we can either use a variable or something similar that modifies the protocol in our programming, or we can opt for a much simpler solution that covers both cases: using '**//**' instead of http:// or https://. Yes, you read that right, just use // **For example, [http://www.misitio.com/miimagen.jpg](http://www.misitio.com/miimagen.jpg) would become //[www.misitio.com/miimagen.jpg](http://www.misitio.com/miimagen.jpg)**. Now the browser is responsible for deciding which protocol to use based on how we requested the HTML document that is going to request those resources.
+
+It goes without saying that if for any reason we need to force one of the protocols, we simply specify the protocol as we have done so far. You can find more information about using SSL on the web at [http://support.google.com/adwords/answer/2580401/?hl=es](http://support.google.com/adwords/answer/2580401/?hl=es)
+
+---

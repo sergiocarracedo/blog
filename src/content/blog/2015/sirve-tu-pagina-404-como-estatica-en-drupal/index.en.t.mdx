@@ -1,0 +1,28 @@
+---
+title: Serve your 404 page as static in Drupal
+slug: sirve-tu-pagina-404-como-estatica-en-drupal
+pubDate: 2015-02-05T00:00:00.000Z
+heroImage: ./pexels-photo-1579062.jpeg
+tags:
+  - drupal
+  - performance
+
+excerpt: 'In the standard **Drupal** configuration, it tries to absorb all the traffic generated against the directory (and subdirectories) where it is installed on the server; this also includes 404 errors.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+In the standard **Drupal** configuration, it tries to absorb all the traffic generated against the directory (and subdirectories) where it is installed on the server; this also includes 404 errors.
+
+Any request for a file that does not exist will be handled by **Drupal**. This isn't usually a problem since, in theory, most 404 errors are due to typos in URLs by users. However, on a high-traffic site that has just been redesigned and where redirects from old paths to new ones haven't been correctly created, we might find ourselves serving many **404 pages**.
+
+Unfortunately, if we are using **Boost**, it does not cache 404 pages. Therefore, Drupal has to execute a "full process" to return the page (remember that if we are using Boost, we cannot use Drupal's internal caching). As minor as this may seem, it represents a wasteful use of server resources.
+
+The **[Static 404](http://drupal.org/project/static_404)** module puts an end to this problem. Once installed, navigate to **Configuration > System > Site information** and in the **Error pages** section, click the _**Generate static 404 Page**_ button. From that moment on, Drupal will return a static page for any 404 error. Although it might seem like a triviality, we have performed stress tests on our local server and reduced response time by 80%, which makes a difference on high-traffic websites and allows us to dedicate those freed-up resources to what really matters.
+
+---

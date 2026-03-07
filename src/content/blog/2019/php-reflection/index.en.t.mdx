@@ -1,0 +1,168 @@
+---
+title: 'PHP Reflection: Annotations, PHPDoc, and much more'
+pubDate: 2019-11-01T00:00:00.000Z
+slug: php-reflection
+heroImage: ./php-reflection-949215.jpg
+tags:
+  - php
+  - opinion
+
+excerpt: '[PHP reflection](https://www.php.net/manual/es/intro.reflection.php) is something I''ve never used, and I probably won''t use beyond satisfying my curiosity about how it works as in this _post_ (as with many other times, I might end up eating these words :smile:), and I think most of you haven''t used it either.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+[PHP reflection](https://www.php.net/manual/es/intro.reflection.php) is something I've never used, and I probably won't use beyond satisfying my curiosity about how it works as in this _post_ (as with many other times, I might end up eating these words :smile:), and I think most of you haven't used it either.
+
+This set of classes has been with us since PHP 5.0, that is, since July 2004 (over 15 years ago now :sweat:) and they provide us with a system for reverse engineering classes, interfaces, methods, properties, generators, and even language extensions.
+
+To get information about each part of our code, we must use one of the defined classes:
+
+- `ReflectionFunction`: To get information about a function.
+- `ReflectionGenerator`: To get information about a generator.
+- `ReflectionExtension` and `ReflectionZendExtension`: To get information about an extension.
+- `ReflectionClass` and `ReflectionObject`: To get information about a class and an instantiated object respectively.
+
+Let's focus on `ReflectionClass` and look at a very simple class
+
+```php
+define('DEFAULT_RADIUS', 20);
+
+interface Shape {
+    public function area():float;
+}
+
+/**
+* Clase que representa un Circulo
+*/
+final class Circle implements Shape
+{
+    // Constante PI
+    const PI = 3.1415;
+
+    /**
+    * Radio del circulo
+    */
+    private $radius;
+
+
+    /**
+    * @param $radius Radio del circulo
+    */
+    public function __construct(float $radius = DEFAULT_RADIUS){
+        $this->radius = $radius;
+    }
+
+
+    /*
+    Devuelve el radio del circulo
+    */
+    public function area(): float {
+        return pow($this->r, 2) * $this->PI;
+    }
+}
+```
+
+To get information about this class, we first need to instantiate `ReflectionClass`, passing the name of the class to "investigate" into the constructor
+
+```php
+$reflection = new ReflectionClass(Circle::class);
+```
+
+And by using the methods of this class, we can obtain various data about the class, for example, if we want to get the list of all methods.
+
+```php
+var_dump($refection->getMethods());
+```
+
+```
+array(2) {
+  [0]=> object(ReflectionMethod)#2 (2) {
+    ["name"]=> string(11) "__construct"
+    ["class"]=> string(6) "Circle"
+  }
+  [1]=> object(ReflectionMethod)#3 (2) {
+    ["name"]=> string(4) "area"
+    ["class"]=> string(6) "Circle"
+  }
+}
+```
+
+As we can see, it returns an `array` of `ReflectionMethod` class instances, which in turn will also return information about each method; for example, we ask it for the list of parameters of the first method in the list (in this case, the constructor)
+
+```php
+var_dump($reflection->getMethods()[0]->getParameters());
+```
+
+```
+array(1) {
+  [0]=> object(ReflectionParameter)#2 (1) {
+    ["name"]=> string(6) "radius"
+  }
+}
+```
+
+Again, we have another `array`, but in this case, of `ReflectionParameter` instances. Let's keep playing. We are going to check:
+
+- the parameter's data type
+- if it has a default value
+- if it is optional (this request might be a bit redundant, since if it has a default value, it is obviously an optional parameter)
+- if it has a default value, tell us if it is assigned by a constant (and its name).
+
+```php
+$parameter = $reflection->getMethods()[0]->getParameters()[0];
+
+var_dump((string)$parameter->getType());
+// string(5) "float"
+
+var_dump($parameter->getDefaultValue());
+// int(20)
+
+var_dump($parameter->isOptional());
+// bool(true)
+
+var_dump($parameter->getDefaultValueConstantName());
+// string(14) "DEFAULT_RADIUS"
+```
+
+As you can see, we can obtain exhaustive information about the class, methods, parameters, etc. Things like, for example, which line the class definition starts (`getStartLine()`) or ends (`getEndLine()`) on, or the filename (`getFileName()`).
+
+I recommend taking a look at the full list of available methods: https://www.php.net/manual/es/class.reflectionclass.php
+
+## Comments: PHPDoc and annotations
+
+Among that list of methods that return information about the class (or function or method) is `getDocComment`, which returns the **documentation comment** of the element. :warning: And take note that I've put it in bold because it returns exactly that; it won't return just any comment.
+
+PHP considers a comment block to be a documentation block when it starts with `/**`
+
+Let's see an example:
+
+```php
+// Comentarios de documentación del constructor
+var_dump($reflection->getMethods()[0]->getDocComment());
+// string(49) "/**
+//    * @param $radius Radio del circulo
+//    */"
+
+
+// Comentarios de documentación del método area()
+var_dump($reflection->getMethods()[0]->getDocComment());
+// bool(false)
+```
+
+If you look at the `area` method, the comment block starts with `/*` instead of `/**`, and the method ignores it.
+
+As you can imagine, this method is what has allowed the creation of "things" like [PHPDoc](https://www.phpdoc.org/) or bringing annotations as other languages have natively. But keep in mind that the `getDocComment` method returns the comment as is; it doesn't interpret or parse it. That's where classes like [doctrine/annotations](https://github.com/doctrine/annotations) come into play, which handle that parsing.
+
+As a curiosity, it's worth noting that there are several RFC proposals to bring annotations natively to the language interpreter, some of them quite long-standing, which are still in _Draft_ and haven't been voted on to actually be implemented in the interpreter.
+
+- https://wiki.php.net/rfc/annotations
+- https://wiki.php.net/rfc/attributes
+- https://wiki.php.net/rfc/annotations_v2
+
+In summary, reflection classes are useful and very interesting, but as I said at the beginning—and at the risk of eating my words—they are something that most people will probably never use in a real project. However, you never know, and it's always good to know the tools the language provides us.

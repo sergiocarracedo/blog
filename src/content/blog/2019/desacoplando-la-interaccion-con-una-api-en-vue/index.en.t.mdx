@@ -1,0 +1,263 @@
+---
+title: 'Decoupling API interaction in Vue: vue.$api'
+pubDate: 2019-09-09T00:00:00.000Z
+slug: desacoplando-la-interaccion-con-una-api-en-vue
+heroImage: ./vue-api.jpg
+tags:
+  - vue
+  - javascript
+  - api
+  - productivity
+
+excerpt: 'During the development of a website, a Vue SPA very commonly involves interacting with an API, and you will likely use [axios](https://github.com/axios/axios) for it (though what I''m going to explain would work for any other library).'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+During the development of a website, a Vue SPA very commonly involves interacting with an API, and you will likely use [axios](https://github.com/axios/axios) for it (though what I'm going to explain would work for any other library).
+
+It is very common that when we need to interact with an API endpoint, we do it directly from the controller, understanding the controller as the component responsible for responding to a route.
+
+For example:
+
+```
+....
+data() {
+ return {
+  users: []
+ },
+...
+methods:
+ ...
+ getUsers(page) {
+   axios({
+      method: 'get',
+      slug: 'https://reqres.in/api/users',
+      data: {
+        page
+      }
+    }).then(res => {
+      this.users = res.data.data
+    }).catch(res => {
+      // Do something on error
+    })
+ }
+...
+```
+
+This fulfills its basic function, which is to request the list of users for the specified page from the API and save them in `users` so they are available for rendering.
+
+Several problems come to mind at first glance:
+
+- If we need to request users from several controllers, we would have to duplicate this code.
+- If we need to add an authorization header, token, or similar to make the call, we would need to know how to apply it in every API call that uses that authentication and use it from an environment variable we'd need to know.
+- Error management can be tedious; if, for example, we always show an API error on screen the same way, we would have to program it in every call.
+- The same goes if we use loaders on screen; we have to remember to add them every time we use an API call.
+
+A more elegant solution would be to move the API calls to functions in an external file that we import in each controller and use:
+
+```
+import Api from './api.js'
+....
+data() {
+ return {
+  users: []
+ },
+...
+methods:
+ ...
+ getUsers(page) {
+  Api.getUsers(page)
+    .then(res => {
+      this.users = res.data.data
+    })
+ }
+...
+```
+
+And the content of `api.js` would be:
+
+```
+export default {
+  getUsers: function (page) {
+    return axios({
+       method: 'get',
+       slug: 'https://reqres.in/api/users',
+       data: {
+         page
+       }
+     })
+  }
+}
+```
+
+With this, in addition to simplifying the code, we could already reuse the API call in several controllers.
+
+If we want a loader to be shown in the front every time we make an API call (and disappear when the loading finishes), it would be reasonable to use [vuex](https://vuex.vuejs.org/) or similar for this, then our controller would look like this:
+
+```
+import Api from './api.js'
+....
+data() {
+ return {
+  users: []
+ },
+...
+methods:
+ ...
+ getUsers(page) {
+  this.$store.commit('loading', true)
+  Api.getUsers(page)
+    .then(res => {
+    this.$store.commit('loading', false)
+      this.users = res.data.data
+    })
+    .catch(error => {
+      this.$store.commit('loading', false)
+    })
+ }
+...
+```
+
+(I assume there is a store that has a mutation responsible for showing a loading component in the UI)
+
+But, this way we have the same problem again: for every call to the function that manages the API, we have to remember to commit to the store both at the beginning of the call and when it returns data, as well as—importantly—when there is an error.
+
+Okay, let's move this to our `api.js`:
+
+```
+import store from './store.js' // Donde tengamos nuestra store definida
+
+export default {
+  getUsers: function (page) {
+    store.commit('loading', true)
+    return
+      axios({
+        method: 'get',
+        slug: 'https://reqres.in/api/users',
+        data: {
+          page
+        }
+      })
+      .then(res => {
+        store.commit('loading', false)
+      })
+      .catch(error => {
+        store.commit('loading', false)
+      })
+  }
+}
+```
+
+**WATCH OUT**, but if we leave it like this, when capturing the resolution of the promise (with the then and catch), our controller will not receive said resolution, so we have to forward them as follows:
+
+```
+import store from './store.js' // Donde tengamos nuestra store definida
+
+export default {
+  getUsers: function (page) {
+    store.commit('loading', true)
+    return
+      axios({
+        method: 'get',
+        slug: 'https://reqres.in/api/users',
+        data: {
+          page
+        }
+      })
+      .then(res => {
+        store.commit('loading', false)
+        return res // <--- Devolvemos la misma promesa ya resuelta (propagamos)
+      })
+      .catch(error => {
+        store.commit('loading', false)
+        throw error // <-- Lanzamos de nuevo la misma excepción
+      })
+  }
+}
+```
+
+This way, by propagating the resolution of the promise, the controller hasn't even noticed that we launched the loader and deactivated it.
+
+Okay, so now, why, instead of having to import `api.js` in every controller, don't we make it available throughout the app, in the same way that, for example, the vuex store is: 'vue.$store', that is: 'vue.$api.getUsers()'?
+
+To do this, we create a Vue plugin, which is as simple as the following in our `api.js`:
+
+```
+import store from './store.js' // Donde tengamos nuestra store definida
+import axios from 'axios'
+
+export default {
+  install (Vue) {
+    Vue.prototype.$api = Api
+  }
+}
+const Api = {
+  getUsers: function (page) {
+    store.commit('loading', true)
+    return
+      axios({
+        method: 'get',
+        slug: 'https://reqres.in/api/users',
+        data: {
+          page
+        }
+      })
+      .then(res => {
+        store.commit('loading', false)
+        return res // <--- Devolvemos la misma promesa ya resuelta (propagamos)
+      })
+      .catch(error => {
+        store.commit('loading', false)
+        throw error // <-- Lanzamos de nuevo la misma excepción
+      })
+  }
+}
+```
+
+And our entrypoint, which is usually `main.js`, we leave as something like this:
+
+```
+import Vue from "vue";
+import App from "./App.vue";
+import Api from "./api.js"; // <----------------
+
+Vue.config.productionTip = false;
+
+Vue.use(Api) // <----------------
+
+new Vue({
+  render: h => h(App)
+}).$mount("#app");
+```
+
+Now we have access to the Api object available in any controller just by using `this.$api.getUsers()`, and in the case of our example, it would look like:
+
+```
+...
+data() {
+ return {
+  users: []
+ },
+...
+methods:
+ ...
+ getUsers(page) {
+  this.$api.getUsers(page)
+    .then(res => {
+      this.users = res.data.data
+    })
+ }
+...
+```
+
+Obviously, our Api object can have more functions that make calls to other endpoints, have a common way of showing errors, etc. I'll leave that to your imagination.
+
+Finally, and as a spoiler for a future post, I should say that if we use many different endpoints, the `api.js` file can be huge and it would be reasonable to split it, and even separate the object of the entity it accesses, for example `this.$api.user.get` or `this.$api.user.create` or `this.$api.billing.list` or any other example you can think of, but as I said, that's for another post.
+
+---

@@ -1,0 +1,43 @@
+---
+title: 'Bigdump: Import large MySQL files without problems'
+slug: bigdump-importa-grandes-ficheros-mysql-sin-problemas
+pubDate: 2012-11-29T00:00:00.000Z
+heroImage: ./pexels-photo-129544.jpeg
+tags:
+  - php
+  - mysql
+  - database
+
+excerpt: 'One of the nightmares for web developers (at least it''s one of mine) is finding yourself needing to upload a very large SQL dump to a server without remote access to the MySQL server or shell access—meaning the "only" way is to use **PhpMyAdmin**.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+One of the nightmares for web developers (at least it's one of mine) is finding yourself needing to upload a very large SQL dump to a server without remote access to the MySQL server or shell access—meaning the "only" way is to use **PhpMyAdmin**.
+
+I put *only* in quotes because there are certainly many more alternatives, some very manual, and some more convenient like the one I'm suggesting: **[Bigdump](http://www.ozerov.de/bigdump/)**
+
+**Bigdump** is a small **php** script that, once configured with your database credentials, takes care of splitting the SQL files you upload to insert them "little by little" into the database, even on servers with limitations like `safe_mode`.
+
+Its use is very simple:
+
+1.  In the downloaded *bigdump.php* file, configure the database connection details. It's important not to forget to also modify the encoding to avoid character issues, as it uses *latin1* by default.
+
+2.  Upload _bigdump.php_ to the server where you need to perform the "problematic" import.
+
+3.  Upload the _.sql_ file to be imported to the same directory (you can upload it compressed with **gz**). If the directory has write permissions, it will offer the option to upload the file directly from a form, although I don't recommend this option since we are talking about very large files.
+
+4.  Run the _bigdump.php_ file from your browser, for example `http://www.tuweb.com/bigdump.php`
+
+5.  Choose the file to import, and the import process will begin without you having to worry about anything else. However, **you cannot close the browser window while the import is running**.
+
+6.  **VERY IMPORTANT!!! For obvious security reasons, delete the *bigdump.php* file and the *.sql* or *.gz* files you uploaded once finished.**
+
+[Download BigDump ver. 0.34b (beta)](http://www.ozerov.de/bigdump.zip) directly from its creator's website.
+
+---

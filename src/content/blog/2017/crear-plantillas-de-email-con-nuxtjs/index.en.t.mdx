@@ -1,0 +1,35 @@
+---
+title: Creating email templates with Nuxt.js
+pubDate: 2017-10-23T00:00:00.000Z
+slug: crear-plantillas-de-email-con-nuxtjs
+heroImage: ./pexels-photo-261706.jpeg
+tags:
+  - javascript
+  - vue
+  - html
+
+excerpt: 'If you are a web designer and want to travel back in time—to a past where websites were laid out using tables nested to infinity, 1x1px transparent images, the **`<font>`** tag, `<b>` instead of `<strong>`, and a long list of things that make my hair stand on end.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+If you are a web designer and want to travel back in time—to a past where websites were laid out using tables nested to infinity, 1x1px transparent images, the **`<font>`** tag, `<b>` instead of `<strong>`, and a long list of things that make my hair stand on end.
+
+As you have probably gathered from my words, for me, laying out an email template is a nightmare. It's as if they suddenly took away all the tools you have and left you with a hammer and chisel. That's why I always try to simplify the work as much as possible, looking for methods that allow the task of laying out an email to have a bit of *dignity* ;).
+
+Reviewing past layouts, I've realized that many elements are repeated and that it's possible to modularize them. Taking advantage of the fact that I'm fully involved with **Vue.js** and **Nuxt.js**, I've seen that it fits very well. Thanks to the Vue.js component model, we can "slice" the layout into components that we can, of course, reuse. For example, a news item could be a component with its photo, text, and title, and this will be repeated several times in the layout. A `v-for` solves the repetition easily, and we could even pass values to generate different news items.
+
+By having the components defined only once, if we need to make a layout adjustment to a news item, it is applied to all of them.
+
+Once the layout is done, the **Nuxt.js** part comes in. With its static page generation function in the style of Jekyllrb or Hugo, it allows us to have pure HTML for each template. This is what we will pass to the email/newsletter delivery software or to our client.
+
+If client changes come in, making a modification is simple: the necessary components are modified and it is generated again.
+
+It's not that this use of **Nuxt.js** is the invention of the century, but it is a slightly different way to take advantage of it.
+
+---

@@ -1,0 +1,76 @@
+---
+title: 'Abstracting data from its representation in a CMS = WIN'
+pubDate: 2017-11-27T00:00:00.000Z
+slug: abstraer-los-datos-de-su-representacion-en-un-cms-win
+heroImage: ./architecture-construction-build-building-162557.jpeg
+tags:
+  - drupal
+  - backend
+  - frontend
+  - productivity
+
+excerpt: 'In both web development and many other areas, **abstraction** is fundamental to moving forward without having to think about every single level of complexity. [**Abstraction**](<https://es.wikipedia.org/wiki/Abstracci%C3%B3n_(inform%C3%A1tica)>) basically consists of isolating an element from its context.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+In both web development and many other areas, **abstraction** is fundamental to moving forward without having to think about every single level of complexity. [**Abstraction**](<https://es.wikipedia.org/wiki/Abstracci%C3%B3n_(inform%C3%A1tica)>) basically consists of isolating an element from its context.
+
+If you've read the title of the *post*, you'll have noticed that we're going to talk about **content abstraction** in relation to its **representation** (how it will appear to the website visitor). For example, this means that the date field (of an article) shouldn't have to be inserted by the author along with the rest of the text. The same goes for the title, images, or any other element.
+
+### And why not do it that way, inserting everything into a single text field?
+
+I can think of many reasons not to do it that way: for instance, if you need to sort by date and the date is in the middle of the text, the sorting task will be much more complicated than if the date were in a separate field.
+
+Furthermore, if the date is not only stored in a separate field but also stored in a structured way (for example, a _timestamp + timezone_), we can display the date and time in different time zones and in various date formats: *DD/MM/YYYY, MM/DD/YYYY, etc.*
+
+### How can I carry out this abstraction?
+
+There are several ways to do it:
+
+- **Tokenization**: Tokenization is not the optimal solution, but it is an improvement over inserting everything "together" in a single field.  
+  In this case, instead of inserting the date into the main field, we can insert a token that will be replaced by the date, for example [creation_date].  
+  This solution can only be applied to some fields, since in the end we depend on data that is already separated, so it's better to use the following method.
+
+- **Field separation:** This consists of performing a prior analysis of the content to separate it into independent fields.
+
+Let's look at the **Field separation** method with an example: Suppose we take this very blog post on this website. What elements make it up? At first glance, a **title**, a **body text**, the header **image**, the **date**, **tags**, and **related posts.**
+
+In addition to these elements, in some posts I need to add several images or videos.
+
+So now we have the elements; in our *backend*, we have a field for each of these elements, as can be seen in the image below:
+
+I want to draw attention to the **Body text** field, which is a typical [WYSIWYG](https://es.wikipedia.org/wiki/WYSIWYG) text field. This type of field is "dangerous" because it can tend to become a catch-all where all kinds of content end up being inserted. In my opinion, to avoid this and achieve the maximum possible abstraction, this field should only allow inserting:
+
+- Bold (strong), italics (em)
+- Links (a)
+- Headings (h2, h3....) but only in a semantic way; that is, how they are displayed is handled by the frontend
+- Lists (ul, ol)
+
+In general, other tags that provide semantic value to the content, nothing related to visualization:
+
+- Colors
+- Text sizes
+- Typography
+- Images (as a tag; as a token is correct)
+
+What advantages does abstracting content and separating it from visualization give me?
+
+As mentioned before, one of the advantages is being able to manipulate and transform the content before its visualization. For example, the date in this blog post, although entered as a _DD/MM/YYYY HH:MM_ date, is displayed in a relative format (_x days ago_).
+
+Images are cropped and resized according to needs, allowing for different sizes depending on the screen size to avoid unnecessary data downloads. All this while keeping the original image unaltered.
+
+But one **advantage** that is usually seen in the **long term**, and which is very important to us, is that we could **change the website design without needing to touch the content** in the backend.
+
+A change of typography and/or colors because the client has changed their corporate image, or a deep restructuring of the design, for example, moving elements around.
+
+This isn't just theory; we have real cases of clients who have modified the website design up to 4 times over 8 or 9 years, maintaining the same internal content structure while modifying the website's visualization.
+
+To conclude, I can only praise the **simplicity** that **Drupal** provides when it comes to structuring content correctly and keeping it separate from visualization.
+
+---

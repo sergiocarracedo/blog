@@ -17,9 +17,9 @@ export const getSlug = (
 ): string => {
   const fp = post.filePath ?? '';
 
-  // Locale-suffixed files (index.es.mdx, index.en.mdx):
+  // Locale-suffixed files (index.es.mdx, index.en.mdx, index.es.t.mdx, index.en.t.mdx):
   // prefer frontmatter slug (mirrors the sibling), else derive from directory
-  if (/\/index\.(en|es)\.(md|mdx)$/.test(fp)) {
+  if (/\/index\.(en|es)(\.t)?\.(md|mdx)$/.test(fp)) {
     if (post.data?.slug) {
       const s = post.data.slug as string;
       return s.startsWith('/') ? s : `/${s}`;
@@ -27,7 +27,7 @@ export const getSlug = (
     // Fallback: directory portion of filePath
     const dir = fp
       .replace(/^.*?src\/content\/blog\//, '')
-      .replace(/\/index\.(en|es)\.(md|mdx)$/, '');
+      .replace(/\/index\.(en|es)(\.t)?\.(md|mdx)$/, '');
     return `/${dir}`;
   }
 

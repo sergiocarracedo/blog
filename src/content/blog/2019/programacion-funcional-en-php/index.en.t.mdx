@@ -1,0 +1,150 @@
+---
+title: 'Functional Programming in PHP: A bit of theory and Lambdish/phunctional'
+pubDate: 2019-12-03
+slug: programacion-funcional-en-php
+heroImage: ./phunctional-33317.jpg
+tags:
+  - php
+
+excerpt: 'A few weeks ago [@felixgomexlopez](https://twitter.com/felixgomezlopez) told me about a PHP library that offered a lot of functions to handle iterables and first-class (or higher-order) functions in functional programming, so I tried it and (spoiler) I loved it.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+A few weeks ago [@felixgomexlopez](https://twitter.com/felixgomezlopez) told me about a PHP library that offered a lot of functions to handle iterables and first-class (or higher-order) functions in functional programming, so I tried it and (spoiler) I loved it.
+
+First of all, let's look at some important concepts of [functional programming](https://en.wikipedia.org/wiki/Functional_programming):
+
+### First-class or higher-order functions
+
+These are functions that can receive another function as a parameter. For example, PHP's ['array_map'](https://www.php.net/manual/es/function.array-map.php) function receives two arguments: a _callable_ and an _array_, returning an array with the result of applying the _callable_ (usually a function) to each element of the original array.
+
+### Pure functions
+
+These are functions that have no side effects; that is, they apply the mathematical concept of a function where, given an input value(s), we apply a set of operations and obtain a result.
+And that result **is always the same for the same input**; the result cannot depend on an internal state or an internal data reading.
+
+This gives us advantages such as being able to safely cache the result value for a set of input parameters since the result will _always_ be the same.
+
+```php
+// Función pura
+function suma($a, $b) {
+    return $a + $b
+}
+
+//Función impura
+function sumaFactor($a, $b) {
+    return ($a + $b) * $_ENV['factor']
+}
+```
+
+The second function is impure because every time we call it, it returns a value that depends on something external that could change.
+
+### Closures
+
+Another important piece of _functional programming_ in PHP (and other languages) is _closures_. _Closures_ allow a function to access variables from the scope where it is executed.
+
+For example:
+
+```php
+$text = 'El número es: ';
+
+$function = function($number) use ($text) {
+    return $text . $number;
+}
+
+$function(12); //Prints 'El número es: 12'
+```
+
+Where the value of `$text` is from the execution context. (This is a _silly_ example).
+In PHP, _closures_ are represented internally as a [class](https://www.php.net/manual/es/class.closure.php).
+
+### λ (lambda) functions
+
+Also called _anonymous functions_, these are functions that do not have a name and are invoked either directly or by storing their reference in a variable.
+
+```php
+(function($a) {
+  echo 'El número es '. $a * 2;
+})(12); // Prints 'El número es 24
+```
+
+### Enough theory! Let's go
+
+After this brief introduction to functional programming, I'm sure you've seen that you've used it more than once, perhaps without realizing it.
+
+I am convinced you have, and if not, you should.
+
+As I said at the beginning, [@felixgomexlopez](https://twitter.com/felixgomezlopez) told me about a PHP library that gives us tools to work more comfortably with functional programming in PHP.
+
+This library is [Phunctional](https://github.com/Lambdish/phunctional) and it is installed as simply as:
+
+```bash
+$ composer require Lambdish/phunctional
+```
+
+In many cases, it provides functionalities already present in some form in PHP but in a way that standardizes how parameters are passed.
+
+A few years ago, in a [_lightning talk_ at PHPVigo](https://docs.google.com/presentation/d/1C7eEtWsiawZA0X0Vm1N-KE5QFxaHX6Y45DK50uL9lJ0/edit#slide=id.g1d60cdcfc8_0_36), I spoke about PHP's "shameful" parts regarding some array handling functions, for example:
+
+```php
+array_map ( callable $callback , array $array1 [, array $... ] ) : array
+array_reduce ( array $array , callable $callback [, mixed $initial = NULL ] ) : mixed
+```
+
+As you can see, it doesn't maintain consistency in the order of parameters.
+
+On the contrary, Lambdish\Phunctional does maintain it:
+
+```php
+Lambdish\Phunctional\map( callable $fn, $coll ) : array
+Lambdish\Phunctional\reduce( callable $fn, $coll, $initial = null ) : array
+```
+
+It's worth using just for this :joy:
+
+Seriously though, it provides us with a ton of cool functions that simplify our lives, for example:
+
+```php
+<?php
+use function Lambdish\Phunctional\group_by;
+
+group_by('strlen', ['manzana', 'patata', 'melón', 'jamón', 'fresa', 'mandarina']);
+// [5 => ['melón', 'jamón', 'fresa'], 6 => ['patata'], 7 => ['manzana'], 9 => ['mandarina']
+```
+
+Which returns a new array with the elements grouped by the result value of applying the function to each element, in this case `strlen`.
+
+We can also chain several functions:
+
+```php
+<?php
+use function Lambdish\Phunctional\do_if;
+use function Lambdish\Phunctional\each;
+
+each(
+    do_if(
+        function ($item) {
+            print $item . PHP_EOL;
+        },
+    [
+        function($item) { return $item > 10;  },
+        function($item) { return is_numeric($item) && !is_string($item); }
+    ]),
+    [ 11, 3, '14', 'a', 40]
+);
+```
+
+In this case, we iterate through the _array_ and apply `do_if` to each element, which executes the first function if the result of all the functions indicated in the _array_ is `true`.
+
+As you can see, the possibilities are many, especially for working with _Collections_ (_arrays_, _objects_, or _generators_).
+
+I'm not going to describe each function one by one, because it doesn't make much sense since you have the complete documentation of all available functions at https://github.com/Lambdish/phunctional/blob/master/docs/docs.md and the goal of this post is to introduce functional programming in PHP and this fantastic library.
+
+P.S. One of the main contributors to the project is [Rafa Gómez](https://twitter.com/rafaoe), whom I had the pleasure of meeting in person at 
+:astro-ref[PulpoCon 19]{path="blog/2019/pulpocon-19"}

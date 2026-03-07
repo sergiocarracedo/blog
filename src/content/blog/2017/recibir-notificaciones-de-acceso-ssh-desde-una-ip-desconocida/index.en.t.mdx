@@ -1,0 +1,67 @@
+---
+title: Receiving SSH access notifications from an unknown IP
+pubDate: 2017-05-18T00:00:00.000Z
+slug: recibir-notificaciones-de-acceso-ssh-desde-una-ip-desconocida
+heroImage: ./pexels-photo-397225.jpeg
+tags:
+  - security
+  - linux
+  - productivity
+
+excerpt: 'It is common for us to manage or access remote machines in one way or another via SSH, whether through a password or a *key* (highly recommended), but remote access is a vulnerability in itself, or at least a potential entry point for an attacker or malicious individual.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+It is common for us to manage or access remote machines in one way or another via SSH, whether through a password or a *key* (highly recommended), but remote access is a vulnerability in itself, or at least a potential entry point for an attacker or malicious individual.
+
+It is common practice to have **_fail2ban_** on the *sshd* service to prevent brute-force attacks.
+
+Additionally, it can be very interesting to receive a notification (SMS, email, Push, etc.) every time a successful login occurs on the system via *ssh*.
+
+### PAM is your friend
+
+[Linux Pluggable Authentication Modules](https://en.wikipedia.org/wiki/Linux_PAM) (PAM), without going into too much detail, is a system of authentication modules for Linux. To put it simply, PAM allows us to specify that an application or a _**bash**_ script should run under certain conditions, such as in the case we are discussing, when a user successfully logs in via SSH to our system.
+
+In most systems, the file related to ssh login is located at **/etc/pam.d/sshd**, so we edit that file:
+
+<pre>$ sudo nano /etc/pam.d/sshd</pre>
+
+and add the following to the end of it:
+
+`session optional pam_exec.so /usr/local/bin/notify-on-ssh-login.sh`
+
+With this modification, we are indicating that a script should be executed *on login*.
+
+The content of the file to be executed is as follows:
+
+```
+!/bin/bash
+
+if [ "$PAM_TYPE" != "open_session" ]
+then
+  exit 0
+fi
+
+MY_IP=_XXX.XXX.XXX.XXX_
+REMOTE_IP=$(getent hosts "$PAM_RHOST" | awk '{ print $1 }')
+if [ "$OFFICE_IP" != "$REMOTE_IP" ]
+then
+   echo "Login '$PAM_USER' from '$REMOTE_IP'" | mailx -s "ALERT!!!!" _recipient@somewhere.com_
+fi
+exit 0
+
+```
+
+What this script does is check that a session has been opened (from SSH); if so, it checks that the remote IP (from which they have connected) does not match the one we specify (to avoid receiving notifications every time we log in ourselves), and if it doesn't match, it uses *mailx* to send an email alerting us to this.
+
+In my case, as a notification method, I use [Pushover](https://pushover.net/), which allows you to send push notifications to your mobile, and as an advantage, it provides priority levels, allowing, for example, in a "serious" case like this, to bypass the phone's "do not disturb" mode.
+
+Obviously, this script can be improved and can perform whatever actions we specify.
+
+Using *PAM*, we could also have notifications for *ppp* connections, or when a user runs a *sudo* command; there is a lot to "play" with.

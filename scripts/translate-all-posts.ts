@@ -28,7 +28,13 @@ interface PostInfo {
 }
 
 /**
- * Find all blog posts
+ * Find all blog posts.
+ *
+ * Each post directory is emitted once. The "source" file is chosen as:
+ *   1. index.en.mdx  (EN original)
+ *   2. index.es.mdx  (ES original)
+ *   3. index.mdx / index.md  (legacy EN-original)
+ * Directories are deduplicated by directory path.
  */
 function findBlogPosts(dir: string): PostInfo[] {
   const posts: PostInfo[] = [];
@@ -36,34 +42,58 @@ function findBlogPosts(dir: string): PostInfo[] {
 
   function scanDir(currentDir: string) {
     const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+    const names = entries.map((e) => e.name);
 
-    for (const entry of entries) {
-      const fullPath = path.join(currentDir, entry.name);
+    // Decide the source file for this directory (process directories, not individual files)
+    const isLeafDir =
+      names.includes('index.mdx') ||
+      names.includes('index.md') ||
+      names.includes('index.es.mdx') ||
+      names.includes('index.en.mdx');
 
-      if (entry.isDirectory()) {
-        scanDir(fullPath);
-      } else if (entry.name === 'index.mdx' || entry.name === 'index.md') {
-        // Found a base post (not a co-located translation file)
-        const content = fs.readFileSync(fullPath, 'utf-8');
+    if (isLeafDir) {
+      const postDir = currentDir;
+
+      // Pick the best source file in priority order: EN original first, then ES original, then legacy
+      const sourceFile = ['index.en.mdx', 'index.es.mdx', 'index.mdx', 'index.md']
+        .map((n) => path.join(postDir, n))
+        .find((p) => fs.existsSync(p));
+
+      if (sourceFile) {
+        const content = fs.readFileSync(sourceFile, 'utf-8');
         const langMatch = content.match(/^lang:\s*(\w+)/m);
         const lang = langMatch ? (langMatch[1] as Locale) : undefined;
 
-        // Check for co-located translations (index.es.mdx / index.en.mdx siblings)
-        const dir = path.dirname(fullPath);
+        // Detect EN version: index.en.mdx (original), index.en.t.mdx (translation), or legacy plain index.mdx
         const hasEn =
-          fs.existsSync(path.join(dir, 'index.en.mdx')) ||
-          fs.existsSync(path.join(dir, 'index.en.md')) ||
-          lang === 'en';
-        const hasEs =
-          fs.existsSync(path.join(dir, 'index.es.mdx')) ||
-          fs.existsSync(path.join(dir, 'index.es.md')) ||
-          lang === 'es';
+          fs.existsSync(path.join(postDir, 'index.en.mdx')) ||
+          fs.existsSync(path.join(postDir, 'index.en.t.mdx')) ||
+          fs.existsSync(path.join(postDir, 'index.en.md')) ||
+          fs.existsSync(path.join(postDir, 'index.en.t.md')) ||
+          // plain index.mdx with lang:en counts as the EN version
+          ((names.includes('index.mdx') || names.includes('index.md')) && lang === 'en') ||
+          // plain index.mdx with no lang is assumed EN
+          ((names.includes('index.mdx') || names.includes('index.md')) && !lang);
 
-        posts.push({
-          path: fullPath,
-          lang,
-          hasTranslation: { en: hasEn, es: hasEs },
-        });
+        // Detect ES version: index.es.mdx (original), index.es.t.mdx (translation), or legacy plain index.mdx
+        const hasEs =
+          fs.existsSync(path.join(postDir, 'index.es.mdx')) ||
+          fs.existsSync(path.join(postDir, 'index.es.t.mdx')) ||
+          fs.existsSync(path.join(postDir, 'index.es.md')) ||
+          fs.existsSync(path.join(postDir, 'index.es.t.md')) ||
+          // plain index.mdx with lang:es counts as the ES version
+          ((names.includes('index.mdx') || names.includes('index.md')) && lang === 'es');
+
+        posts.push({ path: sourceFile, lang, hasTranslation: { en: hasEn, es: hasEs } });
+      }
+      // Don't recurse into leaf dirs (images etc. live alongside, not nested posts)
+      return;
+    }
+
+    // Not a post directory — recurse into subdirectories
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        scanDir(path.join(currentDir, entry.name));
       }
     }
   }
@@ -127,12 +157,7 @@ async function main() {
       return false;
     }
 
-    // Skip posts that are co-located translation files themselves (index.es.mdx etc.)
-    if (/\/index\.(en|es)\.(mdx?|md)$/.test(post.path)) {
-      return false;
-    }
-
-    // If missing-only flag, skip posts without explicit lang
+    // If missing-only flag, skip posts without an explicit lang tag
     if (missingOnly && !post.lang) {
       return false;
     }

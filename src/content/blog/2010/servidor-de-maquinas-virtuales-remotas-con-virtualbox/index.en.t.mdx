@@ -1,0 +1,45 @@
+---
+title: Remote Virtual Machine Server with VirtualBox
+pubDate: 2010-10-19
+slug: servidor-de-maquinas-virtuales-remotas-con-virtualbox
+heroImage: ./virtualbox.png
+tags:
+  - devops
+
+excerpt: For a web developer, it is very important to have a fully optimized development and testing environment.
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+For a web developer, it is very important to have a fully optimized development and testing environment.
+
+Regarding testing, it is recommended to test our web developments with as many browsers as possible.
+
+If, as in our case, you use Linux as your development operating system, you can test most browsers without any problems: Firefox, Chrome, Opera, Konqueror, etc. (even Safari using **wine**), but there is one browser that will escape us and which, unfortunately for the web, is widely used: **Internet Explorer.**
+
+A possible solution is to have a computer with Windows (XP, Vista, 7) with this browser and access it to perform the tests. This implies having a machine that will only run Windows, with the cost that entails.
+
+The most economical solution is to install Windows in a virtual machine and perform the tests from there. In our case, we use VirtualBox.
+
+The problem with starting the virtual machine on the same computer is the resource consumption, especially memory, which will reduce the computer's performance and our productivity.
+
+Therefore, taking advantage of the VRCP protocol implemented by VirtualBox, we can install the Windows virtual machine on another computer on the network and access said machine using a Terminal Server client. This way, we will shift the resource load (processor, memory, etc.) to another computer, also allowing multiple users to use the virtual machine from their workstations.
+
+I am going to assume that we already have the virtual machine installed and configured on the remote computer (the installation documentation can be found [here](http://www.virtualbox.org/wiki/Linux_Downloads)).
+
+Now we access the computer where we have the virtual machine via SSH.
+
+`ssh equipo_vm`
+
+And we start the virtual machine but without a graphical interface:
+
+`VBoxHeadless -startvm "Windows 7"`
+
+Now we can connect to the machine via a terminal client and perform our tests.
+
+---

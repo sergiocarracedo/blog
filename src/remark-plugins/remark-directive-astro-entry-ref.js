@@ -13,9 +13,11 @@ function findAndLoadEntryFile(postPath, extensions, file, node, contentBaseDir) 
     // Try all possible index extensions in order, including locale-specific variants
     const candidates = [];
     for (const ext of extensions) {
-      candidates.push(`index.${ext}`); // index.mdx, index.md
-      candidates.push(`index.es.${ext}`); // index.es.mdx (ES-original renamed posts)
-      candidates.push(`index.en.${ext}`); // index.en.mdx (EN translation of ES-original)
+      candidates.push(`index.${ext}`); // index.mdx, index.md (legacy)
+      candidates.push(`index.es.${ext}`); // index.es.mdx (ES original)
+      candidates.push(`index.en.${ext}`); // index.en.mdx (EN original)
+      candidates.push(`index.es.t.${ext}`); // index.es.t.mdx (ES auto-translation)
+      candidates.push(`index.en.t.${ext}`); // index.en.t.mdx (EN auto-translation)
     }
     for (const candidate of candidates) {
       const candidatePath = pathModule.join(entryFile, candidate);

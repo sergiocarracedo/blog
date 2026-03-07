@@ -207,8 +207,11 @@ async function translatePost(options: TranslationOptions): Promise<void> {
   const content = fs.readFileSync(filePath, 'utf-8');
   const { frontmatter, body, data } = parseMdx(content);
 
-  // Detect source language
-  const sourceLang: Locale = (data.lang as Locale) || 'en';
+  // Detect source language from filename suffix first (index.es.mdx → es),
+  // falling back to the frontmatter `lang` field, then defaulting to 'en'.
+  const fileBaseName = path.basename(filePath, path.extname(filePath)); // e.g. "index.es"
+  const fileLangMatch = fileBaseName.match(/\.([a-z]{2})(?:\.t)?$/);
+  const sourceLang: Locale = (fileLangMatch?.[1] as Locale) ?? (data.lang as Locale) ?? 'en';
 
   if (sourceLang === targetLang) {
     console.log(`Post is already in ${targetLang}, skipping.`);
@@ -240,13 +243,13 @@ async function translatePost(options: TranslationOptions): Promise<void> {
     .replace(/^excerpt:\s*.+$/m, '')
     .trim();
 
-  // Build new frontmatter
+  // Build new frontmatter — drop `lang` (filename suffix is the source of truth now)
+  const { lang: _lang, ...dataWithoutLang } = data as FrontmatterData & { lang?: unknown };
   const newData: FrontmatterData = {
-    ...data,
+    ...dataWithoutLang,
     title: translatedTitle,
     description: translatedDesc,
     excerpt: translatedExcerpt,
-    lang: targetLang,
     autoTranslated: true,
     originalLang: sourceLang,
   };
@@ -255,14 +258,19 @@ async function translatePost(options: TranslationOptions): Promise<void> {
   const newFrontmatter = buildFrontmatter(newData);
   const newContent = `---\n${newFrontmatter}\n---\n\n${translatedBody}`;
 
-  // Determine output path
+  // Determine output path.
+  // Convention:
+  //   index.en.mdx  (EN original)   → translated ES → index.es.t.mdx
+  //   index.es.mdx  (ES original)   → translated EN → index.en.t.mdx
+  //   index.mdx     (legacy EN)     → translated ES → index.es.t.mdx  (treated as EN original)
   const dir = path.dirname(filePath);
-  const ext = path.extname(filePath);
-  const baseName = path.basename(filePath, ext);
+  const ext = path.extname(filePath); // ".mdx"
+  const base = path.basename(filePath, ext); // e.g. "index.es" or "index"
 
-  // If the file is index.mdx, create index.{lang}.mdx
-  const outputFileName =
-    baseName === 'index' ? `index.${targetLang}${ext}` : `${baseName}.${targetLang}${ext}`;
+  // Strip any existing lang/translation suffix to get the bare base ("index")
+  const bareBase = base.replace(/\.[a-z]{2}(\.t)?$/, '');
+
+  const outputFileName = `${bareBase}.${targetLang}.t${ext}`; // e.g. index.en.t.mdx
   const outputPath = path.join(dir, outputFileName);
 
   if (dryRun) {

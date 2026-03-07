@@ -13,7 +13,7 @@ const lang: Locale = 'es';
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
 
-  // Build a set of directories that have a Spanish version (index.es.mdx or legacy lang:es index.mdx)
+  // Build a set of directories that have a Spanish version (index.es.mdx, index.es.t.mdx, or legacy lang:es index.mdx)
   const hasSpanishVersion = new Set<string>();
   for (const post of allPosts) {
     if (isLocaleFile(post) && getFileLocale(post) === 'es') {
@@ -30,10 +30,21 @@ export async function getStaticPaths() {
   const seenSlugs = new Set<string>();
 
   for (const post of allPosts) {
-    // Skip EN-only locale files — served at root only
-    if (isLocaleFile(post) && getFileLocale(post) === 'en') continue;
+    // Skip EN-only locale files — served at root only; but also generate /es/ fallback if no ES version
+    if (isLocaleFile(post) && getFileLocale(post) === 'en') {
+      const dir = getPostDirectory(post);
+      if (!hasSpanishVersion.has(dir)) {
+        // EN-only post: serve as fallback at /es/{slug}
+        const routeSlug = getRoutingSlug(post);
+        if (!seenSlugs.has(routeSlug)) {
+          seenSlugs.add(routeSlug);
+          paths.push({ params: { slug: routeSlug }, props: { post, isFallback: true } });
+        }
+      }
+      continue;
+    }
 
-    // index.es.mdx → served at /es/{slug}
+    // index.es.mdx / index.es.t.mdx → served at /es/{slug}
     if (isLocaleFile(post) && getFileLocale(post) === 'es') {
       const routeSlug = getRoutingSlug(post);
       if (!seenSlugs.has(routeSlug)) {
@@ -53,7 +64,7 @@ export async function getStaticPaths() {
       continue;
     }
 
-    // EN post (index.mdx lang:en or no lang) → serve as fallback at /es/{slug}
+    // Plain index.mdx (EN, no lang) → serve as fallback at /es/{slug}
     // unless this directory already has a Spanish version
     if (!isLocaleFile(post) && (!post.data.lang || post.data.lang === 'en')) {
       const routeSlug = post.id;

@@ -1,0 +1,39 @@
+---
+title: 'Why is the home directory in Linux represented by ~ (tilde)?'
+pubDate: 2017-06-13T00:00:00.000Z
+slug: por-que-el-directorio-home-en-linux-se-representa-con-tilde
+heroImage: ./pexels-photo-698808.jpeg
+tags:
+  - ci-cd
+  - linux
+
+excerpt: When I started taking my first steps in Linux, it caught my attention that if I wanted to change to my home directory, I could do it "the long way"
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+When I started taking my first steps in Linux, it caught my attention that if I wanted to change to my home directory, I could do it "the long way"
+
+```
+$ cd /home/usuario
+```
+
+Or using ~ (the character called a tilde)
+
+```
+$ cd ~/
+```
+
+which saved on typing, and the biggest advantage was that a script would work for any user.
+
+![](/images/l3esv.jpg)
+
+I once wondered about the origin of using this character, but I never investigated much further until a few days ago when I found this explanation at https://unix.stackexchange.com/questions/34196/why-was-chosen-to-represent-the-home-directory/34198#34198, which is quite curious, and I'll translate it freely: "In Unix-like operating systems, the tilde represents the home directory, a practice derived from the **Lear-Siegler ADM-3A** terminal, very common in the 70s, where the same key featured both the *tilde* and the *HOME* inscription, which served to move to the top of the screen."
+
+As is also mentioned, this terminal is also the origin of the Vi movement keys (you just have to look at the photo to see why. ;)
+---

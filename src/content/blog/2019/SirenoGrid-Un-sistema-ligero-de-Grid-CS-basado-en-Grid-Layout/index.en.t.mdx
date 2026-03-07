@@ -1,0 +1,96 @@
+---
+title: 'Sireno Grid: A lightweight CSS Grid system based on Grid Layout'
+pubDate: 2019-08-26T12:31:08.000Z
+slug: SirenoGrid-Un-sistema-ligero-de-Grid-CS-basado-en-Grid-Layout
+heroImage: ./sireno-grid.jpg
+tags:
+  - css
+  - sass
+  - testing
+  - productivity
+
+excerpt: '_CSS Grid Layout_ is a W3C standard that was brought to _webkit_ and _blink_ by [Igalia](https://igalia.com), a company based in Galicia with programmers all over the world. We also had the honor of organizing a talk [[Video](https://www.youtube.com/watch?v=NbeP64e8DZQ)] by one of the developers responsible for implementing CSS Grid Layout in Chromium/Blink and Safari/Webkit: [Manuel Rego](https://blogs.igalia.com/mrego/resources/)'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+_CSS Grid Layout_ is a W3C standard that was brought to _webkit_ and _blink_ by [Igalia](https://igalia.com), a company based in Galicia with programmers all over the world. We also had the honor of organizing a talk [[Video](https://www.youtube.com/watch?v=NbeP64e8DZQ)] by one of the developers responsible for implementing CSS Grid Layout in Chromium/Blink and Safari/Webkit: [Manuel Rego](https://blogs.igalia.com/mrego/resources/)
+
+Those of us who have been doing web layouts for a long time (a very, very long time) will remember an era when layouts were made using tables. Why? Because most web designs can be _sliced_ into square or rectangular areas or zones, something that tables allowed at the time. With the arrival of the _semantic web_ and CSS improvements, table-based layout was marked as a bad practice (which it was). CSS Grid Layout is "like" going back to table layouts but doing it **right**. I won't go into too much detail, but table layouts were defined with tags, and here we define them with stylesheets.
+
+# Why?
+
+One fine day, over a year ago, a web layout project fell into my hands, but in this case, it had a requirement that was quite unusual at the time: the layout had to be based on [CSS Grid Layout](https://developer.mozilla.org/es/docs/Web/CSS/CSS_Grid_Layout). I had been using _Bootstrap_ for column _layouts_ for a while, as I find it very convenient to be able to define sizes for each "block" according to the screen size, and I didn't want to lose this. So, I decided to create a grid system similar to/inspired by Bootstrap's, but instead of using floating `<div>`s, as in _Bootstrap 3_, or _flexbox_, as in _Bootstrap 4_, I would use _CSS Grid Layout_.
+
+Once this project was finished and seeing that this tool worked reasonably well, I decided to use it in more projects and finally _share it with the community_, releasing it at the beginning of this year.
+
+That's how **[Sireno Grid](https://sirenogrid.com)** was born, with a name inspired by one of the [statues](https://es.wikipedia.org/wiki/El_Sireno) that is, in my opinion, one of the ugliest in my city (Vigo), but at the same time, one with the most personality.
+
+# Goal
+
+**[Sireno Grid](https://sirenogrid.com)** has a simple goal: to serve as a _responsive grid_ structure so you can create your layout simply—no buttons, badges, etc... just the grid, the "margins," and the _embedding_ of elements _responsively_.
+
+As I mentioned, _Sireno Grid_ is inspired by _Bootstrap_, and therefore I have used more or less the same class names with the same functions, so that switching from one to the other is easy. The main change is using the `.grid-row` class instead of `.row` to define the row; I did this so that both "frameworks" could be used together if necessary.
+
+## Breakpoints
+
+The defined breakpoints are these (defined in an SCSS variable):
+
+`$grid-breakpoints: (
+  xs: 0,
+  lxs: 576px,
+  sm: 768px,
+  md: 992px,
+  lg: 1200px
+) !default;`
+
+## The containers
+
+One thing I always had to modify or add on top of _Bootstrap_ was the containers. By default, _Bootstrap 4_ only has two _containers_: a fluid one that takes up 100% of the browser width and a fixed one that takes on different sizes depending on the _breakpoint_ used.
+
+In none of my projects did this fit 100%. The one that fit best was a fluid _container_ but with a maximum size. Therefore, _Sireno Grid_ has a '.container-fluid' that adjusts to 100% of the _viewport_, and a '.container-fluid-1920' and a '.container-fluid-1440' that adjust to 100% of the viewport with a maximum of 1920px and 1440px respectively.
+
+## The gutters or grid-gap
+
+By default, `.grid-row` establishes a space between columns or "gutter" of 15px, but sometimes we need that gap not to exist. For this, I have created a collection of classes applicable to each column that disable that gap as follows:
+
+`.no-gutters` => to remove spaces on both sides across all breakpoints.
+`.no-gutter-[xs|lxs|sm|md|lg]` => to remove spaces on both sides from the indicated breakpoint onwards.
+`.no-gutter-[left|right]` => to remove the space on the indicated side across all breakpoints.
+`.no-gutter-[left|right]-[xs|lxs|sm|md|lg]` => to remove the space on the indicated side from the indicated breakpoint onwards.
+
+> As a technical note, gaps between columns do not use 'grid-column-gap' as it might seem logical, since that sets a fixed gap for all columns, making it impossible to specify one gap for two columns and a different one for others.
+
+## Column filler or Col filler
+
+Surely on some occasion it has happened to you that around a container you had to put a different background on each side (either a color or an image); if this has happened to you, `.grid-filler` is designed for you.
+
+![](fillers.png)
+
+&nbsp;
+As you will see on the **[Sireno Grid](https://sirenogrid.com)** examples page, the layout for this is very simple and allows for responsive behavior.
+
+## _Flexbox fallback_
+        
+Unfortunately, not all users update their browsers (either because they can't due to technical limitations or corporate policies, or because they simply don't), so it was a requirement to establish a fallback for _Sireno Grid_ features to _flexbox_ for those browsers that do not implement the _Grid Layout_ standard. Hopefully, we can remove this _fallback_ when _Grid Layout_ [is more widespread](https://caniuse.com/#feat=css-grid).
+
+## Other features
+
+I've left other features for you to check on the **[Sireno Grid](https://sirenogrid.com)** website itself, where they are explained with usage examples.
+
+Additionally, the website explains how to use _Sireno Grid_ in your project (using **NPM**, for example) and shows examples (code included) of the features already mentioned.
+
+I'm also linking a [_lightning talk_](https://docs.google.com/presentation/d/18dWK5St8n-9aRmVK27_BSt78rnnEqjbVPBwlPxGsC48/edit?usp=sharing) I gave about _Sireno Grid_ at a [PHPVigo](https://www.meetup.com/es-ES/PHPVigo/) meetup.
+
+## Acknowledgements
+
+I would like to thank [Pedro Figueras](https://pedrofiguera.com) for the logo design and [BrowserStack](https://www.browserstack.com/) for providing a license to use their tool for testing across multiple browsers.
+
+https://sirenogrid.com/
+
+---

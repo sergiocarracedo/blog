@@ -1,0 +1,65 @@
+---
+title: Using a 'field widget' in a conventional form in Drupal 7
+pubDate: 2017-06-08T00:00:00.000Z
+slug: usar-un-field-widget-en-un-formulario-convencional-en-drupal-7
+heroImage: ./pexels-photo-268466_0.jpeg
+tags:
+  - html
+  - drupal
+  - api
+  - productivity
+
+excerpt: 'Drupal''s [Form API](https://api.drupal.org/api/drupal/developer%21topics%21forms_api_reference.html/7.x) is very powerful; for me, it''s something I really miss when I program on other _CMS_ or _frameworks_, because Drupal has managed to reduce the laborious task of creating, validating, and securing forms to a "simple" array.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+Drupal's [Form API](https://api.drupal.org/api/drupal/developer%21topics%21forms_api_reference.html/7.x) is very powerful; for me, it's something I really miss when I program on other _CMS_ or _frameworks_, because Drupal has managed to reduce the laborious task of creating, validating, and securing forms to a "simple" array.
+
+This Form API has types that I would call primitive—not because they are outdated, but because more complex constructions can be built from them, as the [Field](https://api.drupal.org/api/drupal/modules%21field%21field.module/group/field/7.x) module does, specifically its [Field UI](https://api.drupal.org/api/drupal/modules!field_ui!field_ui.module/7.x) submodule, which, as you already know, is what facilitates the creation of different types of fields, for example, in content creation.
+
+I take for granted that you know Drupal and how powerful it is when it comes to having different types of fields for creating content—not just conventional database fields, but fields like a [location](https://www.drupal.org/project/geolocation) map, [images that can be cropped](https://www.drupal.org/project/imagefield_crop), a [postal address field](https://www.drupal.org/project/addressfield) that changes depending on the selected country, etc.
+
+These fields (*fields*) have *widgets* to enter values; for example, the location field, instead of asking for coordinates numerically (something generally complicated for a user), does so by showing a map on which we can search and click on the desired location. Internally, this is still a pair of numbers, but the way they are entered is what makes the difference.
+
+These *widgets* implemented by modules (whether *Fields* itself or third-party ones) actually use the power of the **Form API** as a base. What if we could reuse the widgets being used, for example, in a content type (node) creation form? Well, we can, and it's relatively simple.
+
+```
+function mymodule_register_form($form, &$form_state) {
+    $form['organization_name'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Name of the organization',
+      '#required' => true
+    );
+
+    $tmpnode = new stdClass();
+    $tmpnode->type = 'organization';
+    field_attach_form('node', $tmpnode, $form, $form_state, LANGUAGE_NONE, array(
+      'field_name' => 'field_full_address',
+    ));
+
+    return $form;
+
+}
+```
+
+In the example, we have a standard form with an *organization_name* field, which is a simple *textfield* from the Form API. Additionally, we need to collect an address, for which we could create several fields and program the interactivity, look up the list of countries with their provinces, and how an address is structured in each, etc. We could do that, yes, but it's already done by the [addressfield](http://www.drupal.org/project/addressfield) module, which we are also using in a content type called "Organization" with the field name _field_full_address_, and all we have to do is reuse that field's widget.
+
+```
+$tmpnode = new stdClass();
+$tmpnode->type = 'organization';
+field_attach_form('node', $tmpnode, $form, $form_state, LANGUAGE_NONE, array(
+  'field_name' => 'field_full_address',
+));
+```
+
+With the lines above this paragraph, what we are doing is creating a standard object with the single property *type* that indicates the node type where the field we are going to "copy" the widget from is located. By invoking [field_attach_form](https://api.drupal.org/api/drupal/modules%21field%21field.attach.inc/function/field_attach_form/7.x), what we do is "inject" all the fields of another form into a form (in this case, all the fields of the form that would be shown when creating or editing an *organization* type node). But since we only want to use a specific field, the last parameter is an array of options where we specify that we only want to use the field named _field_full_address_, and that's it!
+
+Now we can use the widget in our form.
+
+The case that motivated this blog post is something that can be relatively common. In my case, in the Drupal user registration form, I needed to ask for a series of additional fields (like the address) that were not going to be stored in the user profile, but would instead create a node on behalf of the user with the additional data requested in the registration form. This way, the user only has to complete one form, improving their experience using the website.

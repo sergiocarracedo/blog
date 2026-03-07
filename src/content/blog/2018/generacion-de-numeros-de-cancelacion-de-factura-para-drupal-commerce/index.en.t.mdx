@@ -1,0 +1,33 @@
+---
+title: Generating invoice cancellation numbers for Drupal Commerce
+pubDate: 2018-01-22T00:00:00.000Z
+slug: generacion-de-numeros-de-cancelacion-de-factura-para-drupal-commerce
+heroImage: ./pexels-photo-811103_1.jpeg
+tags:
+  - drupal
+
+excerpt: 'Recently, one of our clients for whom we designed and programmed an online store using Drupal 7 and [Drupal commerce](https://drupalcommerce.org/) had several needs regarding invoicing.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+Recently, one of our clients for whom we designed and programmed an online store using Drupal 7 and [Drupal commerce](https://drupalcommerce.org/) had several needs regarding invoicing.
+
+First, they needed orders to automatically generate a series of invoice numbers for each year, in the format **2018-123, 2018-124, ...** So far so normal, one of the contributed modules of *Drupal Commerce*.
+
+This module is called [Commerce Billy](https://www.drupal.org/project/commerce_billy), and it meets this need, in addition to providing PDF invoice generation, the possibility of automatic or manual invoicing, and a long list of small but useful functionalities related to invoicing.
+
+But our client, in addition to generating a series for sales invoices, needed to generate a new series in case of a return, also with consecutive numbers, but independent of the invoicing series.
+
+_Commerce Billy_ did not provide this functionality, so we decided to take advantage of the *hooking* power provided by Drupal—that is, being able to "hook" your code into different points of the program flow, allowing you to alter or extend the functionality of the *core* or a module without needing to modify it—and we created a simple but useful module that performs this functionality by leveraging part of *Commerce Billy*'s features; for example, the series type configuration (Annual, monthly, or infinite) is extracted from the one specified in *Commerce Billy*, simplifying the configuration for the user.
+
+Our module is called [**Commerce Billy Cancel** ](https://www.drupal.org/project/commerce_billy_cancel) (a very original name ;) ) and we have decided to release it so that anyone with the same need as us can solve it easily.
+
+You can download it [here](https://www.drupal.org/project/commerce_billy_cancel)
+
+---

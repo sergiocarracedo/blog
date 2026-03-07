@@ -1,0 +1,84 @@
+---
+title: 'Usability: Notifications in the page title'
+slug: usabilidad-notificaciones-en-el-titulo-de-la-pagina
+pubDate: 2010-08-25T00:00:00.000Z
+heroImage: ./pexels-photo-1851415.jpeg
+tags:
+  - javascript
+  - frontend
+
+excerpt: Nowadays, most users have several browser tabs open simultaneously while browsing. Sometimes our web application needs to get the user's attention to require an action or simply let them know they have received a notification.
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+Nowadays, most users have several browser tabs open simultaneously while browsing. Sometimes our web application needs to get the user's attention to require an action or simply let them know they have received a notification.
+
+A good way to do this is to alternately change the page title with an alert, just like Facebook does when we receive a chat notification; the page title changes 3 or 4 times between "Facebook...." and "So-and-so has sent you a message."
+
+To facilitate this seemingly simple task, we have created a very easy-to-use jQuery plugin.
+
+We just need to pass the alert message that will alternate with the original page title as a parameter.
+
+![](/images/chrome-blank-new-tab.gif)
+
+We can pass the number of repetitions and the time (in milliseconds) between changes as options.
+
+Here is the source code for the plugin:
+
+```
+/**
+* Title blink for web pages that allow to change title page blinks like facebook chat notificacion
+*
+* This file is part of jquery.titleBlink
+*
+* jquery.titleBlink is free software: you can redistribute it and/or modify it under
+* the terms of the GNU Lesser General Public License as published by the Free
+* Software Foundation, either version 3 of the License, or (at your option)
+* any later version.
+*
+* jquery.titleBlink is distributed in the hope that it will be useful, but WITHOUT ANY
+* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+* more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with jquery.titleBlink. If not, see .
+*
+* @author Sergio Carracedo Martinez
+* @copyright 2010 Sergio Carracedo Martinez
+* @license <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">http://www.gnu.org/licenses/lgpl-3.0.txt</a> GNU LGPL 3.0
+* @version SVN: $Id: jquery.titleBlink.js 1 2010-08-25 17:44:00Z gasman406f $
+*/
+
+jQuery.extend({
+  titleBlink : function(title,options) {
+    var defaults = {
+      repeat : 5,
+      delay : 800
+    };
+    var options = $.extend(defaults, options);
+    var repeatCount = 0;
+    var currentTitle=$(document).attr("title");
+
+    var blinkInterval = setInterval(function() {
+      if($(document).attr("title")==currentTitle) {
+        $(document).attr("title",title);
+      } else {
+        $(document).attr("title",currentTitle);
+        repeatCount++;
+        if (repeatCount==options.repeat) {
+          clearInterval(blinkInterval);
+        }
+      }
+    }, options.delay);
+  }
+})
+```
+
+---

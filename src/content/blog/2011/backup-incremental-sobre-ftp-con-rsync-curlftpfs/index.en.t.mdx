@@ -1,0 +1,60 @@
+---
+title: 'Incremental backup over FTP with rsync + curlftpfs'
+pubDate: 2011-12-13T00:00:00.000Z
+slug: backup-incremental-sobre-ftp-con-rsync-curlftpfs
+heroImage: ./back-to-school-paper-colored-paper-stationery-159519.jpeg
+tags:
+  - productivity
+
+excerpt: 'You have likely needed to perform a _backup_ of a website at some point that you only have access to via **ftp**. The usual approach is to use an ftp client like [filezilla](http://filezilla-project.org/) or work directly in bash. The problem arises when, for example, we need to perform an incremental copy of the website and we don''t have **ssh** access for **[rsync](http://es.wikipedia.org/wiki/Rsync)** or **[unison](http://www.cis.upenn.edu/~bcpierce/unison/)** to work with. The solution is provided by **[curlftpfs](http://curlftpfs.sourceforge.net/)**, which allows us to mount an ftp directory on our system to treat it as if it were a local folder and perform an rsync or unison normally.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+You have likely needed to perform a _backup_ of a website at some point that you only have access to via **ftp**. The usual approach is to use an ftp client like [filezilla](http://filezilla-project.org/) or work directly in bash. The problem arises when, for example, we need to perform an incremental copy of the website and we don't have **ssh** access for **[rsync](http://es.wikipedia.org/wiki/Rsync)** or **[unison](http://www.cis.upenn.edu/~bcpierce/unison/)** to work with. The solution is provided by **[curlftpfs](http://curlftpfs.sourceforge.net/)**, which allows us to mount an ftp directory on our system to treat it as if it were a local folder and perform an rsync or unison normally.
+
+First, we install **curlftpfs**
+
+```
+$ sudo apt-get install curlftpfs
+```
+
+Next, we must edit our `/etc/fstab` with our favorite editor
+
+```
+$ sudo nano /etc/fstab
+```
+
+and we add the following line `curlftpfs#_user_:_pass_@_host.com_/_ruta-carpeta-remota_ /_punto-de-montaje_/ fuse ro,user,uid=_userid_,auto 0 0`
+
+Where:
+
+- user: is the ftp username
+- pass: is the ftp access password
+- host: is the ftp host
+- userid: is the ID of the non-root user that we will allow to mount the folder; we can get ours using the command
+
+```
+$ id
+```
+
+In this case, I have mounted the **ftp** folder in read-only mode for security reasons (nobody wants to accidentally delete their website ;) ). The folder will be mounted on the next system reboot, or we can force it using
+
+```
+$ sudo mount -a
+```
+
+The next step is to perform an rsync between the mounted folder and the folder where we will store the backup, for example:
+
+```
+$ rsync -arzvl /punto-de-montaje/* /home/usuario/backups/mi-ftp</span>
+```
+
+All that's left is to create a script and add it to our **crontab** so that the backup is performed automatically. Note: The speed compared to an rsync synchronization over SSH is considerably lower; therefore, this technique should be considered an alternative when we do not have the possibility of _ssh_ access.
+
+---

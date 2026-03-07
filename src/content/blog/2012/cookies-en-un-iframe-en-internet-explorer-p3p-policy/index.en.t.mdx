@@ -1,0 +1,37 @@
+---
+title: 'Cookies in an IFRAME in Internet Explorer: p3p policy'
+pubDate: 2012-02-22T00:00:00.000Z
+slug: cookies-en-un-iframe-en-internet-explorer-p3p-policy
+heroImage: ./cookies_en_un_iframe_en_internet_explorer_p3p_policy.jpg
+tags:
+  - html
+  - php
+  - personal
+
+excerpt: 'If you are developing a PHP web application that works inside an IFRAME, it will most likely need to use a session, and to store the session ID you will need a **cookie** (PHP handles this itself), but you must take some considerations into account to avoid **functionality issues in Internet Explorer 6+**.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+If you are developing a PHP web application that works inside an IFRAME, it will most likely need to use a session, and to store the session ID you will need a **cookie** (PHP handles this itself), but you must take some considerations into account to avoid **functionality issues in Internet Explorer 6+**.
+
+IE considers the content of the IFRAME to be "_third-party content_" and, following the browser's default security settings, it will **block the IFRAME's cookies**, and therefore you will lose the session. There is always the possibility of using the session-passing method via URL, but this will only solve the problem for PHP; if you use other types of tools that need sessions (Facebook, Twitter, etc.), they will not have access to their cookie.
+
+## How to solve it
+
+To solve this problem, we need the IFRAME to define the **[p3p policy](http://www.w3.org/P3P/details.html)**. According to Wikipedia:
+
+> The **Platform for Privacy Preferences** or **P3P** is a [protocol](http://es.wikipedia.org/wiki/Protocolo 'Protocolo') that allows [websites](http://es.wikipedia.org/wiki/Servidor_web 'Servidor web') to declare their intended use of information collected about visiting users and thus give them greater control over their personal information when browsing. P3P was developed by the [World Wide Web Consortium](http://es.wikipedia.org/wiki/World_Wide_Web_Consortium 'World Wide Web Consortium') (W3C) and was officially recommended on [April 16](http://es.wikipedia.org/wiki/16_de_abril '16 de abril'), [2002](http://es.wikipedia.org/wiki/2002 '2002'). The platform establishes a standard format for declaring identity and practices regarding user information. This information can be interpreted by users or by software dedicated to this purpose. Therefore, tools (user agents) can be built that allow the user to specify their preferences, and this software is responsible for automatically checking if what the user specified is verified on a specific website. Depending on the specified preferences, the agent can, for example, show an alert message, generate a window to ask for instructions, allow access, reject access... The process of checking preferences must be carried out in a secure area in which the web server must collect only the minimum possible information from the client.
+
+Basically, it forces us to indicate our *intentions* *so that the browser trusts us*. The simplest way to implement it in PHP is by sending headers:
+
+```
+header('P3P: CP="NOI ADM DEV COM NAV OUR STP"');
+```
+
+You can find a complete list of the meaning of these directives and many others at [http://www.p3pwriter.com/LRN_111.asp](http://www.p3pwriter.com/LRN_111.asp). This magic header will make our cookies work correctly. This article was based on information extracted from: [http://stackoverflow.com/questions/389456/cookie-blocked-not-saved-in-iframe-in-internet-explorer](http://stackoverflow.com/questions/389456/cookie-blocked-not-saved-in-iframe-in-internet-explorer) [http://blog.sweetxml.org/2007/10/minimal-p3p-compact-policy-suggestion.html](http://blog.sweetxml.org/2007/10/minimal-p3p-compact-policy-suggestion.html)

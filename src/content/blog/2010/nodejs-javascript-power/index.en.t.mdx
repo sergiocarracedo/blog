@@ -1,0 +1,57 @@
+---
+title: 'Node.js: JavaScript power!!'
+pubDate: 2010-10-25T00:00:00.000Z
+slug: nodejs-javascript-power2
+heroImage: ./node.jpg
+tags:
+  - node
+  - javascript
+
+excerpt: '**[Node.js](http://www.nodejs.org)** is an event-driven I/O programming environment built on the **V8** JavaScript engine (the same one used by Google Chrome).'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+**[Node.js](http://www.nodejs.org)** is an event-driven I/O programming environment built on the **V8** JavaScript engine (the same one used by Google Chrome).
+
+_But what does all this mean? And what can I use it for?_
+
+The most basic thing we can build with **node.js** is a web server (HTTP).
+
+```
+var http = require('http');
+
+http.createServer(function (req, res) {
+
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+
+  res.end('Hello World\n');
+
+}).listen(8124, "127.0.0.1");
+```
+
+With these few lines, we have a web server listening on port 8124 running on our machine and always responding with "_Hello World_".
+
+We can also create TCP servers.
+
+To program a **node.js** server, we use JavaScript as the language, which allows us to avoid many of the complications of other programming languages like C, C++, Python, etc.
+
+As I mentioned, it is completely event-driven, so we won't have to worry about many tasks that the server handles for us. For example, if we want to respond to a request, we program the response to the "on data" event.
+
+It is very lightweight and fast, and its [API](http://nodejs.org/api.html) is simply fantastic; we have access to system resources (files) and many utilities that will make our programming work easier.
+
+Many of you might wonder: _Why do I need to program an HTTP server if there are very powerful options available (Apache, Nginx, etc.)?_
+
+_The answer is quite simple: they aren't as lightweight and specific as **node.js**. With it, we can make use of [push technology](http://es.wikipedia.org/wiki/Tecnolog%C3%ADa_Push) which allows us to do amazing things like these:_
+
+- Chat in the browser: [http://chat.nodejs.org/](http://chat.nodejs.org/)
+
+- We can show the cursor of other website visitors: [http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/](http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/)
+
+- Static file server: [http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/](http://net.tutsplus.com/tutorials/javascript-ajax/learning-serverside-javascript-with-node-js/)
+
+In future posts, we will continue diving deeper into this wonderful project.
+
+---

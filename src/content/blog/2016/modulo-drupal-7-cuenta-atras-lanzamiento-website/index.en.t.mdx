@@ -1,0 +1,41 @@
+---
+title: 'Drupal 7 Module: Website launch countdown'
+pubDate: 2016-09-12T00:00:00.000Z
+slug: modulo-drupal-7-cuenta-atras-lanzamiento-website
+heroImage: ./screenshot_from_2016-12-28_12-18-18.png
+tags:
+  - php
+  - drupal
+  - productivity
+
+excerpt: 'On more than one occasion, it has happened to us that once work on a website is finished, the client requests that it not be published instantly, but rather that a page appears showing a **countdown** and that once this count reaches 0, the site goes online.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+On more than one occasion, it has happened to us that once work on a website is finished, the client requests that it not be published instantly, but rather that a page appears showing a **countdown** and that once this count reaches 0, the site goes online.
+
+Traditionally, we did this manually, but it has several disadvantages, such as having to be alert to publish the site. Therefore, we decided to create a **Drupal 7 module** that would allow this task to be done **automatically** and that would also be easy for the client to manage in case they needed to adjust the countdown deadline.
+
+We call this module **Site publish countdown** and it is currently in the Drupal module sandbox: https://www.drupal.org/sandbox/sergiocarracedo/2718591
+
+This module, once installed and activated, allows the website administrator to set the launch date before which it will **redirect all anonymous visits** (to any URL) to the countdown page.
+
+The site administrator or administrators will be able to log in as usual, and they will be able to see the website normally to perform tasks before the site launch.
+
+Once the countdown is over, the page itself will reload, showing the *normal* version of the site.
+
+This module allows developers to layout and customize the countdown page; it is only necessary to add the file *sitepublishcountdown.tpl.php* in the folder of the theme used by the web (and clear the _theme registry_). The only mandatory content of this file is the following line:
+
+```
+<time datetime="<?php print $datetime; ?>"><?php print $datetime; ?></time>
+```
+
+which is responsible for displaying the countdown. The rest is at the site designer's disposal so they can customize it.
+
+---

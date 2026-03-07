@@ -1,0 +1,141 @@
+---
+title: 'Vuex: The Redux of Vue.js (II)'
+pubDate: 2017-04-06T00:00:00.000Z
+slug: vuex-el-redux-de-vuejs-ii
+heroImage: ./pexels-photo-99541_1.jpeg
+tags:
+  - vue
+  - javascript
+  - html
+  - api
+
+excerpt: 'In the :astro-ref[first part]{path="blog/2017/vuex-el-redux-de-vuejs-i"}, I explained some of the basic concepts of **vuex:** The **state,** the **getters**, and the **mutations**. If you remember, the paradigm of a *state pattern management library* like **vuex** is to keep the _state_ as the single source of truth, and for this, state values can only be modified through *mutations*, which must also be **synchronous**. If we need to make "changes" asynchronously, we can use **actions.**'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+In the :astro-ref[first part]{path="blog/2017/vuex-el-redux-de-vuejs-i"}, I explained some of the basic concepts of **vuex:** The **state,** the **getters**, and the **mutations**. If you remember, the paradigm of a *state pattern management library* like **vuex** is to keep the _state_ as the single source of truth, and for this, state values can only be modified through *mutations*, which must also be **synchronous**. If we need to make "changes" asynchronously, we can use **actions.**
+
+> I'll make a small note here; although it might seem repetitive, I will write all the concepts at least once in both Spanish and English: in Spanish so the concepts are better understood and the reading doesn't feel strange, and in English to maintain the same terminology as **vuex.**
+
+### **Actions**
+
+Actions are similar to mutations, with two main differences:
+
+- Actions do not modify the state; instead, actions **commit mutations**.
+- Actions can contain **asynchronous operations**.
+
+Actions receive a **context** object that exposes the same methods and properties as the **Store** (the store is nothing more than the vuex instance that contains the state, mutations, actions, and getters).
+
+An action would look like this:
+
+```
+actions: {
+   getAllPosts: (context) => {
+    Api.getAllPosts().then(response => {
+      let posts = response.data;
+      context.commit(types.RECEIVE_POSTS, { posts })
+    })
+  }
+}
+```
+
+This action, as you can see, is asynchronous, as it downloads a list of *posts* using an API object, and once the promise is resolved, it emits a *mutation*, passing the list of posts as the *payload*.
+
+Actions are not called directly either; instead, we do it through a *dispatch*.
+
+```
+store.dispatch('getAllPosts', {payload})
+```
+
+As you can see, the action can also receive a *payload*, in the same way as a mutation.
+
+As we have seen, actions can be asynchronous, and if we need to know when one has been executed, we can return a *promise* that the *dispatcher* will be responsible for returning. Modifying the previous example:
+
+```
+actions: {
+  getAllPosts: (context) => {
+    return new Promise((resolve, reject) => {
+      Api.getAllPosts().then(response => {
+        let posts = response.data;
+        context.commit(types.RECEIVE_POSTS, { posts })
+      })
+    }
+  }
+}
+
+// y de esta forma llamamos a la acción y obtenemos su promesa
+store.dispatch('getAllPosts').then(() => {
+  //......
+})
+```
+
+And now, how do we use all of this in real life? The answer is simple (I'm assuming you have vuex [installed](https://vuex.vuejs.org/en/installation.html) as a dependency in your project). On one hand, we must create a _store_ like this:
+
+```
+// Asegurate de llamar a Vue.use(Vuex) primero
+
+const store = new Vuex.Store({
+ state: {
+   count: 0
+ },
+ mutations: {
+    increment: (state) => {
+      state.count++
+    }
+ },
+ actions: {
+ },
+ getters: {
+ }
+})
+
+//Ahora puedes modificar el estado y acceder a el de esta forma
+store.commit('increment');
+console.log(store.status.count); // retorna 1
+```
+
+### Using the state and mutations in components
+
+Now, it's logical that we would want to access the state or emit a mutation from a component. The first step is to inject the newly created *store* into Vue, so that it is injected into all components (for now we won't go into more detail, but it is possible to use a *store* locally in a component).
+
+```
+const app = new Vue({
+ el: '#app',
+ store,
+ ......
+})
+```
+
+To access the store from a component, we do it in the following way:
+
+<pre>this.$store.state.count</pre>
+
+Normally we want to use reactivity, so we just have to make use of **computed properties**.
+
+```
+const Counter = {
+   //....
+  computed: {
+    count() { return this.$store.state.count }
+  }
+}
+```
+
+In a similar way, we can call actions or mutations from a component:
+
+```
+this.$store.dispatch('accion')
+this.$store.commit('mutacion')
+```
+
+Everything I've told you here is just the tip of the **vuex** iceberg; there is much more behind it (for example, _mapping helpers_, modules, *scaffolding*). I recommend reading the documentation in detail at https://vuex.vuejs.org/en/
+
+I have also left a GitHub repository at https://github.com/sergiocarracedo/vuex-demo with an example project—something simple that just downloads a list of posts and paginates them.
+
+I hope you liked these two posts about **vuex**, and I hope to do another one in the future going into more detail.

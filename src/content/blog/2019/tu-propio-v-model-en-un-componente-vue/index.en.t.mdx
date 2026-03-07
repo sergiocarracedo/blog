@@ -1,0 +1,162 @@
+---
+title: Your own v-model in a Vue component (The right way)
+pubDate: 2019-12-05T00:00:00.000Z
+slug: tu-propio-v-model-en-un-componente-vue
+heroImage: ./vmodel-256302.jpg
+tags:
+  - vue
+  - javascript
+
+excerpt: 'If you have used Vue components (or even a basic input), you have likely used `v-model` to bind a value between the parent component and the child component.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+If you have used Vue components (or even a basic input), you have likely used `v-model` to bind a value between the parent component and the child component.
+
+```js
+<input v-model="message">
+// or
+<datepicker v-model="date"></datepicker>
+```
+
+If we modify the value of `date` in the parent component (the one where we include _datepicker_), the value inside the component will automatically change. Similarly, if the component modifies the value of `date`, the value will be updated in the parent. This allows, for example, what we type in an input field to be displayed in the parent component using `{% raw %}{{ date }}{% endraw %}`.
+
+Well, `v-model` is actually a combination of the `value` _prop_ and the `input` event. This means that for our component to have its own `v-model`, it should look something like this:
+
+```html
+<template>
+  <label>Fecha: </label>
+  <input v-model="value" @change="$emit('input', value)" />
+</template>
+
+<script>
+  export default {
+    props: {
+      value: {
+        required: true,
+      },
+    },
+  };
+</script>
+```
+
+#### And that's it?
+
+Well, no, it's not. If you recall, component properties must be immutable ([One-way data flow](https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow)) from within the component itself. If you notice, by putting it inside the `input`'s `v-model`, every time something is typed into it, the property's value will change. This (although it works) generates an error like the following in the console:
+
+> Error message: Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value.
+
+To solve this, our component must use an intermediate internal variable that takes the initial value of the property and emits the event when it changes. We must also keep in mind that when the property value changes, the local variable should take the new value.
+
+The simplest way to do this is with an internal variable, which we will call `localValue`, and two **_[watchers](https://vuejs.org/v2/guide/computed.html#Computed-vs-Watched-Property)_**: one to emit the `input` event with the value of `localValue`, and another to modify the value of `localValue` if the `value` changes from the outside.
+
+And the component will look like this:
+
+```html
+<template>
+  <label>Fecha: </label>
+  <input v-model="localValue" />
+</template>
+
+<script>
+  export default {
+    props: {
+      value: {
+        required: true,
+      },
+    },
+    data() {
+      return {
+        localValue: this.value,
+      };
+    },
+    watch: {
+      localValue(newValue) {
+        this.$emit('input', newValue);
+      },
+      value(newValue) {
+        this.localValue = value;
+      },
+    },
+  };
+</script>
+```
+
+As you can see, we removed the `@change` so that the change in the `<input>` is now controlled by one of the _watchers_.
+
+At first glance, it might seem like this would cause an infinite loop, since modifying `localValue` emits the event that modifies the `value` in the parent component, which in turn modifies `localValue` again, repeating the cycle. However, _watchers_ only run when the value changes. This means that since the values of `localValue` and `value` match once the `input` event is emitted, the second _watcher_ does not fire, stopping the loop.
+
+We can do this using **computed properties** (_computed_), employing their _getters_ and _setters_:
+
+```js
+...
+computed: {
+  computedValue: {
+    set(value) {
+      this.localValue = value
+    },
+    get() {
+      return this.localValue
+    }
+  }
+}
+...
+```
+
+but we still need the `localValue` variable and the `value` _watcher_, so in my opinion, besides not saving any code, it complicates readability.
+
+In this simple way, we comply with the [_One-Way Data Flow_](https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow) rule without overcomplicating the code.
+
+As a final note, we could move this to a _mixin_:
+
+```js
+// custom.vmodel.mixin.js
+export default {
+  props: {
+    value: {},
+  },
+  data() {
+    return {
+      localValue: this.value,
+    };
+  },
+  watch: {
+    localValue(value) {
+      this.$emit('input', value);
+    },
+    value(value) {
+      this.localValue = value;
+    },
+  },
+};
+```
+
+and we would only have to import it into our component, which would look like this:
+
+```html
+<template>
+  <label>Fecha: </label>
+  <input v-model="localValue" />
+</template>
+
+<script>
+  import customvmodelMixin from './custom.vmodel.mixin.js'
+  export default {
+    mixins: [customvmodelMixin]
+    props: {
+      //Otras propiedades
+    },
+    data () {
+      return {
+        // Más variables
+      }
+    },
+  }
+</script>
+```

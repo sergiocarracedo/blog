@@ -10,12 +10,12 @@ const blog = defineCollection({
     base: './src/content/blog',
     pattern: '**/*.{md,mdx}',
     generateId: ({ entry, base, data }) => {
-      // Any file named index.{lang}.mdx (e.g. index.es.mdx, index.en.mdx) gets a
-      // path-based ID that includes the locale suffix to avoid collisions between
-      // co-located files that share the same frontmatter `slug`.
-      // e.g. "2026/2026-01-31-mac-mierda/index.es.mdx" → "2026/2026-01-31-mac-mierda/index.es"
-      // e.g. "2010/musica-invisible/index.es.mdx"       → "2010/musica-invisible/index.es"
-      if (/\/index\.(en|es)\.(md|mdx)$/.test(entry)) {
+      // Any file named index.{lang}[.t].mdx gets a path-based ID including the locale suffix
+      // to avoid collisions between co-located files sharing the same frontmatter `slug`.
+      // e.g. "2026/2026-01-31-mac-mierda/index.es.t.mdx" → "2026/2026-01-31-mac-mierda/index.es.t"
+      // e.g. "2010/musica-invisible/index.en.t.mdx"       → "2010/musica-invisible/index.en.t"
+      // e.g. "2010/musica-invisible/index.es.mdx"         → "2010/musica-invisible/index.es"
+      if (/\/index\.(en|es)(\.t)?\.(md|mdx)$/.test(entry)) {
         return entry.replace(/\.(md|mdx)$/, '');
       }
       // Plain index.mdx: use frontmatter slug if present (EN-original posts), else path-based

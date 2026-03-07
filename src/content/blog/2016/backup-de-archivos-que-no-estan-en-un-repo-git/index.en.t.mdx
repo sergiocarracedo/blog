@@ -1,0 +1,36 @@
+---
+title: Backing up files that are not in a GIT repo
+slug: backup-de-archivos-que-no-estan-en-un-repo-git
+pubDate: 2016-12-28T00:00:00.000Z
+heroImage: ./pexels-photo-117729.jpeg
+tags:
+  - php
+  - backend
+
+excerpt: 'Recently, I had the need to **optimize the space** required for my team''s **backups**. They are mainly websites, and currently, I was dumping all project folders to another disk and to **Dropbox**, but Dropbox has a serious performance issue indexing a large number of files.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+Recently, I had the need to **optimize the space** required for my team's **backups**. They are mainly websites, and currently, I was dumping all project folders to another disk and to **Dropbox**, but Dropbox has a serious performance issue indexing a large number of files.
+
+Analyzing the backup process and talking to other programmers about their way of doing backups, I realized that part of the problem was already solved beforehand: **GIT**.
+
+I'm already using _git_ in the projects, and this means that all the content of the repo is already safeguarded on the server (**Bitbucket** or **Github** in my case) and on my other work machines, so I only had to solve the other part of the problem: **the files that are not in the repo**, for example, in the case of *Drupals*, the `files` folder, which contains files uploaded from the backend and which doesn't make sense to have in the repo.
+
+Well, after having watched **Félix Gómez's** talk on creating command-line apps in PHP (https://www.youtube.com/watch?v=mGNgT6y_8NY), I set out to create my own to perform this task.
+
+The app is very simple for now. Given a starting directory and a destination directory, it searches the starting directory for all folders containing a _git_ repo and queries all the files that are in the repo; that list of files is stored in a temporary text file that is later passed as a parameter to *rsync* in the *--exclude-list* option so that _rsync_ does not copy those files.
+
+I have also added the *--cvs-exclude* option so that _rsync_ ignores git's own files, such as the _.git_ folder.
+
+With this simple tool that I have uploaded to a public repo **https://github.com/sergiocarracedo/backup-tools** in case anyone wants to try it or contribute their ideas, I have solved the backup problem.
+
+As *to-dos* for this tool, there is the optimization of that _exclude list_ since it can generate a file of several megabytes, creating a second command to check which repos have uncommitted changes, etc....
+
+---

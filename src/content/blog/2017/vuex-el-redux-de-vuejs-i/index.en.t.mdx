@@ -1,0 +1,82 @@
+---
+title: 'Vuex: The Redux of Vue.js (I)'
+pubDate: 2017-04-03T00:00:00.000Z
+slug: vuex-el-redux-de-vuejs-i
+heroImage: ./pexels-photo-99541_0.jpeg
+tags:
+  - vue
+  - javascript
+
+excerpt: '[**Vuex**](https://vuex.vuejs.org/en/) defines itself as a *state management pattern library.* We will see what this pattern implies, but first let''s look at the basic concepts:'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+[**Vuex**](https://vuex.vuejs.org/en/) defines itself as a *state management pattern library.* We will see what this pattern implies, but first let's look at the basic concepts:
+
+### State
+
+The state is a plain object; it contains the values that define your application at any given time. It is the **single source of truth**, meaning it is the only place to consult these values. To clarify, the state is the set of values that the application uses to react the way it does at a specific moment; for example, if we are showing a list of *blog posts*, this list is part of the state, and the page we are viewing is another part of the state.
+
+```
+const state = {
+    counter: 0,
+    blog: {
+        posts: []
+        currentPage: 0
+    }
+}
+```
+
+The underlying paradigm of this pattern is that, in an SPA (*Single page application*), components access and manipulate data that are used in other components, and any change in a value must be easily propagated to all components that need it; therefore, the **state must be the single source of truth**.
+
+Additionally, there is a strict rule that must be followed: **components cannot modify the state value directly.** To ensure that a state change is propagated to all components, any change must be made through *mutations*, which I explain a bit further down in this same post.
+
+### Getters
+
+Sometimes we need to manipulate the result of a state—for example, paginating results or filtering by title. Normally, we would do this in the component, but if we want to reuse that function, we can use *getters*, which are nothing more than data derived from the current state.
+
+```
+getters: {
+  postsActive: state => {
+    return state.blog.posts.filter(post => post.active)
+  }
+}
+```
+
+### Mutations
+
+As we mentioned, the only way to alter the state is by using mutations, which are somewhat similar to triggering an event. Each mutation has a **type** and a **handler.**
+
+The *handler* is a function that receives the current state as its first argument and can optionally receive a *payload* as a second parameter.
+
+```
+mutations: {
+	nextPage (state) {
+	  	// mutate state
+	  	state.blog.currentPage++
+	},
+	prevPage (state, payload) {
+		state.blog.currentPage = state.blog.currentPage - payload.pages
+	}
+}
+```
+
+A *mutation* should never be called directly; the way to do it is by using **store.commit('mutation type')**, for example:
+
+```
+store.commit('nextPage')
+```
+
+Mutations follow the reactivity rules of **vue.js**; this is very important because when the state value is altered through mutations, any component observing the state will receive the new value.
+
+Something we must keep in mind and which is VERY IMPORTANT: **mutations must be synchronous.** Suppose we have a *mutation* that, when triggered, makes an asynchronous call to update the blog posts and another that simply removes one from the list. Since the first one is asynchronous, we cannot guarantee the actual order in which the state will be altered.
+
+We will see this in detail in the next post, along with how to resolve the need for making asynchronous calls.
+
+---

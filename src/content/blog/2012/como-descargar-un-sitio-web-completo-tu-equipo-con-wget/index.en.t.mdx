@@ -1,0 +1,32 @@
+---
+title: How to download an entire website to your computer with wget
+slug: como-descargar-un-sitio-web-completo-tu-equipo-con-wget
+pubDate: 2012-04-17T00:00:00.000Z
+heroImage: ./pexels-photo-270456.jpeg
+tags:
+  - linux
+  - html
+
+excerpt: 'A few days ago, I needed to download an entire website to my hard drive for backup and reference. I was aware of tools like Httrack, a cross-platform application (Windows, OSX, Linux) that allows us to download a full website to the hard drive, even modifying links so it is perfectly navigable offline. But Linux users have a simpler yet equally powerful alternative: wget. wget is a command that allows us to download any content from the web to our computer; it is normally used to download individual files like HTML, images, videos, etc., but with the right parameters, it can download an entire website.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+A few days ago, I needed to download an entire website to my hard drive for backup and reference. I was aware of tools like Httrack, a cross-platform application (Windows, OSX, Linux) that allows us to download a full website to the hard drive, even modifying links so it is perfectly navigable offline. But Linux users have a simpler yet equally powerful alternative: wget. wget is a command that allows us to download any content from the web to our computer; it is normally used to download individual files like HTML, images, videos, etc., but with the right parameters, it can download an entire website.
+
+```
+wget --mirror -p --convert-links -P ./DIRECTORIO-LOCAL URL-WEB-A-DESCARGAR
+```
+
+With this simple code, we will download the entire website to our hard drive, and the links will be rewritten to allow local navigation.
+More information:
+
+- http://www.thegeekstuff.com/2009/09/the-ultimate-wget-download-guide-with-15-awesome-examples/
+- http://jamsubuntu.blogspot.com.es/2009/02/using-wget-to-download-entire-websites.html
+
+---

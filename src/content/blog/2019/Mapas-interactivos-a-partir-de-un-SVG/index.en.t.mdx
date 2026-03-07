@@ -1,0 +1,90 @@
+---
+title: Interactive SVG Maps with Vue
+pubDate: 2019-06-30T13:17:33.000Z
+slug: Mapas-interactivos-a-partir-de-un-SVG
+heroImage: ./vuemaps.jpg
+tags:
+  - javascript
+  - vue
+  - html
+  - personal
+
+excerpt: In a recent project, I needed to create an interactive map of Spain where each province was an element that could be hovered over and clicked.
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+In a recent project, I needed to create an interactive map of Spain where each province was an element that could be hovered over and clicked.
+
+I was working on the project using _Nuxt.js_ and therefore **Vue**, so I decided to create a component that would encapsulate the graphical generation of the map and emit the corresponding events.
+
+The first thing we need is the map in SVG format. Not just any map will do; it must be a map where each province is in a path and is correctly labeled. For example, we can use [this one](https://simplemaps.com/resources/svg-es), which is free for both commercial and personal use.
+
+If we open it, we see that it meets the condition of each province being in a path, and it also has metadata such as the province name.
+
+```xml
+<path id="ESP5840" name="Pontevedra" d="M451.9 ...." >
+```
+
+The next step is to convert that SVG to JSON to make it easier to handle with JS. I used this tool: https://www.freeformatter.com/xml-to-json-converter.html#ad-output, although there are libraries to perform the conversion "on the fly" from JS.
+
+This will leave us with something like this:
+
+::iframe[]{src="https://codesandbox.io/embed/vue-template-fct8t?fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FSpainProvincesMap%2Fspain-provinces.json&view=editor"}
+
+To convert this information back into an SVG that we can manipulate, I used [svg.js](https://svgjs.com/)
+
+The strategy consists of regenerating the SVG from the Vue component while adding the necessary events. To do this, once the component is mounted and using _svg.js_, we create a _path_ for each province. This _path_ is defined by the **@d** _key_ of the JSON we generated from the SVG.
+
+```js
+ generateMap() {
+   const svgContainer = svg(this.id)
+     .size("100%", "100%")
+     .viewbox(0, 0, 1000, 891);
+   provinces.forEach(pathObj => {
+     this.generatePath(svgContainer, pathObj);
+   });
+ },
+ generatePath(svgCont, pathObj) {
+   const attrs = {
+     fill: "transparent",
+     stroke: "#28586c",
+     "stroke-width": 1,
+     title: pathObj["@name"],
+     "map-id": pathObj["@id"]
+   };
+
+   const province = svgCont.path(pathObj["@d"]).attr(attrs);
+ }
+```
+
+If you notice, we tell the SVG we created to occupy 100% (both width and height) of a _viewbox_ whose size is defined by the original SVG. This defines the actual size of the SVG and which part will be visible; that is, if we draw an element beyond 1000x891, it won't be seen because it's outside the _viewbox_. However, the SVG is fully responsive; in other words, the _viewbox_ size does not have a 1:1 relationship with the actual display.
+
+As seen in the example, we create a path for each province. Now we need to provide it with interactivity so it can respond to a click.
+
+```js
+...
+const province = svgCont.path(pathObj["@d"]).attr(attrs);
+
+province.click(e => {
+  const mapId = e.target.attributes["map-id"].value;
+  const title = e.target.attributes.title.value;
+  this.$emit("mapClick", { mapId, title });
+});
+...
+```
+
+We simply emit a component event passing the ID and the name of the province, so that we can handle that click outside the component.
+
+And this is the final result.
+
+::iframe[]{src="https://codesandbox.io/embed/vue-template-fct8t?fontsize=14&view=preview" width="100%" height="600px"}
+
+I have left the complete example on [codesandbox.io](https://codesandbox.io/s/spainmapcomponent-fct8t)
+
+---

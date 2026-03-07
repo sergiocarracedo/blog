@@ -1,0 +1,99 @@
+---
+title: Entity with owner in Laravel 5.4
+pubDate: 2017-03-07T00:00:00.000Z
+slug: entidad-con-propietario-en-laravel-54
+heroImage: ./pexels-photo-132907_0.jpeg
+tags:
+  - php
+  - laravel
+  - database
+
+excerpt: 'I recently started a project with **Laravel 5.4**, where some of my models have an owner, meaning they are created by a user and only that user has access to view or edit the entity''s data.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+I recently started a project with **Laravel 5.4**, where some of my models have an owner, meaning they are created by a user and only that user has access to view or edit the entity's data.
+
+The simplest way I've found is to make use of the possibilities that Laravel offers us through *middleware.*
+
+First, we extend the _Model_ provided by _Eloquent_
+
+```
+<?php
+
+namespace App;
+use Illuminate\Database\Eloquent\Model;
+
+class OwnableModel extends Model {
+
+  public function getOwnerId() {
+    return isset($this->user_id) ? $this->user_id : null;
+  }
+
+  public function checkIsOwner($user_id) {
+    return $this->getOwnerId() == $user_id;
+  }
+}
+```
+
+This class has two methods:
+
+`getOwnerID()` which is responsible for returning the ID of the entity's owner (by default it uses the user_id field)
+
+`checkIsOwner($user_id)` returns TRUE if the user_id is the owner of the entity
+
+Now, the specific model we want to control must extend *OwnableModel* instead of *Model*.
+
+We can override the two mentioned methods to adapt them to our needs.
+
+Now we have to create the *middleware*; in the _app/Http/Middleware_ folder, we create the file *AbortIfNotOwner.php* with the following content.
+
+```
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\Auth;
+
+class AbortIfNotOwner {
+  /**
+   * Handle an incoming request.
+   *
+   * @param  \Illuminate\Http\Request $request
+   * @param  \Closure $next
+   * @return mixed
+   */
+  public function handle($request, Closure $next) {
+    $isOwner = TRUE;
+    foreach ($request->route()->parameters() as $model) {
+      if ($model instanceof \App\OwnableModel && !$model->checkIsOwner(Auth::id())) {
+        $isOwner = FALSE;
+      }
+    }
+
+    if (!$isOwner) {
+      return response('Unauthorized.', 401);
+    }
+
+    return $next($request);
+
+  }
+}
+```
+
+We must add this middleware to the routes where we want to verify that the entity's owner is the one accessing it.
+
+```
+Route::get('/ruta/{entity}/', [ 'uses' => 'RutaController@index', ])->middleware('owner');
+```
+
+With these simple steps, we have protected the entity so that if a user tries to access an entity they do not own, they will receive an HTTP 401 error.
+
+---

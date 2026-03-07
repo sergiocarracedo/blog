@@ -1,0 +1,81 @@
+---
+title: 'Unifying community event information: vigotech.json'
+pubDate: 2019-09-02T00:00:00.000Z
+slug: Unificando-la-informacion-de-eventos-de-una-comunidad-vigotech-json
+heroImage: ./vigotech.jpg
+tags:
+  - javascript
+  - php
+
+excerpt: '[VigoTech Alliance](https://vigotech.org/), the community that brings together technology groups from Vigo and its area of influence, has among its objectives coordinating and disseminating the dates of events for each of its member groups.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+[VigoTech Alliance](https://vigotech.org/), the community that brings together technology groups from Vigo and its area of influence, has among its objectives coordinating and disseminating the dates of events for each of its member groups.
+
+At the time of writing this post, it has 18 member groups that operate autonomously when organizing meetups, events, talks, etc., which makes keeping event information updated manually a complicated task.
+
+Considering that most groups use platforms to create and advertise their events (mostly _Meetup_), the idea arose to automate the collection of event information and serve it in a single place so it could be easily consulted by anyone—and while we're at it, why exclude machines from this?
+
+From this, the idea was born to create a file ([vigotech.json](https://vigotech.org/vigotech.json)) hosted on the web server, serving as a source of information for VigoTech, its members, its events, its videos, etc.
+
+To make it a bit better, this file was provided with a schema ([JSON Schema](https://github.com/VigoTech/vigotech.github.io/blob/source/static/vigotech-schema.json)) that allows for validation.
+
+Summarizing the structure, we start from a root node which is the *meta group* VigoTech itself. It has properties such as the logo, links to the website and social networks, its own events (yes, events belonging to the entire meta group and not a specific group), and most importantly, the members.
+
+Members are also objects whose properties are similar to the previous one, adding videos.
+
+```
+"aindustriosa": {
+  "name": "A Industriosa",
+  "logo": "https://vigotech.org/images/aindustriosa.png",
+  "links": {
+    "web": "https://aindustriosa.org/",
+    "twitter": "https://twitter.com/aindustriosa",
+    "meetup": "https://www.meetup.com/es-ES/AIndustriosa/",
+    "youtube": "https://www.youtube.com/channel/UC9DPKfcLiNd7SEU-QLlIG7A"
+  },
+  "events": [
+    {
+      "type": "meetup",
+      "meetupid": "AIndustriosa"
+    }
+  ],
+  "videos": [
+    {
+      "type": "youtube",
+      "channel_id": "UC9DPKfcLiNd7SEU-QLlIG7A"
+    }
+  ]
+},
+```
+
+As you can see in the events and videos, the events themselves are not actually listed; instead, the source or sources from which to extract the events are indicated. In the example, we see that we only have one event source of type "meetup" and that the "meetupid" is "AIndustriosa," the same for the videos.
+
+This system allows us the flexibility to keep adding event "sources," as we have actually done.
+
+## From abstract to real
+
+While this definition partially solves the problem of unifying information, what we really want is to obtain the events and videos for each group, not just the site where to get them.
+
+To do this, we would only need to create a script or app in any language responsible for processing [vigotech.json](https://vigotech.org/vigotech.json) to obtain that information.
+
+Well, that's already done: [Metagroup schema tools](https://github.com/VigoTech/metagroup-schema-tools), a tool written in JS (and also available as an [NPM package](https://www.npmjs.com/package/metagroup-schema-tools)) that handles validating and processing _vigotech.json_ to generate a new JSON with all the information already "processed," generating something like what the VigoTech website does: [vigotech-generated.json](https://vigotech.org/vigotech-generated.json)
+
+The tool currently supports as event sources: _Meetup_, _Eventbrite_, and another _JSON_, as in [this example](https://www.python-vigo.es/events.json).
+
+The main advantage of this infrastructure is that once we have an _information center_, we can use it in many ways. In the examples, I mentioned the VigoTech website, but we have another tool, [vigotech-event-bot](https://github.com/VigoTech/vigotech-event-bot), which is a simple bot responsible for posting events on Twitter and gets all its information from _vigotech.json_.
+
+For example, a new bot developed in PHP is currently being developed that publishes events on Twitter, Slack, and Telegram. The possibilities are almost infinite.
+
+Think about the effort it would take to maintain a common calendar, a website updated to the minute, and social media posts if it had to be done manually. It would be a titanic effort.
+
+To close the post, I just want to thank VigoTech for what it means to Vigo and Galicia in terms of technology dissemination and for allowing me to be a member and participate actively in this community.
+
+---

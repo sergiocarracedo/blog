@@ -1,0 +1,52 @@
+---
+title: Moving your WordPress blog to a new domain
+pubDate: 2011-08-12T00:00:00.000Z
+slug: moviendo-tu-blog-wordpress-de-dominio
+heroImage: ./pexels-photo-310983.jpeg
+tags:
+  - php
+  - wordpress
+
+excerpt: Sometimes we need to change the path or domain of a site built with _Wordpress_. This might simply be because we were working on a local copy and, once finished, we moved it to the final server, or because we want to run our blog, which we have on a server, locally.
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+Sometimes we need to change the path or domain of a site built with _Wordpress_. This might simply be because we were working on a local copy and, once finished, we moved it to the final server, or because we want to run our blog, which we have on a server, locally.
+
+WordPress stores information in the database referenced to absolute paths, so once the blog is moved, it will stop working or won't function correctly.
+
+With these simple steps, you can resolve this issue.
+
+First of all, it is very important to make a **backup** of the **database**, just in case.
+
+Once we have copied all the content of the directory tree and the _Wordpress_ database to the new location, we change the database access details if necessary; these details are found in `wp-config.php`
+
+Now we access the database with _phpmyadmin_, or any other client that allows us to execute the following _SQL_ queries.
+
+```
+UPDATE wp_options SET option_value = replace(option_value, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');
+UPDATE wp_options SET option_value = replace(option_value, 'feed://DOMINIOANTERIOR.com', 'feed://NUEVODOMINIO.com');
+UPDATE wp_posts SET guid = replace(guid, 'http://DOMINIOANTERIOR.com','http://NUEVODOMINIO.com');
+UPDATE wp_posts SET post_content = replace(post_content, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');
+UPDATE wp_postmeta SET meta_value = replace(meta_value, 'http://DOMINIOANTERIOR.com', 'http://NUEVODOMINIO.com');
+```
+
+With this, most of the work is done, but if we have changed the path (regardless of whether the domain changes) and we use _friendly URLs_ via _mod_rewrite_, we need to change the .htaccess file.
+
+```
+RewriteEngine On
+RewriteBase / #Modificar con la ruta adecuada
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L] #Modificar con la ruta adecuada
+
+```
+
+---

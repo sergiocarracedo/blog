@@ -1,0 +1,46 @@
+---
+title: Hiding commented code in PHP templates
+pubDate: 2011-08-03T00:00:00.000Z
+slug: ocultar-codigo-comentado-en-plantillas-php
+heroImage: ./pexels-photo-270360.jpeg
+tags:
+  - html
+  - php
+  - drupal
+  - wordpress
+
+excerpt: 'A quick post for the summer ;) When working with **PHP** templates, such as those used by **Drupal** or **WordPress**, where we insert our variables directly into the _HTML_ via _PHP_, occasionally, especially when performing tests or changes requested by the client, we need to comment out part of the code, both _PHP_ and _HTML_, to be able to easily revert to it if something goes wrong. We might be tempted to use HTML comment tags **`<!--`** and **`-->`**; this will hide what we don''t want to see, but the PHP inside the comment will continue to execute. This makes it more likely for errors to appear in the new code, in addition to negatively affecting execution time and page load speed, since we are processing and sending elements to the browser that won''t be displayed. The solution is as simple as it is elegant: we just need to wrap all the code (HTML and PHP) to be commented out within PHP comments. Let''s look at an example:'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+A quick post for the summer ;) When working with **PHP** templates, such as those used by **Drupal** or **WordPress**, where we insert our variables directly into the _HTML_ via _PHP_, occasionally, especially when performing tests or changes requested by the client, we need to comment out part of the code, both _PHP_ and _HTML_, to be able to easily revert to it if something goes wrong. We might be tempted to use HTML comment tags **`<!--`** and **`-->`**; this will hide what we don't want to see, but the PHP inside the comment will continue to execute. This makes it more likely for errors to appear in the new code, in addition to negatively affecting execution time and page load speed, since we are processing and sending elements to the browser that won't be displayed. The solution is as simple as it is elegant: we just need to wrap all the code (HTML and PHP) to be commented out within PHP comments. Let's look at an example:
+
+```
+</p>
+  <ul>
+    <li><!--?php echo $variable ?--></li>
+  </ul>
+<p>
+```
+
+The way to comment it out would be:
+
+```
+<?php /*
+  <ul>
+    <li>
+      <!--?php echo $variable ?-->
+    </li>
+  </ul>
+*/ ?>
+```
+
+This way, no trace of the code will remain in the content sent to the browser, and no execution time will be consumed.
+
+---

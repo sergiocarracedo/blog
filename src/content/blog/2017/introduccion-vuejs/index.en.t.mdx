@@ -1,0 +1,86 @@
+---
+title: Introduction to Vue.js
+pubDate: 2017-03-15T00:00:00.000Z
+slug: introduccion-vuejs
+heroImage: ./pexels-photo-196160.jpeg
+tags:
+  - javascript
+  - vue
+  - react
+  - angular
+  - html
+
+excerpt: For a few years now, a multitude of JavaScript libraries and frameworks for frontend application development have appeared, facilitated by the increased performance and speed of _javascript_ in modern browsers.
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+For a few years now, a multitude of JavaScript libraries and frameworks for frontend application development have appeared, facilitated by the increased performance and speed of _javascript_ in modern browsers.
+
+There is a variety, which I would define as excessive, of JS frameworks. Among the most famous or widespread are _Angular.js, Angular2, React.js, Ember.js_, and also the subject of this post: **Vue.js**.
+
+**Vue.js** defines itself as "_Intuitive, fast and component-based MVVM for building interactive interfaces_" (you can learn more about the Model-View-ViewModel pattern here: [https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel))
+
+From my point of view, the advantages of **Vue.js** are:
+
+- It is very simple to learn.
+- The code is easy to understand and maintain.
+- The component system is very easy to understand, and creating components is almost trivial.
+- The data binding system.
+- Execution speed (they promise to be faster than React.js and Angular).
+
+If you have worked with _React.js_, **Vue.js** will seem conceptually similar to you (for example, it also uses Virtual DOM); they explain it themselves here: https://vuejs.org/v2/guide/comparison.html
+
+**Vue.js** is focused on the core. By default, it doesn't provide *routing* or other functionalities, but these can be implemented through plugins; in fact, **Vue.js** has two official plugins: **vue-router**, and **vuex**, a *port* of *Redux* for **Vue.js**.
+
+Let's look at a very simple example of **Vue.js**
+
+```
+<!DOCTYPE html>
+<html lang="es">  
+<head>  
+   <meta charset="UTF-8">
+   <title>Introdución a Vue.js</title>
+</head>  
+<body>  
+   <div id="app">       
+        <input type="text" placeholder="Escribe tu nombre" v-model="name" />
+        <span>Has escrito {{ name }}</span>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+<script>
+vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                name: '',            
+            }
+        },
+    });
+    </script>
+</body>  
+</html> 
+```
+
+You can see the example working at https://jsfiddle.net/sergio_carracedo/0d2ymgft/
+
+What we see here is a basic example of _data binding_; when creating the main **Vue** instance, we pass it a plain object with two elements:
+
+- `el`: is the **Vue** mount point, usually a div with the id *#app*
+- `data`: must be a function that returns the variables to be *bound*, **_in our example _name*
+
+In the *input*, we see the *v-model* attribute that tells **Vue** the name of the variable to be *bound*, working in both directions: if we modify the value of *name* anywhere, it will be updated in the input (and everywhere it is referenced), and if we modify the input value, the value of *name* will be updated everywhere, for example in the `<span> *{{ name }}* </span>`
+
+As you can see, in just a few simple lines we have gotten **Vue.js** up and running; obviously, this is an almost trivial example, and **Vue.js** is much more than this—complex applications can be created easily and in a short time.
+
+The two videos I've included below explain how **Vue.js** works in 60 minutes better than I can. In the second one, it explains how to create a _CRUD_ using **Vue.js** from an API (created in that case with **Slim**).
+
+::youtube[]{id="z6hQqgvGI4Y"}
+::youtube[]{id="IUgstalu6zo"}
+
+---

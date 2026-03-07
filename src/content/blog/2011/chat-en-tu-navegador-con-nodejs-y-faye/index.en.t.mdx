@@ -1,0 +1,79 @@
+---
+title: Chat in your browser with Node.js and Faye
+pubDate: 2011-07-12T00:00:00.000Z
+slug: chat-en-tu-navegador-con-nodejs-y-faye
+heroImage: ./chat_en_tu_navegador_con_node.js_y_faye.jpg
+tags:
+  - javascript
+  - node
+  - html
+  - backend
+
+excerpt: 'Continuing with the posts about **faye**, we are going to create a practical and very visual example; we''ll build a simple but functional web **chat** in this post.'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+Continuing with the posts about **faye**, we are going to create a practical and very visual example; we'll build a simple but functional web **chat** in this post.
+
+The first step is to create the Node server: we just need to include the **faye** extension for **node**
+
+```
+ var Faye = require('./faye/faye-node.js'); var fayeServer = new Faye.NodeAdapter({&nbsp; mount: &nbsp; &nbsp;'/'}); fayeServer.listen(8888);
+```
+
+We'll call this file _node.js_. Now, from _bash_, we launch the server we just created: `$ node node.js`
+And just like that, we have our "_chat server_" running, ready to work. On the client side, we create a simple HTML file and a script to manage the chat:
+
+```
+<script type="text/javascript" src="<a href="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script><script">https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></scri...</a> type="text/javascript" src="faye/faye-browser-min.js"></script> <script type="text/javascript">// <![CDATA[
+$(function() {
+  var client = new Faye.Client('<a href="http://localhost:8888/'">http://localhost:8888/'</a>);
+  var nick = "";
+
+  client.subscribe('/chat', function(message) {
+    $("#chat").append("<div><strong>"+message.nick+"</strong>: "+message.text+"</div>")
+
+});
+
+$(".nick form").submit(function() {
+  nick=$(".nick input[name=nick]").val();
+  $(".nick").hide();
+  $(".chatMessage").show();
+  return false;
+})
+
+$(".chatMessage form").submit(function() {
+  text = $(".chatMessage input[name=message]").val();
+  client.publish('/chat', {
+    nick : nick,
+    text: text
+  });
+  return false;
+  })
+});
+
+></script>
+
+<div class="nick">
+  <form action="#" enctype="multipart/form-data" method="POST">
+    <label>Tu nick:</label>&nbsp; <input name="nick" type="text" />
+    <input type="submit" value="Entrar al chat!!" />
+  </form>
+</div>
+
+<div class="chatMessage" style="display: none;">
+  <form action="#" enctype="multipart/form-data" method="POST">
+    <label>Tu mensaje:</label>&nbsp; <input name="message" type="text" />
+    <input type="submit" value="Enviar" />
+  </form>
+</div>
+
+```
+
+---

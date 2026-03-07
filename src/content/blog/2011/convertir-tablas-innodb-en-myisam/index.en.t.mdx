@@ -1,0 +1,34 @@
+---
+title: Converting InnoDB tables to MyISAM
+pubDate: 2011-08-29T00:00:00.000Z
+slug: convertir-tablas-innodb-en-myisam
+heroImage: ./technology-servers-server-159282.jpeg
+tags:
+  - mysql
+  - database
+
+excerpt: 'Recently, I needed to convert the engine of database tables from **InnoDB to MyISAM**. The solution seems trivial; that is, converting a single table is as simple as:'
+autoTranslated: true
+originalLang: es
+---
+
+---
+
+
+
+
+Recently, I needed to convert the engine of database tables from **InnoDB to MyISAM**. The solution seems trivial; that is, converting a single table is as simple as:
+
+```
+ALTER TABLE [NOMBRE_BBDD].[NOMBRE_TABLA] engine=MyISAM;
+```
+
+However, if there are many tables to convert, this task can become unbearable and waste valuable time. Here is the solution:
+
+```
+SELECT CONCAT('ALTER TABLE ',table_schema,'.',table_name,' engine=MyISAM;') FROM information_schema.tables WHERE ENGINE = 'InnoDB' AND table_schema = '[NOMBRE_BASE_DE_DATOS]'
+```
+
+With this query, we get a number of [tuples](http://es.wikipedia.org/wiki/Tupla) equal to the number of tables to convert, where the sole content of each is the SQL query needed to convert the table. Now we just need to execute the resulting queries and *voilà*, we will have our tables converted to _MyISAM_.
+
+---
