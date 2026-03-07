@@ -1,0 +1,39 @@
+src/layouts/BaseLayout.astro
+  610f36855df90cf4 39
+src/components/NewsletterToast.astro
+  610f36855df90cf4 3-9,18
+src/pages/[lang]/newsletter/subscribe.astro
+  610f36855df90cf4 106
+src/components/NewsletterForm.astro
+  610f36855df90cf4 3-4,7,10,16,62,73,97
+scripts/send-newsletter.js
+  610f36855df90cf4 3,37,45,51-54,56,58,61,65-72,74-79,83-104,106-107,109-111,113-124,127-128,130-133,136-137,148,151-152,158-161,172-173,185-186,188,191-193,197,202-205,207-215,219-227,229-230,233-256,260-261,263-265,268
+workers/newsletter-api/src/index.ts
+  610f36855df90cf4 56-57,63-64,78-79,84-89
+scripts/generate-newsletter.ts
+  610f36855df90cf4 25,27,29,34,36-38,40-43,46-52,59-73,75,79-80,91-133,136,143-145,157-160,193-227,231-233,236-237,249,251-278,280,284,287,297,299,301-303,307,309-311,321-324,326-328,331-333,336,346,358,373-374,377-378,380-381,384-387,390-393,404-407
+src/emails/MonthlyNewsletter.tsx
+  610f36855df90cf4 31,34-60,68-70,72-80,84-88,90-92,100-109,119-136,138,142-154,156,158,160-163,166-171
+.github/workflows/newsletter-send.yml
+  610f36855df90cf4 197-198,200,202
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "4825a2b9fab90244141cf187f770a546f419de10",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 537,
+      "total_deletions": 335,
+      "accepted_lines": 496,
+      "overriden_lines": 0
+    }
+  }
+}
