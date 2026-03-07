@@ -4,24 +4,33 @@ import Search from 'astro-pagefind/components/Search';
 import Pagination from '@/components/Pagination.astro';
 import PostTeaser from '@/components/posts/PostTeaser.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
-import { useTranslations, type Locale } from '@/i18n';
-
-const lang: Locale = 'es';
-const t = useTranslations(lang);
+import { locales, defaultLocale, useTranslations, type Locale } from '@/i18n';
 
 export async function getStaticPaths({ paginate }) {
   const { getLocalizedPosts } = await import('@/utils/getLocalizedPosts');
-  const posts = await getLocalizedPosts('es');
-  return paginate(posts, { pageSize: 10 });
+  const nonDefaultLocales = locales.filter((l) => l !== defaultLocale);
+
+  const allPaths = await Promise.all(
+    nonDefaultLocales.map(async (lang) => {
+      const posts = await getLocalizedPosts(lang);
+      return paginate(posts, {
+        pageSize: 10,
+        params: { lang },
+      });
+    })
+  );
+
+  return allPaths.flat();
 }
 
-const urlPattern = `/es/blog/page/{}`;
+const { lang: langParam } = Astro.params;
+const lang = langParam as Locale;
+const t = useTranslations(lang);
+
+const urlPattern = `/${lang}/blog/page/{}`;
 
 const { page } = Astro.props;
 const { data: posts } = page;
-
-const totalPosts = (await getLocalizedPosts(lang)).length;
 ---
 
 <BaseLayout meta={{ title: t('blog.title'), description: t('site.description') }} lang={lang}>

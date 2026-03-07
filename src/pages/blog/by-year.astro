@@ -5,9 +5,9 @@ import { enrichBlogPost } from '@/utils/enrichBlogPost';
 import { getSlug } from '@/utils/getSlug';
 import { getLocalizedPostsByYear } from '@/utils/getLocalizedPosts';
 import type { CollectionEntry } from 'astro:content';
-import { getLangFromUrl, useTranslations, useTranslatedPath, getLocalizedDate } from '@/i18n';
+import { useTranslations, useTranslatedPath, getLocalizedDate, defaultLocale, type Locale } from '@/i18n';
 
-const lang = getLangFromUrl(Astro.url);
+const lang: Locale = defaultLocale;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 

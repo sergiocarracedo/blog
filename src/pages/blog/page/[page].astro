@@ -12,7 +12,7 @@ const t = useTranslations(lang);
 
 export async function getStaticPaths({ paginate }) {
   const { getLocalizedPosts } = await import('@/utils/getLocalizedPosts');
-  const posts = await getLocalizedPosts('en');
+  const posts = await getLocalizedPosts(defaultLocale);
   return paginate(posts, { pageSize: 10 });
 }
 

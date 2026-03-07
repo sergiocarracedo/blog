@@ -1,0 +1,23 @@
+---
+import { locales, defaultLocale, type Locale } from '@/i18n';
+import { getLocalizedTags } from '@/utils/getLocalizedPosts';
+import { createSlug } from '@/utils/createSlug';
+
+export async function getStaticPaths() {
+  const { getLocalizedTags } = await import('@/utils/getLocalizedPosts');
+  const { createSlug } = await import('@/utils/createSlug');
+  const nonDefaultLocales = locales.filter((l) => l !== defaultLocale);
+
+  const paths = [];
+  for (const lang of nonDefaultLocales) {
+    const tags = await getLocalizedTags(lang);
+    for (const tag of tags) {
+      paths.push({ params: { lang, tag: createSlug(tag) } });
+    }
+  }
+  return paths;
+}
+
+const { lang, tag } = Astro.params;
+return Astro.rewrite(`/${lang}/tags/${tag}/1`);
+---

@@ -1,14 +1,14 @@
 ---
 import Hero from '@/components/home/Hero.astro';
 import SectionHeader from '@/components/SectionHeader.astro';
-import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n';
+import { useTranslatedPath, useTranslations, defaultLocale, type Locale } from '@/i18n';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
 import Search from 'astro-pagefind/components/Search';
 import PostTeaser from '../components/posts/PostTeaser.astro';
 import { SITE_TITLE } from '../consts';
 
-const lang = getLangFromUrl(Astro.url);
+const lang: Locale = defaultLocale;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 

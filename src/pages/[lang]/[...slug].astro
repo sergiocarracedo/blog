@@ -1,0 +1,100 @@
+---
+import { enrichBlogPost } from '@/utils/enrichBlogPost';
+import {
+  isLocaleFile,
+  getFileLocale,
+  getPostDirectory,
+  getPostSwitcherUrls,
+  getRoutingSlug,
+} from '@/utils/getLocalizedPosts';
+import { type CollectionEntry, getCollection } from 'astro:content';
+import PostSingle from '@/components/posts/PostSingle.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { truncate } from '@/utils/truncate';
+import { locales, defaultLocale, type Locale } from '@/i18n';
+import { SITE_URL } from '@/consts';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const nonDefaultLocales = locales.filter((l) => l !== defaultLocale);
+
+  const paths: {
+    params: { lang: string; slug: string };
+    props: { post: CollectionEntry<'blog'>; isFallback: boolean };
+  }[] = [];
+
+  for (const lang of nonDefaultLocales) {
+    // Build set of directories that have a version in this locale
+    const hasLocaleVersion = new Set<string>();
+    for (const post of allPosts) {
+      if (isLocaleFile(post) && getFileLocale(post) === lang) {
+        hasLocaleVersion.add(getPostDirectory(post));
+      }
+    }
+
+    const seenSlugs = new Set<string>();
+
+    for (const post of allPosts) {
+      // Locale-specific file for this lang (e.g. index.es.mdx / index.es.t.mdx)
+      if (isLocaleFile(post) && getFileLocale(post) === lang) {
+        const routeSlug = getRoutingSlug(post);
+        if (!seenSlugs.has(routeSlug)) {
+          seenSlugs.add(routeSlug);
+          paths.push({ params: { lang, slug: routeSlug }, props: { post, isFallback: false } });
+        }
+        continue;
+      }
+
+      // EN locale file with no version in this lang → serve as fallback
+      if (isLocaleFile(post) && getFileLocale(post) === defaultLocale) {
+        const dir = getPostDirectory(post);
+        if (!hasLocaleVersion.has(dir)) {
+          const routeSlug = getRoutingSlug(post);
+          if (!seenSlugs.has(routeSlug)) {
+            seenSlugs.add(routeSlug);
+            paths.push({ params: { lang, slug: routeSlug }, props: { post, isFallback: true } });
+          }
+        }
+      }
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  isFallback: boolean;
+}
+
+const { lang: langParam, slug } = Astro.params;
+const lang = langParam as Locale;
+const { post, isFallback } = Astro.props;
+
+const enrichedPost = enrichBlogPost(post);
+const switcher = await getPostSwitcherUrls(post);
+
+// For fallback pages the canonical points to the EN URL
+const canonicalUrl = isFallback
+  ? new URL(`/${slug}`, SITE_URL).toString()
+  : undefined;
+
+const hreflangOverride = isFallback
+  ? { en: canonicalUrl!, es: canonicalUrl!, 'x-default': canonicalUrl! }
+  : undefined;
+
+const meta = {
+  title: enrichedPost.data.title,
+  description: truncate(enrichedPost.excerpt, 180),
+  image: enrichedPost.data.heroImage?.src,
+  url: slug,
+  date: post.data.pubDate,
+  tags: post.data.tags || [],
+  type: 'article' as const,
+  ...(canonicalUrl ? { canonical: canonicalUrl } : {}),
+};
+---
+
+<BaseLayout meta={meta} lang={lang} hreflangOverride={hreflangOverride} translations={switcher}>
+  <PostSingle post={post} lang={lang} isFallback={isFallback} />
+</BaseLayout>

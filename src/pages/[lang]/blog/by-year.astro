@@ -4,10 +4,16 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { enrichBlogPost } from '@/utils/enrichBlogPost';
 import { getSlug } from '@/utils/getSlug';
 import { getLocalizedPostsByYear } from '@/utils/getLocalizedPosts';
-import type { CollectionEntry } from 'astro:content';
-import { useTranslations, useTranslatedPath, getLocalizedDate, type Locale } from '@/i18n';
+import { locales, defaultLocale, useTranslations, useTranslatedPath, getLocalizedDate, type Locale } from '@/i18n';
 
-const lang: Locale = 'es';
+export function getStaticPaths() {
+  return locales
+    .filter((l) => l !== defaultLocale)
+    .map((l) => ({ params: { lang: l } }));
+}
+
+const { lang: langParam } = Astro.params;
+const lang = langParam as Locale;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
@@ -41,12 +47,10 @@ const postsByYearSorted = Array.from(postsByYear.entries()).sort(
       postsByYearSorted.map(([year, posts]) => (
         <section class="">
           <h2 class="font-impact font-bold md:text-right md:w-40 mb-4 text-3xl text-primary dark:text-secondary">
-            {/* Using the year as an anchor for linking */}
             <a class="anchor" id={year.toString()} />
             {year}
           </h2>
           <ul class="mb-12 list-none">
-            {/* Mapping through posts of the current year */}
             {posts.map((post) => {
               const enrichedPost = enrichBlogPost(post);
               return (
@@ -55,7 +59,6 @@ const postsByYearSorted = Array.from(postsByYear.entries()).sort(
                     class="md:w-40 text-primary dark:text-secondary md:text-right"
                     transition:name={`post-date-${enrichedPost.sanitizedId}`}
                   >
-                    {/* Displaying the publication date */}
                     {getLocalizedDate(post.data.pubDate, lang, { month: 'short', day: 'numeric' })}
                   </span>
                   <a
@@ -63,7 +66,6 @@ const postsByYearSorted = Array.from(postsByYear.entries()).sort(
                     href={translatePath(getSlug(post))}
                     transition:name={`post-title-${enrichedPost.sanitizedId}`}
                   >
-                    {/* Displaying the post title */}
                     {post.data.title}
                   </a>
                 </li>

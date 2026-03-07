@@ -1,0 +1,62 @@
+---
+import SectionHeader from '@/components/SectionHeader.astro';
+import { createSlug } from '@/utils/createSlug';
+import type { CollectionEntry } from 'astro:content';
+import Pagination from '@/components/Pagination.astro';
+import PostTeaser from '@/components/posts/PostTeaser.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getLocalizedPostsByTag, getLocalizedTags } from '@/utils/getLocalizedPosts';
+import { locales, defaultLocale, useTranslations, type Locale } from '@/i18n';
+
+export const getStaticPaths = async ({ paginate }) => {
+  const { getLocalizedTags, getLocalizedPostsByTag } = await import('@/utils/getLocalizedPosts');
+  const { createSlug } = await import('@/utils/createSlug');
+  const nonDefaultLocales = locales.filter((l) => l !== defaultLocale);
+
+  const paths = [];
+  for (const lang of nonDefaultLocales) {
+    const tags = await getLocalizedTags(lang);
+    for (const tag of tags) {
+      const tagPosts = await getLocalizedPostsByTag(lang, tag);
+      const slug = createSlug(tag);
+      const paginated = paginate(tagPosts, { pageSize: 10, params: { lang, tag: slug } });
+      paginated.forEach((p) => {
+        paths.push({ ...p, props: { ...p.props, tag } });
+      });
+    }
+  }
+  return paths;
+};
+
+const { lang: langParam, tag: tagSlug } = Astro.params;
+const lang = langParam as Locale;
+const t = useTranslations(lang);
+
+const { page, tag } = Astro.props;
+const { data: posts } = page;
+
+const filteredPosts = posts.filter((post) => post.data.tags?.includes(tag));
+
+const urlPattern = `/${lang}/tags/${createSlug(tag)}/{}`;
+---
+
+<BaseLayout meta={{ title: t('blog.postsWithTag', { tag }), description: t('site.description') }} lang={lang}>
+  <section class="wrapper">
+    <SectionHeader
+      title={t('blog.postsWithTag', { tag })}
+      subtitle={`[${filteredPosts.length} post${filteredPosts.length !== 1 ? 's' : ''}]`}
+      description={t('site.description')}
+      class="mb-6"
+    />
+    <ul>
+      {
+        filteredPosts.map((post) => (
+          <li>
+            <PostTeaser post={post} lang={lang} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+  <Pagination page={page} urlPattern={urlPattern} lang={lang} />
+</BaseLayout>
