@@ -221,35 +221,44 @@ async function translatePost(options: TranslationOptions): Promise<void> {
   console.log(`Translating from ${sourceLang} to ${targetLang}...`);
   console.log(`Using provider: ${provider}`);
 
-  // Prepare content for translation (title + description + body)
-  const toTranslate = `title: ${data.title}\ndescription: ${data.description || ''}\nexcerpt: ${data.excerpt || ''}\n\n${body}`;
+  // Prepare content for translation (title + optional description/excerpt + body)
+  // Only include description/excerpt lines if they are non-empty to avoid the AI
+  // concatenating them into malformed YAML like "description: excerpt:"
+  const metaLines = [`title: ${data.title}`];
+  if (data.description) metaLines.push(`description: ${data.description}`);
+  if (data.excerpt) metaLines.push(`excerpt: ${data.excerpt}`);
+  const toTranslate = `${metaLines.join('\n')}\n\n${body}`;
 
   // Translate
   const translated = await translateContent(toTranslate, sourceLang, targetLang, provider);
 
+  // Strip any --- fences the AI may have echoed back around the content
+  const translatedClean = translated.replace(/^---\s*$/gm, '').trim();
+
   // Parse translated content back
-  const titleMatch = /^title:\s*(.+)$/m.exec(translated);
-  const descMatch = /^description:\s*(.+)$/m.exec(translated);
-  const excerptMatch = /^excerpt:\s*(.+)$/m.exec(translated);
+  const titleMatch = /^title:\s*(.+)$/m.exec(translatedClean);
+  const descMatch = /^description:\s*(.+)$/m.exec(translatedClean);
+  const excerptMatch = /^excerpt:\s*(.+)$/m.exec(translatedClean);
 
   const translatedTitle = titleMatch ? titleMatch[1].trim() : data.title;
-  const translatedDesc = descMatch ? descMatch[1].trim() : data.description;
-  const translatedExcerpt = excerptMatch ? excerptMatch[1].trim() : data.excerpt;
+  const translatedDesc = descMatch ? descMatch[1].trim() : undefined;
+  const translatedExcerpt = excerptMatch ? excerptMatch[1].trim() : undefined;
 
-  // Remove the frontmatter-like lines from the beginning
-  const translatedBody = translated
+  // Remove the frontmatter-like lines from the translated body
+  const translatedBody = translatedClean
     .replace(/^title:\s*.+$/m, '')
     .replace(/^description:\s*.+$/m, '')
     .replace(/^excerpt:\s*.+$/m, '')
     .trim();
 
   // Build new frontmatter — drop `lang` (filename suffix is the source of truth now)
+  // Only include description/excerpt if they have a value
   const { lang: _lang, ...dataWithoutLang } = data as FrontmatterData & { lang?: unknown };
   const newData: FrontmatterData = {
     ...dataWithoutLang,
     title: translatedTitle,
-    description: translatedDesc,
-    excerpt: translatedExcerpt,
+    ...(translatedDesc ? { description: translatedDesc } : {}),
+    ...(translatedExcerpt ? { excerpt: translatedExcerpt } : {}),
     autoTranslated: true,
     originalLang: sourceLang,
   };
