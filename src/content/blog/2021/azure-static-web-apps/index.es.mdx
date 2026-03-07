@@ -1,0 +1,119 @@
+---
+title: Desplegando un sitio web estático en Azure Static Web Apps
+lang: es
+pubDate: 2021-01-20
+slug: azure-static-web-apps/
+heroImage: ./azureSWA.jpg
+tags:
+  - devops
+  - azure
+
+excerpt: "Hoy en día [JAMStack](https://jamstack.org/) está de moda por muchas razones: rendimiento, seguridad, desacoplamiento, etc."
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Hoy en día [JAMStack](https://jamstack.org/) está de moda por muchas razones: rendimiento, seguridad, desacoplamiento, etc.
+
+JAMStack consiste en pre-renderizar el frontend de tu sitio web o aplicación y obtener los datos dinámicos desde una API.
+
+Tu marcado pre-renderizado puede alojarse en un servidor, pero al ser estático, tu host solo necesita servir archivos estáticos, simplemente HTML, CSS y JS. No necesitas ejecutar ningún código en el servidor.
+
+Existen muchas opciones diferentes para desplegar un sitio web estático, por ejemplo:
+
+- [Github Pages](https://pages.github.com/)
+- [Netlify](https://www.netlify.com/)
+- [Vercel](https://vercel.com/)
+- etc.
+
+En este post hablaré sobre [Azure Static Web Apps](https://azure.microsoft.com/en-us/services/app-service/static/), este es un servicio para alojar tus archivos estáticos (y funciones lambda).
+
+En el momento de escribir este post, se encuentra en fase preview y es gratuito.
+
+Cómo desplegar tu aplicación, por ejemplo, una aplicación de Vue.
+
+1. Ve a https://portal.azure.com/ y crea una cuenta nueva si aún no tienes una.
+
+2. Dentro del grupo de recursos haz clic en _+ Create resource_
+
+3. Elige **Static Web App (preview)**
+
+4. Debes seleccionar la suscripción, el grupo de recursos (Resource group) para asignar este recurso, el nombre de tu aplicación (para encontrarla más tarde en el panel de Azure), la región donde quieres servir los archivos estáticos (elige una cercana a tus clientes o usuarios)
+
+5. Necesitas vincular tu cuenta de Github y elegir el repositorio (y la rama) para desplegar.
+
+6. Azure creará por ti una Github Action para compilar tu sitio web y desplegarlo en SWA.
+
+Algo como esto:
+
+```yaml
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main # This action will run on push to main
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: 'upload'
+          app_location: '/' # Path to your app in the web server
+          api_location: 'api' # Api source code path - optional
+          output_location: 'dist'
+        env:
+          VUE_APP_MY_VARIABLE: value
+          # Environment variables needed to build your app
+```
+
+Para más información sobre las actions puedes leer la documentación oficial: https://docs.microsoft.com/en-us/azure/static-web-apps/github-actions-workflow
+
+Después de hacer esto, la Github action se ejecutará tras cada push a `master`, compilará la aplicación y la desplegará en Azure.
+
+> Azure te proporciona una url para acceder a tu sitio web, como \*.azurewebsites.net, también puedes añadir tu dominio personalizado.
+
+# Configuración de rutas
+
+Si necesitas configurar las rutas, por ejemplo, protegiendo una ruta para permitir el acceso solo a los usuarios de tu empresa, añadir una ruta de fallback o crear una redirección, necesitas crear un archivo llamado `routes.json` que se encuentre en el directorio raíz después de la compilación; en Vue debes guardar esto en la carpeta `static`.
+
+Por ejemplo, este archivo obliga a los usuarios a estar autenticados para acceder a cualquier ruta y, si la página solicitada no se encuentra, redirige a `200.html`.
+
+```json
+{
+  "routes": [
+    {
+      "route": "/*",
+      "allowedRoles": ["authenticated"]
+    }
+  ],
+  "platformErrorOverrides": [
+    {
+      "errorType": "NotFound",
+      "serve": "/200.html",
+      "statusCode": 200
+    }
+  ]
+}
+```
+
+Más información sobre routes.json https://docs.microsoft.com/en-us/azure/static-web-apps/routes
+
+No mencioné que puedes usar _lambdas_ para ejecutar código del lado del servidor (no es gratuito), pero quizás escriba más sobre eso en el futuro.
+
+En resumen, **Azure Static Web Apps** es otra opción para desplegar aplicaciones web estáticas; si estás usando Azure en tu empresa, puede ser una buena opción para mantener todos los servicios de infraestructura en la misma plataforma, y es una alternativa sencilla para desplegar un App Service.

@@ -1,0 +1,189 @@
+---
+title: "Introducción a un framework de código abierto para crear flujos de trabajo multi-agente de IA: Bee Agent Framework"
+lang: es
+pubDate: 2025-02-02
+heroImage: ./bee-agents-framework.jpg
+slug: bee-agent-framework-introduction
+tags:
+  - ai
+  - agent
+  - framework
+  - ibm
+  - typescript
+  - open-source
+
+excerpt: "> El objetivo de este post es presentarte los Agentes de IA y el Bee Agent Framework, y cómo crear un agente sencillo."
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+> El objetivo de este post es presentarte los Agentes de IA y el Bee Agent Framework, y cómo crear un agente sencillo.
+
+Hoy en día la IA, y especialmente los LLMs, están en todas partes; supongo que habrás oído hablar de chatGPT, copilot, llama, deepseek, etc.
+
+Estos modelos son muy potentes, pero "solo" puedes chatear con ellos, pedirles que escriban código o buscar información, pero no pueden actuar en tu nombre, no pueden interactuar con otros sistemas, no pueden hacer cosas por ti.
+
+Ahí es donde entran en juego los agentes de IA. Los Agentes de IA son programas o sistemas que pueden actuar de forma autónoma en nombre del usuario o de otro sistema para realizar tareas.
+
+Por ejemplo, OpenAI acaba de lanzar (en el momento de escribir este post) [Operator](https://operator.chatgpt.com/), que es un "_agente que puede usar su navegador para realizar tareas por ti._". [LangChain](https://www.langchain.com/) proporciona agentes y una API para crear otros nuevos.
+
+![agent-workflow](agent-workflow.svg)
+
+**Pero, ¿cómo funcionan los agentes? ¿Cómo puede un agente resolver tareas?**, las tareas pueden interactuar con otros sistemas, por ejemplo navegar por internet (como hace el operador de OpenAI), obtener un archivo de tu ordenador, usar una herramienta CLI para convertir un markdown a pdf, "ver" e interactuar con tu escritorio como hace Claude, etc.
+
+Para ello, un agente cuenta con componentes adicionales que le permiten interactuar con el entorno; esos componentes son las **tools** (herramientas). Las tools amplían las capacidades del agente para interactuar con el entorno (sistemas externos), obtener la información que necesita para responder a tu pregunta o ejecutar la tarea que le pidas.
+
+Imagina un agente encargado de organizarte un viaje; la regla del agente es: si el día del viaje llueve, usa un tren; si no, usa un avión. Necesita consultar la previsión meteorológica, interactuar con internet para encontrar el mejor vuelo o tren, con tu calendario para comprobar si estás disponible, con tu banco para pagar los billetes, etc. Esas son las tools que el agente necesita tener para realizar la tarea: una tool para consultar el pronóstico, una tool para navegar por internet en un buscador de vuelos/trenes, una tool para consultar tu calendario, una tool para interactuar con tu banco y pagar, una tool para guardar la información del vuelo en tu calendario, etc.
+
+El agente proporciona el contexto al modelo LLM sobre qué hacen las tools y cómo solicitarlas, y dependiendo de tu pregunta, el LLM decidirá usar una u otra tool para resolver la tarea y cómo usarla. Por ejemplo, si le pides al agente que reserve un vuelo para el próximo viernes, el LLM "sabe" que debe usar una tool para navegar en un buscador de vuelos y proporcionar el origen, el destino y la fecha a la tool para obtener la información que necesita para responder a tu pregunta (o si no le das el destino, te lo pedirá, ya que sabe que lo necesita para usar el buscador de vuelos).
+
+## Bee Agent Framework
+
+Recientemente, IBM lanzó un framework de código abierto para crear flujos de trabajo multi-agente de IA: [Bee Agent Framework](https://github.com/i-am-bee/beeai-framework). Puede funcionar con múltiples proveedores de LLM (WatsonX, OpenAI, Azure OpenAI, LangChain, Groq, etc.), pero el proveedor más interesante es [Ollama](https://ollama.com/), que permite ejecutar múltiples modelos para usar como: llama, phi4, y el nuevo: deepseek-r1 aún no es capaz de llamar a funciones, pero probablemente lo sea en el futuro.
+Fue escrito en TypeScript y puedes escribir tools y agentes en TypeScript o JavaScript.
+
+Para ilustrar cómo funciona, crearemos un agente que pueda listar y leer documentos (archivos .txt o .md en una carpeta) y que pueda guardar documentos.
+
+Para ello, necesitamos crear una tool para listar los archivos de la carpeta y leer los documentos, y una tool para guardar archivos a partir de un markdown.
+
+Empecemos con la tool de listado:
+
+```typescript
+// src/tools/MyDocuments/MyDocumentsListTool.ts
+import { ToolEmitter, Tool, ToolInput, JSONToolOutput } from 'bee-agent-framework/tools/base';
+import fs from 'node:fs';
+import { z } from 'zod';
+import { Emitter } from 'bee-agent-framework/emitter/emitter';
+import { basename } from 'node:path';
+
+export class MyDocumentsListTool extends Tool<JSONToolOutput<string[]>> {
+  name = 'MyDocumentsListTool';
+  description = 'Returns the list of documents files names.';
+
+  constructor(private folder: string) {
+    super();
+  }
+
+  public readonly emitter: ToolEmitter<ToolInput<this>, JSONToolOutput<string[]>> =
+    Emitter.root.child({
+      namespace: ['tool', 'MyDocuments'],
+      creator: this,
+    });
+
+  inputSchema() {
+    return z.object({
+      filter: z.string().optional().describe(`A regex to filter documents by name`),
+    });
+  }
+
+  static {
+    this.register();
+  }
+
+  protected async _run(input: ToolInput<this>): Promise<JSONToolOutput<string[]>> {
+    const filter = input.filter;
+
+    const regex = new RegExp(filter || '');
+
+    const files = fs
+      .readdirSync(this.folder)
+      .map((file) => basename(file))
+      .filter((file) => !filter || regex.test(file));
+
+    return new JSONToolOutput(files);
+  }
+}
+```
+
+Esta tool es muy sencilla, este código no tiene nada de especial (método `_run`), devuelve la lista de nombres de archivos en una carpeta (proporcionada en el constructor) y los filtra mediante una regex proporcionada en la entrada. **Eso es todo**, nada relacionado con IA, LLM, etc. Solo una tool que devuelve una lista de archivos.
+
+La "magia" reside en la propiedad `description` y el método `inputSchema`; describimos qué hace la tool y qué entrada necesita, y el framework Bee utilizará esa información para proporcionar contexto al modelo LLM. Entonces, el LLM puede decidir usar esta tool para resolver una tarea o no, dependiendo de la entrada del usuario.
+
+Solo necesitamos registrar la tool (o tools en nuestro agente) y el framework se encargará del resto.
+
+```typescript
+// src/agents/
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const documentsFolder = join(__dirname, '..', '..', 'documents')
+
+const llm = new OllamaChatLLM();
+
+const agent = new BeeAgent({
+  llm,
+  memory: new TokenMemory({ llm }),
+  tools: [
+    new MyDocumentsListTool(documentsFolder),
+    new MyDocumentsReadTool(documentsFolder),
+    new SaveFileTool(documentsFolder)],
+    ...
+});
+
+
+const reader = createConsoleReader();
+try {
+    for await (const { prompt } of reader) {
+      const response = await agent
+        .run(
+          { prompt },
+          {
+            execution: {
+              maxRetriesPerStep: 3,
+              totalMaxRetries: 10,
+              maxIterations: 20,
+            },
+          },
+        )
+        .observe((emitter) => {
+          emitter.on("error", ({ error }) => {
+            reader.write(`Agent 🤖 : `, FrameworkError.ensure(error).dump());
+          });
+          emitter.on("retry", () => {
+            reader.write(`Agent 🤖 : `, "retrying the action...");
+          });
+          emitter.on("update", async ({ data, update, meta }) => {
+            // log 'data' to see the whole state
+            // to log only valid runs (no errors), check if meta.success === true
+            reader.write(`Agent (${update.key}) 🤖 : `, update.value);
+          });
+        });
+
+      reader.write(`Agent 🤖 : `, response.result.text);
+    }
+  } catch (error) {
+    logger.error(FrameworkError.ensure(error).dump());
+  } finally {
+    reader.close();
+  }
+```
+
+Ese es el poder del framework Bee: puedes crear tools que amplíen las capacidades del agente para interactuar con el entorno, y el modelo LLM puede usarlas para resolver tareas.
+
+Una cosa interesante es añadir "[guardrails](https://medium.com/towards-data-science/safeguarding-llms-with-guardrails-4f5d9f57cff2)" (barreras de seguridad) a nivel de tool, no solo a nivel de modelo; por ejemplo, dando acceso solo a una carpeta específica, o permitiendo guardar archivos solo en una carpeta determinada, controlando el acceso a archivos con las ACL del usuario, etc.
+
+En el agente de ejemplo, este interactúa con el usuario a través de la consola, pero puedes crear una interfaz web o cualquier cosa que desees.
+
+## Verlo en acción
+
+Para ejecutar el agente necesitas:
+
+- instalar [ollama](https://ollama.com/)
+- clonar este [repositorio de github](https://github.com/sergiocarracedo/document-bee-agent-poc).
+- instalar las dependencias: `pnpm install`
+- y luego ejecutar el agente: `pnpm start`
+
+Y ahora puedes interactuar con el agente.
+Puedes pedirle que cree un nuevo documento, que liste los documentos que empiezan por una letra determinada, que lea un documento, etc.
+Bee también puede gestionar errores (mira la última parte del vídeo), reintentando la acción de forma diferente.
+
+::youtube[]{id="38T35Zs-VMs"}
+
+## Conclusión
+
+Los agentes son una herramienta muy potente para hacer que los LLMs interactúen con el entorno, y el framework Bee te permite crearlos fácilmente y ampliar sus capacidades con tools que pueden interactuar con el entorno para leer un archivo, llamar a una API, interactuar con una base de datos o cualquier cosa que puedas imaginar.
+
+Esta es solo una introducción al framework Bee, donde me he centrado en un par de aspectos del mismo, pero hay muchas cosas por descubrir, como el sistema de memoria, los flujos de trabajo, el uso de diferentes proveedores como OpenAI, WatsonX, etc. Si estás interesado en ello, por favor házmelo saber en los comentarios y escribiré más al respecto.

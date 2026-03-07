@@ -1,0 +1,217 @@
+---
+title: "Componentes Controlados y No Controlados en React: Hook useControllable"
+lang: es
+pubDate: 2025-12-14
+slug: react-controllable-components
+heroImage: ./cover.png
+tags:
+  - react
+  - javascript
+  - typescript
+
+excerpt: En el desarrollo con React, los componentes pueden clasificarse como controlados o no controlados basándose en cómo gestionan su estado. Los componentes controlados dependen de las props pasadas desde un componente padre para gestionar su estado, mientras que los componentes no controlados mantienen su propio estado interno.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+En el desarrollo con React, los componentes pueden clasificarse como controlados o no controlados basándose en cómo gestionan su estado. Los componentes controlados dependen de las props pasadas desde un componente padre para gestionar su estado, mientras que los componentes no controlados mantienen su propio estado interno.
+
+Este no es otro post sobre componentes controlados vs no controlados, ya existen muchos de ellos. Por ejemplo, puedes consultar la documentación oficial de React sobre [componentes controlados y no controlados](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components).
+
+Este post presenta un hook personalizado llamado `useControllable` que simplifica la creación de componentes que pueden funcionar tanto en modo controlado como no controlado.
+
+## ¿Por qué usar ambos modos, controlado y no controlado, en el mismo componente?
+
+Imagina el típico componente select. En la mayoría de los casos, querrás usarlo de forma controlada, pasando el `value` seleccionado y un manejador `onChange` desde el componente padre. 
+
+Un componente simple como este no tiene mucho sentido como no controlado, pero imagina el mismo componente que incluye un searchbox para filtrar las opciones en el select. En este caso, puedes controlar el searchbox en el padre para estar al tanto de lo que el usuario está escribiendo, pero también podrías querer simplemente dejar que el select gestione su propio estado, ya que el filtrado se realiza dentro del componente select sin necesidad de controlar el estado en el padre.
+
+En un caso como ese (queremos que el searchbox sea opcionalmente controlado, pero si no, que mantenga el estado interno), siempre podríamos tener un estado interno para el searchbox, pero reaccionando a los cambios en el padre cuando se proporciona la prop `value` y emitiendo los cambios al padre cuando el usuario escribe en el searchbox. 
+
+```tsx
+export const MySelect({search, onChangeSearch}: {search?: string; onChangeSearch?: (newSearch: string) => void}) {
+  const [internalSearch, setInternalSearch] = React.useState(search ?? '');
+
+
+  // Updates the internal state when the `search` prop changes
+  useEffect(() => {
+    if (search !== undefined) {
+      setInternalSearch(search);
+    }
+  }, [search]);
+
+  // Updates the parent when the internal state changes
+  useEffect(() => {
+    if (onChangeSearch) {
+      onChangeSearch(internalSearch);
+    }
+  }, [internalSearch, onChangeSearch]);
+  
+
+  const handleSearchChange = (newSearch: string) => {
+    setInternalSearch(newSearch);
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={effectiveSearch}
+        onChange={(e) => handleSearchChange(e.target.value)}
+      />
+      {/* Render select options based on effectiveSearch */}
+    </div>
+  );
+}
+```
+
+Esta solución funciona, pero añade una complejidad extra al componente, con dos hooks `useEffect` para sincronizar el estado interno con las props, y si el valor no es un tipo primitivo (string, number, boolean) necesitarás añadir lógica extra para evitar bucles infinitos cuando el padre proporciona un nuevo objeto/array con el mismo contenido pero diferente referencia.
+
+Un enfoque mejor es usar solo el estado interno cuando las props `value` y `onChange` no se proporcionan, y usar las props directamente cuando sí se proporcionan. De esta manera evitamos la necesidad de sincronizar los estados.
+
+```tsx
+export const MySelect({search, onChangeSearch, defaultSearch}: {search?: string; onChangeSearch?: (newSearch: string) => void, defaultSearch?: string}) {
+  const [internalSearch, setInternalSearch] = React.useState(defaultSearch ?? '');
+
+  const effectiveSearch = (search !== undefined && onChangeSearch !== undefined) ? search : internalSearch;
+
+  const handleSearchChange = (newSearch: string) => {
+    if (onChangeSearch) {
+      onChangeSearch(newSearch);
+    } else {
+      setInternalSearch(newSearch);
+    }
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={effectiveSearch}
+        onChange={(e) => handleSearchChange(e.target.value)}
+      />
+      {/* Render select options based on effectiveSearch */}
+    </div>
+  );
+}
+```
+
+En esta versión, determinamos el valor de `effectiveSearch` basándonos en si se proporcionan las props `search` y `onChangeSearch`. Si es así, usamos los valores de las props; de lo contrario, recurrimos al estado interno. La función `handleSearchChange` también comprueba si se proporciona la prop `onChangeSearch` antes de decidir si llamarla o actualizar el estado interno.
+
+Ten en cuenta que también añadimos una prop `defaultSearch` para inicializar el estado interno cuando el componente se usa en modo no controlado.
+
+## El hook useControllable
+
+Para simplificar la implementación de componentes que pueden funcionar tanto en modo controlado como no controlado, creé la librería [`useControllable`](https://www.npmjs.com/package/use-controllable). Esta librería expone un hook que encapsula la lógica para gestionar el valor efectivo y el manejador de cambios, y también proporciona tipos de TypeScript para garantizar la seguridad de tipos al obligar al desarrollador a proporcionar tanto `value` como `onChange` o ninguno de ellos, sino `defaultValue` en su lugar.
+
+Aquí tienes cómo puedes usar el hook `useControllable` en el ejemplo anterior:
+
+```tsx
+import { useControllable, type UseControllableProps } from 'use-controllable';
+
+
+type MySelectProps = UseControllableProps<string, 'search'> & {
+  // other props of the select component
+}
+
+export const MySelect({search, onChangeSearch, defaultSearch}: MySelectProps) {
+  const [value, setValue] = useControllable({
+    value: search,
+    defaultValue: defaultSearch,
+    onChange: onChangeSearch,
+  })
+
+  const handleSearchChange = (newSearch: string) => {
+    setValue(newSearch);
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => handleSearchChange(e.target.value)}
+      />
+      {/* Render select options based on effectiveSearch */}
+    </div>
+  );
+}
+```
+
+Al revisar este código, podemos ver que la lógica para determinar el valor efectivo y el manejador de cambios ahora está encapsulada en el hook `useControllable`, el resto del código del componente es más limpio y fácil de leer; es como un componente controlado estándar, pero con el beneficio añadido de poder funcionar también en modo no controlado.
+
+Puedes tener múltiples props controlables en el mismo componente llamando al hook `useControllable` varias veces con diferentes nombres de prop.
+
+```tsx
+
+
+type MySelectProps = UseControllableProps<string> & UseControllableProps<string, 'search'> & {
+  // other props of the select component
+}
+
+export const MySelect(props: MySelectProps) {
+
+  const [value, setValue] = useControllable({
+    value: props.value,
+    defaultValue: props.defaultValue,
+    onChange: props.onChange,
+  })
+
+
+  const [search, setSearch] = useControllable({
+    value: props.search,
+    defaultValue: props.defaultSearch,
+    onChange: props.onChangeSearch,
+  })
+
+  const handleSearchChange = (newSearch: string) => {
+    setSearch(newSearch);
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => handleSearchChange(e.target.value)}
+      />
+      <select value={value} onChange={setValue}>
+        {/* ... */}
+      </select>
+    </div>
+  );
+}
+```
+
+## Instalación
+
+Puedes instalar el paquete `use-controllable` a través de npm o yarn:
+
+```bash
+npm install use-controllable
+# or
+pnpm install use-controllable
+# or 
+yarn add use-controllable
+```
+
+> puedes consultar la documentación y el código fuente en [GitHub](https://github.com/sergiocarracedo/useControllable)
+
+## Rendimiento
+
+Realicé algunos benchmarks para comparar el rendimiento de los componentes que usan el hook `useControllable` frente a la implementación manual de la lógica controlado/no controlado. Los resultados muestran que el uso del hook proporciona mejoras significativas de rendimiento, especialmente en las renderizaciones del modo controlado.
+
+| Escenario                                      | Sin Hook      | Con useControllable  | Ganancia de Rendimiento |
+| ---------------------------------------------- | ------------- | -------------------- | ----------------------- |
+| **Modo controlado - Renderizado inicial**      | 1,167 ops/sec | 1,631 ops/sec        | **1.40x más rápido** ⚡   |
+| **Modo controlado - Re-renderizados (100)**    | 40 ops/sec    | 87 ops/sec           | **2.14x más rápido** ⚡⚡ |
+| **Modo no controlado - Renderizado inicial**   | 2,007 ops/sec | 1,981 ops/sec        | ~1.01x (equivalente)    |
+| **Múltiples instancias (100 componentes)**     | 62 ops/sec    | 94 ops/sec           | **1.51x más rápido** ⚡   |
+
+## Conclusión
+
+El hook `useControllable` proporciona una forma limpia y eficiente de crear componentes de React que pueden funcionar tanto en modo controlado como no controlado. Al encapsular la lógica para gestionar los valores efectivos y los manejadores de cambios, simplifica la implementación de los componentes y mejora la legibilidad del código. Si a menudo te encuentras necesitando componentes que puedan alternar entre el comportamiento controlado y el no controlado, ¡prueba el hook `useControllable` y cuéntame qué te parece o cualquier comentario que tengas!

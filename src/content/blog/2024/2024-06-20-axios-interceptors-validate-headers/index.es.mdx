@@ -1,0 +1,76 @@
+---
+title: Interceptores de Axios para validar headers permitidos
+lang: es
+pubDate: 2024-07-01
+heroImage: ./nathan-dumlao-eksqjXTLpak-unsplash.jpg
+slug: axios-interceptors-validate-headers
+tags:
+  - axios
+  - request
+  - validation
+
+excerpt: Hoy quiero compartir un pequeño consejo para trabajar con CORS y Axios.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Hoy quiero compartir un pequeño consejo para trabajar con CORS y Axios.
+
+Es muy común que en el backend solo se permitan ciertos headers, más aún cuando se define el header `Access-Control-Request-Headers` relacionado con CORS que se utiliza en respuesta a una solicitud preflight. En esos casos, si el frontend realiza una petición con un header *inesperado*, la solicitud será rechazada.
+
+Este tipo de problemas ocurre principalmente en entornos de producción porque el navegador ignora los headers CORS cuando obtiene datos de `localhost`. Esto es un problema, ya que probablemente nadie detectará un error al enviar headers inesperados antes de desplegar el código a producción.
+
+## Axios interceptors
+
+[Axios](https://axios-http.com/) es una librería muy utilizada para gestionar peticiones HTTP que tiene una característica interesante: los **interceptors** son como middlewares donde puedes ejecutar código antes de la petición (*request interceptors*) y/o después de recibir la respuesta (*response interceptors*).
+
+Nos centraremos en los interceptores de petición (request interceptors), que se ejecutan antes de que se realice la solicitud al servidor. Este es el lugar perfecto para colocar nuestro código:
+
+```ts
+import type { InternalAxiosRequestConfig } from 'axios'
+
+const allowedCorsHeaders = ['Authorization','Origin','X-Requested-With', 'Content-Type','Accept'].map((header) =>
+header.toLowerCase())
+
+function validateHeadersInterceptor(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+  // Get the headers we are sending in the requests
+  const headers = Object.keys(config.headers).map((header) => header.toLowerCase())
+  // Get the headers to send are not in the allowed list
+  const invalidHeaders = headers.filter((header) => !allowedCorsHeaders.includes(header))
+
+  if (invalidHeaders.length > 0) {
+    const msg = `Header(s): ${invalidHeaders.join(', ')} are not allowed.`
+    throw new Error(msg)
+  }
+  return config
+}
+```
+
+La función `validateHeadersInterceptor` recibe el `config` (la configuración de la petición actual) y comprueba si hay headers inesperados. Si los hay, lanza un error para que el desarrollador sepa que está utilizando un header inesperado.
+
+Usar el interceptor es tan sencillo como hacer lo siguiente:
+
+```ts
+axios.interceptors.request.use(validateHeadersInterceptor);
+```
+
+## El orden de los interceptores
+
+Debes saber que cuando tienes múltiples interceptores, el orden de ejecución es el inverso al orden de "use".
+
+Por ejemplo:
+
+```ts
+axios.interceptors.request.use(interceptor1);
+axios.interceptors.request.use(interceptor2);
+axios.interceptors.request.use(validateHeadersInterceptor);
+axios.interceptors.request.use(interceptor3);
+```
+
+el orden de ejecución será `interceptor3`, `validateHeadersInterceptor`, `interceptor2` e `interceptor1`. En el caso de nuestro `validateHeadersInterceptor`, queremos comprobar incluso si otro interceptor añade un header inválido. En el ejemplo, si `interceptor1` o `interceptor2` añaden un header a la petición, no nos daremos cuenta ya que el validador se ejecutó antes.
+
+Debemos asegurarnos de que nuestro interceptor se "use" primero, antes que cualquier otro interceptor.

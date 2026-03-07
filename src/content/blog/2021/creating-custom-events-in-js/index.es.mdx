@@ -1,0 +1,103 @@
+---
+title: Creando eventos personalizados en JS
+lang: es
+pubDate: 2021-10-18T00:00:00.000Z
+slug: creating-custom-events-in-js/
+heroImage: ./custom-events-1314544.jpg
+tags:
+  - javascript
+
+excerpt: Cuando intentas encapsular funcionalidades pero necesitas interactuar con eventos asíncronos o eventos generados por la interacción del usuario, una de las formas más sencillas de lograrlo es utilizando eventos y manejadores de eventos (a menudo llamados callbacks).
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Cuando intentas encapsular funcionalidades pero necesitas interactuar con eventos asíncronos o eventos generados por la interacción del usuario, una de las formas más sencillas de lograrlo es utilizando eventos y manejadores de eventos (a menudo llamados callbacks).
+
+Imagina que tienes un componente de UI para renderizar una lista de tareas (TO-DO list) con un botón para crear un elemento TO-DO a través de un formulario. Este componente está auto-encapsulado; solo necesitas poner el componente en tu aplicación, y el componente mismo renderiza la lista, el botón, el formulario, realiza la petición a la API, etc.
+
+Quieres realizar alguna acción después de la creación del TO-DO, por ejemplo, mostrar un toast o una alerta con algún mensaje.
+
+Puedes alterar el componente y añadir ese comportamiento dentro del mismo, pero esto reduce la reutilización del componente porque en otras partes de tu aplicación (o en otra aplicación) este comportamiento no tiene sentido.
+
+## Eventos y callbacks al rescate
+
+Un callback para un evento es un fragmento de código que se ejecuta cuando se dispara el evento. Usamos mucho esto en JS, por ejemplo, cuando queremos hacer algo después de que el usuario interactúe con un elemento.
+
+```js
+element.addEventListener('click', () => { alert('hello') }, ...)
+```
+
+Con la línea anterior, el código (listener o callback) se ejecutará cuando el usuario haga clic en el elemento.
+
+La API del navegador proporciona muchos eventos que podemos _manejar_, pero queremos hacerlo por nuestra cuenta, y es muy fácil:
+
+Primero, necesitamos exponer fuera del componente que mencioné antes un método para establecer el callback, por ejemplo `setToDoCreateEventHandler`.
+
+> Para simplificar el ejemplo, crearemos un sistema de despacho de eventos sencillo que solo permita un manejador (handler).
+
+Esta función recibirá como parámetro una función que será llamada cuando el evento se dispare.
+
+Por ejemplo:
+
+```ts
+// Main app
+import myTodoComponent from 'myTodoComponent';
+myTodoComponent.setToDoCreateEventHandler(() => alert('TO-DO created'));
+```
+
+La implementación del método en el componente podría ser algo como:
+
+```ts
+// Component
+let toDoCreateEventHandler: Function = () => {};
+export function setToDoCreateEventHandler(handler: Function): void {
+  toDoCreateEventHandler = handler;
+}
+```
+
+- Tenemos la variable `toDoCreateEventHandler` donde almacenar el manejador; por defecto, establezco una función vacía `() => {}` que no hace nada solo para evitar gestionar valores `null` (pero puedes permitir `null` o `undefined` como manejador y comprobarlo antes de dispararlo).
+- Nuestra función expuesta `setToDoCreateEventHandler` se encarga de asignar el manejador a la variable.
+
+Bien, ahora podemos almacenar el manejador, pero necesitamos dispararlo; para hacerlo, solo necesitamos ejecutar el manejador en la parte del componente donde se completa la creación del TODO, imagina que es después de enviar los valores a la API y obtener un OK.
+
+```ts
+// Component
+...
+axios(...).then(() => {
+  ... // Do other things
+  toDoCreateEventHandler()
+})
+...
+```
+
+_Eso es todo_ :joy:, después de guardar el TODO haciendo una llamada a la API usando _axios_ (en este ejemplo), llamamos al manejador almacenado en la variable, y nuestro código fuera del componente se ejecutará.
+
+Como puedes ver, es muy fácil crear componentes personalizados.
+
+Podemos mejorar nuestro manejador de eventos permitiendo añadir más de un listener/handler, por ejemplo:
+
+```ts
+// Component
+let toDoCreateEventHandlers: Function[] = []
+export function addToDoCreateEventHandler (handler: Function): void {
+  toDoCreateEventHandlers.push(handler)
+}
+...
+axios(...).then(() => {
+  ... // Do other things
+  toDoCreateEventHandlers.forEach(handler => handler())
+})
+...
+
+```
+
+También necesitaríamos definir un método para eliminar un manejador, pero dejaré que lo hagas tú.
+
+Podrías pensar que podemos lograr esto usando _Promises_, y tienes parte de razón, pero las promesas solo [pueden resolverse una vez](https://stackoverflow.com/questions/20328073/is-it-safe-to-resolve-a-promise-multiple-times).
+
+El despacho/manejo de eventos tiene la ventaja de que puedes suscribirte al evento en cualquier momento (y esperar a los nuevos despachos) y son ampliamente utilizados en las librerías estándar de JS.

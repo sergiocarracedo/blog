@@ -1,0 +1,97 @@
+---
+title: Desafíos de tipado en TypeScript y utilidades de tipos
+lang: es
+pubDate: 2022-12-12T00:00:00.000Z
+slug: typescript-typing-challenges-and-type-utilities
+heroImage: ./pexels-david-buchi-1070345.jpg
+tags:
+  - typescript
+  - javascript
+
+excerpt: Recientemente estuve buscando profundizar mis conocimientos sobre el tipado en TypeScript, cómo crear tipos más avanzados y mejores, y puedo decir que es un tema importante; hay muchísimas cosas que puedes hacer y que nunca antes habrías imaginado.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Recientemente estuve buscando profundizar mis conocimientos sobre el tipado en TypeScript, cómo crear tipos más avanzados y mejores, y puedo decir que es un tema importante; hay muchísimas cosas que puedes hacer y que nunca antes habrías imaginado.
+
+Durante esa "investigación" encontré recursos muy interesantes que quiero compartir con ustedes.
+
+# Type Challenge
+
+[https://tsch.js.org/](https://tsch.js.org/)
+
+Es un repositorio que incluye una gran cantidad de desafíos de tipado, muy bien documentados y diseñados. Cada desafío te proporciona una definición en un archivo `README.md`, un archivo `test-cases.ts` con las pruebas que el tipo que definas debe superar, y finalmente el archivo `template.ts` donde debes hacer tu trabajo creando el tipo necesario para cumplir con los requisitos y pasar todas las pruebas.
+
+Te recomiendo empezar con los fáciles, sin presión, intenta resolverlos usando la documentación de TypeScript (que es muy buena), y si finalmente no puedes resolverlo o no quieres dedicarle demasiado tiempo a un ejercicio, consulta las soluciones de la comunidad, pero luego dedica todo el tiempo que necesites para entender la solución y los conceptos de fondo; estoy seguro de que aprenderás en el proceso.
+
+Para mí, fue una lección de humildad; antes de este desafío pensaba que sabía sobre el tipado en TypeScript, pero después de eso, sé que todavía necesito aprender más sobre TypeScript :sweat_smile:
+
+ :arrow_right: El usuario [Eugene Obrezkov](https://github.com/ghaiklor) está realizando este desafío y documentando las [soluciones](https://ghaiklor.github.io/type-challenges-solutions/en/) que hizo, explicándolas. Muy recomendado.
+
+### Ejemplo
+
+Implementa el genérico nativo `Readonly<T>` sin usarlo. De: https://github.com/type-challenges/type-challenges/blob/main/questions/00007-easy-readonly/README.md
+
+Mi solución a este desafío, :warning: ALERTA DE SPOILER :warning: es:
+
+```typescript
+type MyReadonly<T> = {
+  readonly [K in keyof T]: T[K];
+};
+```
+
+La explicación es que estamos creando el tipo `MyReadonly` que recibe un tipo genérico `T` y este tipo es un objeto cuyas claves son `K` (no de tipo K, sino el valor K) que es un valor que es una de las claves del tipo genérico `T`; para esta clave estamos estableciendo que es de solo lectura (`read-only`), y para el tipo de esa clave, estamos obteniendo el tipo de la clave (`K`) en el tipo genérico.
+
+Esta solución simple requiere conocimientos sobre el [operador de tipo keyof](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html), [tipos mapeados (mapped types)](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html), [modificadores de mapeo (mapping modifiers)](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers), etc... Así que es bastante útil para mejorar tus habilidades de tipado usando desafíos reales.
+
+## Hardcode typing
+
+El ejemplo anterior es simple, es más complejo que los tipos típicos que puedes usar en el día a día, pero sigue siendo sencillo.
+A medida que continúas avanzando en los ejercicios, se vuelven cada vez más complejos y requerirán todo tu conocimiento sobre cómo funcionan los tipos en TypeScript; eso es lo que yo llamo _hardcore typing_, exprimir el sistema de tipos al máximo para obtener los resultados que deseas. Vale la pena intentar estos desafíos para obtener un conocimiento sólido de los tipos y cómo aplicarlos en el mundo real.
+
+# Type utilities
+
+Si revisas el código de los desafíos, especialmente las pruebas, encontrarás líneas como:
+
+```typescript
+type cases = [Expect<Equal<MyReadonly<Todo1>, Readonly<Todo1>>>];
+```
+
+Esta es una de las cosas buenas de Type Challenge: las utilidades de tipos que utilizan, por ejemplo `Expect<T>` y `Equal<X, Y>`.
+
+`Expect` es simple, solo comprueba que el tipo sea verdadero (técnicamente hablando, si extiende de `true`), pero nos ayuda a realizar otras validaciones de tipos.
+`Equal` comprueba si dos tipos son el mismo tipo; la definición del tipo no es tan simple como podrías esperar:
+
+```typescript
+export type Equal<X, Y> =
+  (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? true : false;
+```
+
+Podría intentar explicar el funcionamiento interno, pero [esta respuesta en StackOverflow](https://stackoverflow.com/a/68963796/4925419) lo hace mucho mejor de lo que yo podría.
+
+Este tipo de utilidades son útiles para complementar los tipos de tu aplicación, razón por la cual existen librerías que las proporcionan; además, Type Challenge lanzó sus propias utilidades de tipos como un paquete: https://www.npmjs.com/package/@type-challenges/utils
+
+Veamos un par de ellas:
+
+## TS Toolbelt
+
+https://github.com/millsp/ts-toolbelt
+
+Es una colección de más de 200 utilidades de tipos; se describen a sí mismos como el _lodash_ del sistema de tipos. Abstrae las comprobaciones de tipos complejas.
+
+## Utility types
+
+https://github.com/piotrwitek/utility-types
+
+Otra librería de tipos que se describe a sí misma nuevamente como el _lodash_ de los tipos :smile:. No es tan grande como TS Toolbelt pero incluye tipos de uso común. Por ejemplo, `DeepPartial` funciona como el `Partial` nativo pero lo hace de forma recursiva.
+
+Esta librería proporciona también type guards "reales", es decir, funciones que realizan el estrechamiento de tipos (type narrowing) y validan una variable en tiempo de ejecución.
+
+# Otros desafíos de tipado
+
+Para finalizar, quiero compartir un desafío de tipado más por si quieres poner a prueba tus habilidades de tipado en TypeScript: https://js.checkio.org/

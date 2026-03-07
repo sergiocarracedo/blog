@@ -1,0 +1,178 @@
+---
+title: Automatiza el inicio de tus proyectos con yarn create y SAOjs
+lang: es
+pubDate: 2020-09-22T00:00:00.000Z
+slug: automate-project-startup-with-yarn-create
+heroImage: ./automatize-node-project-creation.jpg
+tags:
+  - javascript
+  - vue
+  - react
+  - angular
+  - html
+
+excerpt: Iniciar un proyecto en cualquier lenguaje, framework, etc., no es tan sencillo como parece. Me refiero a que, normalmente, el proyecto requiere muchos archivos de configuración, instalar dependencias, configurar el entorno, crear archivos base (skeleton files), etc.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Iniciar un proyecto en cualquier lenguaje, framework, etc., no es tan sencillo como parece. Me refiero a que, normalmente, el proyecto requiere muchos archivos de configuración, instalar dependencias, configurar el entorno, crear archivos base (skeleton files), etc.
+
+Hablando de frameworks de JavaScript: cada uno tiene su propia herramienta de CLI para iniciar un proyecto con los archivos necesarios para empezar a programar.
+
+Por ejemplo, **Angular** tiene [@angular/cli](https://cli.angular.io/) y puedes ejecutar `ng new [app-name]` o
+**Vue** tiene [@vue/cli](https://cli.vuejs.org/) y puedes iniciar un proyecto de Vue ejecutando `vue create [project name]`.
+
+Esto está bien, pero normalmente la configuración por defecto no cumple con los requisitos de tu desarrollo; aún debes editar los archivos de configuración para ajustar el proyecto a tus necesidades, por ejemplo, cambiar la configuración de `tsconfig.json`, o de forma más _avanzada_, te gustaría añadir algo de código en el archivo del router o crear una estructura de carpetas para el store, o cualquier otra cosa.
+
+Realizar todas estas tareas cada vez que inicias un proyecto es aburrido y consume tiempo.
+
+En el fondo, estas herramientas de CLI utilizan un repositorio base o similar para preparar tu proyecto, pero pensando en un caso de uso genérico.
+
+Así que podemos hacer lo mismo, pero adaptando este caso de uso al nuestro.
+
+## `yarn create` (o `npx create`)
+
+[Yarn](https://yarnpkg.com/) es un gestor de paquetes de node con vitaminas, y proporciona el comando `create`.
+
+```bash
+$ yarn create [my-starter-kit]
+```
+
+Solo necesitas tener instalado `yarn`, nada más. Este comando obtiene de tu _npm registry_ un paquete llamado `create-` + el nombre que uses en el comando; en nuestro ejemplo intenta obtener el paquete `create-my-starter-kit`.
+
+Luego, yarn lee el archivo `package.json` del paquete, instala las dependencias y ejecuta el comando en la entrada `bin`.
+
+```json
+// package.json
+{
+  "name": "create-my-starter-kit",
+  "version": "1.0.0",
+  "bin": "lib/cli.js",
+  ...
+}
+```
+
+**`yarn create` no hará nada más.**
+
+Tú debes crear los siguientes pasos, pero piénsalo: el usuario (tú, un compañero de equipo, un usuario de un proyecto de código abierto) solo necesita yarn como dependencia.
+
+En tu `cli.js` puedes hacer cosas para preparar el entorno de desarrollo por ti mismo. Pero veamos cómo simplificar todas estas tareas.
+
+## SAOjs
+
+[SAO](https://saojs.org/) se describe a sí mismo como una _herramienta de scaffolding futurista_ y está inspirada en [Yeoman](https://yeoman.io/).
+
+Estas herramientas te permiten hacer preguntas al usuario que ejecuta tu _create-app_, las cuales puedes usar para tomar decisiones al instalar o configurar diferentes elementos.
+
+Debes crear el archivo `saofile.js`, y este archivo debe exportar estos elementos:
+
+```js
+module.exports = {
+  templateData: ...,
+  prompts: ...,
+  actions: ...,
+  prepare: ...,
+  subGenerators: ...,
+  completed: ...
+}
+```
+
+## Prompts
+
+Hablemos de los `prompts`. Estos deben devolver un array con las preguntas que quieres hacer al usuario, por ejemplo:
+
+```js
+prompts: [
+  {
+    type: 'input',
+    name: 'projectName',
+    message: 'What is your project name?',
+  },
+  {
+    type: 'list',
+    name: 'packageManager',
+    message: 'Your favourite package manager',
+    choices: ['yarn', 'npm'],
+  },
+];
+```
+
+Cuando ejecutas SAO (veremos cómo hacerlo pronto), le hará las preguntas al usuario.
+
+El sistema de "prompts" es muy útil; puedes hacer preguntas solo si una pregunta anterior tiene cierto valor, etc.
+
+También puedes guardar algunas respuestas como preajustes (presets) para los próximos proyectos (como hace Vue CLI).
+
+[Más información sobre prompts](https://v1.saojs.org/saofile.html#prompts)
+
+## Actions
+
+La otra clave importante en el objeto de saofile son las acciones (`actions`). Definen las acciones a realizar. Lo importante es que las acciones pueden estar condicionadas por las respuestas del usuario.
+
+### Add
+
+Puedes copiar archivos desde un `templateDir` (en tu paquete create) al destino (el proyecto a crear). ¡Eso es lo que necesitábamos! ;)
+
+```js
+{
+  type: 'add',
+  files: '**',
+  templateDir: '/template',
+  ...
+}
+```
+
+Incluso podrías filtrar los archivos a añadir dependiendo de las respuestas del usuario.
+[Más información](https://v1.saojs.org/saofile.html#type-add)
+
+### Move
+
+Mueve archivos en el destino (el proyecto a crear).
+
+### Modify
+
+Modifica archivos en el destino (el proyecto a crear), lo cual también es muy interesante, por ejemplo, para actualizar archivos de configuración según lo que el usuario respondió.
+
+```js
+const packageName = this.packageName
+{
+  type: 'modify',
+  files: 'package.json',
+  handler: (data) {
+    data.name = packageName
+    return data
+  }
+}
+```
+
+En el ejemplo, cambiamos el nombre del proyecto en el `package.json` de acuerdo con las respuestas previas del usuario.
+
+### Delete
+
+Elimina archivos en el destino.
+
+## Ejecutando SAO
+
+Puedes ejecutar SAO desde la línea de comandos o desde tu archivo `cli.js`:
+
+```js
+sao({ ...customVariables })
+  .run()
+  .catch((err) => {
+    console.trace(err);
+    process.exit(1);
+  });
+```
+
+## Resumen
+
+Probablemente ya hayas trabajado antes con algo similar cada vez que has creado un proyecto con Vue CLI, Nuxt, React, etc.
+
+Esta es una introducción superficial a todas las funcionalidades de SAO, pero como puedes ver, las posibilidades para personalizar la creación de tus proyectos son altas.
+
+Podrías crear una plantilla con los archivos de configuración que usas habitualmente y almacenar el script de creación en NPM.js, en un registro privado, y cada vez que crees un proyecto, invocar `yarn create my-project-scaffolding` y empezar a programar sin necesidad de preparar manualmente los archivos de configuración o echar en falta alguna dependencia.

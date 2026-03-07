@@ -1,0 +1,48 @@
+---
+title: "Retirar tu librería porque hay otra mejor: ¡Es algo bueno!"
+lang: es
+pubDate: 2023-04-30
+slug: withdraw-your-library-there-is-another-better
+heroImage: ./unsplash_a2g3LM0cGFg.jpg
+tags:
+  - oss
+  - vue
+
+excerpt: En 2019 (hace casi 4 años) escribí un artículo sobre cómo manejar un :astro-ref[v-model personalizado en Vue 2]{path="blog/2019/tu-propio-v-model-en-un-componente-vue"}(español), en ese artículo explicaba cómo crear un v-model personalizado en Vue 2, las buenas prácticas para sincronizar la prop y el estado interno y cómo evitar el mensaje de advertencia "_Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop’s value._"
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+En 2019 (hace casi 4 años) escribí un artículo sobre cómo manejar un :astro-ref[v-model personalizado en Vue 2]{path="blog/2019/tu-propio-v-model-en-un-componente-vue"}(español), en ese artículo explicaba cómo crear un v-model personalizado en Vue 2, las buenas prácticas para sincronizar la prop y el estado interno y cómo evitar el mensaje de advertencia "_Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop’s value._"
+
+En resumen, la estrategia consistía en crear una variable local que sería la encargada de ser modificada por el input y que emitiría el evento al componente padre, y un watcher que se encargaría de modificar la variable local cuando la prop cambiara.
+
+Un año y medio después, cuando la Composition API llegó a Vue 2, y tras aburrirme de repetir el «mismo» código en cada componente para mantener el estado sincronizado, decidí crear una librería para simplificar esta tarea, así es como nació [vue-use-model-helpers](https://www.npmjs.com/package/vue-use-model-helpers).
+
+Esta librería fue muy útil para mí y para los equipos en los que trabajé, y la usamos en varios proyectos personales y profesionales simplificando mucho nuestro trabajo.
+
+Cuando se lanzó Vue 3, creé una nueva versión específica para esta versión, y empecé a pensar en hacer la librería compatible con Vue 2 y Vue 3 al mismo tiempo y mejorar el soporte de TypeScript. Para ello encontré [vue-demi](https://github.com/vueuse/vue-demi) y en este proceso, descubrí [vue-use](https://github.com/vueuse/vueuse), una librería realmente increíble.
+
+Esta librería incluye el composable [useVModel](https://vueuse.org/core/useVModel/) que hace lo mismo que mi librería pero mejor.
+
+Es más, leyendo sobre las macros del compilador de Vue encontré la macro [defineModels](https://vue-macros.sxzz.moe/macros/define-models.html) que utiliza vue-use internamente y te permite crear un v-model personalizado de una forma muy sencilla.
+
+Así que,
+
+> Decidí marcar mi librería como obsoleta (deprecate) y recomendar encarecidamente el uso de vue-use en su lugar.
+
+## ¿Qué pasa con los proyectos que están usando vue-use-model-helpers?
+
+Nada, pueden seguir usándola como antes, pero la migración a `useVModel` es bastante sencilla, solo hay que reemplazar la importación y sustituir la función `useModel` por `useVModel` añadiendo las opciones `{ passive: true }` y obtendrás el mismo comportamiento.
+
+## ¿Debería pensar que es una derrota?
+
+No lo creo. Pienso que es una victoria para mí: aprendí mucho en el proceso de creación de la librería, la estuvimos usando mucho y fue de gran ayuda, pudimos usar este comportamiento [casi un año antes](https://github.com/vueuse/vueuse/commit/9aa2c3aa5d3aeeb09412e44ecedd038d5bc2439f) de que se lanzara useVModel.
+
+Y, a nivel personal, me siento bastante bien de que la solución de la comunidad y ampliamente adoptada para este problema sea muy similar a la solución que diseñé y creé. Me siento orgulloso de ello.
+
+Pero como he mencionado, no tiene sentido seguir manteniendo una librería que ya no es necesaria, ahora es el momento de seguir adelante e intentar (si es posible) contribuir a vue-use (no solo en `useVModel`), me encanta la Composition API de Vue y los composables, los siento muy útiles y potentes.

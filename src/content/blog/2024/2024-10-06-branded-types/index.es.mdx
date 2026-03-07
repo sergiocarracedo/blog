@@ -1,0 +1,186 @@
+---
+title: Branded types en TypeScript
+lang: es
+pubDate: 2024-10-07
+heroImage: ./pexels-googledeepmind-17485819.jpg
+slug: branded-types
+tags:
+  - typescript
+
+excerpt: "Cuando modelas entidades con TypeScript, es muy común obtener una interfaz como:"
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Cuando modelas entidades con TypeScript, es muy común obtener una interfaz como:
+
+```ts
+interface User {
+  id: number
+  username: string
+  ...
+}
+
+interface Order {
+  id: number
+  userId: number
+  title: string
+  year: number
+  month: number
+  day: number
+  amount: { currency: 'EUR' | 'USD', value: number }
+  ...
+}
+```
+
+## El problema
+
+Los tipos de las propiedades no tienen significado semántico. En términos de tipos, `User.id`, `Order.id`, `Order.year`, etc., son lo mismo: un `number`.
+
+Siguiendo el ejemplo anterior, podemos tener un conjunto de funciones que realizan acciones sobre las entidades, por ejemplo:
+
+```ts
+function getOrdersFiltered(userId: number, year: number, month: number, day: number, amount: number) { // ...}
+
+function deleteOrder(id: number) { // ... }
+```
+
+Estas funciones aceptarán cualquier número en cualquier argumento, sin importar el significado semántico del número, por ejemplo:
+
+```ts
+const id = getUserId();
+deleteOrder(id);
+```
+
+Obviamente, esto es un gran error, y podría parecer fácil de evitar al leer el código, pero el código no siempre es tan simple como en el ejemplo.
+
+Lo mismo sucede con `getOrdersFiltered`: podemos intercambiar los valores de día y mes, y no recibiremos ninguna advertencia o error. Los errores ocurrirán (o no, si el día es menor que 12), pero es obvio que el resultado no será el esperado.
+
+## La solución
+
+Las reglas de "Object calisthenics" proporcionan una solución para esto: [Wrap all primitives and Strings](https://williamdurand.fr/2013/06/03/object-calisthenics/#3-wrap-all-primitives-and-strings) (Relacionado con el [antipatrón Primitive obsession](https://wiki.c2.com/?PrimitiveObsession)).
+
+La regla consiste en envolver los primitivos en un objeto que represente un significado semántico (DDD describe esto como ValueObjects).
+
+Pero con TypeScript no necesitamos usar clases u objetos para eso; podemos usar el sistema de tipos para asegurar que un número que representa algo diferente a un año no pueda usarse en lugar de un año.
+
+## Branded types
+
+Este patrón utiliza la extensibilidad de los tipos para añadir una propiedad que asegure el significado semántico:
+
+```ts
+type Year = number & { __brand: 'year' };
+```
+
+Esa simple línea crea un nuevo tipo que puede funcionar como un número, pero no es un número: es un año.
+
+```ts
+const year = 2012 as Year
+
+function age(year: Year): number { //... }
+
+age(2012) // ❌ El IDE mostrará un error ya que 2012 no es un Year
+age(year) // ✅
+```
+
+### Generalizando la solución
+
+Para evitar escribir un tipo por cada branded type, podemos crear un tipo de utilidad como:
+
+```ts
+declare const __brand: unique symbol;
+export type Branded<T, B> = T & { [__brand]: B };
+```
+
+Esto utiliza un `unique symbol` como nombre de la propiedad de marca para evitar conflictos con tus propiedades, y recibe el tipo original y la marca como parámetros genéricos.
+
+Con esto, podemos refactorizar nuestros modelos y funciones de la siguiente manera:
+
+```ts
+type UserId = Branded<number, 'UserId'>
+type OrderId = Branded<number, 'OrderId'>
+type Year = Branded<number, 'Year'>
+type Month = Branded<number, 'Month'>
+type Day = Branded<number, 'Day'>
+type Amount = Branded<{ currency: 'EUR' | 'USD', value: number}, 'Amount'>
+
+interface User {
+  id: UserId
+  username: string
+  ...
+}
+
+interface Order {
+  id: OrderId
+  userId: UserId
+  title: string
+  year: Year
+  month: Month
+  day: Day
+  amount: Amount
+  ...
+}
+
+function getOrdersFiltered(userId: UserId, year: Year, month: Month, day: Day, amount: Amount) { // ...}
+function deleteOrder(id: OrderId) { // ... }
+```
+
+Ahora, en este ejemplo, el IDE mostrará un error ya que `id` es un `UserId` y `deleteOrder` espera un `OrderId`.
+
+```ts
+const id = getUserId();
+deleteOrder(id); // ❌ El IDE mostrará un error ya que id es UserID y deleteOrder espera OrderId
+```
+
+### "Trade-off"
+
+Como un pequeño compromiso (trade-off), necesitarás usar `X as Brand`, por ejemplo `const year = 2012 as Year`, cuando crees un nuevo valor a partir de un primitivo, pero esto es el equivalente a un `new Year(2012)` si usaras objetos de valor (value objects). Puedes proporcionar una función que funcione como una especie de "constructor":
+
+```ts
+function year(year: number): Year {
+  return year as Year;
+}
+```
+
+## Validación
+
+Los branded types también son útiles para asegurar que los datos sean válidos, ya que puedes tener tipos específicos para datos validados y confiar en que el dato fue validado simplemente usando tipos.
+
+```ts
+type User = { id: UserId, email: Email}
+type ValidUser = Readonly<Brand<User, 'ValidUser'>>
+
+
+function validateUser(user: User): ValidUser {
+  // Comprueba si el usuario está en la base de datos
+  if (!/* lógica para comprobar que el usuario está en la base de datos */) {
+    throw new InvalidUser()
+  }
+
+  return user as ValidUser
+}
+
+// No podemos pasar simplemente un User, debe ser un ValidUser
+function doSomethingWithAValidUser(user: ValidUser) {
+
+}
+
+```
+
+`Readonly` no es obligatorio, pero para estar seguro de que tu código no cambiará los datos después de validarlos, es muy recomendable.
+
+## Resumen
+
+Los branded types son una solución sencilla que:
+
+- **Mejora la legibilidad del código**: Hace más claro qué valor debe usarse en cada argumento.
+- **Fiabilidad**: Ayuda a evitar errores en el código que pueden ser difíciles de detectar; ahora el IDE (y la comprobación de tipos) nos ayudan a detectar si el valor está en el lugar correcto.
+- **Validación de datos**: Puedes usar branded types para asegurar que los datos son válidos.
+
+Puedes pensar en los branded types como una especie de versión de los ValueObjects pero sin usar clases, solo tipos y funciones.
+
+Disfruta del poder del tipado.

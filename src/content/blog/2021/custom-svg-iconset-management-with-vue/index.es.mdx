@@ -1,0 +1,215 @@
+---
+title: Gestión de un conjunto de iconos SVG personalizados con Vue
+lang: es
+pubDate: 2021-04-01
+slug: custom-svg-icon-set-management-with-vue/
+heroImage: ./svg-iconset.jpg
+tags:
+  - svg
+  - ui
+
+excerpt: Gestionar un conjunto de iconos puede parecer una tarea sencilla, pero puede resultar complicado.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Gestionar un conjunto de iconos puede parecer una tarea sencilla, pero puede resultar complicado.
+
+En primer lugar, hay muchas formas de utilizar un icono en una página web, todas con sus pros y contras:
+
+Utilicemos esta imagen SVG creada por [Anu Rocks](https://freeicons.io/profile/730) para todos los ejemplos.
+
+**Asumiremos que nuestro conjunto de iconos es monocromático.**
+
+<div style="background: #fff; display: block; padding: 10px; width: 25px; height: 25px; margin: auto;">
+
+[![](example.svg)](https://freeicons.io/common-ui-icons/battery-medium-icon-54110)
+
+</div>
+
+## Etiqueta \<img\>
+
+La forma más sencilla de añadir un icono es utilizando la etiqueta `<img>` como con las demás imágenes.
+
+Ejemplo: `<img src="/i/example.svg" alt="Battery">`
+
+> También puedes usar la etiqueta `<object>` con el mismo resultado: `<object type="image/svg+xml" data="/i/example.svg"></object>`
+
+#### Ventajas:
+
+- Método sencillo
+- La imagen puede ser cacheada por el navegador: si la usas en varios lugares, solo necesita descargarse una vez
+- Buena usabilidad usando el atributo `alt`
+
+#### Desventajas:
+
+- Se pierde todo el estilo SVG mediante CSS (se puede seguir usando estilos sobre la etiqueta de imagen, pero por ejemplo, no puedes cambiar el color del trazo o stroke)
+- Se pierden todas las posibilidades de manipulación del DOM del SVG
+
+## CSS
+
+Otra forma de insertar un icono en tu página es creando un marcador de posición HTML y usar la imagen como fondo (background).
+
+HTML:
+
+```html
+Lorem ipsum dolor <span class="icon icon-battery" aria-label="Battery" title="Battery"></span> 50%
+```
+
+CSS:
+
+```css
+.icon {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+}
+.icon-battery {
+  background: url(/i/example.svg) no-repeat center center;
+  background-size: contain;
+}
+```
+
+> Observa el uso de `.5em` para el ancho y el alto para crear un contenedor con un tamaño relativo al tamaño de fuente del contenedor; `.5em` es mejor que 1em, porque 1em utiliza el tamaño completo, pero puedes jugar con el valor.
+
+Este método es muy similar al anterior en cuanto a ventajas y desventajas.
+También puedes insertar texto en la etiqueta `span` y...
+
+## Fuente (Font)
+
+Este método requiere un trabajo extra para convertir SVG a fuente. Se puede hacer [online](https://glyphter.com/):
+
+Una vez que tenemos los iconos como fuente, debemos importar la fuente:
+
+```css
+@font-face {
+  font-family: 'My icon set font';
+  font-style: normal;
+  font-weight: normal;
+  font-display: auto;
+  src: url('../webfonts/my-icon-set.eot');
+}
+```
+
+Para usar los iconos podemos usar el glifo asociado a un icono, por ejemplo, nuestro icono de batería puede ser la `A`:
+
+```html
+Lorem ipsum dolor <span style="font-family: 'My icon set font'" aria-label="Battery">A</span> 50%
+```
+
+Hay otra forma: usar el pseudo selector `:before` y la propiedad `content` en tu CSS para insertar el glifo de la fuente:
+
+```css
+.icon {
+  font-family: 'My icon set font';
+}
+
+.icon-batery:before {
+  content: 'A';
+}
+```
+
+```html
+Lorem ipsum dolor <i class="icon icon-battery" aria-label="Battery"></i> 50%
+```
+
+#### Ventajas
+
+- Es muy fácil cambiar el color del icono, el icono hereda el color del contexto
+- La fuente puede ser cacheada
+
+#### Desventajas
+
+- Requiere trabajo extra para convertir los iconos en fuentes
+- Añadir un nuevo icono requiere actualizar la fuente
+- Sin tree-shaking, los iconos no utilizados siguen ahí
+- Es confuso para los lectores de pantalla, porque estamos insertando texto
+- A veces la alineación con las fuentes de texto normales no es buena
+
+> Ten en cuenta que es posible definir una fuente usando solo SVG, pero este método no es totalmente compatible con los navegadores más utilizados: https://caniuse.com/svg-fonts
+
+## SVG en línea (Inline SVG)
+
+Este es mi método favorito en la mayoría de los casos. El método consiste en insertar el marcado SVG directamente en tu HTML.
+
+En nuestro ejemplo:
+
+```html
+Lorem ipsum dolor
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <path
+    fill-rule="evenodd"
+    d="M17,5 C18.5976809,5 19.9036609,6.24891996 19.9949073,7.82372721 L20,8 L20,8.17 L20.1933113,8.24671351 C21.1458614,8.66012858 21.8418803,9.55339202 21.9763495,10.6214854 L21.9949073,10.8237272 L22,11 L22,13 C22,14.2181391 21.2716631,15.274045 20.201161,15.7433631 L20,15.822 L20,16 C20,17.5385075 18.8418794,18.8065215 17.3498634,18.9798168 L17.1762728,18.9949073 L17,19 L5,19 C3.40231912,19 2.09633912,17.75108 2.00509269,16.1762728 L2,16 L2,8 C2,6.40231912 3.24891996,5.09633912 4.82372721,5.00509269 L5,5 L17,5 Z M17,7 L5,7 C4.48716416,7 4.06449284,7.38604019 4.00672773,7.88337887 L4,8 L4,16 C4,16.5128358 4.38604019,16.9355072 4.88337887,16.9932723 L5,17 L17,17 C17.5128358,17 17.9355072,16.6139598 17.9932723,16.1166211 L18,16 L18,15 C18,14.5004355 18.3670085,14.0840077 18.8498945,14.0112465 L18.9632725,14.0006747 L19.075685,13.9972247 C19.5546159,13.9618905 19.9369487,13.5888432 19.9929352,13.1192658 L20,13 L20,11 C20,10.4871642 19.6139598,10.0644928 19.1166211,10.0067277 L18.8833789,9.99327227 C18.424297,9.93995063 18.0600494,9.57570299 18.0067277,9.11662113 L18,9 L18,8 C18,7.48716416 17.6139598,7.06449284 17.1166211,7.00672773 L17,7 Z M11,9 C11.5522847,9 12,9.44771525 12,10 L12,14 C12,14.5522847 11.5522847,15 11,15 L7,15 C6.44771525,15 6,14.5522847 6,14 L6,10 C6,9.44771525 6.44771525,9 7,9 L11,9 Z"
+    fill="currentColor"
+  />
+</svg>
+50%
+```
+
+> Observa el uso de `currentColor` para el atributo fill para heredar el color de relleno del contexto CSS (color)
+
+#### Ventajas
+
+- Es muy fácil cambiar el color del icono, el icono hereda el color del contexto
+- Incluso si tu icono no es monocromático, puedes cambiar el color de cada trazo individualmente.
+- Se pueden manipular los elementos SVG de forma independiente
+- Los iconos se pueden animar (no solo haciendo una transformación del icono completo, sino que también puedes manipular cada trazo de forma independiente)
+
+#### Desventajas
+
+- No se puede cachear. Si los iconos aparecen en varios lugares, debes insertar el código completo.
+- En sitios estáticos añade muchos "bytes" al HTML.
+- Un cambio en tu icono requiere buscar y reemplazar en todas las apariciones del mismo.
+
+## SVG en línea encapsulado
+
+Podemos mejorar el método anterior utilizando Vue (u otro framework como React, Angular, etc., o simplemente usando web components). La idea es encapsular cada icono en un componente de Vue:
+
+```html
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg" :width="size" :height="size" viewBox="0 0 24 24">
+    <path
+      fill-rule="evenodd"
+      d="M17,5 C18.5976809,5 19.9036609,6.24891996 19.9949073,7.82372721 L20,8 L20,8.17 L20.1933113,8.24671351 C21.1458614,8.66012858 21.8418803,9.55339202 21.9763495,10.6214854 L21.9949073,10.8237272 L22,11 L22,13 C22,14.2181391 21.2716631,15.274045 20.201161,15.7433631 L20,15.822 L20,16 C20,17.5385075 18.8418794,18.8065215 17.3498634,18.9798168 L17.1762728,18.9949073 L17,19 L5,19 C3.40231912,19 2.09633912,17.75108 2.00509269,16.1762728 L2,16 L2,8 C2,6.40231912 3.24891996,5.09633912 4.82372721,5.00509269 L5,5 L17,5 Z M17,7 L5,7 C4.48716416,7 4.06449284,7.38604019 4.00672773,7.88337887 L4,8 L4,16 C4,16.5128358 4.38604019,16.9355072 4.88337887,16.9932723 L5,17 L17,17 C17.5128358,17 17.9355072,16.6139598 17.9932723,16.1166211 L18,16 L18,15 C18,14.5004355 18.3670085,14.0840077 18.8498945,14.0112465 L18.9632725,14.0006747 L19.075685,13.9972247 C19.5546159,13.9618905 19.9369487,13.5888432 19.9929352,13.1192658 L20,13 L20,11 C20,10.4871642 19.6139598,10.0644928 19.1166211,10.0067277 L18.8833789,9.99327227 C18.424297,9.93995063 18.0600494,9.57570299 18.0067277,9.11662113 L18,9 L18,8 C18,7.48716416 17.6139598,7.06449284 17.1166211,7.00672773 L17,7 Z M11,9 C11.5522847,9 12,9.44771525 12,10 L12,14 C12,14.5522847 11.5522847,15 11,15 L7,15 C6.44771525,15 6,14.5522847 6,14 L6,10 C6,9.44771525 6.44771525,9 7,9 L11,9 Z"
+      fill="currentColor"
+    />
+  </svg>
+</template>
+<script>
+  export default {
+    name: 'battery-icon',
+    props: {
+      size: [String, Number]
+    }
+  })
+</script>
+```
+
+He añadido la propiedad `size` para que el icono sea redimensionable sin necesidad de CSS, y como conoces la relación de aspecto del icono, solo necesitas una dimensión.
+Si la relación de aspecto del icono no fuera 1:1, solo tendrías que hacer el cálculo en el componente:
+
+Por ejemplo, un icono con una relación de aspecto de 16:10 (usando la altura como dimensión base):
+
+```
+<svg xmlns="http://www.w3.org/2000/svg" :width="size * 15 / 24" :height="size" viewBox="0 0 24 15">
+```
+
+Debes crear un componente para cada icono, e insertarlo en tu página es sencillo, solo tienes que insertar el componente:
+
+```html
+Lorem ipsum dolor <battery-icon size="11"> 50%</battery-icon>
+```
+
+Con este método, puedes encapsular el marcado del icono y su lógica (por ejemplo, puedes añadir una propiedad para establecer el color de la barra en el icono de la batería, o incluso el tamaño de la barra, creando un icono dinámico).
+
+Si tu página no es una página SSR, evitas la desventaja de la caché porque el marcado de tu icono no se repite en tu código (aunque está en la memoria del navegador).
+
+Además, la desventaja de tener que reemplazar todas las apariciones se soluciona con este método.
+
+Usando este método, los iconos no utilizados no se incluyen en el paquete final (bundle) porque tu empaquetador (por ejemplo, _webpack_) realiza el tree-shaking antes de la compilación.
+
+Un buen ejemplo de proyecto que utiliza este método es https://www.npmjs.com/package/vue-material-design-icons, un wrapper de Vue para el excelente proyecto https://materialdesignicons.com/

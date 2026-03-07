@@ -1,0 +1,144 @@
+---
+title: Cómo saber qué versión de tu frontend está desplegada
+lang: es
+pubDate: 2026-01-30T00:00:00.000Z
+slug: how-to-know-which-version-of-your-frontend-is-deployed
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+tags:
+  - ci-cd
+  - release
+  - vite
+  - javascript
+  - typescript
+excerpt: Aprende cómo incrustar información de versión en el build de tu frontend para que puedas verificar instantáneamente qué código está realmente desplegado en producción.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Hoy en día, cuando despliegas una nueva versión de tu aplicación frontend, no subes tu código directamente a producción. En su lugar, ejecutas (normalmente de forma automática) un pipeline de despliegue en el CI que construye tu aplicación, ejecuta pruebas y, finalmente, despliega los assets generados en un servicio de hosting.
+
+Este proceso lleva algo de tiempo, y cuando varios desarrolladores trabajan en la misma base de código, puede ocurrir que mientras un desarrollador está desplegando una nueva versión, otro suba nuevos cambios a la rama principal y dispare un nuevo pipeline de despliegue. Esto crea una condición de carrera (race condition) en el despliegue: si varios pipelines se ejecutan simultáneamente, el último en terminar determina qué código queda desplegado, independientemente de cuál se activó primero. Esto significa que realmente no sabes qué versión del código está desplegada actualmente a menos que revises los logs de despliegue o la página de estado del CI, lo cual es lento y requiere mucho trabajo.
+
+Saber exactamente qué versión de tu frontend está desplegada es crucial para depurar errores, brindar soporte al usuario y asegurar que los hotfixes se hayan implementado correctamente.
+
+Necesitamos una forma mejor (más sencilla y rápida) de saber qué versión de nuestra aplicación frontend está desplegada actualmente.
+
+## El desafío de la caché del navegador
+
+Esto también se aplica a la caché del navegador. Incluso si la versión desplegada es la correcta, es posible que el navegador siga sirviendo una versión antigua de los assets desde su caché, lo que genera confusión. Por lo tanto, también necesitamos saber qué versión de los assets está utilizando el navegador.
+
+## Solución
+
+La solución más fiable es incrustar la información de la versión directamente en el punto de entrada HTML (`index.html`), ya que este archivo es lo primero que carga el navegador y ayuda a evitar la mayoría de los problemas de caché.
+
+Aunque podrías incluir la versión en un archivo de texto o JSON separado, este enfoque tiene desventajas. Si el archivo no se había accedido antes y le pides al usuario que lo recupere para obtener la versión, obtendrás la correcta, pero el navegador aún podría estar sirviendo una versión cacheada del punto de entrada. Dado que en una SPA el punto de entrada suele ser `index.html`, este archivo es el mejor candidato para incluir la información de la versión.
+
+## ID de versión
+
+Necesitamos definir cómo obtendremos la versión de nuestro código. Debe ser un número o cadena que identifique el build de forma única y que puedas usar en otros lugares para relacionarlo con la base de código. Eso dependerá de tu estrategia de despliegue. Por ejemplo:
+
+- **Git tag**: `v1.2.3` - si usas etiquetas de git para marcar versiones.
+- **Commit hash**: `a1b2c3d` - para rastrear instantáneas exactas del código.
+- **PR number**: `pr-1234` - útil para despliegues de vista previa (preview deployments).
+- **CI build number**: `build-5678` - si usas una herramienta de CI/CD que proporcione números de compilación.
+
+También puedes combinarlo con el entorno de despliegue (por ejemplo, `production`, `staging`, `development`) para que sea más informativo, como `production-v1.2.3` o `staging-pr-1234`.
+
+## Implementación
+
+Asumiré que estás usando Vite como herramienta de construcción (build tool), pero puedes encontrar una manera de aplicar este enfoque a otras herramientas como webpack o rollup.
+
+Crearemos un plugin de Vite sencillo que reemplazará marcadores de posición (placeholders) en el archivo `index.html` con la información de la versión.
+
+```ts
+// htmlEnvPlugin.ts
+export const htmlEnvPlugin = (
+  env: Record<string, string>
+): {
+  name: string;
+  transformIndexHtml: (html: string) => string;
+} => {
+  return {
+    name: 'html-transform',
+    transformIndexHtml: (html: string): string =>
+      // Replace placeholders like %PLACEHOLDER% with values from env object
+      // The regex /%(.*?)%/g matches any text between % symbols
+      // p1 captures the placeholder name, which is used as a key to lookup the value
+      html.replace(/%(.*?)%/g, (match, p1) => env[p1] ?? ''),
+  };
+};
+```
+
+Este plugin buscará marcadores con el formato `%PLACEHOLDER%` y los reemplazará con el valor correspondiente del objeto `env`. Este enfoque de marcadores te permitirá añadir más información de las variables de entorno si es necesario, por ejemplo, la fecha/hora del build.
+
+Ahora, necesitamos usar este plugin en el archivo de configuración de Vite y pasar la información de la versión desde las variables de entorno.
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import { htmlEnvPlugin } from './htmlEnvPlugin'
+
+export default defineConfig({
+  plugins: [
+    htmlEnvPlugin({
+      BUILD_VERSION: process.env.BUILD_VERSION || 'dev',
+      BUILD_DATE: new Date().toISOString()
+    })
+  ]
+})
+}
+```
+
+Necesitamos añadir el marcador de posición en el archivo `index.html`.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  // ....
+</html>
+<!-- Build version: %BUILD_VERSION% -->
+<!-- Build date: %BUILD_DATE% -->
+```
+
+Alternativamente, si necesitas acceso programático a la información de la versión desde JavaScript, puedes usar etiquetas `<meta>` en la sección `<head>`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="build-version" content="%BUILD_VERSION%" />
+    <meta name="build-date" content="%BUILD_DATE%" />
+    <!-- ... other head elements ... -->
+  </head>
+  <body>
+    // ....
+  </body>
+</html>
+```
+
+Esto te permite leer la versión en el código de tu aplicación:
+
+```js
+const version = document.querySelector('meta[name="build-version"]')?.content;
+const buildDate = document.querySelector('meta[name="build-date"]')?.content;
+```
+
+Finalmente, necesitamos configurar la variable de entorno `BUILD_VERSION` en el pipeline de CI antes de ejecutar el comando de build. Cómo hagas esto dependerá de tu herramienta de CI, pero supongamos que usas GitHub Actions. Puedes usar el siguiente paso para configurar la variable usando el número de la PR.
+
+```yaml
+- name: Set build version
+  run: echo "BUILD_VERSION=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+```
+
+Con esta configuración, cada vez que despliegues una nueva versión de tu aplicación frontend, el archivo `index.html` incluirá la versión y la fecha del build, permitiéndote verificar fácilmente qué versión está desplegada actualmente simplemente inspeccionando el código fuente HTML en el navegador.
+
+Puedes usar este enfoque para incluir otra información interesante, por ejemplo, la versión de la API del backend que está utilizando tu frontend.
+
+## Conclusión
+
+Al incrustar la información de la versión directamente en tu archivo `index.html`, eliminas la incertidumbre sobre qué código se está ejecutando en producción. Este enfoque sencillo proporciona visibilidad inmediata sobre tus despliegues, ayuda a depurar problemas más rápido y garantiza que tu equipo pueda verificar rápidamente que los hotfixes críticos se han implementado con éxito.

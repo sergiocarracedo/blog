@@ -1,0 +1,156 @@
+---
+title: Estrechamiento de tipos (type narrowing), protectores de tipos (type guards) y predicados de tipos (type predicates) en TypeScript ([var] is [type])
+lang: es
+pubDate: 2022-11-15T00:00:00.000Z
+slug: typescript-type-narrowing
+heroImage: ./jakob-braun-HTGrBFwlYLA-unsplash.jpg
+tags:
+  - typescript
+  - javascript
+
+excerpt: Una característica útil en TypeScript son los _union types_ (tipos de unión), por ejemplo `string | number | null`; es una forma de especificar un argumento, retorno o variable que puede recibir valores con diferentes tipos.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Una característica útil en TypeScript son los _union types_ (tipos de unión), por ejemplo `string | number | null`; es una forma de especificar un argumento, retorno o variable que puede recibir valores con diferentes tipos.
+
+El **Type Narrowing** (estrechamiento de tipos) es una técnica que permite al compilador de TypeScript **reducir** los tipos de un valor evaluando **cláusulas de guarda** en tiempo de compilación.
+
+Veamos un ejemplo sencillo: imagina que tenemos una función para convertir a mayúsculas un valor que puede ser `number`, `string` o simplemente `null`. Dentro de la función necesitamos manejar los diferentes casos, pero al mismo tiempo TypeScript puede entender los tipos y reducir el tipo del valor al tipo correcto en cada rama del código.
+
+```
+function uppercase(value: string | number | null ): string { // Here value's type is string | number | null
+  if (value === null) {
+    console.log(value) // Here value's type is null
+    return ""
+  }
+
+  if (typeof value === 'number') {
+    // Here value's type is number
+    value = value.toString()
+  }
+  // Here we can be sure the value's type is string
+  return value.toUpperCase()
+}
+```
+
+Puedes comprobarlo por ti mismo pasando el cursor sobre `value` a lo largo del código en el [Typescript's playground](https://www.typescriptlang.org/play?ssl=13&ssc=1&pln=1&pc=1#code/GYVwdgxgLglg9mABCADigpgJwgQwM7oAUAbjgDYjoBcieUmMYA5ogD6JggC2ARlmxxBkyiAJQ06DZogDeAKESIYwRCXKVEAXm2Dho2QsWIICPHDLoAdGThM1FdKMOLM6KCExIARF8MBfOUNlVSgATww4FVIHLR0Ack5eLDj9eSNEaI1NDPUrKDgAZXpGOydFAMNXd08ch0t8gFU0LABhfCJ9OQCgA)
+
+Ten en cuenta que el estrechamiento de tipos no consiste en reducir los tipos a uno solo; en nuestro ejemplo, la línea 2 (`if (value === null)`) asegura que el valor es `null`, pero una guarda como `if (value)` solo elimina la posibilidad de que sea `null`, por lo que después de esta guarda el tipo de `value` es `number | string`.
+
+# Por qué usar type narrowing
+
+Cuando un valor puede tener múltiples tipos posibles (union type), es importante manejar los valores de la manera correcta para evitar errores en tiempo de ejecución, como en una función simple como la del ejemplo:
+
+```js
+function uppercase(value) {
+  return value.toUpperCase();
+}
+```
+
+es completamente válida en JavaScript puro (vanilla), pero puede fallar en tiempo de ejecución si el valor es un número o null. Usar TypeScript te da la posibilidad de escribir mejor código, ya que te "obliga" a escribir código para manejar el caso de cada tipo, y es ahí cuando se realiza el estrechamiento de tipos.
+
+# Type guards
+
+Como mencioné, los type guards son una forma de realizar el estrechamiento de tipos estableciendo una condición que el compilador de TypeScript puede evaluar y reducir inequívocamente los tipos que la variable puede tener.
+
+Es importante notar que los type guards son relativos al tipado en tiempo de compilación, no en tiempo de ejecución. Por lo tanto, no todas las guardas que se te ocurran son válidas como type guard; recuerda: **el valor debe poder inferirse en tiempo de compilación, no por el valor en tiempo de ejecución**.
+
+Existen muchos type guards diferentes: `typeof`, `instanceof`, el operador `in`, **predicados de tipos** (type predicates), uniones discriminadas, el operador de igualdad, etc.
+
+No quiero profundizar en todos los tipos; la [documentación oficial de TypeScript](https://www.typescriptlang.org/docs/handbook/2/narrowing.html) es muy buena y no hay mucho más que añadir. De todos modos, quiero centrarme y proporcionar más información sobre los predicados de tipos (type predicates), que tienen una sintaxis interesante y no son muy comunes, pero sí útiles.
+
+## Type predicates
+
+En algunos casos, la lógica para realizar el estrechamiento de tipos puede ser un poco compleja (más que un simple `typeof` o una unión discriminada) y sería ideal extraer la lógica de estrechamiento. Veamos un ejemplo; imagina que tenemos estas interfaces:
+
+```typescript
+interface Shape {
+  type: 'square' | 'ellipse';
+}
+
+interface Circle extends Shape {
+  type: 'ellipse';
+  radius: number;
+}
+
+interface Ellipse extends Shape {
+  type: 'ellipse';
+  radius1: number;
+  radius2: number;
+}
+
+interface Square extends Shape {
+  type: 'square';
+  side: number;
+}
+```
+
+y una función para calcular el área dependiendo de la forma:
+
+```typescript
+function area(shape: Circle | Square | Ellipse): number {
+  if (shape.type === 'square') {
+    // shape's type is Square
+    return shape.side * 2;
+  }
+
+  if (shape.type === 'ellipse' && !('radius2' in shape)) {
+    // shape's type is Circle
+    return shape.radius * shape.radius * Math.PI;
+  }
+
+  // shape's type is Ellipse
+  return shape.radius1 * shape.radius2 * Math.PI;
+}
+```
+
+Esto funciona perfectamente: el código, el estrechamiento de tipos, etc. Ahora imagina que quieres extraer la lógica para saber si la forma es un círculo; simplemente mueve la lógica a una función:
+
+```typescript
+function isCircle(shape: Shape): boolean {
+  return shape.type === 'ellipse' && !('radius2' in shape);
+}
+```
+
+Y así queda la función después de la refactorización:
+
+```typescript
+function area(shape: Circle | Square | Ellipse): number {
+  if (shape.type === 'square') {
+    // shape's type is type is Square
+    return shape.side * 2;
+  }
+
+  if (isCircle(shape)) {
+    // shape's type is Circle | Ellipse
+    return shape.radius * shape.radius * Math.PI;
+  }
+
+  // shape's type is Circle | Ellipse
+  return shape.radius1 * shape.radius2 * Math.PI;
+}
+```
+
+Nota que ahora el tipo después de la función `isCircle` sigue siendo `Circle | Ellipse`, por lo que el estrechamiento no está funcionando. ¿Pero por qué? **El estrechamiento no funciona** porque `isCircle` devuelve un `boolean` y el **compilador no es lo suficientemente inteligente como para conocer el significado semántico de este booleano**. Por esto es que necesitamos un **predicado de tipo** (type predicate).
+
+Simplemente cambiando un poco el tipo de retorno de la función podemos lograr nuestro objetivo:
+
+```typescript
+function isCircle(shape: Shape): shape is Circle {
+  return shape.type === 'ellipse' && !('radius2' in shape);
+}
+```
+
+El tipo de retorno `[argumento] is [tipo]` sigue siendo un booleano, pero ahora tiene un significado y permite al compilador de TypeScript saber si un argumento es del tipo especificado.
+
+> En este punto, quiero comentarte que el compilador de TypeScript no es perfecto, y mientras escribía este post encontré un error en el estrechamiento de tipos: si `Circle` y `Ellipse` comparten el atributo `radius`, el compilador sigue infiriendo `Circle | Ellipse` en la función `isCircle`.
+
+## Resumen
+
+Los beneficios del estrechamiento de tipos son simplemente los beneficios de usar TypeScript: tipado fuerte y más control sobre los valores. Aun así, es bueno saber más sobre cómo funciona el compilador para tener una mejor comprensión del lenguaje.

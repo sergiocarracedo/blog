@@ -10,14 +10,23 @@ function findAndLoadEntryFile(postPath, extensions, file, node, contentBaseDir) 
   const baseDir = contentBaseDir || pathModule.resolve(process.cwd(), 'src/content');
   const entryFile = pathModule.join(baseDir, postPath);
   if (fs.existsSync(entryFile) && fs.lstatSync(entryFile).isDirectory()) {
-    // Try all possible index extensions in order
+    // Try all possible index extensions in order, including locale-specific variants
+    const candidates = [];
     for (const ext of extensions) {
-      const candidate = pathModule.join(entryFile, `index.${ext}`);
-      if (fs.existsSync(candidate)) {
-        return fs.readFileSync(candidate, 'utf8');
+      candidates.push(`index.${ext}`); // index.mdx, index.md
+      candidates.push(`index.es.${ext}`); // index.es.mdx (ES-original renamed posts)
+      candidates.push(`index.en.${ext}`); // index.en.mdx (EN translation of ES-original)
+    }
+    for (const candidate of candidates) {
+      const candidatePath = pathModule.join(entryFile, candidate);
+      if (fs.existsSync(candidatePath)) {
+        return fs.readFileSync(candidatePath, 'utf8');
       }
     }
-    file.fail(`Could not find any index file (index.[${extensions.join(', ')}]) in directory: ${postPath}`, node);
+    file.fail(
+      `Could not find any index file (index.[${extensions.join(', ')}]) in directory: ${postPath}`,
+      node
+    );
   } else if (fs.existsSync(entryFile)) {
     // If postPath is a file, just read it
     return fs.readFileSync(entryFile, 'utf8');
@@ -42,10 +51,7 @@ export function remarkDirectiveAstroEntryRef(options = {}) {
       const postFragment = attributes.fragment;
 
       if (node.type !== 'textDirective') {
-        file.fail(
-          'Unexpected `::entry-ref` directive, use one colon for a text directive',
-          node
-        );
+        file.fail('Unexpected `::entry-ref` directive, use one colon for a text directive', node);
       }
 
       if (!postPath) {
@@ -71,7 +77,12 @@ export function remarkDirectiveAstroEntryRef(options = {}) {
       node.url = `${idOrSlug}${postFragment ? `#${postFragment}` : ''}`;
       // Use the text between [] in the directive (node.children[0].value) as link text, fallback to entry title, then idOrSlug
       let linkText = idOrSlug;
-      if (Array.isArray(node.children) && node.children.length > 0 && node.children[0].type === 'text' && node.children[0].value) {
+      if (
+        Array.isArray(node.children) &&
+        node.children.length > 0 &&
+        node.children[0].type === 'text' &&
+        node.children[0].value
+      ) {
         linkText = node.children[0].value;
       } else {
         const parsed = matter(fileContent);

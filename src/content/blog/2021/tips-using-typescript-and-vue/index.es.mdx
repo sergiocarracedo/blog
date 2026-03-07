@@ -1,0 +1,258 @@
+---
+title: Consejos para usar TypeScript y Vue
+lang: es
+pubDate: 2021-04-25
+slug: tips-using-typescript-and-vue/
+heroImage: ./vue-typescript-tips-rF4kuvgHhU-unsplash.jpg
+tags:
+  - typescript
+  - vue
+
+excerpt: TypeScript es un gran "lenguaje", permite crear software más mantenible y comprensible, pero requiere un esfuerzo extra para tipar las variables, los argumentos de las funciones, etc.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+TypeScript es un gran "lenguaje", permite crear software más mantenible y comprensible, pero requiere un esfuerzo extra para tipar las variables, los argumentos de las funciones, etc.
+
+Vue 2.x, y aún más Vue 3, proporcionan una gran integración con TypeScript, ofreciendo los tipos necesarios para usar tu aplicación, pero no siempre son triviales y necesitas conocer los tipos que debes usar en cada caso.
+
+Quiero compartir con todos vosotros las lecciones que aprendí en mi experiencia usando Vue y TS, las preguntas típicas y los "problemas" que encontré en el camino.
+
+# Vuex
+
+Tipar el store de Vuex puede no ser sencillo; mi primera vez tipando el store fue frustrante porque no sabía qué tipos usar.
+
+## State
+
+El state es un objeto JS, en TypeScript puedes tiparlo como un genérico `Record<string, any>` pero esto no es ideal. Es mejor crear una interfaz que defina todos los tipos de los elementos del store, por ejemplo, imagina este store:
+
+```js
+const store = {
+  name: 'Sergio',
+  lastLogin: new Date(2021, 0, 1, 22, 34),
+  config: {
+    darkTheme: true,
+    fontSize: 23,
+  },
+  friends: [
+    { id: 1, name: 'Juan' },
+    { id: 2, name: 'Felipe' },
+  ],
+};
+```
+
+Debemos crear una interfaz para este objeto:
+
+```ts
+interface Friend {
+  id: number;
+  name: string;
+}
+interface StoreState {
+  name: string;
+  lastLogin?: Date;
+  config: {
+    darkTheme: boolean;
+    fontSize: number;
+  };
+  friends: Friend[];
+}
+const store: StoreState = {
+  name: 'Sergio',
+  lastLogin: new Date(2021, 0, 1, 22, 34),
+  config: {
+    darkTheme: true,
+    fontSize: 23,
+  },
+  friends: [
+    { id: 1, name: 'Juan' },
+    { id: 2, name: 'Felipe' },
+  ],
+};
+```
+
+## Mutations
+
+Para las mutaciones, Vuex proporciona el tipo `MutationTree<S>`, definido como:
+
+```ts
+interface MutationTree<S> {
+  [key: string]: Mutation<S>;
+}
+type Mutation<S> = (state: S, payload?: any) => any;
+```
+
+Básicamente es un mapa de funciones de mutación; como puedes ver, una función de mutación obtiene el tipo del state, pero el payload puede ser cualquier cosa y devolver cualquier cosa.
+
+```ts
+const mutations: MutationTree<StoreState> = {
+  setName(store, payload: string) {
+    store.name = payload;
+  },
+};
+```
+
+> Como el payload está definido por el tipo como `any`, es una buena práctica tipar tu payload en cada función de mutación.
+
+## Actions
+
+Es similar a las mutaciones, pero con una peculiaridad:
+
+```ts
+interface ActionTree<S, R> {
+  [key: string]: Mutation<S, R>;
+}
+type Action<S, R> = ActionHandler<S, R> | ActionObject<S, R>;
+```
+
+Sin entrar en detalles, `S` es el state del módulo de Vuex y `R` es el **Root State**. En un caso simple (sin usar módulos de Vuex), `S` y `R` son lo mismo.
+
+## Getters
+
+Igual que las acciones,
+
+```ts
+interface GetterTree<S, R> {
+  [key: string]: Getter<S, R>;
+}
+```
+
+Por ejemplo:
+
+```ts
+const getters: GetterTree<StoreState, StoreState> = {
+  friendCount(store): number {
+    return store.friends.length;
+  },
+};
+```
+
+> Al igual que con los parámetros del payload del store, es una buena práctica tipar el retorno del getter.
+
+# Composition API
+
+Si estás usando la Composition API en la función setup, podemos tipar nuestras propiedades como hicimos en el store. Asegúrate de usar `defineComponent` en lugar de `Vue.extend` para que funcione.
+
+```ts
+interface Props {
+    value: boolean,
+    title: string
+}
+
+export default defineComponent({
+    name: 'my-component',
+    props: {
+        value: Boolean,
+        title: String
+    },
+    setup (props: Props) {
+     ...
+    }
+})
+```
+
+También puedes tipar las propiedades directamente en la entrada `props`, pero como las **interfaces de TypeScript no existen en tiempo de ejecución**, no podemos usar la interfaz directamente como el tipo de la propiedad.
+
+```ts
+// Doesn't work because Friend doesn't exists in the runtime
+{
+  props: {
+    friend: {
+      type: Friend;
+    }
+  }
+}
+// Doesn't work because Object doesn't implement Friend properties
+{
+  props: {
+    friend: {
+      type: Object as Friend;
+    }
+  }
+}
+```
+
+Pero podemos pasar el tipo como el retorno de una función, entonces la instancia de Vue puede realizar el casting y comprobar el tipo del valor.
+
+```ts
+// Works
+{
+  props: {
+    friend: Object as () => Friend,
+    friends: Array as () => Friend[],
+    name: String as () => string
+  }
+}
+```
+
+[Lee más sobre esto](https://frontendsociety.com/using-a-typescript-interfaces-and-types-as-a-prop-type-in-vuejs-508ab3f83480)
+
+Recuerda tipar los tipos "nativos" porque `String` no es lo mismo que `string` (`String` es un objeto y `string` es un tipo). [Más información sobre esto en Stackoverflow](https://stackoverflow.com/a/14727461)
+
+# Añadir propiedades extra al Objeto de Componente de Vue
+
+Por defecto, Vue nos proporciona una estructura definida para el Objeto de Componente de Vue, por ejemplo, la propiedad `data`, `props`, etc. Usando JS puro podemos añadir una nueva propiedad al Objeto de Componente de Vue sin hacer trabajos extra; por ejemplo, queremos añadir una propiedad llamada `layout` que permita que nuestro componente raíz use diferentes diseños en nuestra vista.
+
+```js
+export default {
+  name: 'my-component',
+  layout: '2-cols',
+};
+```
+
+Si intentamos hacer esto usando TypeScript obtendremos un error porque la propiedad `layout` no estaba definida en el Objeto de Componente de Vue. Para solucionarlo debemos extender la definición creando un archivo de definición en nuestro `src/`, por ejemplo, `src/typings.d.ts`.
+
+```ts
+# src/typings.d.ts
+import Vue from 'vue'
+
+declare module 'vue/types/options' {
+  interface ComponentOptions<V extends Vue> {
+    layout?: string;
+  }
+}
+```
+
+# Añadir propiedades extra a la Instancia de Vue
+
+Como en el capítulo anterior, podríamos querer añadir una nueva propiedad a la Instancia de Vue, por ejemplo, para añadir una funcionalidad global como un toast, etc: `vm.$toast.open()`.
+
+Recuerda que puedes hacerlo haciendo algo como esto, por ejemplo, durante la instalación del plugin:
+
+```js
+Vue.prototype.$toast = {
+    open: () => {
+        ....
+    }
+} as ToastHandler
+```
+
+Luego debemos añadir a nuestro archivo de _definición_ estas líneas para declarar las nuevas propiedades de la instancia de Vue y sus tipos.
+
+```ts
+# src/typings.d.ts
+import Vue from 'vue'
+declare module 'vue/types/vue' {
+  interface Vue {
+    $toast: ToastHandler;
+  }
+}
+```
+
+TypeScript puede ser difícil al principio, pero te da más confianza en tu código y lo hace más legible, por ejemplo:
+
+```ts
+{
+    props: {
+        friend: Object as () => Friend,
+        person: Object
+    }
+}
+```
+
+Por ejemplo, en el caso de `friend` solo necesitas ir a las declaraciones de tipos para conocer la estructura y propiedades de `friend`, incluso tu IDE puede ofrecerte autocompletado, pero para `person` es muy difícil conocer la estructura del objeto. Espero que este post te ayude a usar TypeScript y Vue.

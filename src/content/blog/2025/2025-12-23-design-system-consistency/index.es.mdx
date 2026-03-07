@@ -1,0 +1,85 @@
+---
+title: "Patrones de sistemas de diseño: consistencia en la UX"
+lang: es
+pubDate: 2026-1-6
+slug: design-system-ux-patterns-consistency
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+tags:
+  - design system
+  - ux
+
+excerpt: Un sistema de diseño es una colección de componentes reutilizables —que abarca elementos de UI, patrones, guías, código y documentación— que ayuda a los equipos a construir productos de manera más efectiva. Sin embargo, tener estos componentes no es suficiente. El verdadero poder de un sistema de diseño reside en la consistencia con la que se aplican estos componentes en todo el producto.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+Un sistema de diseño es una colección de componentes reutilizables —que abarca elementos de UI, patrones, guías, código y documentación— que ayuda a los equipos a construir productos de manera más efectiva. Sin embargo, tener estos componentes no es suficiente. El verdadero poder de un sistema de diseño reside en la consistencia con la que se aplican estos componentes en todo el producto.
+
+Uno de los objetivos principales de un sistema de diseño es garantizar la consistencia visual y de comportamiento en un producto, creando una experiencia de usuario unificada independientemente de la página que el usuario esté visitando. La consistencia es igualmente importante desde el punto de vista del desarrollador, al proporcionar un lenguaje común y patrones a seguir.
+
+## ¿Por qué es importante la consistencia en un sistema de diseño?
+
+- **Usabilidad mejorada**: Cuando los usuarios encuentran patrones de diseño e interacciones consistentes, pueden navegar y usar el producto más fácilmente. La familiaridad con los componentes y comportamientos reduce la curva de aprendizaje, minimiza los errores y disminuye la frustración del usuario.
+
+- **Identidad de marca más sólida**: Los patrones de diseño consistentes ayudan a reforzar la identidad de marca al crear una experiencia visual e interactiva cohesiva que los usuarios pueden reconocer y en la que pueden confiar.
+
+- **Mayor eficiencia en el desarrollo**: Un sistema de diseño consistente desde el punto de vista del desarrollador acelera el desarrollo y permite que los desarrolladores se concentren en construir valor real en lugar de reinventar soluciones para problemas comunes.
+
+
+## ¿Cómo lograr la consistencia en un sistema de diseño?
+
+Entender por qué la consistencia importa es una cosa; lograrla en la práctica es otra. Exploremos las áreas clave donde se debe mantener la consistencia.
+
+### Posición y variante de los elementos
+
+El usuario debe esperar encontrar ciertos elementos en ubicaciones específicas en toda la aplicación. Por ejemplo, las acciones de la página (primaria, secundaria, etc.) deberían estar siempre en el mismo lugar, como la esquina superior derecha. Además, las variantes deben ser consistentes; en el ejemplo, el botón de acción primaria debería verse igual.
+
+Los usuarios confían en la memoria muscular para interactuar con las aplicaciones de manera eficiente. Cuando los elementos aparecen consistentemente en las ubicaciones esperadas con apariencias familiares, los usuarios pueden realizar acciones casi automáticamente. Mover o cambiar estos elementos interrumpe este comportamiento aprendido y puede generar confusión y errores.
+
+Como ejemplo, si el botón de acción primaria es siempre el primer botón (empezando de derecha a izquierda) en un diálogo, pero en algunos casos en esa posición está el botón de acción secundaria (botón de cerrar), el usuario podría hacer clic en el botón equivocado por error.
+
+Nótese que esto no se trata solo de la posición, sino también de decidir y mantenerse firme en qué acciones son primarias, secundarias, etc.
+
+### Convenciones de nomenclatura
+> Solo hay dos cosas difíciles en las Ciencias de la Computación: la invalidación de caché y poner nombre a las cosas. -- Phil Karlton
+
+Esta cita clásica se aplica igualmente a las etiquetas y terminología orientadas al usuario. Una nomenclatura consistente ayuda a los usuarios a construir un modelo mental de la aplicación y reduce la carga cognitiva.
+
+Consideremos los botones de envío de formularios: si un formulario usa "Submit", otro usa "Save" y un tercero usa "Send", los usuarios deben detenerse a interpretar qué hace cada botón, a pesar de que todos realizan acciones similares. La misma acción debería usar siempre la misma etiqueta en toda la aplicación.
+
+Esto puede parecer trivial, pero es un problema común, especialmente en organizaciones grandes donde múltiples equipos trabajan en diferentes partes del producto. Sin guías de nomenclatura claras en el sistema de diseño, cada equipo desarrolla naturalmente su propio vocabulario, creando una experiencia de usuario fragmentada.
+
+
+
+### Comportamiento consistente de los componentes
+
+Más allá de la consistencia visual y la nomenclatura, la forma en que se comportan los componentes es igualmente crítica para una experiencia de usuario unificada.
+
+Los componentes deben comportarse de manera consistente en toda la aplicación o, si el comportamiento cambia por alguna razón específica, el usuario debe ser consciente de ello. 
+
+Por ejemplo, en un proyecto en el que estoy trabajando, tenemos un componente de selector de filtros (filter picker) que se usa en varios lugares de la aplicación. Este componente permite a los usuarios seleccionar valores de filtro para diferentes campos y también proporciona "presets"—conjuntos predefinidos de valores de filtro para casos de uso comunes.
+
+**El desafío:** ¿Qué debería pasar cuando un usuario selecciona un preset y luego modifica valores de filtro individuales? ¿O cuando modifican los filtros y luego seleccionan un preset?
+
+Identificamos al menos dos enfoques válidos:
+
+- **Comportamiento de reemplazo**: Seleccionar un preset reemplaza todos los valores de filtro actuales con los valores del preset. Si el usuario modifica posteriormente cualquier valor de filtro, la selección del preset se borra para indicar que el filtrado personalizado está ahora activo.
+
+- **Comportamiento de fusión**: Seleccionar un preset fusiona los valores del preset con los valores de filtro actuales. Si el usuario modifica un valor de filtro después de seleccionar un preset, el indicador de selección del preset permanece activo.
+
+Ambos comportamientos son válidos, por lo que el equipo puede caer en la tentación de implementar ambos comportamientos en el componente y dejar que el desarrollador que usa el componente decida qué comportamiento usar en cada caso a través de una prop.
+
+Sin embargo, esto es problemático. Los usuarios encontrarían comportamientos diferentes en diferentes partes de la aplicación sin ninguna indicación visual de la diferencia. Esta inconsistencia genera confusión, errores y frustración, ya que los usuarios deben volver a aprender el comportamiento del componente en cada contexto.
+
+
+## Conclusión
+
+**La consistencia tiene más que ver con las decisiones y la disciplina que con la implementación real.** 
+
+La implementación técnica de un sistema de diseño —los componentes, el código y la documentación— es relativamente sencilla. El verdadero desafío radica en mantener la consistencia: tomar decisiones claras sobre patrones y comportamientos, documentarlos y tener la disciplina para seguirlos incluso cuando los atajos parecen tentadores.
+
+Esto requiere que el sistema de diseño proporcione guías y patrones claros a seguir, y un equipo de gobernanza que pueda hacer cumplir estas decisiones cuando sea necesario. Sin este compromiso organizacional, incluso los componentes mejor diseñados conducirán a una experiencia de usuario inconsistente que socava todo el propósito del sistema de diseño.

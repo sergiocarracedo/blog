@@ -1,0 +1,129 @@
+---
+title: ¿Qué es VuePress y por qué deberías usarlo para documentar tu proyecto?
+lang: es
+alias: 2020/08/22/vuepress
+pubDate: 2020-08-22
+slug: vuepress/
+tags:
+  - vue
+  - vuepress
+  - markdown
+  - documentation
+heroImage: ./vuepress.jpg
+
+excerpt: '[VuePress](https://vuepress.vuejs.org/) se define a sí mismo como un _Generador de Sitios Estáticos potenciado por Vue_. En otras palabras, es una herramienta para crear sitios estáticos. Un sitio estático es un sitio web donde nada se ejecuta en el servidor. El servidor solo se encarga de devolver el archivo (archivo HTML) tal cual está almacenado en el servidor.'
+autoTranslated: true
+originalLang: en
+---
+
+[VuePress](https://vuepress.vuejs.org/) se define a sí mismo como un _Generador de Sitios Estáticos potenciado por Vue_. En otras palabras, es una herramienta para crear sitios estáticos. Un sitio estático es un sitio web donde nada se ejecuta en el servidor. El servidor solo se encarga de devolver el archivo (archivo HTML) tal cual está almacenado en el servidor.
+
+Es lo opuesto a un **sitio dinámico**, como por ejemplo una página web en PHP; en ese caso, tu navegador realiza una petición al servidor, y el servidor ejecuta código PHP que, por ejemplo, obtiene una publicación de una base de datos, la procesa, la coloca en una plantilla HTML, etc., y devuelve el resultado al navegador.
+
+#### ¿Qué es mejor, dinámico o estático?
+
+Este no es el objetivo de este post, pero diré: "Depende". No hay una respuesta "mágica": el mejor tipo depende del caso de uso.
+
+## ¿Qué hace VuePress?
+
+Con VuePress puedes crear contenido en archivos _markdown_ y, cuando generes el sitio web, cada archivo markdown se convertirá en una página HTML.
+
+VuePress también te proporciona otras características relacionadas con el contenido:
+
+- Menús
+- Cuadro de búsqueda (sí, funciona incluso como sitio web estático)
+- Extensiones de Markdown (que te facilitarán la vida)
+- etc.
+
+Volveremos a estos elementos en un momento, pero primero, aprenderemos cómo iniciar un sitio web con VuePress.
+
+## Creando un sitio web con VuePress
+
+Es muy fácil, solo:
+
+```bash
+yarn create vuepress [project-name]
+cd [project-name]
+```
+
+Y luego, para iniciar el servidor de desarrollo `yarn docs:dev`.
+
+(Este comando inicia un servidor de desarrollo local, por defecto, en `http://localhost:8080`)
+
+At este punto, puedes crear contenido simplemente creando archivos markdown en la carpeta `docs`.
+
+Si creas un archivo llamado `my-content.md`, podrías acceder a él en `http://localhost:8080/my-content.html`
+
+(Si quieres servir una página por defecto, es decir, `http://localhost:8080/`, el nombre del archivo debe ser `README.md`)
+
+También puedes crear carpetas en `docs/` y el nombre de la carpeta aparecerá en la URL de ese contenido. Por ejemplo: `docs/blog/README.md` se servirá en `http://localhost:8080/blog/`
+
+## Extensiones de Markdown
+
+VuePress proporciona extensiones de markdown que añaden más características de las que ofrece el markdown "estándar".
+
+Por ejemplo:
+
+- Escribir tablas al estilo Github: Puedes crear tablas en markdown simplemente escribiendo algo como:
+
+```
+ | Col 1        | Col 2           | Col 3  |
+ | ------------- |:-------------:| -----:|
+ | Content col 1 | Content col 2 | 1234 |
+```
+
+- Soporte para Frontmatter: [Frontmatter](https://vuepress.vuejs.org/guide/frontmatter.html) es una forma de añadir contenido YAML en un archivo markdown para establecer metadatos del contenido (por ejemplo, el título, el idioma, etc.)
+- Soporte para Emojis: :joy: Nada más que decir
+- ToC (Tabla de contenidos): Una extensión muy útil, solo necesitas añadir `[[toc]]` en tu markdown y se renderizará como una tabla de contenidos (un árbol de encabezados del documento)
+- Componentes Vue: Puedes añadir componentes Vue directamente en el markdown. Esto es muy útil para el uso principal de VuePress.
+
+Visita https://vuepress.vuejs.org/guide/markdown.html para más información.
+
+## VuePress como generador de documentación
+
+Las aplicaciones y usos son infinitos, pero VuePress es una herramienta muy simple pero potente para crear documentación técnica.
+
+La mayor parte del ecosistema de Vue utiliza VuePress para crear sus sitios de documentación: [Vue.js](https://vuejs.org/), [Vuex](https://vuex.vuejs.org/), [Vue Apollo](https://vue-apollo.netlify.app/), [Portal Vue](https://portal-vue.linusb.org/), [Vue ChartJs](https://vue-chartjs.org/), etc.
+
+Creo que esta simplicidad facilita la tarea de crear la documentación de tu proyecto.
+
+## Usándolo en un proyecto existente
+
+Creo que es una buena idea mantener tu proyecto y su documentación juntos, y con VuePress es posible hacerlo.
+
+En tu proyecto, solo necesitas añadir VuePress como _dependencia de desarrollo_, eso es todo:
+
+```bash
+yarn add vuepress -D
+```
+
+Y edita tu `package.json` para añadir los siguientes elementos en la sección de scripts para iniciar el servidor de desarrollo y construir la documentación.
+
+```json
+...
+  "scripts": {
+    ...
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "export NODE_ENV=production && vuepress build docs"
+  },
+...
+```
+
+## Ventajas
+
+- Mantener la documentación junto con el código facilita que los desarrolladores lean la documentación del proyecto y la actualicen, ya que está cerca del código.
+- Como la documentación es markdown, puedes seguir leyéndola incluso sin usar VuePress, por ejemplo en tu IDE o en GitHub.
+- Podrías insertar los componentes Vue de tu proyecto en la documentación para crear un "playground", por ejemplo, para demostrar cómo cambia tu componente si cambias alguna propiedad. Tal como hace Buefy en su [documentación](https://buefy.org/documentation/pagination)
+- VuePress admite temas y es altamente configurable; puedes hacer cosas avanzadas, pero puedes empezar a escribir y servir documentos en pocos minutos.
+
+## Otros usos de VuePress
+
+Crear un sitio web de documentación técnica no es el único caso de uso de VuePress; podrías usar VuePress para crear un blog [Ejemplo](https://ulivz.com/), o una página web sencilla pero, a menos que sea algo muy simple, creo que VuePress no es la mejor herramienta.
+
+## VitePress
+
+En este momento, Evan You, creador de VuePress y Vue.js, está trabajando en [Vite](https://github.com/vitejs/vite), una herramienta de construcción que utiliza importaciones nativas de módulos ES y promete ser muy rápida, y sobre Vite también está creando [VitePress](https://github.com/vuejs/vitepress), un hermano de VuePress construido sobre Vite, que tendrá algunas mejoras sobre VuePress para destacar el uso de Vue 3, un servidor de desarrollo y construcción más rápidos y con un peso de página más ligero.
+
+## Resumen
+
+Si necesitas servir la documentación de tu proyecto, **VuePress** es una buena opción para hacerlo.

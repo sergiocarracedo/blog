@@ -3,38 +3,34 @@ import { getCollection } from 'astro:content';
 import type { Locale } from '@/i18n';
 
 /**
- * Check if a post is a co-located translation file.
- * Uses filePath (actual file path on disk) to detect files named index.es.mdx / index.en.mdx.
- * This is reliable even when frontmatter `slug` overrides post.id.
+ * Check if a post is a locale-suffixed file (index.es.mdx or index.en.mdx).
+ * Both ES-originals renamed to index.es.mdx AND EN translations of ES-originals (index.en.mdx)
+ * are "locale files". Plain index.mdx is the legacy EN-original format.
  */
-export function isTranslationFile(post: CollectionEntry<'blog'>): boolean {
+export function isLocaleFile(post: CollectionEntry<'blog'>): boolean {
   return /\/index\.(en|es)\.(md|mdx)$/.test((post as any).filePath ?? '');
 }
 
+/** @deprecated Use isLocaleFile */
+export const isTranslationFile = isLocaleFile;
+
 /**
- * Derive the locale suffix from a translation file's filePath.
- * Returns 'es' for `…/index.es.mdx`, etc.
+ * Derive the locale from a locale file's filePath.
+ * Returns 'es' for `…/index.es.mdx`, 'en' for `…/index.en.mdx`, null for plain index.mdx.
  */
-export function getTranslationLocale(post: CollectionEntry<'blog'>): Locale | null {
+export function getFileLocale(post: CollectionEntry<'blog'>): Locale | null {
   const match = ((post as any).filePath ?? '').match(/\/index\.(en|es)\.(md|mdx)$/);
   return match ? (match[1] as Locale) : null;
 }
 
-/**
- * Get the "base post ID" string for matching base+translation post pairs.
- * This strips any /index.{lang} suffix from path-based IDs used by translation files.
- * Note: base posts may have frontmatter-slug IDs (e.g. "use-a-mac-as-a-normal-pc"),
- * so use getPostDirectory() for reliable base+translation matching instead.
- */
-export function getBasePostId(postId: string): string {
-  return postId.replace(/\/index\.(en|es)$/, '');
-}
+/** @deprecated Use getFileLocale */
+export const getTranslationLocale = getFileLocale;
 
 /**
  * Get the directory key for a post, derived from its filePath.
- * Used to match base posts with their co-located translation files.
- * e.g. "src/content/blog/2026/2026-01-31-mac-mierda/index.mdx"   → "2026/2026-01-31-mac-mierda"
- *      "src/content/blog/2026/2026-01-31-mac-mierda/index.es.mdx" → "2026/2026-01-31-mac-mierda"
+ * Used to match co-located locale files within the same folder.
+ * e.g. "src/content/blog/2026/2026-01-31-mac-mierda/index.es.mdx" → "2026/2026-01-31-mac-mierda"
+ *      "src/content/blog/2010/musica-invisible/index.es.mdx"       → "2010/musica-invisible"
  */
 export function getPostDirectory(post: CollectionEntry<'blog'>): string {
   const fp: string = (post as any).filePath ?? '';
@@ -42,35 +38,42 @@ export function getPostDirectory(post: CollectionEntry<'blog'>): string {
 }
 
 /**
- * Get the slug used for routing (i.e. the URL path segment).
- * For base posts this is post.id (which equals frontmatter slug when present).
- * For translation files this is the base post's slug (same directory, found by filePath).
- * The translation is served under the same slug as its base post.
+ * Get the "base post ID" string — strips locale suffix from path-based IDs.
+ * Kept for backward compat; prefer getPostDirectory() for matching.
+ */
+export function getBasePostId(postId: string): string {
+  return postId.replace(/\/index\.(en|es)$/, '');
+}
+
+/**
+ * Get the routing slug for a post — used as the URL path segment.
+ *
+ * New symmetric model:
+ * - Plain index.mdx (EN original)       → post.id (= frontmatter slug or path-based)
+ * - index.en.mdx (EN translation/original) → post.data.slug if present, else dir
+ * - index.es.mdx (ES original/translation) → post.data.slug if present, else dir
+ *
+ * This function only returns the slug portion (no locale prefix).
+ * Call getLocalizedPostUrl() to get the full locale-prefixed URL.
  */
 export function getRoutingSlug(post: CollectionEntry<'blog'>): string {
+  if (isLocaleFile(post)) {
+    if (post.data.slug) return post.data.slug as string;
+    // Fall back to directory name portion of filePath
+    return getPostDirectory(post);
+  }
   return post.id;
 }
 
 /**
- * Given a post's filePath, find the corresponding base post (non-translation) in the collection.
- * Returns the base post, or the post itself if it IS the base post.
- */
-export async function getBasePost(
-  post: CollectionEntry<'blog'>
-): Promise<CollectionEntry<'blog'> | undefined> {
-  if (!isTranslationFile(post)) return post;
-  const dir = getPostDirectory(post);
-  const allPosts = await getCollection('blog');
-  return allPosts.find((p) => !isTranslationFile(p) && getPostDirectory(p) === dir);
-}
-
-/**
- * Get posts filtered by locale
+ * Get posts filtered by locale.
  *
- * Rules:
- * - Translation files (index.es.mdx / index.en.mdx) only appear in their locale
- * - Posts with explicit `lang` field only appear in that language
- * - Posts without `lang` appear in both languages
+ * Rules (symmetric for both EN and ES):
+ * - index.es.mdx → ES only
+ * - index.en.mdx → EN only
+ * - index.mdx (plain, lang: en) → EN only
+ * - index.mdx (plain, lang: es) → ES only  [legacy, before rename]
+ * - index.mdx (plain, no lang)  → both
  */
 export async function getLocalizedPosts(
   locale: Locale,
@@ -79,33 +82,33 @@ export async function getLocalizedPosts(
   const allPosts = await getCollection('blog');
 
   const filteredPosts = allPosts.filter((post) => {
-    // Co-located translation files: only show in their target locale
-    if (isTranslationFile(post)) {
-      return getTranslationLocale(post) === locale;
+    // Locale-suffixed files are definitively scoped to their locale
+    if (isLocaleFile(post)) {
+      return getFileLocale(post) === locale;
     }
 
     const postLang = post.data.lang;
 
     // No lang field → show in both languages
-    if (!postLang) {
-      return true;
-    }
+    if (!postLang) return true;
 
-    // Original post with lang → only show in that language
+    // Explicit lang → only show in that language
     return postLang === locale;
   });
 
-  // Sort by date
   return filteredPosts.sort(
     (a, b) => (b.data[sortBy] as Date).valueOf() - (a.data[sortBy] as Date).valueOf()
   );
 }
 
 /**
- * Get post translations
- * Returns both English and Spanish versions of a post if available.
- * Uses co-location: looks for index.mdx (base) and index.es.mdx / index.en.mdx siblings.
- * Matching is done by directory (filePath), not post.id, to handle frontmatter slugs correctly.
+ * Get all locale variants of a post (same directory).
+ * Returns an object with 'en' and/or 'es' entries.
+ *
+ * For each directory:
+ * - index.en.mdx / index.mdx(lang:en) → result.en
+ * - index.es.mdx / index.mdx(lang:es) → result.es
+ * - index.mdx (no lang)               → both
  */
 export async function getPostTranslations(
   post: CollectionEntry<'blog'>
@@ -118,16 +121,16 @@ export async function getPostTranslations(
   for (const p of allPosts) {
     if (getPostDirectory(p) !== dir) continue;
 
-    if (isTranslationFile(p)) {
-      const locale = getTranslationLocale(p);
+    if (isLocaleFile(p)) {
+      const locale = getFileLocale(p);
       if (locale) result[locale] = p;
     } else {
-      const postLang = p.data.lang;
-      if (!postLang) {
+      const lang = p.data.lang;
+      if (!lang) {
         result.en = result.en || p;
         result.es = result.es || p;
       } else {
-        result[postLang] = p;
+        result[lang] = p;
       }
     }
   }
@@ -136,26 +139,37 @@ export async function getPostTranslations(
 }
 
 /**
- * For a given post, return the correct EN and ES URLs to use in the language switcher.
+ * For a given post, return the correct EN and ES switcher URLs.
  *
- * Rules:
- * - The EN URL always uses the base post's id (= frontmatter slug or path-based id)
- * - The ES URL uses:
- *   - /es/{basePost.id} if there is no Spanish translation file
- *   - /es/{basePost.id} even when there IS a translation (translation is served at same slug)
+ * Symmetric model:
+ * - EN URL: /{enSlug}  (root, no prefix)
+ * - ES URL: /es/{esSlug}
+ *
+ * The slug for each locale comes from that locale's file (data.slug if present, else dir).
+ * If one locale has no file, the switcher falls back to the other locale's URL.
  */
 export async function getPostSwitcherUrls(
   post: CollectionEntry<'blog'>
 ): Promise<{ en: string; es: string }> {
-  const allPosts = await getCollection('blog');
+  const translations = await getPostTranslations(post);
   const dir = getPostDirectory(post);
 
-  // Find the base post for this directory
-  const basePost = allPosts.find((p) => !isTranslationFile(p) && getPostDirectory(p) === dir);
-  const baseSlug = basePost?.id ?? post.id;
+  const enPost = translations.en;
+  const esPost = translations.es;
 
-  const enUrl = `/${baseSlug}`;
-  const esUrl = `/es/${baseSlug}`;
+  // Derive the slug for each locale
+  const enSlug = enPost
+    ? ((enPost.data.slug as string | undefined) ?? (isLocaleFile(enPost) ? dir : enPost.id))
+    : null;
+  const esSlug = esPost
+    ? ((esPost.data.slug as string | undefined) ?? (isLocaleFile(esPost) ? dir : esPost.id))
+    : null;
+
+  // Fallback: if no translation for a locale, point to whatever we have
+  const fallbackSlug = enSlug ?? esSlug ?? dir;
+
+  const enUrl = `/${enSlug ?? fallbackSlug}`;
+  const esUrl = `/es/${esSlug ?? fallbackSlug}`;
 
   return { en: enUrl, es: esUrl };
 }

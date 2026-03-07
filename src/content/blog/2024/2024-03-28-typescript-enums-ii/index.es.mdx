@@ -1,0 +1,133 @@
+---
+title: "Enums de TypeScript: Reemplazándolos con const y union types"
+lang: es
+pubDate: 2024-04-01
+slug: typescript-enums-ii
+heroImage: ./_081fe03f-6eb1-40ef-9ed6-75f25067b0ad.jpeg
+tags:
+  - typescript
+
+excerpt: "El año pasado :astro-ref[escribí un post sobre los enums de TypeScript]{path=\"/blog/2023/2022-12-7-typescript-enums\"}: cómo usarlos, algunas de sus desventajas, cómo mitigarlas y cómo reemplazar los enums con const enums y mapas de solo lectura."
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+El año pasado :astro-ref[escribí un post sobre los enums de TypeScript]{path="/blog/2023/2022-12-7-typescript-enums"}: cómo usarlos, algunas de sus desventajas, cómo mitigarlas y cómo reemplazar los enums con const enums y mapas de solo lectura.
+
+En ese post, mostré cómo reemplazar los enums con const enums y mapas de solo lectura, y también mencioné los union types como una alternativa a los enums.
+
+En este post, quiero profundizar en los union types como reemplazo de los enums en algunos casos.
+
+## Union types como reemplazo de enums
+
+Si recuerdas, una de las ventajas de los enums es la agrupación de valores dándoles un significado semántico y limitando los posibles valores a utilizar. También son valores reales, no solo tipos, lo que significa que puedes usarlos en tiempo de ejecución (runtime), por ejemplo, para obtener una lista de los valores posibles.
+
+```typescript
+enum HttpResponseStatus {
+  NotFound = 404,
+  Forbidden = 403,
+  Ok = 200,
+  InternalServerError = 500,
+}
+
+const httpStatusNames = Object.values(HttpResponseStatus).filter((v) => typeof v === 'string');
+```
+
+Sí, sé que ese código parece extraño, pero la razón es cómo funcionan los enums en TypeScript (por favor, :astro-ref[revisa el post anterior]{path="/blog/2023/2022-12-7-typescript-enums"} para más detalles).
+
+Si no necesitamos el significado semántico, podemos usar los union types para reemplazar los enums; por ejemplo, el enum anterior puede ser reemplazado por el siguiente union type:
+
+```typescript
+type HttpResponseStatus = 404 | 403 | 200 | 500;
+```
+
+Pero, ¿qué pasa si necesito la lista de los valores posibles en tiempo de ejecución?. Esto es un tipo, y los tipos no existen en el runtime, por lo que no podemos obtener la lista de los valores posibles.
+
+Podemos crear un array constante con los valores posibles y usarlo para obtener la lista de valores:
+
+```typescript
+const HttpResponseStatusValues = [404, 403, 200, 500] as const;
+type HttpResponseStatus = 404 | 403 | 200 | 500;
+```
+
+Pero hacer eso significa que necesitamos mantener la lista de valores posibles en dos lugares, el tipo y el array, y eso no es una buena idea.
+
+## TypeScript: Typeof e indexed access types al rescate
+
+Queremos crear (o inferir) el tipo a partir del array para usar tanto los valores como el tipo y no tener que mantener la lista de valores posibles en dos lugares.
+
+Podemos usar el operador `typeof` para obtener el tipo del array:
+
+```typescript
+const HttpResponseStatusValues = [404, 403, 200, 500] as const;
+type HttpResponseStatus = typeof HttpResponseStatusValues; // readonly [404, 403, 200, 500]
+```
+
+Usando `typeof` sobre el array de valores posibles obtenemos el tipo del array: `readonly [404, 403, 200, 500]`, pero ese no es el tipo que queremos.
+
+Para obtener el tipo que queremos, podemos usar los [indexed access types](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html):
+
+```typescript
+const HttpResponseStatusValues = [404, 403, 200, 500] as const;
+type HttpResponseStatus = (typeof HttpResponseStatusValues)[number]; // '404' | '403' | '200' | '500'
+```
+
+¡_Voilà!_ ya tenemos el tipo que queremos, y podemos usarlo como un tipo, por ejemplo en el argumento de una función, y también usar la lista de valores posibles en tiempo de ejecución:
+
+```typescript
+function someFunction(status: HttpResponseStatus) {
+  if (!HttpResponseStatusValues.includes(status)) {
+    throw new Error('Invalid status');
+  }
+  // do something
+}
+```
+
+### Cómo funciona
+
+Permíteme explicar un poco en detalle cómo funciona. Imagina que tenemos el siguiente tipo que representa un objeto "complejo" para almacenar la información de un coche:
+
+```typescript
+type Car = {
+  engine: {
+    cylinders: number;
+    fuel: 'petrol' | 'diesel';
+    battery: 'lithium' | 'lead';
+  };
+  wheels: {
+    count: 4;
+    diameter: 16;
+  };
+};
+```
+
+Si queremos obtener el tipo de la propiedad `engine`, podemos usar el indexed access type:
+
+```typescript
+type Engine = Car['engine']; // { cylinders: number, fuel: 'petrol' | 'diesel'}
+```
+
+_`engine` no es un string, es un tipo, y esto es clave_, es un `keyof Car`
+
+Como el "tipo indexado" es un tipo, podemos usar otro tipo de tipo como índice, por ejemplo, un union type:
+
+```typescript
+type Power = Engine['fuel' | 'battery']; // 'petrol' | 'diesel' | 'lithium' | 'lead'
+```
+
+Y ahora podemos usar un tipo arbitrario como `number` como tipo indexado para obtener todos los tipos en un array:
+
+```typescript
+const HttpResponseStatusValues = [404, 403, 200, 500] as const;
+type HttpResponseStatus = (typeof HttpResponseStatusValues)[number]; // '404' | '403' | '200' | '500'
+```
+
+El array puede ser algo más complejo, por ejemplo, un array de objetos:
+
+Ten en cuenta que el `as const` es necesario para inferir el tipo del array como una tupla; si no lo usamos, el tipo será `number[]` y no podremos usar el indexed access type.
+
+Si no necesitas el significado semántico de los enums y necesitas usar los valores posibles en tiempo de ejecución, puedes usar los union types y los indexed access types para obtener el tipo y la lista de valores posibles en el runtime.

@@ -1,0 +1,207 @@
+---
+title: Automatizando mi diario de trabajo con IA
+lang: es
+pubDate: 2026-01-21
+slug: automatizing-my-work-diary-with-ai
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+tags:
+  - ai
+  - productivity
+excerpt: Cómo construí una herramienta de CLI con GitHub Copilot para generar automáticamente resúmenes de trabajo diarios a partir de estadísticas de GitHub y almacenarlos en Obsidian.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Como alguien que siempre busca el próximo desafío, no suelo molestarme en llevar un registro de las tareas completadas. Aun así, es muy útil poder mirar atrás y ver lo que he logrado en el pasado.
+
+Debido a esto, siempre me resultaba difícil recordar qué hice en el trimestre anterior al preparar mi evaluación de desempeño. Empecé a preguntarme cómo podría automatizar esta tarea y aproveché la oportunidad para experimentar con herramientas de IA.
+
+Mi primera idea fue centrarme en una solución específica: obtener algunas estadísticas diarias (commits, PRs, comentarios, etc.) de GitHub, ya que para un desarrollador es algo muy representativo del trabajo realizado en un día.
+
+El siguiente paso fue utilizar un modelo de IA para generar un resumen del día basado en estas estadísticas, de modo que pudiera tener una descripción concisa y clara de lo que hice en un formato legible para humanos.
+
+Y el último paso fue almacenar estos resúmenes de forma estructurada. Decidí usar https://obsidian.md/, ya que es una herramienta excelente para la toma de notas y la gestión del conocimiento, y me permite organizar y buscar fácilmente mi diario de trabajo.
+
+Con esta idea sencilla en mente, escribí un documento de definición con los requisitos y los pasos a seguir, y utilicé GitHub Copilot para crear un plan y ejecutarlo.
+
+El resultado, tras 2 o 3 iteraciones con el agente, fue una herramienta de CLI sencilla que se ejecuta a diario, obtiene las estadísticas de GitHub, genera el resumen utilizando un modelo de IA y lo almacena en un repositorio que contiene mi vault de Obsidian.
+
+Pude validar los resultados y fueron increíbles; por ejemplo, esta salida real de un día:
+
+```
+# Work Diary - 2026-01-15
+
+## Summary
+
+Today I primarily focused on improving the developer experience around dialog management within the `factorialco/f0` repository. I created a new `useDialog` hook designed to simplify the process of opening and managing dialogs, reducing the amount of boilerplate code required.
+
+Pull request #3242 introduces this new hook, showcasing a more streamlined approach compared to the previous method. The goal is to provide a smoother and more intuitive way for developers to integrate dialogs into the application. This work aims to improve code maintainability and reduce the potential for errors related to dialog state management.
+```
+
+## Yendo más allá
+
+Comprendí el potencial de estas herramientas, así que replanteé la arquitectura para hacerla más flexible y extensible. Me di cuenta de que:
+
+- no solo las estadísticas de GitHub son útiles; otras fuentes como Slack, el correo electrónico y Jira también pueden ser valiosas
+- el formato de salida no siempre tiene que ser Markdown
+- a veces podría querer enviar el resumen a diferentes lugares como el correo electrónico o Slack en lugar de (o además de) un archivo
+
+Con esto en mente, rediseñé la arquitectura en torno a un sistema basado en plugins que sigue un proceso de 3 + 1 pasos:
+
+- **Input** (plugins): recopilan datos de diferentes fuentes (GitHub, Slack, email, Jira, etc.) y proporcionan un prompt al modelo de IA para resumir esos datos.
+
+- **AI summarizer** (core): toma los datos de los plugins de entrada y genera un resumen utilizando un modelo de IA.
+
+- **Formatter** (plugin): combina todos los resúmenes de los plugins y les da formato en diferentes representaciones (Markdown, HTML, texto plano, etc.).
+
+- **Output** (plugins): toman la salida del formateador y almacenan, imprimen o envían el resumen a diferentes destinos.
+
+De esta manera, puedo añadir fácilmente nuevas fuentes de entrada, cambiar el modelo de IA, añadir nuevos formateadores o destinos de salida sin cambiar la lógica central de la aplicación.
+
+### Ejemplo de flujo de trabajo
+
+Un flujo de trabajo similar al de la primera iteración se ve así:
+
+```yaml
+ai:
+  provider: google
+  model: gemini-2.5-flash
+  apiKey: env:GOOGLE_API_KEY
+
+inputs:
+  - plugin: github
+    config:
+      token: env:GH_READ_TOKEN
+      username: env:GH_USERNAME
+  - plugin: email
+    config:
+      provider: gmail
+      host: imap.gmail.com
+      port: 993
+      secure: true
+      user: env:IMAP_USER
+      password: env:IMAP_PASSWORD
+      mailbox: '[Gmail]/Todos' # pulls everything
+      sentMailbox: '[Gmail]/Enviados' # typical Gmail sent folder
+      maxMessages: 200
+
+formatter:
+  plugin: markdown
+
+outputs:
+  - plugin: console
+  - plugin: file
+    config:
+      path: '~/workdiary-{date}.md'
+      mode: merge # Don't be worried if the file exists, just append the new summary or update the previous one as it wraps the content with markers
+```
+
+> Nota el uso de `env:` para obtener las claves de API y otros datos sensibles de las variables de entorno, de modo que no se almacenen en texto plano en el archivo de flujo de trabajo. Cuando la herramienta se ejecuta, reemplaza estos marcadores de posición con los valores reales del entorno.
+
+Luego, ejecuta la herramienta para generar el diario de trabajo:
+
+```
+$ work-diary --workflow ./workflow.yaml
+```
+
+## ¡Muéstrame el código!
+
+Pensé que esta herramienta podría ser útil para otras personas, así que la publiqué como código abierto: https://github.com/sergiocarracedo/work-diary. Si quieres ejecutarla en tu máquina, puedes seguir las instrucciones en [SETUP.md](https://github.com/sergiocarracedo/work-diary/blob/main/SETUP.md).
+
+> El proyecto aún está en sus primeras etapas, pero si quieres contribuir con nuevos plugins, funcionalidades, etc., ¡eres bienvenido!
+
+## Ejecutándolo como una tarea programada
+
+Para que sea realmente valiosa, esta herramienta debe ejecutarse todos los días. Hay muchas formas de lograrlo, pero decidí usar GitHub Actions porque es fácil de configurar y mantener. El repositorio incluye una GitHub Action reutilizable (sergiocarracedo/work-diary@v1.1.0) que puedes usar en tu propio repositorio para ejecutar la herramienta a diario.
+
+Este es el flujo de trabajo que utilizo en mi repositorio para ejecutar la herramienta al final de cada día y confirmar los cambios en el repositorio de Obsidian:
+
+```yaml
+# .github/workflows/work-diary.yml
+name: Work Diary
+
+on:
+  schedule:
+    - cron: '30 23 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Target date (YYYY-MM-DD, UTC). Defaults to today.'
+        required: false
+        type: string
+
+jobs:
+  diary:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Work Diary
+        uses: sergiocarracedo/work-diary@v1.1.0
+        env:
+          AI_PROVIDER: 'google'
+          AI_MODEL: 'gemini-2.5-flash'
+          AI_APIKEY: ${{ secrets.GEMINI_API_KEY }}
+          GH_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
+        with:
+          config: |
+            ai:
+              provider: env:AI_PROVIDER
+              model: env:AI_MODEL
+              apiKey: env:AI_APIKEY
+
+            inputs:
+              - plugin: github
+                config:
+                  token: env:GH_READ_TOKEN
+                  username: env:GH_USERNAME
+
+            formatter:
+              plugin: markdown
+
+            outputs:
+              - plugin: console
+              - plugin: file
+                config:
+                  path: "Daily Notes/{date}.md"
+                  mode: merge
+
+      - name: Commit and push diary changes
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
+        run: |
+          git status --porcelain
+          if git status --porcelain | grep .; then
+            git config user.name "$GIT_AUTHOR_NAME"
+            git config user.email "$GIT_AUTHOR_EMAIL"
+            git add .
+            git commit -m "chore: update work diary"
+            git push
+          else
+            echo "No changes to commit."
+          fi
+```
+
+Este flujo de trabajo se ejecuta todos los días a las 23:30 UTC, y puedes ajustar la expresión cron según tus necesidades. Realiza el checkout del repositorio, ejecuta la herramienta work-diary con la configuración especificada y luego confirma y envía cualquier cambio al repositorio.
+
+## Conclusión
+
+Automatizar mi diario de trabajo con IA ha sido una gran experiencia. Me ha ahorrado tiempo y esfuerzo, y me ha permitido centrarme en tareas más importantes. También me ofrece una mejor visión general de mi trabajo, y estoy seguro de que me ayudará mucho en el futuro cuando necesite preparar mis evaluaciones de desempeño. :wink::wink:
+
+> Si estás interesado en otras fuentes de entrada, formateadores o plugins de salida, no dudes en abrir un issue o un PR en [work-diary](https://github.com/sergiocarracedo/work-diary/issues). ¡Los comentarios y sugerencias siempre son bienvenidos!
+
+## Descargo de responsabilidad
+
+Ningún modelo de IA resultó dañado durante la creación de esta herramienta, aunque los estresé un poco :joy:

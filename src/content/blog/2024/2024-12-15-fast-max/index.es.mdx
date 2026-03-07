@@ -1,0 +1,157 @@
+---
+title: Math.max (y min) 'Maximum call stack size exceeded' con grandes conjuntos de datos y cómo reimplementarlo para que sea mucho más rápido
+lang: es
+pubDate: 2024-12-17
+heroImage: ./pexels-pixabay-2159.jpg
+slug: math-max-problem-fast-max
+tags:
+  - javascript
+  - performance
+
+excerpt: Aunque JavaScript no fue creado pensando en la gestión de grandes conjuntos de datos, manipularlos hoy en día es muy común.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Aunque JavaScript no fue creado pensando en la gestión de grandes conjuntos de datos, manipularlos hoy en día es muy común.
+
+La agregación de datos también es una funcionalidad común; calcular el valor máximo en un array es una tarea sencilla, ya que el lenguaje proporciona el método `Math.max` para hacerlo.
+
+Pero, intenta hacer esto:
+
+```ts
+const data = Array.from({ length: 1_000_000 }, () => Math.random() * 1000);
+console.log(Math.max(...data));
+```
+
+El código es sencillo: genera un array con 1.000.000 de elementos aleatorios e intenta obtener el valor máximo del array y, como `Math.max` **no acepta un array como parámetro, necesitamos usar el operador spread para pasar los valores como argumentos de la función**.
+
+Pero si ejecutas eso, obtendrás un error como: `RangeError: Maximum call stack size exceeded`
+
+Este error se produce porque cuando usas el operador spread en los argumentos de una función (o usas `apply`), estás haciendo `Math.max(data[0], data[1], .... data[999_999])` y los argumentos de la función utilizan la pila de llamadas (*call stack*), que es una región limitada de memoria para ser almacenada. Este límite depende del motor, por lo que tu código puede funcionar en un navegador y fallar en otro que utilice un motor de JavaScript diferente.
+
+[Consulta más detalles en MDN web docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply#using_apply_and_built-in_functions)
+
+## Las soluciones
+
+Como nos dijo un profesor hace mucho tiempo: *si un problema tiene una sola solución no es un problema, es un ejercicio*. Tenemos múltiples soluciones para evitar este problema, algunas de ellas incluso mejorando el rendimiento original.
+
+### Dividir el array en fragmentos (chunks)
+
+La página de MDN propone utilizar una estrategia híbrida: dividir el array en fragmentos y aplicar la función `Math.max` a cada uno.
+
+```ts
+function maxUsingChunks(arr: number[]): number {
+  let max = -Infinity;
+  const QUANTUM = 32768;
+
+  for (let i = 0; i < arr.length; i += QUANTUM) {
+    const subMax = Math.max.apply(null, arr.slice(i, Math.max(i + QUANTUM, arr.length)));
+    max = Math.max(subMax, max);
+  }
+
+  return max;
+}
+```
+
+## Usando `reduce`
+
+Podemos recorrer el array y comparar cada valor para saber si es mayor que el valor máximo anterior.
+
+```ts
+function maxUsingReduce(arr: number[]): number {
+  return arr.reduce((acc, cur) => Math.max(acc, cur), -Infinity);
+}
+```
+
+## Usando `for`
+
+Sí, un simple `for` para recorrer el array.
+
+```ts
+function maxUsingFor(arr: number[]): number {
+  const length = arr.length;
+  let max = -Infinity;
+
+  for (let i = 0; i < length; i++) {
+    max = Math.max(max, arr[i]);
+  }
+  return max;
+}
+```
+
+## Rendimiento
+
+Hay más soluciones, pero la mayoría son ligeras variaciones de las que he mostrado arriba. Todas son válidas y hacen exactamente lo mismo, pero ¿cuál tiene el mejor rendimiento?
+
+Para medir el rendimiento voy a utilizar la funcionalidad de [Vitest benchmarking](https://vitest.dev/guide/features#benchmarking), que es perfecta para este uso.
+
+Creamos un archivo `.bench.ts` que incluirá las funciones a comparar.
+
+```ts
+// max.bench.ts
+import { bench } from 'vitest';
+
+const data = Array.from({ length: 100_000 }, () => Math.random() * 1000);
+
+bench('Native Math.max', () => {
+  Math.max(...data);
+});
+
+bench('maxUsingChunks', () => {
+  maxUsingChunks(data);
+});
+
+bench('maxUsingReduce', () => {
+  maxUsingReduce(data);
+});
+
+bench('maxUsingFor', () => {
+  maxUsingFor(data);
+});
+```
+
+Luego ejecutamos el benchmark con `vitest bench`. Aquí está la salida del comando:
+
+```bash
+  ✓ max.bench.ts (4) 2441ms
+     name                    hz     min      max    mean     p75      p99     p995     p999     rme  samples
+   · Native Math.max     799.83  0.7349   9.2443  1.2503  0.8774   6.3467   7.8521   9.2443  ±9.70%      400
+   · maxUsingChunks      291.20  2.3094  12.5102  3.4341  3.8463  12.0433  12.5102  12.5102  ±8.72%      146   slowest
+   · maxUsingReduce    1,033.83  0.8555   1.3126  0.9673  0.9713   1.2611   1.3066   1.3126  ±0.69%      518
+   · maxUsingFor      11,198.84  0.0872   0.1550  0.0893  0.0887   0.1062   0.1166   0.1391  ±0.13%     5600   fastest
+
+ BENCH  Summary
+
+  maxUsingFor - max.bench.ts
+    10.83x faster than maxUsingReduce
+    14.00x faster than Native Math.max
+    38.46x faster than maxUsingChunks
+```
+
+🤯 Los resultados podrían parecer contraintuitivos: un simple `for` es mucho más rápido que cualquier otra opción, e incluso la versión con `reduce` es mucho más rápida que la implementación nativa.
+
+Ron Northcutt escribió un [buen artículo que explica en detalle por qué forEach (y otras funciones de bucle de arrays como `reduce`) son más lentas que un simple `for`](https://community.appsmith.com/content/blog/dark-side-foreach-why-you-should-think-twice-using-it); probablemente la razón más relevante es la **sobrecarga de la función** (*function overhead*): `forEach()` invoca una función de callback para cada elemento del array, y eso es costoso para el motor.
+
+> Nota: Si intentamos calcular el valor máximo en un array más grande, el `Math.max` nativo causará el error `Maximum call stack size exceeded`, por lo que la versión nativa de `Math.max` es peor en todos los aspectos.
+
+### Yendo más allá
+
+Podemos intentar optimizar aún más la función con estrategias menos genéricas. Por ejemplo, si conocemos el máximo teórico, podemos reescribir la función de máximo para que deje de iterar si lo alcanzamos y devuelva ese valor. Un caso de uso real que encaja con esto es: tienes un array de temperaturas negativas y quieres obtener la temperatura máxima; podemos establecer el máximo teórico como 0 (ya que hablamos de temperaturas negativas), y si la función encuentra un elemento con el valor 0, estamos seguros de que hemos encontrado el máximo y podemos devolver ese valor sin seguir recorriendo el array.
+
+## Reemplazando Math.max
+
+Si quieres solucionar el problema `Maximum call stack size exceeded` y/o hacer que tus aplicaciones sean más rápidas, puedes simplemente usar el código de la función `maxUsingFor` (cambiando el nombre de la función) y usarlo en tu código. Recomiendo encarecidamente NO hacer *monkey-patch* a `Math.max`. Puede causar efectos secundarios inesperados y errores, hace que el código sea difícil de mantener, etc.
+
+También puedes usar una librería de terceros como [fast-max](https://github.com/DanielJDufour/fast-max) que cubre todos los aspectos que mencionamos:
+
+- Soluciona el problema `Maximum call stack size exceeded`
+- Es rápida
+- Implementa estrategias como el máximo teórico
+- Puede ignorar valores
+
+Ahora una pregunta para ti: ¿Te has enfrentado al problema del tamaño de la pila de llamadas en tu código? Cuéntamelo en los comentarios.

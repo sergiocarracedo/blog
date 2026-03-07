@@ -1,0 +1,138 @@
+---
+title: "Librería de componentes de UI (Capítulo I): ¿Por qué y cómo crear una? Características de una buena librería de UI"
+lang: es
+pubDate: 2024-02-12
+slug: ui-components-library-i-why-and-to-create-one
+heroImage: ./OIG2.jpeg
+tags:
+  - ui
+  - frontend
+  - ux
+  - components
+  - vue
+
+excerpt: "> Este es el primer post de una serie sobre por qué y cómo crear una librería de componentes de UI. Me voy a centrar en los ejemplos de código en Vue.js, pero los conceptos son válidos para cualquier otro framework como React, Angular, LitElements, etc."
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+> Este es el primer post de una serie sobre por qué y cómo crear una librería de componentes de UI. Me voy a centrar en los ejemplos de código en Vue.js, pero los conceptos son válidos para cualquier otro framework como React, Angular, LitElements, etc.
+> En este primer post voy a hablar sobre el porqué deberías (o no) crear una librería de componentes de UI, pero primero definamos qué es una librería de componentes de UI.
+
+## ¿Qué es una librería de componentes de UI?
+
+Una librería de componentes de UI es un conjunto de componentes reutilizables que pueden usarse para construir una interfaz de usuario. Estos componentes pueden utilizarse en diferentes proyectos y aplicaciones. Un componente envuelve el comportamiento de la aplicación, el comportamiento visual y la presentación. Normalmente, los componentes representan el estilo visual de la empresa o del producto.
+
+Un ejemplo de esto es la librería [Material Design](https://material.io/design), que es el sistema de diseño de Google, y se utiliza en todos los productos y servicios de Google (y como es de código abierto, cualquiera puede crear aplicaciones con el mismo estilo visual).
+
+**Una librería de componentes contiene las piezas fundamentales (building blocks) de la UI de una aplicación.**
+
+### ¿Qué es un sistema de diseño?
+
+Encontrarás este concepto usualmente relacionado con las librerías de componentes de UI, pero no son lo mismo. **Un sistema de diseño es un conjunto de reglas y directrices que definen cómo debe verse una aplicación o web y todos sus elementos, y cómo deben comportarse**. Puede garantizar la consistencia de la aplicación y la calidad.
+
+Un sistema de diseño es un concepto por encima de los componentes de UI (y de la librería de componentes de UI), ya que esas reglas se aplican a los componentes (y normalmente definen algunos de ellos), pero también se aplican a toda la aplicación definiendo un lenguaje visual (la tipografía, los colores, el espaciado, el layout, etc.).
+
+## Ventajas de usar una librería de componentes de UI
+
+Creo que el uso de una librería de componentes de UI es algo que no necesita discusión, es imprescindible en la mayoría de los casos. Pero veamos algunas ventajas de usar una librería de componentes de UI.
+
+- **Consistencia**: Todos los componentes tendrán el mismo aspecto y se comportarán de la misma manera. Esto es especialmente importante cuando tienes un equipo grande trabajando en el mismo proyecto, ya que puedes asegurar que todos los componentes se vean y se comporten igual.
+- **Reutilización**: Puedes reutilizar los componentes en diferentes proyectos **y aplicaciones**. Esta es una ventaja enorme, ya que puedes ahorrar mucho tiempo y esfuerzo. Esto es especialmente importante para componentes grandes y complejos, por ejemplo, un date picker o un componente de tabla. No necesitas escribir el código para mostrar el componente y la lógica para que funcione, solo necesitas usar el componente.
+- **Mantenibilidad**: Al tener una única fuente de código para los componentes, puedes mantenerlos en un solo lugar, y todas las aplicaciones que los usen se actualizarán (veremos en otros posts cómo gestionar los breaking changes y las versiones). Esto es especialmente importante cuando necesitas corregir un bug o añadir una nueva funcionalidad a un componente, ya que solo necesitas hacerlo una vez en un solo lugar.
+- **Encapsulación**: Esto está relacionado con la reutilización. Con componentes bien encapsulados, solo tienes que preocuparte por las interfaces del componente; la implementación interna puede cambiar sin afectar al resto de la aplicación. Recuerda que no solo afecta al código, sino también al estilo visual, por lo que puedes cambiar el estilo visual de un componente sin afectar al resto de la aplicación.
+
+En pocas palabras, una librería de componentes de UI puede ahorrarte mucho tiempo y esfuerzo, y puede garantizar la calidad, mantenibilidad y consistencia (visual y de comportamiento) de tu(s) aplicación(es).
+
+## ¿Por qué crear una librería de UI?
+
+Después de la sección anterior, podemos estar de acuerdo en que una librería de UI es una buena idea, pero ¿por qué crear una nueva? Hay muchas librerías de UI disponibles (incluso gratuitas), y la mayoría son muy buenas y completas. Entonces, ¿por qué crear una nueva?
+
+**No hay una respuesta correcta a esta pregunta**, tal vez la mejor sea: "Depende". E incluso si tomas una decisión hoy, esta puede cambiar en el futuro cuando el alcance o los requisitos del proyecto cambien.
+
+Veamos algunas razones para crear una nueva librería de UI:
+
+### Otras librerías existentes no se adaptan a tus necesidades
+
+Tal vez necesites un componente muy específico, o necesites cambiar el comportamiento de un componente existente, o necesites cambiar el estilo visual de los componentes de una manera que la librería de terceros no soporte o el comportamiento no sea el que necesitas.
+
+### Independencia y control
+
+Relacionado con el punto anterior, tal vez quieras tener el control total de los componentes y no quieras depender de una librería de terceros. Esto es especialmente importante cuando necesitas hacer muchos cambios en los componentes o cuando necesitas tener el control del roadmap. Puedes ayudar a mantener la librería de terceros, pero no puedes controlar su roadmap.
+
+### Sistema de diseño personalizado
+
+Las librerías de terceros son muy buenas, pero son genéricas, y tal vez necesites un estilo visual muy específico; con una librería de terceros es muy difícil de lograr.
+
+La mayoría de las librerías de terceros son muy personalizables, algunas incluso ofrecen una versión _un-styled_ (sin estilos) que te permite proporcionar todo el CSS para dar tema a los componentes, pero en algunos casos no es suficiente y necesitas cambiar la estructura de los componentes o el comportamiento, y eso no es posible solo con CSS. (Existen herramientas para construir librerías que te permiten lograr eso, lo explicaré en detalle más adelante).
+
+### ¿Por qué no crear una librería de UI?
+
+Si no estás seguro de si necesitas crear una nueva librería de UI, tal vez no la necesites. Si tu proyecto es una PoC o un proyecto pequeño, o no estás seguro de los requisitos, tal vez no necesites crear una nueva librería de UI. Puedes empezar usando una librería de terceros y considerar evolucionarla a una librería personalizada si lo necesitas.
+
+Una librería de UI personalizada requiere mucho esfuerzo y es un compromiso a largo plazo, hace que el desarrollo sea más lento en la etapa inicial (aunque lo acelera más tarde), necesita desarrolladores con más experiencia y conocimientos, necesita estar muy bien definida en términos de requisitos y necesita ser mantenida y actualizada.
+
+> En este caso, mi recomendación es envolver (wrap) la librería de terceros en tus propios componentes, no solo copiando las propiedades y eventos, sino centrándose en lo que significan e implementando solo los que tengan sentido para ti. De esta manera, puedes cambiar la librería de terceros en el futuro sin afectar al resto de la aplicación, manteniendo la misma interfaz. Hablaré sobre las interfaces de los componentes de UI en un futuro post de la serie.
+
+## Características de una buena librería de UI
+
+Una buena librería debería:
+
+### Ser flexible, pero no infinitamente
+
+Los componentes deberían poder personalizarse de muchas maneras y deberían poder extenderse. Por ejemplo, un componente de botón debería poder personalizarse en términos de colores, tamaños, formas, etc. Añadirle un icono o tener un estado de carga, estar deshabilitado, etc.
+Pero esas personalizaciones deberían ser limitadas; por ejemplo, el tamaño, en lugar de un número, puede ser un conjunto de valores predefinidos (pequeño, mediano, grande, etc.). Esto es importante para asegurar la consistencia de la aplicación; no es agradable ver botones con una tipografía que difiere 1px del siguiente. Lo mismo con los colores (además, los colores tienen un significado semántico, no es solo algo visual para hacerlo bonito).
+
+Los componentes deben satisfacer las necesidades de la aplicación sin necesidad de cambiar el componente. Si necesitas cambiar el componente, tal vez necesites un componente nuevo o algo esté mal en el diseño, usabilidad, etc.
+
+Es muy importante ser estricto con esto y evitar personalizaciones muy específicas solo porque el componente no encaja en un caso de uso concreto. Es mejor detenerse a pensar en los casos de uso e intentar encontrar una solución que encaje con el componente.
+
+### Adaptabilidad
+
+Los componentes deben poder adaptarse a diferentes proyectos y aplicaciones. Para lograrlo, los componentes deben proporcionar una solución abstracta al problema; esto requiere pensar no solo en el requisito actual, sino entenderlos profundamente y pensar en los requisitos futuros (sin intentar cubrir todo el futuro, sé que es difícil encontrar el equilibrio).
+
+### Estar bien documentada
+
+Esto es más importante de lo que crees. Una buena documentación puede ahorrar mucho tiempo y esfuerzo, y puede marcar la diferencia entre una buena librería y una mala. La documentación debe ser clara, concisa y debe proporcionar ejemplos y casos de uso.
+
+La documentación es el punto de entrada para cualquier nuevo miembro del equipo (y para los que no son nuevos, después de un par de meses sin usar un componente, estoy seguro de que un desarrollador experimentado necesitará leer los docs de nuevo para refrescar el conocimiento), y es el primer lugar donde buscar cuando necesitas usar un componente. Es muy importante tener una buena documentación y **mantenerla actualizada**.
+
+[Storybook](https://storybook.js.org/) es una herramienta muy buena para crear la documentación de los componentes, ya que no es solo texto; puedes experimentar con el comportamiento de los componentes y ver cómo lucen.
+
+### Evitar repetir código y solapar la funcionalidad de los componentes
+
+Relacionado con la adaptabilidad y la flexibilidad, los componentes deben estar bien definidos y no deben solapar su funcionalidad. Por ejemplo, si tienes un componente de botón, no tiene sentido (en mi opinión) tener un componente de botón de enlace o un componente de botón de envío (submit). Deberías tener un componente de botón genérico y deberías poder personalizarlo para que parezca un enlace, un botón de envío o un botón de cancelación, etc.
+
+### Ejemplo
+
+Normalmente es más fácil entender los malos comportamientos y prácticas que los buenos. Veamos un ejemplo de lo que me he encontrado en mi vida profesional:
+
+> Nota: El objetivo de este ejemplo no es culpar a la librería ni a nadie, es solo mostrar un ejemplo de cosas que deberías evitar sin necesidad de pasar por el proceso.
+
+La librería tenía un componente _Dropdown_, que es totalmente común en una librería de UI. El componente, como puedes imaginar, representa una lista de opciones que se pueden seleccionar. Proporciona propiedades para personalizar el estilo visual (tamaño, posición de la etiqueta, etc.) y eventos para manejar la interacción del usuario.
+
+Esto parece normal y lógico, pero al explorar la librería puedes encontrar otro componente: _Static Picker_, que hace lo mismo pero te permite seleccionar opciones en un árbol (el anterior era una lista plana). 🤯
+
+Y esto no es todo, puedes encontrar otro componente: _Lazy Picker_, que hace lo mismo que el anterior pero permite cargar los hijos de los elementos bajo demanda. 🤯🤯🤯
+
+Los visuales eran los mismos y el comportamiento era el mismo, la única diferencia era la implementación interna de los elementos, pero común para todas las demás propiedades y comportamientos; sin embargo, el código no se compartía, cada componente tenía las mismas líneas de código en su archivo.
+
+Este es un ejemplo claro de lo que deberías evitar. Nadie creó estos 3 componentes al mismo tiempo solo por diversión; el equipo desarrolló el primero y, cuando surgió el requisito de mostrar los elementos en un árbol, en lugar de extender el componente anterior, alguien decidió crear uno nuevo a partir del código del anterior. Y meses después surgió el requisito de la carga diferida (lazy load), y ocurrió lo mismo.
+
+Por eso digo que necesitas entender los componentes y los requisitos profundamente y pensar en los requisitos futuros. Incluso si los nuevos requisitos no están en la lista de posibles requisitos futuros que planeaste, necesitas detenerte y pensar si el componente necesita una redefinición para adaptarse a todos los nuevos requisitos.
+
+En este caso, creo que podrías extender el componente _Dropdown_ para permitir mostrar los elementos en un árbol sin romper la compatibilidad con la versión anterior, y lo mismo con la carga diferida (por ejemplo, emitiendo un evento cuando el usuario abre un nodo del árbol para permitir que la página o el componente que está usando nuestro dropdown cargue los hijos).
+
+## Conclusión del capítulo I
+
+Una librería de UI es un conjunto de componentes reutilizables que pueden usarse para construir una interfaz de usuario. Es imprescindible en la mayoría de los casos, ya que puede ahorrarte mucho tiempo y esfuerzo, y puede garantizar la calidad, mantenibilidad y consistencia de tu(s) aplicación(es).
+
+Puedes usar una librería de terceros, pero en algunos casos necesitas crear una nueva; en este caso, necesitas pagar el precio en las etapas iniciales y contar con un equipo de frontend y diseño con más experiencia.
+
+En el próximo capítulo de esta serie, profundizaré en las interfaces de los componentes y cómo definirlas para asegurar la flexibilidad y adaptabilidad de los mismos.
+
+:astro-ref[Capítulo II: Anatomía e interfaces de los componentes]{path="/blog/2024/2024-02-11-ui-components-library-2"}

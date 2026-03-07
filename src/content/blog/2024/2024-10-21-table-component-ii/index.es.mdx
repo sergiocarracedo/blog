@@ -1,0 +1,191 @@
+---
+title: Paginación, ordenación, filtrado y selección de filas en tablas. Lecciones que aprendí creando un componente de tabla (2/4)
+lang: es
+pubDate: 2024-10-29
+heroImage: ./pexels-pixabay-159510.jpg
+slug: creating-a-table-component-ii
+tags:
+  - table
+  - ui
+
+excerpt: "> Este post es parte de una serie de posts: :astro-ref[Primera parte]{path=\"/blog/2024/2024-10-19-table-component\"}), :astro-ref[Tercera parte]{path=\"/blog/2024/2024-10-27-table-component-iii\"}), :astro-ref[Cuarta parte]{path=\"/blog/2024/2024-11-26-table-component-iv\"}), y un post extra relacionado: :astro-ref[Escribiendo un generador de consultas para filtrar datos]{path=\"/blog/2024/2024-10-24-query-builder\"}"
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+> Este post es parte de una serie de posts: :astro-ref[Primera parte]{path="/blog/2024/2024-10-19-table-component"}), :astro-ref[Tercera parte]{path="/blog/2024/2024-10-27-table-component-iii"}), :astro-ref[Cuarta parte]{path="/blog/2024/2024-11-26-table-component-iv"}), y un post extra relacionado: :astro-ref[Escribiendo un generador de consultas para filtrar datos]{path="/blog/2024/2024-10-24-query-builder"}
+
+En el :astro-ref[primer capítulo]{path="/blog/2024/2024-10-19-table-component"} hablé sobre la definición de datos y columnas (cols). Cómo manipular los datos, transformarlos y darles formato.
+
+Este segundo capítulo se centrará en las funcionalidades de paginación, ordenación y filtrado, así como en la selección de filas.
+
+Estas características pueden ser o no responsabilidad de la tabla; tal vez prefieras delegarlas en tu código, y en cierto modo es válido, pero a mí me gusta proporcionar una experiencia de desarrollador homogénea y completa, minimizando las tareas repetitivas y agrupándolas todas donde se necesitan.
+
+## Paginación interna (o filtrado u ordenación).
+
+Empecemos con el caso más sencillo: la tabla recibe, a través de props, todas las filas.
+
+ En este caso, la tabla puede encargarse del filtrado, la ordenación y la paginación. El orden de las palabras es muy relevante, ya que es el orden que debemos seguir: primero filtrar las filas, luego ordenarlas y, finalmente, paginarlas.
+
+No podemos paginar primero, ya que el filtrado eliminaría elementos de la página, y necesitamos ordenar la lista completa para devolver resultados válidos.
+
+### Ordenación (Sorting)
+
+Normalmente, la tabla renderizará una especie de botón/flecha en la cabecera para permitir al usuario seleccionar la columna por la que desea ordenar y la dirección de la ordenación. Pero no todas las columnas deben ser ordenables, eso es algo que puedes definir en la estructura de definición de la columna (col). (Puedes considerar que si el atributo no está presente, la columna es ordenable por defecto para evitar ser muy verboso).
+
+```ts
+const cols = [
+ {
+   id: 'identifier',
+   value: 'id',
+   sortable: false
+ },
+ {
+   id: 'fullName',
+   value: (row) => `${row.firstName} ${row.lastName}`,
+   format: (value) => value.toUpperCase()
+ },
+ ...
+]
+```
+
+Al añadir eso a la definición de la columna, permitimos que el desarrollador use la tabla para definir el comportamiento de la columna, haciéndola flexible.
+
+Necesitamos una forma de comunicar al desarrollador el orden y la dirección de ordenación que el usuario seleccionó fuera del componente; para ello podemos usar eventos personalizados.
+
+### Filtrado interno
+
+Puedes implementar el filtrado dentro de la tabla. El filtrado básico es un cuadro de búsqueda que encuentra elementos que encajan parcialmente con los textos del usuario en cualquier fila de cualquier columna, pero, como hicimos antes, podemos definir un atributo en la definición de la columna para desactivar la búsqueda.
+
+#### ¿Qué pasa con el filtrado complejo?
+
+La búsqueda está bien, pero probablemente necesites un filtrado más complejo, por ejemplo, valores de una columna `temperature` superiores a `0` e inferiores a `10`, o incluso filtrar usando múltiples criterios en la misma o diferentes columnas y diferentes operadores. Puedes lograr esto usando un sistema de definición de filtrado (hablaré de esto en el próximo capítulo).
+
+### Paginación
+
+Este es el último paso: dividimos los datos en fragmentos de ciertos elementos (tamaño de página) y renderizamos solo el que corresponde con la página seleccionada.
+
+La tabla debe proporcionar un componente de paginación para permitir al usuario seleccionar la página, navegar entre ellas y, tal vez, seleccionar el tamaño de página (elementos por página). Todos estos valores deben emitirse como eventos fuera de la tabla para que el desarrollador los conozca.
+
+Como conoces el total de filas, también puedes calcular el número de páginas.
+
+#### Algunos consejos sobre la paginación
+
+- Define con tu equipo cuál es la primera página: 0 (como los arrays) o 1 (más natural). Esto es muy importante para evitar confusiones y errores.
+- Debes resetear la página activa a la primera cuando los datos o los filtros cambien, pero no con la ordenación.
+- Cuando el tamaño de página (elementos por página) cambie, puedes resetear la página activa o calcular la nueva página que mostrará el mismo primer elemento.
+
+Cuando la tabla proporciona estas características internamente, el código será algo como esto (pseudocódigo):
+
+```ts
+const filteredRows = props.rows.filter(item => /*[filtrar por criterio]*/)
+const sortedRows = filteredRows.sort((a,b) => /*[ordenar por criterio]*/)
+const totalPages = Math.ceil(sortedRows.length / itemsPerPage)
+const rowsToRender = sortedRows.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+```
+
+Recuerda que las operaciones de array que estamos realizando devuelven copias superficiales (shallow copies).
+
+## Paginación interna (o filtrado u ordenación).
+
+Cuando la paginación, ordenación o filtrado ocurre fuera de la tabla, por ejemplo en el backend. En este caso, NO podemos proporcionar las funcionalidades dentro de la tabla; si la tabla no tiene todas las filas, la ordenación será incorrecta, y lo mismo ocurrirá con el filtrado.
+
+En este caso, debemos proporcionar una propiedad de modo "external" para indicarle a la tabla que los datos a renderizar son los proporcionados en la propiedad y que no necesita hacer nada más que renderizarlos.
+
+Seguimos necesitando el componente de paginación, los botones de ordenación y la interfaz de filtrado, pero estos solo deben emitir los cambios en los valores fuera de la tabla, y el código encargado de recuperar los datos del backend los usará para realizar la solicitud correcta y obtener la página, el filtrado y la ordenación adecuados.
+
+Esta solución de modos `internal` y `external` me permite crear un componente que cubre múltiples casos de uso, facilitando la vida de los desarrolladores. Crear una tabla con paginación, ordenación y filtrado es tan fácil como hacer esto:
+
+```ts
+// mypage.tsx
+export default () => {
+  const data = [
+    {id: 1, firstName: 'Sergio', lastName:'Carracedo', country: 'Spain'},
+    {id: 2, firstName: 'Manolito', lastName:'Gafotas', country: 'Andorra'},
+    ...
+  ]
+
+  const cols = [
+    {
+      id: 'identifier',
+      value: 'id',
+      sortable: false
+    },
+    {
+      id: 'fullName',
+      value: (row) => `${row.firstName} ${row.lastName}`,
+      format: (value) => value.toUpperCase()
+    },
+    ...
+  ]
+
+  return (<MyTable rows={data} cols={cols} />)
+}
+```
+
+Para un modo externo, solo necesitamos capturar los cambios en la página, el filtro (búsqueda) y el orden:
+
+```ts
+// mypage.tsx
+export default () => {
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [sort, setSort] = useState({ col: 'id', desc: false})
+  const [data, setData] = useState([])
+
+  const cols = [
+    {
+      id: 'identifier',
+      value: 'id',
+      sortable: false
+    },
+    {
+      id: 'fullName',
+      value: (row) => `${row.firstName} ${row.lastName}`,
+      format: (value) => value.toUpperCase()
+    },
+    ...
+  ]
+
+  useEffect(() => {
+    // obtener datos de la API
+    setData(....)
+  }, [page, search, order])
+
+  return (<MyTable rows={data} cols={cols} mode="external" onPageChange={(e) => setPage(e.value)} onSearchChange={(e) => setSearch(e.value)} onSortChange={(e) => setSort(e.value)}/>)
+}
+```
+
+## Selección de filas
+
+Es posible que desees permitir a los usuarios seleccionar una fila o múltiples filas (este comportamiento es configurable mediante una prop), por ejemplo, haciendo clic en un checkbox en la primera columna, y/o haciendo clic en un checkbox en la cabecera que seleccionará todas las filas cuando la selección sea múltiple.
+
+### Valor de la fila (Row value)
+
+Primero, necesitas proporcionar una forma de asignar un valor único a cada fila para que la tabla sepa cuál está seleccionada, incluso cuando los datos no están en memoria (paginación externa).
+
+Si el usuario selecciona una fila, cambia de página y luego vuelve a la página con el elemento seleccionado, la tabla debe mostrar el elemento seleccionado.
+
+Utilicé la misma estrategia que para el proveedor de valor de columna, pero en este caso es una propiedad de la tabla.
+El proveedor de valor de fila puede ser:
+
+- un `string` que identifica la columna por su `id` y usa el valor de la fila de esa columna para proporcionar el id de la fila.
+- una `function` que devuelve un valor.
+
+> El valor de la fila debe ser único para cada fila, incluso para aquellas que no están en memoria. Por ejemplo, usar un valor basado en el índice de la fila puede generar problemas cuando la paginación ocurre en el backend. Si no tienes cuidado al calcular el índice, puedes tener valores repetidos en diferentes páginas.
+
+### El checkbox de 'Seleccionar todo'
+
+Este es delicado. Para un modo de tabla "internal", cuando lo seleccionas, la tabla debe marcar todas las filas (incluso aquellas que no están renderizadas). Normalmente, obtendrás los valores de las filas seleccionadas en un array.
+
+Pero para el modo de tabla "external", eso no es suficiente, ya que no conoces todos los valores de fila disponibles, puesto que están en el backend. En este caso, debes seguir marcando todas las filas, pero también enviar fuera de la tabla un valor `allSelected = true`, lo que permite al desarrollador obtenerlo de la tabla y enviarlo al backend para informarle que desea aplicar una operación sobre todos los elementos; el backend debe saber cómo hacer eso.
+
+En caso de que el usuario desmarque una fila, el checkbox global debe adquirir un estado intermedio (indeterminate) e informar al exterior de la tabla sobre las filas no seleccionadas.
+
+## Resumiendo
+
+Creo firmemente que un componente de tabla debe proporcionar estas funcionalidades y el desarrollador puede decidir cuáles o cómo deben ser algunos comportamientos a través de props de configuración. Como puedes ver arriba, usar el componente de tabla es muy directo: pasas los datos, las definiciones de las columnas y algunas props para configurar las características y comportamientos de la tabla, y obtendrás una tabla con el comportamiento esperado. Una ventaja de este enfoque es que funciona como una caja negra, y cualquier cambio o mejora se aplicará en cualquier uso de la tabla tras actualizar el componente; por ejemplo, si añades una vista de reciclaje (recycle view) para mejorar el rendimiento, todos los usos de la tabla se beneficiarán de ello sin ningún cambio adicional.

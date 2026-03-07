@@ -1,0 +1,56 @@
+---
+title: Exportar e importar el estado de Vuex
+lang: es
+pubDate: 2020-07-22T00:00:00.000Z
+slug: export-and-import-vuex-state
+heroImage: ./vuex-export-import.jpg
+tags:
+  - javascript
+  - vue
+  - store
+
+excerpt: Si estás familiarizado con Vuex, sabrás que Vuex es una [state management pattern library](https://vuex.vuejs.org/#what-is-vuex) para aplicaciones Vue. Vuex centraliza el estado de la aplicación y cómo los componentes, y otras partes del código, lo modifican.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Si estás familiarizado con Vuex, sabrás que Vuex es una [state management pattern library](https://vuex.vuejs.org/#what-is-vuex) para aplicaciones Vue. Vuex centraliza el estado de la aplicación y cómo los componentes, y otras partes del código, lo modifican.
+
+Puedes encontrar muchos artículos hablando sobre Vuex, incluso yo escribí 2 artículos hace 3 años hablando de ello:
+:astro-ref[Vuex el redux de VueJS I]{path="blog/2017/vuex-el-redux-de-vuejs-i"} "Vuex el redux de VueJS I")
+y
+:astro-ref[Vuex el redux de VueJS II]{path="blog/2017/vuex-el-redux-de-vuejs-ii"} "Vuex el redux de VueJS II") (_Spanish_)
+
+Pero hoy escribiré sobre un caso de uso particular relacionado con **vuex**, como habrás podido leer en el título, sobre cómo exportar e importar el estado de Vuex.
+
+Es un proceso muy sencillo, y no es necesario para la mayoría de las aplicaciones, pero creo que es útil saber cómo hacerlo.
+
+### Exportar
+
+Exportar es muy simple, solo necesitas obtener el estado, por ejemplo desde un componente
+
+```js
+const savedState = this.$store.state;
+```
+
+Y _voilà_, ya tienes el estado del store, podrías guardarlo en Local Storage para mantener el estado incluso si el usuario cierra o recarga la pestaña del navegador. Realmente no necesitas escribir código para eso, existe una librería increíble que hace eso: [vuex-persistedstate](https://github.com/robinvdvleuten/vuex-persistedstate)
+
+## Importar
+
+Puedes pensar que importar el estado es similar a exportar:
+~~this.$store.state = savedState~~
+Si lo intentas, obtendrás una Exception
+
+> Uncaught Error: [vuex] use store.replaceState() to explicit replace store state.
+
+And si lees con atención, el mensaje de la excepción te da la solución: Usa [`store.replaceState()`](https://vuex.vuejs.org/api/#replacestate)
+
+Este método del store reemplaza todo el estado del store (el root state). Por ejemplo, Vue Dev Tools lo utiliza para hacer los _time travels_.
+
+## Aplicaciones
+
+Se me ocurren algunas aplicaciones para esto, como mencioné antes, guardar el estado en Local Storage, o exportar y guardar el estado en un archivo JSON para guardar la configuración de tu aplicación, etc...

@@ -10,18 +10,18 @@ const blog = defineCollection({
     base: './src/content/blog',
     pattern: '**/*.{md,mdx}',
     generateId: ({ entry, base, data }) => {
-      // Check if this is a translation file by its filename pattern
+      // Any file named index.{lang}.mdx (e.g. index.es.mdx, index.en.mdx) gets a
+      // path-based ID that includes the locale suffix to avoid collisions between
+      // co-located files that share the same frontmatter `slug`.
+      // e.g. "2026/2026-01-31-mac-mierda/index.es.mdx" → "2026/2026-01-31-mac-mierda/index.es"
+      // e.g. "2010/musica-invisible/index.es.mdx"       → "2010/musica-invisible/index.es"
       if (/\/index\.(en|es)\.(md|mdx)$/.test(entry)) {
-        // Strip the base path prefix and file extension to get a path-based ID
-        // e.g. "2026/2026-01-31-mac-mierda/index.es.mdx" → "2026/2026-01-31-mac-mierda/index.es"
-        const relativePath = entry.replace(/\.(md|mdx)$/, '');
-        return relativePath;
+        return entry.replace(/\.(md|mdx)$/, '');
       }
-      // Default: use frontmatter slug if present, otherwise path-based
+      // Plain index.mdx: use frontmatter slug if present (EN-original posts), else path-based
       if (data.slug) {
         return data.slug as string;
       }
-      // Path-based ID (strip extension, collapse /index at end)
       const withoutExt = entry.replace(/\.(md|mdx)$/, '');
       return withoutExt.replace(/\/index$/, '');
     },

@@ -1,0 +1,128 @@
+---
+title: Lazy loading y chunking en Vue Router
+lang: es
+pubDate: 2019-12-29
+slug: vue-router-lazy-loading-and-chunking
+tags:
+  - vue
+heroImage: ./pexels-photo-64782.jpg
+
+excerpt: Cuando empiezas a crear una SPA _(Single page application)_, debes tener en cuenta que SPA no significa _un único archivo JavaScript_.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Cuando empiezas a crear una SPA _(Single page application)_, debes tener en cuenta que SPA no significa _un único archivo JavaScript_.
+
+Normalmente utilizas _Webpack_ para gestionar los builds de tu aplicación; por defecto, _Webpack_ crea un solo archivo para todos los assets, _incluso el CSS_.
+
+El primer paso, tal vez, sea separar los estilos de _app.js_ en sus propios archivos CSS.
+
+Para hacer esto, utilizaremos el plugin de _Webpack_ _[MiniCssExtractPlugin](https://webpack.js.org/plugins/mini-css-extract-plugin/)_, el cual configuraremos de esta manera:
+
+```js
+// webpack.config.js
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+module.exports = {
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    })
+  ],
+  ...
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '/public/path/to/',
+            },
+          },
+          'css-loader',
+          ... // Other loaders like sass-loader or postcss-loader
+        ],
+      }
+      ...
+    ]
+  },
+```
+
+Esto obliga a _Webpack_ a extraer el CSS en archivos separados, por ejemplo `app.css`.
+
+Si utilizas _vue-cli_, esta es la configuración por defecto de _Webpack_.
+
+### Yendo un paso más allá
+
+Para aplicaciones sencillas, es una buena idea mantener todo el código compilado en un solo archivo, ya que el navegador del cliente carga `app.css` la primera vez que el usuario accede a tu aplicación y lo mantiene en caché; en el siguiente acceso, el archivo se servirá desde la caché local del navegador (hasta que la caché expire).
+
+Pero cuando tu aplicación empieza a crecer, el archivo `app.js` se volverá enorme, ralentizando la carga de la página. Incluso habrá partes de la aplicación que nunca se utilicen, por ejemplo "páginas" (en este contexto, piensa en las páginas como componentes de página de Vue, no páginas estáticas) prohibidas para usuarios normales.
+
+En este caso, una buena solución es realizar un _chunking_ de tu `app.js` utilizando [componentes asíncronos (async components)](https://vuejs.org/v2/guide/components-dynamic-async.html) para los componentes de página. Puedes dividir cada página en diferentes archivos que se cargarán cuando el usuario navegue a la ruta.
+
+Esta estrategia utiliza la funcionalidad de _[code splitting de Webpack](https://webpack.js.org/guides/code-splitting/)_.
+
+En la configuración de Vue Router simplemente haces lo siguiente:
+
+```js
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: () => import('./views/HomeComponent')
+  },
+  ...
+]
+```
+
+_Webpack_ ahora creará un archivo separado para tus componentes de página. Pero de esta forma el usuario no recibe ningún feedback sobre el proceso de carga. Podríamos mejorar el router utilizando un componente de carga.
+
+Un componente asíncrono debe proporcionar un _Promise.resolve_. Cuando escribes `() => import('./views/HomeComponent')`, implícitamente devuelves una _Promise_ que resuelve el componente. Pero si quieres utilizar el [manejo del estado de carga (handling loading state)](https://vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State), necesitas devolver una _Promise_ explícita.
+
+Como esto:
+
+```js
+import LoadingComponent from './LoadingComponent'
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: lazyLoading(import('./views/HomeComponent'))
+  },
+  ...
+]
+function lazyLoadView (AsyncPageComponent) {
+  const AsyncHandler = () => ({
+    component: AsyncPageComponent,
+    loading: LoadingComponent,
+    ...
+  })
+
+  return Promise.resolve({
+    functional: true,
+    render: (h, { data, children }) => h(AsyncHandler, data, children)
+  })
+}
+```
+
+Como puedes ver, utilizamos un _Promise.resolve_ que devuelve la función de renderizado del componente.
+
+_data_ y _children_ son necesarios para pasar props, atributos y eventos al componente. [Más información](https://vuejs.org/v2/guide/render-function.html#Passing-Attributes-and-Events-to-Child-Elements-Components)
+
+Con estos cambios, cuando el usuario navega a `/`, primero la aplicación muestra el _LoadingComponent_ y luego, cuando el componente está totalmente cargado, lo muestra.
+
+Finalmente, cabe decir que puedes agrupar los componentes en el mismo _chunk_ utilizando la siguiente notación.
+
+```js
+import(/* webpackChunkName: "group-main" */ './HomeComponent.vue');
+import(/* webpackChunkName: "group-main" */ './LoginComponent.vue');
+import(/* webpackChunkName: "group-admin" */ './AdminPageComponent.vue');
+```

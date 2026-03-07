@@ -1,0 +1,135 @@
+---
+title: "Sobre el equipo de design system: Objetivos, dolores y éxitos"
+lang: es
+pubDate: 2025-08-11
+slug: about-design-system-team
+heroImage: ./photo-1698579302455-9494af230db2.avif
+tags:
+  - frontend
+  - teams
+  - design system
+  - ui
+  - opinion
+
+excerpt: En este post, quiero compartir mi experiencia trabajando en múltiples equipos de design system. No será un post técnico, sino más bien sobre los objetivos, dolores y éxitos del mismo.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+En este post, quiero compartir mi experiencia trabajando en múltiples equipos de design system. No será un post técnico, sino más bien sobre los objetivos, dolores y éxitos del mismo.
+
+## Introducción
+
+Un design system es una **colección de componentes reutilizables, guías, patrones** y mejores prácticas (incluyendo **accessibility** y responsiveness) que ayudan a una empresa a **construir interfaces de usuario consistentes** y **eficientes**. Proporciona las piezas fundamentales para crear una experiencia de usuario cohesiva en tu producto o productos y plataformas. En él participan múltiples disciplinas: Diseño, Frontend engineering, Product management y más.
+
+Un *equipo de design system* es un grupo de personas que cubren las disciplinas mencionadas y que son responsables del *design system*.
+
+**- ¿Es siempre necesario tener un design system?**: Creo que sí (al menos en la mayoría de los casos), ayuda a crear experiencias de usuario consistentes, a acelerar el proceso de desarrollo y a hacer que la base sea mantenible.
+
+**- ¿Es siempre necesario tener un *equipo de design system*?**: No, dependiendo del tamaño de tu empresa y de la complejidad de tu producto, puedes usar un design system de terceros, o los equipos de producto pueden trabajar en él al mismo tiempo que trabajan en el producto. Pero si tienes un **producto complejo o un equipo grande**, entonces **vale la pena tener un equipo dedicado** para asegurar que el design system esté bien mantenido, actualizado y alineado con los objetivos del producto.
+
+## Objetivos de un equipo de design system
+
+**El objetivo final (y más importante) es liberar a los equipos de producto de las tareas no relacionadas con el producto. Permitirles centrarse en construir funcionalidades relacionadas con el producto y resolver problemas de los usuarios.**
+
+No deberían preocuparse por (ni resolver) design tokens comunes, componentes, accessibility, patrones o flujos de trabajo. **Cada segundo que pasan en esas tareas es un segundo que no pasan creando un mejor producto.**
+
+Podemos dividir ese objetivo en metas más pequeñas:
+
+Estas pueden variar según la empresa y el producto, pero algunos objetivos comunes incluyen:
+
+- **Crear los design tokens**: Los design tokens son las variables que definen el estilo visual del design system, como colores, tipografía, espaciado, etc. Deben ser consistentes y reutilizables.
+
+- **Crear los componentes de UI básicos**: Esos componentes son las piezas de construcción del design system, como botones, inputs, modales, etc. Deben ser reutilizables y personalizables para adaptarse a diferentes casos de uso. Son componentes commodity; cada design system los tiene, pero deben estar bien diseñados y bien implementados para asegurar una experiencia de usuario consistente. Incluso si son componentes comunes, simples y commodity, hay decisiones importantes que tomar respecto a la consistencia. Por ejemplo, en un botón, podemos renderizar iconos en el lado izquierdo o derecho, o solo en el lado izquierdo.
+
+- **Asegurar que los componentes sean accesibles**: La accessibility es un aspecto crítico de cualquier design system, y los componentes deben ser diseñados e implementados para ser accesibles para todos los usuarios, incluidos aquellos con discapacidades. 
+
+- **Definir los patrones comunes**: Por ejemplo, cómo renderizar los datos tabulares, si los elementos pueden renderizarse en una tabla, etc.
+
+- **Definir los flujos de trabajo (workflows)**: Cómo debe el usuario crear un nuevo elemento, cuáles son los pasos a seguir, cómo gestionar los errores y cómo mostrarlos, etc. 
+
+
+## Clientes del equipo de design system
+
+En un **equipo de producto**, el cliente de la entrega está claro: es el **cliente**, o las personas que usan la aplicación. 
+
+En un **equipo de plataforma**, los clientes son los **equipos de ingeniería**. 
+
+En un **equipo de Design System**, los clientes son ambos: los **clientes** (porque son quienes consumen y usan los componentes, patrones y flujos) y los **equipos de producto (product managers, ingenieros y diseñadores)**, ya que ellos crean el producto basándose en los componentes, patrones y flujos que el equipo de design system proporciona.
+
+Esto es muy importante porque, como equipo de design system, necesitas entender las necesidades tanto de los clientes como de los equipos de producto. Necesitas crear componentes, patrones y flujos que sean fáciles de usar, flexibles y personalizables, pero que también satisfagan las necesidades de los clientes.
+
+
+## Legado y consistencia
+
+A menos que estés creando un nuevo design system antes de crear el producto (algo que no es común), tendrás que lidiar con componentes, patrones y flujos heredados (legacy), que no necesariamente forman parte de un design system formal, tal vez creados para cubrir una necesidad específica en un momento determinado.
+
+Realizar la migración a un nuevo design system no es una tarea de un solo paso; no puedes congelar el producto durante semanas o meses para migrar todos los componentes, patrones y flujos. Necesitas hacerlo gradualmente, lo que causará inconsistencias visuales y de experiencia de usuario en el producto. **No hay una solución mágica para esto; podemos minimizar las inconsistencias en el tiempo y en cantidad, pero no podemos eliminarlas**.
+
+### Estrategias de migración
+
+#### Migración horizontal
+
+- **Una estrategia es trabajar primero en los nuevos componentes** (en diseño y frontend) y reemplazar los que tienen una coincidencia (más o menos) 1-1 con los componentes antiguos. Por ejemplo, los botones, inputs, modales, etc. Debes saber que el mundo real no es perfecto y usualmente los nuevos componentes no coinciden 1-1 con los antiguos; necesitas definir una estrategia para crear un catálogo de los casos de uso de los componentes antiguos y cómo migrarlos a los nuevos (nota: no migrar un comportamiento puede ser una solución aceptable).
+
+Esta estrategia permite completar algunos componentes antiguos, pero requiere tiempo para crear los nuevos componentes antes de reemplazarlos, no obtienes feedback sobre los nuevos componentes hasta que se usan en todo el producto, y crea inconsistencias horizontales (a través de todas las páginas/vistas de la aplicación).
+
+Una ventaja de esto es que puedes usar codmods para migrar los componentes antiguos "automáticamente" (no completamente, porque quizás el componente antiguo usa propiedades calculadas en tiempo de ejecución que son difíciles de migrar vía codmods, pero ayudan en el proceso).
+
+Los agentes de IA pueden complementar a los codmods deterministas, y también son muy útiles en este proceso, ya que pueden ayudar a entender el contexto y a tomar decisiones sobre la migración siguiendo tu prompt de migración.
+
+Para los componentes que no coinciden 1-1 con los nuevos, para los patrones y flujos, puedes hacer lo mismo: reemplazarlos gradualmente, pero en este caso la migración requiere más comprensión del contexto y de los casos de uso, por lo que necesitas trabajar estrechamente con los equipos de producto para entender sus necesidades y cómo migrar los componentes, patrones y flujos; y de nuevo, no obtendrás mucho feedback hasta que la migración esté terminada.
+
+#### Migración vertical
+
+- Otra estrategia es **trabajar con un equipo de producto para una página o flujos específicos, y pensar en cómo migrarlos juntos**, creando el nuevo componente, patrones y flujo durante este proceso. El resultado de este proceso no es un design system final (aún no se han creado todos los componentes, patrones y flujos necesarios), será una página que sigue completamente el nuevo design system (componentes, patrones y flujos), pero ya tendrás un grupo de ellos y podrás usarlos en la siguiente página a migrar, una página que necesitará más componentes, patrones y flujos... Este es un enfoque más iterativo y te permite obtener feedback del equipo de producto y de los clientes antes en el proceso y mejorarlos.
+
+En términos de inconsistencias, esto creará inconsistencias verticales, inconsistencias entre las páginas del mismo producto.
+
+Este enfoque puede parecer más lento que el anterior, porque los equipos de producto que no están involucrados en la página a migrar siguen usando el design system heredado, pero **la velocidad aumenta exponencialmente**, ya que en cada migración tendrás más y más componentes, patrones y flujos para usar en la siguiente.
+
+Este enfoque también crea un **"efecto envidia"**, ya que otros equipos de producto ven los **beneficios del nuevo design system totalmente aplicado** y presionan para migrar sus propias páginas y flujos.
+
+Con este enfoque, también puedes usar codmods para ayudar con la migración, pero en lugar de migrar todas las páginas de la aplicación a la vez, puedes crear codmods para cada página o flujo que migres.
+
+> Este es el enfoque que mi equipo utilizó en una empresa anterior en la que trabajé, y fue muy exitoso, ya que pudimos migrar el design system (y el framework de frontend) gradualmente, obteniendo feedback de los equipos de producto y de los clientes, y creando una experiencia de usuario más consistente en todo el producto, con un equipo más pequeño, liberando a esos desarrolladores para trabajar en funcionalidades del producto.
+
+### Ser estrictos con el uso de los componentes
+
+En una empresa pequeña o en un producto simple, con pocos equipos de producto, un equipo de design system muy abierto puede funcionar bien, ya que es fácil validar el uso de los componentes, patrones y flujos, y asegurar que los equipos de producto estén usando el design system correctamente (de la manera esperada: consistente, mantenible, etc.).
+
+Un design system "abierto" significa que puedes dejar que los desarrolladores usen todas las propiedades de los componentes, estando seguro de que las usarán de la manera esperada, siguiendo las guías del design system. 
+
+Un ejemplo sencillo basado en una experiencia de la vida real:
+
+Un componente de tabla; este es un componente común en un design system, y las celdas usualmente mostrarán texto, números, enlaces, badges, etc. En un design system abierto, puedes dejar que los desarrolladores usen la propiedad `cell` para pasar cualquier tipo de contenido o componente; puedes definir algunas reglas o acuerdos para asegurar que solo se use cierto tipo de contenido, cuándo usarlo y cómo usarlo; por ejemplo, defines que las imágenes solo se permitirán en la primera columna, y los enlaces solo en la última columna, etc. Pero el componente permite cualquier contenido en la celda, por lo que los desarrolladores pueden usarlo de la manera que quieran, aunque con un equipo pequeño y un producto pequeño, es fácil comunicar las reglas a través de formaciones, documentación, etc.
+
+Pero en una **empresa grande**, con **múltiples equipos de producto** y un **producto complejo**, este enfoque puede llevar a inconsistencias, ya que incluso si las reglas están bien documentadas, compiten con una gran cantidad de otros documentos y guías, y **es fácil olvidarlas o malinterpretarlas**.
+
+En este caso, necesitamos ser más estrictos con el uso de los componentes y forzar mediante código el uso de los componentes, patrones y flujos. En el ejemplo de la tabla, no podemos dejar que los desarrolladores pasen cualquier contenido a la propiedad `cell`, necesitamos crear un sistema que solo permita tipos de contenido específicos y configuraciones limitadas.
+
+Esta rigurosidad (aunque sea esencial), especialmente cuando los equipos de producto usaban un design system abierto anteriormente, puede generar frustración, y los desarrolladores pueden sentir que esto es una limitación artificial que hace su desarrollo más lento, pero es necesaria para asegurar una experiencia de usuario consistente en todo el producto y para hacer que el design system sea mantenible a largo plazo.
+
+#### Minimizando la frustración
+
+Para minimizar la frustración de los equipos de producto:
+
+- Es importante **comunicar claramente las razones detrás de la rigurosidad** e involucrarlos en el proceso de definición de los componentes, patrones y flujos, algo que funciona muy bien con la estrategia de migración vertical.
+- **Proporcionar documentación clara** y ejemplos de cómo usar los componentes, patrones y flujos, con buenos ejemplos (storybook es una herramienta excelente para esto), con guías claras y mejores prácticas.
+- **Ser rápidos al responder a sus comentarios/preguntas/peticiones**, si no eres rápido proporcionando una respuesta a una duda o implementando una funcionalidad, esto puede llevar a que busquen atajos o soluciones alternativas que pueden provocar inconsistencias en el producto.
+
+## Resumen
+
+**Un design system es una especie de commodity**, pero eso no significa que no sea **importante**:
+
+- Significa que no tiene valor por sí mismo; necesita ser utilizado por los equipos de producto para crear valor. 
+
+- No significa que no debas poner atención o recursos en él. Invertir en el design system puede reportar beneficios significativos a largo plazo para toda la organización.
+
+Un **buen design system** y un buen equipo de design system **no harán que tu producto sea mejor mágicamente**, harán que el desarrollo sea más rápido y la experiencia de usuario consistente, pero un **mal design system hará que tu producto sea peor**, proporcionando una experiencia de usuario inconsistente y frustrante, y obligando a los equipos de producto a pasar tiempo resolviendo el problema y construyendo piezas que deberían ser proporcionadas por el design system, dedicando tiempo a tareas no relacionadas con el producto en lugar de centrarse en construir funcionalidades y resolver problemas de los usuarios.
+
+Como similitud, podemos pensar en la electricidad: es un commodity, pero es esencial para el funcionamiento de muchos productos y servicios; si el suministro no es bueno, será difícil crear buenos productos, o no serán utilizables si el suministro falla. Un design system es como la electricidad: es un commodity que proporciona la base para construir productos y servicios, y necesita ser bueno para crear productos excelentes.

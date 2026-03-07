@@ -1,0 +1,159 @@
+---
+title: "Buscar un elemento en listas en JS: Rendimiento de Set vs Array"
+lang: es
+pubDate: 2023-09-04T00:00:00.000Z
+slug: js-lists-performance
+heroImage: ./pexels-chait-goli-2031758.jpg
+tags:
+  - javascript
+  - performance
+
+excerpt: En nuestras aplicaciones, es muy común almacenar datos en listas, por ejemplo, una lista de usuarios, una lista de publicaciones, una lista de IDs seleccionados, etc., y también es muy común necesitar comprobar si un valor está en la lista o no.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+En nuestras aplicaciones, es muy común almacenar datos en listas, por ejemplo, una lista de usuarios, una lista de publicaciones, una lista de IDs seleccionados, etc., y también es muy común necesitar comprobar si un valor está en la lista o no.
+
+En la mayoría de los casos, utilizamos arrays simples para almacenar los datos y usamos el método `includes` para comprobar si un valor está en el array o no. Esto funciona y, si tu lista no es demasiado grande o solo necesitas encontrar un elemento una vez, no notarás ningún problema de rendimiento. Imagina el siguiente caso:
+
+Tenemos una lista de usuarios (`User[]`), esta lista es inmutable:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+};
+```
+
+y también tenemos una lista de los IDs de usuarios seleccionados (`number[]`). Ahora deberíamos renderizar la lista de usuarios (en el orden en que están en la lista) y añadir una clase diferente a los usuarios seleccionados. Podemos hacer algo como esto:
+
+```ts
+users.map(user => {
+  const class = selectedUsersIds.includes(user.id) ? 'user--selected' : 'user';
+  return `<li class="${class}">${user.name}</li>`
+})
+```
+
+Como puedes ver en el código, necesitamos buscar `n` veces en el array `selectedUsersIds`, donde `n` es el número de usuarios.
+
+Si la lista de usuarios es grande, cualquier problema de rendimiento será notable. Esto se debe a que la función de renderizado tiene un *Big O* de **O(n²)**.
+
+Obviamente, lo mejor para resolver los posibles problemas de rendimiento es reducir el *Big O* de la función a O(log n) o O(n), pero en algunos casos no es posible o no vale la pena.
+
+> Si quieres saber más sobre la notación Big O, te recomiendo leer [este artículo](https://www.freecodecamp.org/news/big-o-notation-why-it-matters-and-why-it-doesnt-1674cfa8a23c/)
+
+Así que intentemos usar Set para eso en lugar de Array.
+
+```ts
+const selectedUsersIdsSet = new Set(selectedUsersIds);
+users.map(user => {
+  const class = selectedUsersIdsSet.has(user.id) ? 'user--selected' : 'user';
+  return `<li class="${class}">${user.name}</li>`
+})
+```
+
+El *Big O* de la función sigue siendo **O(n²)** (Si buscas sobre esto, encontrarás muchos artículos que dicen que el *Big O* de `Set.has` es O(1); esto no es completamente cierto, pero el rendimiento es mucho mejor y puede considerarse O(1) para la mayoría de los casos) https://stackoverflow.com/a/55057332
+
+## Ejemplos de la vida real
+
+Vamos a crear código para probarlo y ver la diferencia real de rendimiento entre ambas soluciones. Para ello, generaremos una lista de `users` aleatoria y una lista de `selectedUserId` con diferentes tamaños, y mediremos el tiempo para renderizar la lista de usuarios. Para esto usaremos [Timers](https://developer.mozilla.org/en-US/docs/Web/API/console#timers) en `console`.
+
+```js
+const sizes = [10000, 100000, 500000, 1000000];
+
+sizes.forEach((size) => {
+  const timeMock = `generate mock dataset for ${size}`;
+  // Random user list sorted randonly
+  console.time(timeMock);
+  const users = Array.from({ length: size }, (_, i) => ({
+    id: i,
+    name: `User ${i}`,
+  })).sort((a, b) => 0.5 - Math.random());
+
+  // Random selected ids list sorted randonly
+  const selectedIds = Array.from({ length: size / 2 }, (_, i) => i * 2).sort(
+    (a, b) => 0.5 - Math.random()
+  );
+  console.timeEnd(timeMock);
+
+  console.log('+---------------------------+');
+  console.log(`| Size: ${size}             |`);
+  console.log('+---------------------------+');
+
+  // Array .includes
+  console.log('----------------- ARRAY ---------------');
+  const timeArray = `array: with ${size} elements`;
+  console.time(timeArray);
+  console.log(
+    users.map((user) => {
+      return selectedIds.includes(user.id);
+    }).lenght
+  );
+  console.timeEnd(timeArray);
+
+  console.log('----------------- SET ---------------');
+  // Convert array to set
+  const timeSetTotal = `set total: with ${size} elements`;
+  const timeArrayToSet = `array to set: with ${size} elements`;
+  const timeSet = `set: with ${size} elements`;
+
+  console.time(timeSetTotal);
+  console.time(timeArrayToSet);
+  const selectedIdsSet = new Set(selectedIds);
+  console.timeEnd(timeArrayToSet);
+
+  console.time(timeSet);
+  console.log(
+    users.map((user) => {
+      return selectedIdsSet.has(user.id);
+    }).length
+  );
+  console.timeEnd(timeSet);
+  console.timeEnd(timeSetTotal);
+  console.log();
+});
+```
+
+Ejecuté este código en mi ordenador simplemente copiando el código en la consola del navegador:
+
+- Amd Ryzen 5 3600 6-Core Processor 3.59 GHz
+- Ubuntu 22.04
+- Chrome 115
+
+> Nunca copies código de internet y lo pegues en la consola del navegador, puede ser peligroso. Puedes usar codesandbox o similar para ejecutar el código en un entorno seguro. https://codesandbox.io/s/wandering-dream-xyyt2w?file=/src/index.mjs:0-1533 (En este caso, los resultados no son precisos porque el código se está ejecutando en un entorno aislado o *sandboxed*). Te invito a escribir tu propio código para probarlo.
+
+En mis pruebas los resultados fueron:
+
+| Usuarios  | Usuarios seleccionados | Array      | Set      |
+| --------- | ---------------------- | ---------- | -------- |
+| 10,000    | 5,000                  | 4.427ms    | 0.656ms  |
+| 100,000   | 50,000                 | 285.895ms  | 4.404ms  |
+| 500,000   | 250,000                | 7223.516ms | 32.631ms |
+| 1,000,000 | 500,000                | 28808.12ms | 66.270ms |
+
+Como puedes ver, la diferencia de rendimiento es enorme y es más notable cuando la lista es más grande. Por debajo de 100k elementos, la diferencia puede ser aceptable y el usuario no la notará, pero por encima de 100k elementos causa lag en la interfaz de usuario, degradando la experiencia del usuario.
+
+## ¿Por qué Set es más rápido?
+
+A diferencia de un array que almacena los valores en memoria, Set utiliza una [Hashtable](https://www.freecodecamp.org/news/javascript-hash-table-associative-array-hashing-in-js/) que es intrínsecamente más rápida que un array para encontrar un valor, ya que, como mencionamos, el promedio de Big O es O(1).
+
+## ¿Debería reemplazar mis arrays por sets?
+
+**No, no deberías**. Los Sets no son un reemplazo para los arrays, son estructuras de datos diferentes con propósitos diferentes. Por ejemplo:
+
+- Set solo almacena valores únicos, por lo que si necesitas almacenar valores repetidos debes usar un array.
+- El orden de los elementos en un set es el orden de inserción, **no puedes ordenar un set**.
+
+Las cosas que podrías querer considerar en tu próximo proyecto o tarea son:
+
+- Entender y conocer el *Big O* de tu código y cómo puede afectar al rendimiento. Piensa si tu aplicación necesitará manejar grandes cantidades de datos (ahora o en el futuro) y evalúa si vale la pena usar un algoritmo, estructura de datos, etc., diferente que reduzca el *Big O*.
+- Intenta usar los tipos, objetos, clases, etc. (como `Set`) que el lenguaje te ofrece en los casos de uso que lo necesiten. Por ejemplo, si tienes una lista de valores únicos y el orden no importa, usa `Set` en lugar de `Array`; es más rápido y añadir o eliminar elementos de un set es más sencillo que en un array.
+
+[Leer más sobre Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Sethttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)

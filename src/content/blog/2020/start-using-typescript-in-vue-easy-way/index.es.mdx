@@ -1,0 +1,130 @@
+---
+title: Empieza a usar TypeScript en Vue. De la forma fácil.
+lang: es
+slug: start-using-typescript-in-vue-easy-way
+pubDate: 2020-02-27T10:58:02.000Z
+tags:
+  - vue
+  - typescript
+  - javascript
+heroImage: ./pexels-photo-1272328.jpeg
+
+excerpt: Si programas en _JavaScript_, probablemente alguien te haya hablado de las ventajas de usar _TypeScript_ o hayas pensado en empezar a usarlo.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Si programas en _JavaScript_, probablemente alguien te haya hablado de las ventajas de usar _TypeScript_ o hayas pensado en empezar a usarlo.
+
+Como puedes ver en este gráfico, más del 50% de los desarrolladores de _JavaScript_ están usando _TypeScript_.
+
+![](/images/javascript_flavors_section_overview.png)
+_Fuente: https://2019.stateofjs.com/javascript-flavors/_
+
+Empezar a usar una nueva tecnología, un nuevo paradigma, un nuevo framework o cualquier otra cosa puede ser difícil y desafiante; por eso es importante empezar a integrar nuevas tecnologías evitando la fricción con las anteriores. Hoy intentaré mostrarte la forma más fácil de empezar a usar _TypeScript_ en tus proyectos de Vue.
+
+En el caso de _TypeScript_, "simplemente" añadiremos una capa sobre _JavaScript_, así que intentaré explicar la forma más sencilla de usar _TypeScript_ con _Vue_, incluso en proyectos existentes.
+
+Antes de empezar, deberías conocer los beneficios de usar _TypeScript_. Tienes miles de publicaciones en blogs hablando sobre ello:
+
+- https://apiumhub.com/tech-blog-barcelona/top-typescript-advantages/
+- https://ionicframework.com/docs/v3/developer-resources/typescript/
+- https://medium.com/swlh/the-major-benefits-of-using-typescript-aa8553f5e2ed
+- https://alligator.io/typescript/typescript-benefits/
+- ...
+
+El beneficio más repetido son los **"tipos"**. _JavaScript_ es un lenguaje de tipado débil (las variables y constantes tienen tipos, pero no puedes establecer su tipo. Solo mediante su valor).
+
+## Requisitos previos
+
+Asumo que estás usando `vue-cli`. Debes asegurarte de estar usando la versión 4.0.0+
+
+## Paso 1: Añadir TypeScript
+
+El primer paso es añadir _TypeScript_ usando `vue-cli`
+
+```bash
+vue add typescript
+```
+
+Vue CLI comienza a añadir el paquete de _typescript_ y las dependencias necesarias. También crea y actualiza archivos de configuración como `tsconfig.json`. Necesitará hacerte algunas preguntas para configurarlo correctamente.
+
+Veamos cada pregunta en detalle y la respuesta "correcta".
+
+```
+? Use class-style component syntax? (Y/n)
+```
+
+Si quieres empezar a usar la [sintaxis de componentes de estilo de clase](https://vuejs.org/v2/guide/typescript.html#Class-Style-Vue-Components), deberías responder "**yes**". Puedes responder "no" y no usarla, pero nada más cambia.
+
+```
+? Use Babel alongside TypeScript (required for modern mode, auto-detected polyfills, transpiling JSX)? (Y/n)
+```
+
+"Yes". Probablemente ya lo estabas usando.
+
+Las siguientes dos preguntas son las más importantes
+
+```
+? Convert all .js files to .ts? (Y/n)
+```
+
+:warning: Debes responder "**No**" para evitar que Vue CLI renombre todos tus archivos a `.ts`. Si lo haces, tendrás que refactorizar todos los archivos de tu proyecto a _TypeScript_.
+
+```
+? Allow .js files to be compiled? (y/N)
+```
+
+:warning: Debes responder "**Yes**". Es lo mismo que, en el `tsconfig.json`, establecer el valor `allowJs` a `true`. Si no respondes "yes", recibirás muchos mensajes de error, porque el transpilador de _TypeScript_ intentará transpilar los archivos `.js`.
+
+## Paso 2
+
+No hay paso 2. Acabas de añadir soporte para _TypeScript_ a tu proyecto y todo debería funcionar correctamente como de costumbre.
+
+## Escribir tu primer componente de Vue en _TypeScript_
+
+Cuando escribes un componente de Vue en JavaScript, probablemente escribas algo similar a:
+
+```js
+<template>
+ ....
+</template>
+<script>
+export default {
+  props: ....,
+  data () ....,
+  methods: ....
+}
+</script>
+```
+
+Para escribir un componente de Vue usando _TypeScript_, necesitas establecer el lenguaje de script usando el atributo `lang` en la etiqueta script.
+Además, como _TypeScript_ necesita inferir tipos, debes definir tus componentes con `Vue.component` o `Vue.extend` (prefiero la segunda opción).
+
+Entonces nuestro componente se ve así:
+
+```typescript
+<template>
+ ....
+</template>
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+  props: ....,
+  data () ....,
+  methods: ....
+})
+</script>
+```
+
+:tada: ¡Hecho! Ya tienes tu primer componente de Vue en TypeScript.
+
+El punto es que puedes empezar a usar _TypeScript_ y mantener tu código anterior. No necesitas reescribir todos los componentes, o puedes hacerlo paso a paso.
+
+Te recomiendo leer la [documentación de Vue sobre el soporte de TypeScript](https://vuejs.org/v2/guide/typescript.html)
+
+En futuras publicaciones del blog mostraré cómo usar múltiples mixins en _TypeScript_ y otros consejos sobre _TypeScript_.

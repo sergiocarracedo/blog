@@ -1,0 +1,133 @@
+---
+title: Migraciones de bases de datos en Golang.
+lang: es
+pubDate: 2021-10-25T00:00:00.000Z
+slug: database-migrations-in-golang/
+heroImage: ./go-migrate-pexels-james-wheeler-1598075.jpg
+tags:
+  - devops
+  - go
+  - database
+
+excerpt: Durante el desarrollo de una aplicación, es muy común realizar cambios en el esquema de la base de datos; para una nueva funcionalidad necesitas añadir una nueva tabla, agregar una nueva columna a una tabla existente, alterar el tipo de una columna existente o eliminar una columna.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Durante el desarrollo de una aplicación, es muy común realizar cambios en el esquema de la base de datos; para una nueva funcionalidad necesitas añadir una nueva tabla, agregar una nueva columna a una tabla existente, alterar el tipo de una columna existente o eliminar una columna.
+
+Cuando trabajas solo, podrías hacerlo manualmente, ejecutando las consultas para alterar los esquemas de la base de datos de forma manual.
+
+¿Qué sucede cuando tu equipo no es de una sola persona? Necesitas compartir las consultas para cambiar el esquema con tus compañeros, y ellos deberían saber qué cambios aplicaron anteriormente para saber si hay cambios nuevos.
+
+Para simplificar esta tarea nacieron las herramientas de migración de bases de datos. Estas herramientas se encargan de todo esto por nosotros.
+
+Veamos cómo funciona el flujo de trabajo con estas herramientas:
+
+- Cuando un miembro del equipo necesita cambiar algo en el esquema, crea un archivo de texto con las sentencias para lograr el nuevo esquema.
+- Este archivo suele guardarse en el repositorio, por ejemplo en una carpeta llamada `migrations`. Si también lo guardamos en el repositorio, podemos compartirlo fácilmente y rastrear los cambios (se añaden archivos nuevos, los archivos de migración nunca deben modificarse).
+- Cuando se detecta un nuevo archivo de migración, la herramienta de migración se ejecutará y aplicará los cambios en la base de datos.
+
+Ejecutar la migración debe ser _idempotente_, es decir, que puedes ejecutarla varias veces con los mismos archivos de migración y el esquema final de la base de datos debe ser el mismo. Para lograrlo, normalmente las herramientas de migración guardan en una tabla de la base de datos la última migración que se ejecutó correctamente y aplican las nuevas.
+
+# go-migrate
+
+[Go Migrate](https://github.com/golang-migrate/migrate) es una herramienta de migración escrita en Golang. Puede funcionar como una CLI o como una librería de Go.
+
+Como herramienta de CLI, puedes usarla para proyectos _en cualquier lenguaje_, no necesariamente Go.
+
+Go migrate lee las migraciones de una fuente, que podrían ser: archivos, repositorios de GitHub, Bitbucket, AWS S3, Google Cloud Storage, etc., y aplica los cambios en la base de datos.
+
+Soporta varios tipos de bases de datos, tanto SQL como NoSQL, como _PostgreSQL_, MySQL, MongoDB, Clickhouse, Cassandra, etc... [Consulta la lista completa de bases de datos soportadas](https://github.com/golang-migrate/migrate#databases).
+
+Para rastrear qué migraciones deben aplicarse, guarda el estado en la base de datos.
+
+## Instalando go-migrate (CLI)
+
+Para Go 1.16+ simplemente ejecuta en tu terminal:
+
+```bash
+go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+```
+
+También puedes descargar el binario desde [aquí](https://github.com/golang-migrate/migrate/releases)
+
+Consulta la [documentación](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate) para más instrucciones.
+
+## Tu primer archivo de migración
+
+> En estos ejemplos voy a usar Postgres como base de datos de destino.
+
+Nuestro objetivo es obtener el esquema de base de datos que nuestra aplicación necesita a partir de los archivos de migración.
+El primer archivo de migración debe crear las tablas que necesitamos.
+Imagina que necesitamos una tabla 'user'.
+
+Debemos crear un archivo con el siguiente esquema de nombre: `{version}_{title}.up.{extension}`, por ejemplo: `1_add_users_table.up.sql`, con el siguiente contenido:
+
+```sql
+CREATE SCHEMA common;
+CREATE TABLE common.users(
+  id SERIAL NOT NULL,
+  name VARCHAR NOT NULL,
+  email VARCHAR UNIQUE NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (id);
+```
+
+Luego podemos ejecutar migrate:
+
+```bash
+migrate -source file://migrations -database postgres://user:pass@localhost:5434/database up
+```
+
+Go migrate comprobará la última versión de migración completada y aplicará las siguientes; en este caso, como nunca ejecutamos go migrate, ejecutará nuestro archivo.
+
+## Añadiendo más archivos de migración
+
+Imagina que necesitamos añadir una nueva columna, por ejemplo `age`. Crearemos un archivo con el nombre `2_add_age_to_users.up.sql` con el contenido de abajo:
+
+```sql
+ALTER TABLE common.users ADD COLUMN age INT;
+```
+
+Cualquier persona del equipo puede ejecutar el comando migrate de nuevo y obtener la nueva columna.
+
+Si ejecutas el comando de nuevo, no sucede nada porque go-migrate sabe que todas las migraciones ya fueron aplicadas.
+
+Puedes ejecutar go-migrate en un pipeline de despliegue como GitHub Action para poner tu base de datos en el esquema correcto.
+
+Una de las ventajas de poner las actualizaciones del esquema en archivos de migración, guardarlos en el repositorio y ejecutar go-migrate en el pipeline de despliegue, es que el esquema de la base de datos puede sincronizarse con la versión de la aplicación.
+Es decir, imagina que estás trabajando en una nueva funcionalidad en una nueva rama del repositorio; puedes definir los archivos de migración que necesitas para esta funcionalidad y hacer el commit al mismo tiempo que tu código.
+Si tu código se promueve a la rama principal, cuando el código se despliegue, la base de datos actualizará su esquema.
+
+## Migration rollback
+
+go-migrate también nos permite hacer un rollback de migración, que es una consulta o consultas de base de datos para poner el esquema de la base de datos como estaba antes de ejecutar el archivo up equivalente.
+
+En nuestro ejemplo, podemos escribir el archivo 'down' para la segunda migración `2_add_age_to_users.up.sql`, que debe tener el nombre `2_add_age_to_users.down.sql` (el mismo nombre reemplazando `up` por `down`):
+
+```sql
+ALTER TABLE common.users DROP COLUMN age;
+```
+
+Si queremos volver a la versión 1, debemos ejecutar:
+
+```bash
+migrate -source file://migrations -database postgres://user:pass@localhost:5434/database down 2
+```
+
+Los archivos de migración "down" no suelen escribirse porque normalmente pueden significar pérdida de datos.
+
+[Taylor Otwell](https://twitter.com/taylorotwell?), el creador de [Laravel](https://laravel.com/), dijo en una entrevista:
+
+> Mi visión sobre eso recientemente, en el último año, ha sido que simplemente nunca haces rollback. Jamás. Siempre irías hacia adelante. Porque no sé cómo haces un rollback sin perder datos de clientes. Al menos para mis propios proyectos como Forge o Envoyer, nunca pude garantizar realmente que no estaba perdiendo datos, así que creo que, si es posible, lo que intentaría hacer es escribir una migración completamente nueva que solucione cualquier problema que haya, y simplemente migraría hacia adelante.
+
+https://laraveldaily.com/still-need-migrations-taylor-says-no/
+
+# Próximos pasos
+
+En este post, hablé sobre cómo usar _go-migrate_ como CLI, pero podemos usarlo en nuestros programas de Golang. Eso es muy útil, por ejemplo, para ejecutar una prueba de integración. Escribiré un post sobre cómo gestionar pruebas de integración en Go.

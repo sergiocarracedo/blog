@@ -1,0 +1,176 @@
+---
+title: Genéricos en Golang 1.18
+lang: es
+pubDate: 2022-02-28T00:00:00.000Z
+slug: generics-in-go-1-18
+heroImage: ./go-generics-4016522.jpg
+tags:
+  - go
+
+excerpt: Al momento de escribir este post, Go 1.18 no había sido lanzado (la versión más reciente para 1.18 es la [Release Candidate 1](https://groups.google.com/g/golang-announce/c/QHL1fTc352o/m/5sE6moURBwAJ)), pero aún podemos jugar usando el [playground](https://go.dev/play/) (activando la rama dev) o instalando la RC.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Al momento de escribir este post, Go 1.18 no había sido lanzado (la versión más reciente para 1.18 es la [Release Candidate 1](https://groups.google.com/g/golang-announce/c/QHL1fTc352o/m/5sE6moURBwAJ)), pero aún podemos jugar usando el [playground](https://go.dev/play/) (activando la rama dev) o instalando la RC.
+
+```bash
+go install golang.org/dl/go1.18rc1@latest
+go1.18rc1 download
+```
+
+hola
+
+Una de las novedades más interesantes son los _generics_ de forma similar a como los tenemos en otros lenguajes (C#, Java, TypeScript, etc...). Los genéricos nos permiten como desarrolladores, por ejemplo, crear una función que trabaje con diferentes tipos. El ejemplo clásico que Go usa en su blog para explicar [por qué genéricos](https://go.dev/blog/why-generics) (muy recomendado), es una función que realiza alguna operación sobre un array, por ejemplo, invertir el array. Ahora debemos escribir la misma función para diferentes tipos, ej: int, float, string, etc.
+
+```go
+func ReverseInts(s []int) {
+    first := 0
+    last := len(s) - 1
+    for first < last {
+        s[first], s[last] = s[last], s[first]
+        first++
+        last--
+    }
+}
+func ReverseStrings(s []string) {
+    first := 0
+    last := len(s) - 1
+    for first < last {
+        s[first], s[last] = s[last], s[first]
+        first++
+        last--
+    }
+}
+...
+```
+
+Como puedes ver, el código dentro de la función es exactamente el mismo para ambos tipos, solo cambian los tipos en la firma. Eso no es ideal porque deberíamos mantener la misma lógica en 2, 3 o más lugares diferentes.
+
+Cómo podemos lograrlo usando genéricos: añadiendo un nuevo elemento a la firma entre corchetes _[\_typeName_ _constraint_]\_ y usando esta definición `T` como el tipo de argumento.
+Como en este ejemplo:
+
+```go
+func Reverse[T any] (s []T) {
+    first := 0
+    last := len(s) - 1
+    for first < last {
+        s[first], s[last] = s[last], s[first]
+        first++
+        last--
+    }
+}
+
+Reverse[int]([]int{1, 2, 3, 4})
+Reverse[string]([]string{"1", "2", "3", "4"})
+```
+
+[Pruébalo en el playground](https://go.dev/play/p/0IrUF_f54bK?v=gotip)
+
+Ten en cuenta que puedes tener múltiples genéricos en la misma función e incluso el tipo de retorno puede ser tipado: `func [T any, U  any](arg0 T) U`
+
+## Constraints
+
+En los ejemplos anteriores estamos usando `any` como una constraint, lo que significa que todos los tipos pueden ser usados con la función, pero en la mayoría de los casos necesitaremos limitar los tipos con los que podemos usar la función.
+
+La siguiente constraint más simple es el union type:
+
+El union type es una lista de tipos posibles: `int | float64`. En nuestro ejemplo anterior, intentar hacer `Reverse` de un array de strings devolverá el error `string does not implement int`. Eso significa que Go no está comparando los tipos en sí, está comparando la interfaz de los tipos, y eso es importante para el siguiente tipo de constraint.
+
+Imagina que queremos crear una función para obtener el valor máximo en el array, podríamos escribir algo como:
+
+```go
+// Not this function only works for positive numbers. but it's for example pourpouse
+func Max[T any](values []T) T {
+  var max T
+  for _, v := range values {
+     if v > max {
+        max = v
+     }
+  }
+  return max
+}
+a := []int{1, 2, 3, 4, 5}
+fmt.Println("Max:", Max[int](a))
+```
+
+Si ejecutamos lo anterior obtendremos el error `invalid operation: v > max (type parameter T is not comparable with >)`. Esto se debe a que no todos los tipos representados por `any` implementan el operador > y no son comparables.
+
+Podemos solucionar esto usando `func Max[T int|string](values []T) T` como firma, pero hay una mejor manera: usando el paquete `constraints` (al momento de escribir esto fue eliminado de la librería estándar y movido a [exp/constraints](https://pkg.go.dev/golang.org/x/exp/constraints) https://go-review.googlesource.com/c/go/+/382460/).
+
+Así que podemos hacer:
+
+```go
+import "golang.org/x/exp/constraints"
+func Max[T constraints.Ordered](values []T) T {
+....
+}
+```
+
+## Type approximation
+
+Es muy común en Go crear tipos personalizados a partir de un tipo "primitivo":
+
+```go
+type MyString = string
+```
+
+El problema con los genéricos es que `MyString` no es el mismo tipo que `string`, por lo que `func [T string|int]MyFunc(arg T)` no funcionará con `MyString`.
+
+La forma de solucionarlo es la `type approximation`: que es un tipo que subyacentemente es el tipo especificado. Veámoslo con un ejemplo: `~string` representa cualquier tipo que sea un `string` puro o que sea un string subyacente como nuestro `MyString`.
+
+[Más información en la especificación de Go](https://tip.golang.org/ref/spec#Interface_types)
+
+## Generic Structs
+
+Go también soporta genéricos en Structs:
+
+```go
+type MyGenericStruct[T string | int, U constraints.Ordered] struct {
+	id    T
+	value U
+}
+
+// So this works and makes sense
+c := MyGenericStruct[int, string]{1, "2"}
+d := MyGenericStruct[string, int]{"c", 2}
+```
+
+Esto significa que podemos usar genéricos en métodos (pero de forma limitada), podemos usar genéricos en el receiver, pero no en el método, esto fue [pospuesto para Go 1.19].
+
+```go
+// Works
+func (m MyGenericStruct[T, U]) GetValue() U {
+	return m.value
+}
+
+// Doesn't Work
+func (m MyGenericStruct[T, U]) [A any]GetValueAndAdd(add A) U {
+	return m.value + add
+}
+```
+
+Para los métodos, podríamos usar genéricos definidos en el struct como una alternativa, pero creo que no es muy elegante:
+
+```go
+type MyGenericStruct[T string | int, U constraints.Ordered, A any] struct {
+	id    T
+	value U
+}
+func (m MyGenericStruct[T, U]) [A any]GetValueAndAdd(add A) U {
+    return m.value + add
+}
+```
+
+# any
+
+La nueva palabra clave `any` que usamos anteriormente es solo un alias de `interface{}`, y podríamos usarla en cualquier lugar donde estuviéramos usando interface{}, ej: `map[string]any`.
+
+# Resumen
+
+En mi opinión, los genéricos en Go 1.18 son una gran mejora en términos de flexibilidad para crear lógica reutilizable independiente de los tipos, manteniendo el lenguaje robusto.
+Los _Union types_ solo están permitidos en las constraints, por lo que no hay ambigüedad en los tipos como ocurre en otros lenguajes dentro de la función.

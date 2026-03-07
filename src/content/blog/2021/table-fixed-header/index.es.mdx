@@ -1,0 +1,99 @@
+---
+title: Cómo crear una tabla con un encabezado fijo
+lang: es
+pubDate: 2021-10-12
+slug: how-to-create-a-table-with-a-fixed-header/
+heroImage: ./table-fixed-header.jpg
+tags:
+  - frontend
+  - ui
+
+excerpt: Las tablas en HTML son uno de los elementos más antiguos del estándar; incluso antes de CSS ya teníamos tablas HTML. En el pasado, las tablas se utilizaban para maquetar páginas web, pero el uso correcto es mostrar datos tabulares.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Las tablas en HTML son uno de los elementos más antiguos del estándar; incluso antes de CSS ya teníamos tablas HTML. En el pasado, las tablas se utilizaban para maquetar páginas web, pero el uso correcto es mostrar datos tabulares.
+
+Con el tiempo, el estándar ha mejorado el estilo de las tablas cubriendo la mayoría de los casos de uso que puedas considerar.
+
+Sin embargo, hay un caso de uso que no es fácil de conseguir con los atributos de tabla o las propiedades de estilo: me refiero a crear una tabla con un encabezado (o pie de página) fijo o "sticky".
+
+El comportamiento que queremos obtener es que, para una tabla grande, sea posible desplazarse por el contenido de la tabla mostrando siempre el encabezado en la parte superior.
+
+# Posibles soluciones
+
+Hay más de una solución para este problema. Depende de tus necesidades.
+
+La solución más sencilla que he encontrado es usar CSS para establecer `position: sticky` en los elementos `th`:
+
+::iframe[]{src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&hidenavigation=1&initialpath=%2Ffixed-header-css.html&module=%2Ffixed-header-css.html&theme=dark" width="100%" height="350"}
+
+Esta solución puede funcionar en la mayoría de los casos, pero tiene algunas limitaciones; por ejemplo, `position: sticky` no es compatible con navegadores antiguos https://caniuse.com/css-sticky.
+
+En mi opinión, la limitación más importante es que debes establecer un color de fondo para los elementos del encabezado para evitar que se solapen con el contenido de la tabla. Esta no siempre es una buena solución para todos los casos.
+
+_A continuación se muestra lo mismo sin establecer el color de fondo para los elementos `th`_
+::iframe[]{src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&hidenavigation=1&initialpath=%2Ffixed-header-css-no-bg.html&module=%2Ffixed-header-css-no-bg.html&theme=dark" width="100%" height="350"}
+
+Otra posible solución es usar `display: grid` y añadir `position: fixed` a la primera fila.
+
+Pero no me siento cómodo con esta solución porque:
+
+- Tiene el mismo problema con el color de fondo del encabezado.
+- Perdemos las etiquetas semánticas (estamos visualizando como una tabla, pero el HTML no es una tabla real; tenemos una lista de divs u otras etiquetas que no aportan un significado semántico).
+- Debemos conocer el número de columnas de la tabla porque hay que establecerlo en CSS, por ejemplo `grid-template-columns: repeat(4, 1fr)`.
+
+::iframe[]{src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&hidenavigation=1&initialpath=css-grid.html&module=%2Fcss-grid.html&theme=dark" width="100%" height="300"}
+
+## Técnica de duplicación del encabezado
+
+¿Por qué no simplemente poner el encabezado fuera de la tabla y desplazar solo el `tbody`? Puedes ver el resultado en el siguiente codesandbox. Observa que ahora el encabezado puede tener un fondo transparente, funcionando bien con el fondo degradado de la página.
+
+::iframe[]{src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&hidenavigation=1&initialpath=duplicate.html&module=%2Fduplicate.html&theme=dark" width="100%" height="300"}
+
+Vale, pero probablemente te hayas dado cuenta de que esta solución, tal como la hemos hecho, no funciona bien: los tamaños de las columnas del encabezado no son los mismos que los del contenido, y si el contenido tiene un desplazamiento horizontal, el encabezado no sigue la posición del scroll.
+
+Para solucionarlo, necesitamos algo de _javascript_ para sincronizar el ancho de las columnas del encabezado y la posición del scroll.
+
+Es importante no ocultar el encabezado original de la tabla usando algo como `display: none` ni alterar su ancho con `position: absolute`; queremos el encabezado original con el mismo ancho de columna que en una tabla normal para copiar estos valores al encabezado clonado. La mejor manera de hacerlo es usando `visibility: collapse;`, que para filas o columnas de tabla oculta el elemento y elimina el espacio ocupado, pero el tamaño de las columnas se sigue calculando https://developer.mozilla.org/en-US/docs/Web/CSS/visibility
+
+También es necesario establecer `table-layout: fixed` para evitar que el navegador intente ajustar el espacio de las columnas; queremos usar el mismo espacio que copiamos del encabezado original.
+
+Para copiar estos anchos podemos usar algo como esto. La función de sincronización del ancho de las columnas se llama cuando la tabla puede cambiar de ancho, por ejemplo, al cambiar el tamaño de la ventana. Podemos mejorar esto simplemente observando cuándo se redimensiona la tabla, no cuando se redimensiona la ventana, utilizando el [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver).
+
+```js
+const syncColsWidth = () => {
+  const thead = document.getElementById('thead');
+  const theadClone = document.getElementById('thead-clone');
+  const theadCols = thead.getElementsByTagName('th');
+  const theadCloneCols = theadClone.getElementsByTagName('th');
+
+  for (i in theadCols) {
+    theadCloneCols[i].style.width = `${theadCols[i].offsetWidth}px`;
+  }
+};
+window.onresize = syncColsWidth;
+```
+
+También debemos sincronizar la posición del scroll:
+
+```js
+const onScrollTable = () => {
+  const wrapper = document.getElementById('table-wrapper');
+  const clone = document.getElementById('wrapper-header');
+  clone.scrollLeft = wrapper.scrollLeft;
+};
+
+document.getElementById('table-wrapper').onscroll = onScrollTable;
+```
+
+Y con eso, tenemos un encabezado totalmente fijo para nuestra tabla.
+
+Esta solución añade más complejidad que la de CSS, pero es más flexible y nos permite usar fondos degradados o imágenes.
+
+::iframe[]{src="https://codesandbox.io/embed/table-fixed-header-s37y4?fontsize=14&hidenavigation=1&initialpath=duplicate-js.html&module=%2Fduplicate-js.html&theme=dark" width="100%" height="400"}

@@ -1,6 +1,6 @@
 ---
 import { enrichBlogPost } from '@/utils/enrichBlogPost';
-import { isTranslationFile, getTranslationLocale, getPostSwitcherUrls } from '@/utils/getLocalizedPosts';
+import { isLocaleFile, getFileLocale, getPostSwitcherUrls, getRoutingSlug } from '@/utils/getLocalizedPosts';
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PostSingle from '../components/posts/PostSingle.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -11,24 +11,28 @@ const lang: Locale = defaultLocale; // English for root paths
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  
-  // For English (default locale), show:
-  // - Base posts with no lang or lang: 'en'
-  // - Co-located English translation files (index.en.mdx)
-  // Exclude Spanish translation files and Spanish-only posts
-  return posts
-    .filter((post) => {
-      // Co-located translation files: only include English ones at root
-      if (isTranslationFile(post)) {
-        return getTranslationLocale(post) === 'en';
-      }
-      // Include posts without lang or with lang: 'en'
-      return !post.data.lang || post.data.lang === 'en';
-    })
-    .map((post) => ({
-      params: { slug: post.id },
+
+  // EN root serves:
+  // 1. Plain index.mdx with lang: en or no lang
+  // 2. index.en.mdx (EN translations of ES-original posts)
+  // Exclude:
+  // - index.es.mdx (served at /es/...)
+  // - plain index.mdx with lang: es (legacy, served at /es/...)
+  const enPosts = posts.filter((post) => {
+    if (isLocaleFile(post)) {
+      return getFileLocale(post) === 'en';
+    }
+    return !post.data.lang || post.data.lang === 'en';
+  });
+
+  return enPosts.map((post) => {
+    // For locale files (index.en.mdx), the route slug is the frontmatter slug or directory
+    const routeSlug = getRoutingSlug(post);
+    return {
+      params: { slug: routeSlug },
       props: post,
-    }));
+    };
+  });
 }
 
 type Props = CollectionEntry<'blog'>;

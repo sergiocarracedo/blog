@@ -1,0 +1,148 @@
+---
+title: "Comprendiendo el event loop de Javascript: Macrotasks y microtasks"
+lang: es
+pubDate: 2020-04-27T00:00:00.000Z
+slug: js-loop
+tags:
+  - javascript
+heroImage: ./js-event-loop-106155.jpg
+
+excerpt: A pesar de lo que pueda parecer, la ejecución de Javascript en un navegador es _síncrona_. Es algo similar a un sistema operativo _multitarea_ ejecutándose en un procesador de un solo núcleo; en ese caso, la multitarea es "falsa", porque el procesador solo puede ejecutar una instrucción a la vez, pero el SO controla la ejecución y distribuye el tiempo del procesador entre cada aplicación, haciendo que parezca multitarea.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+A pesar de lo que pueda parecer, la ejecución de Javascript en un navegador es _síncrona_. Es algo similar a un sistema operativo _multitarea_ ejecutándose en un procesador de un solo núcleo; en ese caso, la multitarea es "falsa", porque el procesador solo puede ejecutar una instrucción a la vez, pero el SO controla la ejecución y distribuye el tiempo del procesador entre cada aplicación, haciendo que parezca multitarea.
+
+En _Javascript_ tenemos una aproximación similar en la forma de distribuir el tiempo de ejecución. No es exactamente lo mismo. Veamos cómo funciona.
+
+# Event loop
+
+Cuando escribes un programa en JS, cada script que añades o cada instrucción se agregará a una cola en el _event loop_.
+
+El motor comienza a ejecutar cada instrucción en el mismo orden en que las escribiste, ejecutando todas las tareas, y cuando termina, espera por más tareas y luego comienza de nuevo.
+
+Cada tarea en esta cola es una **macrotask** y la cola es la **macrotask queue**. Algunos ejemplos de macrotasks son:
+
+- Cada `<script>` cargado y todas las instrucciones en ellos
+- Comandos `setInterval` o `setTimeout`
+- Eventos del DOM: `window.load`, `mouseout`, etc.
+
+En el ejemplo de abajo, ejecutamos algunas tareas: calcular el sexto elemento de la serie de Fibonacci y obtener una cadena con el alfabeto inglés. He puesto algunos `console.log` como puntos de control de ejecución de código para mostrar el orden de ejecución.
+
+::iframe[]{src="https://codesandbox.io/s/romantic-lewin-i1fjz?fontsize=14&hidenavigation=1&previewwindow=console&runonclick=1&initialpath=macrotasks.html&module=/src/macrotasks.js&theme=dark" width="100%" height="500"}
+
+El resultado es
+
+```
+Checkpoint 1
+13
+Checkpoint 2: 0.5600000149570405ms
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Checkpoint 3
+```
+
+Como puedes ver, las tareas se ejecutan en orden, la generación de la cadena no comienza hasta que la función de fibonacci termina, incluso si la función tarda mucho tiempo en completarse.
+
+Veamos qué sucede cuando usas `setTimeout`. Cuando estableces un timeout, esperas que tu función se ejecute después del tiempo que definiste. Por ejemplo, `setTimeout(() => console.log('here'), 1000)` debería imprimir en consola 'here' después de **1s**. Esperas que esto ocurra siempre, sin importar la siguiente tarea o instrucciones. Si esperas eso, estás equivocado. Revisa el siguiente código:
+
+::iframe[]{src="https://codesandbox.io/s/romantic-lewin-i1fjz?fontsize=14&hidenavigation=1&previewwindow=console&runonclick=1&initialpath=macrotasksSetTimeout.html&module=/src/macrotasksSetTimeout.js&theme=dark" width="100%" height="500"}
+
+Tenemos una tarea larga después del timeout. El timeout debería ejecutarse después de **1s**, pero la siguiente tarea tarda **5s** en completarse, y tu timeout aún no se ha ejecutado. Vale, esperemos a que termine la tarea larga y... nada, tu timeout sigue sin aparecer. La siguiente macrotask es nuestro generador de cadenas, esta tarea se ejecuta y, finalmente, después de todas las macrotasks, se ejecuta nuestro timeout.
+
+Eso ocurre porque, cuando usas un timeout, estás moviendo la tarea al final de la cola, y en este punto es cuando el motor de JS comprueba si tu timeout debería ejecutarse.
+
+## Sacando provecho
+
+Puedes aprovechar ese comportamiento del event loop, por ejemplo, puedes poner una tarea de alto uso de CPU dentro de un `setTimeout`, incluso con 0ms de tiempo de despacho, y esta tarea pesada se ejecutará después de las siguientes tareas.
+Esa es una solución rápida, pero si tienes más de 1 o 2 tareas largas, solo estás moviendo el problema al final de la cola, pero el problema sigue ahí.
+
+## Usando Promises
+
+Podrías pensar en usar promesas, por ejemplo
+
+::iframe[]{src="https://codesandbox.io/s/romantic-lewin-i1fjz?fontsize=14&hidenavigation=1&previewwindow=console&runonclick=1&initialpath=macrotasksPromise.html&module=/src/macrotasksPromise.js&theme=dark" width="100%" height="500"}
+
+Pero la promesa comienza a ejecutar el código interno justo después de llamar al constructor de la promesa, y tu programa se queda bloqueado de nuevo. Puedes resolverlo usando `setTimeout` otra vez, pero en este caso estamos creando una **microtask**:
+
+## Microtasks
+
+Las microtasks son tareas creadas en promesas (then, catch, finally). La microtask queue se ejecuta inmediatamente después de cada macrotask, antes del renderizado o antes de la siguiente macrotask.
+
+::iframe[]{src="https://codesandbox.io/s/romantic-lewin-i1fjz?fontsize=14&hidenavigation=1&previewwindow=console&runonclick=1&initialpath=microtasksPromise.html&module=/src/microtasksPromise.js&theme=dark" width="100%" height="500"}
+
+En ese ejemplo, `setTimeout` crea una nueva macrotask, por lo que se ejecutará después del bucle de macrotasks. La Promise crea una microtask que se ejecutará después de que termine la siguiente macrotask, en este caso después de todas las instrucciones del script pero antes de la macrotask encolada. Y finalmente se ejecutará la macrotask del `setTimeout`.
+
+Hay otra forma de crear una microtask, usando [`queueMicrotask`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask) que es una adición reciente al estándar. Está soportado por la mayoría de los navegadores modernos (https://caniuse.com/#search=queueMicrotask) pero si no, puedes usar este polyfill:
+
+```js
+if (typeof window.queueMicrotask !== 'function') {
+  window.queueMicrotask = function (callback) {
+    Promise.resolve()
+      .then(callback)
+      .catch((e) =>
+        setTimeout(() => {
+          throw e;
+        })
+      );
+  };
+}
+```
+
+Y funciona exactamente como el ejemplo anterior pero la sintaxis es más clara.
+
+::iframe[]{src="https://codesandbox.io/s/romantic-lewin-i1fjz?fontsize=14&hidenavigation=1&previewwindow=console&runonclick=1&initialpath=microtasksPromise.html&module=/src/microtasksPromise.js&theme=dark" width="100%" height="500"}
+
+## Vue
+
+Si estás usando Vue, tal vez quieras mostrar un loader o algún tipo de indicador cuando vayas a ejecutar una tarea larga.
+
+```js
+...
+  data: {
+    return {
+      loading: false
+    }
+  },
+  methods: {
+    ...
+    longTask () {
+      this.loading = true
+      // doing your long task stuff
+      this.loading = false
+    }
+  }
+...
+```
+
+Podrías pensar que el loader se mostrará antes de comenzar la tarea larga y se ocultará después, pero eso no sucede, nunca ves el loader, porque las propiedades reactivas se "comprueban" después del bucle y en este punto `this.loading` es `false`.
+
+Puedes intentar usar `$.nextTick` pero el resultado es el mismo, necesitas salir del event loop con tu tarea larga.
+
+```js
+...
+  data: {
+    return {
+      loading: false
+    }
+  },
+  methods: {
+    ...
+    longTask () {
+      this.loading = true
+      queueMicrotask(() => {
+        // doing your long task stuff)
+        this.loading = false
+      }
+    }
+  }
+...
+```
+
+Arriba escribí que Javascript es _síncrono_, pero mentí :sweat_smile:. Puedes usar [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers), este es un tema para otro post... :simple_smile:
+
+Más información: https://javascript.info/event-loop

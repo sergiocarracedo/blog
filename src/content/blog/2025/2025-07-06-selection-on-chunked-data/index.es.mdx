@@ -1,0 +1,147 @@
+---
+title: Selección en datos fragmentados (chunked)
+lang: es
+pubDate: 2025-07-06
+slug: selection-on-chunked-data
+heroImage: ./pexels-pixabay-247113.jpg
+tags:
+  - frontend
+  - typescript
+
+excerpt: En el post que escribí el año pasado sobre las lecciones aprendidas al construir un componente de tabla, mencioné solo :astro-ref[unas pocas líneas]{path="blog/2024/2024-10-21-table-component-ii" fragment="row-selection"} sobre la selección. Aun así, creo que vale la pena escribir un post aparte sobre ello, ya que es un tema interesante.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+En el post que escribí el año pasado sobre las lecciones aprendidas al construir un componente de tabla, mencioné solo :astro-ref[unas pocas líneas]{path="blog/2024/2024-10-21-table-component-ii" fragment="row-selection"} sobre la selección. Aun así, creo que vale la pena escribir un post aparte sobre ello, ya que es un tema interesante.
+
+
+## ¿Qué son los datos fragmentados (chunked data) en este contexto?
+
+En este contexto, "chunked data" se refiere al hecho de que no tendrás todos los datos al mismo tiempo en el cliente, y solo tendrás acceso a un subconjunto de los datos a la vez, y a algunos metadatos, por ejemplo, el número total de filas.
+
+Este es un escenario muy común cuando se trata con grandes conjuntos de datos o cuando se quiere dar al usuario el tiempo de respuesta más rápido posible.
+
+> Si revisas el post anterior, mencioné la paginación interna, lo que significa que los datos se fragmentan en páginas, pero es una fragmentación de UI, no una fragmentación de datos, ya que tienes todos los datos disponibles en el cliente y los fragmentas para propósitos de renderizado, por lo que no es el mismo caso.
+
+## Selección en datos no fragmentados
+
+Imagina que tienes una tabla y tienes todas las filas, por ejemplo 1000 filas; manejar el estado de las filas seleccionadas es sencillo, puedes simplemente tener un array de las filas seleccionadas (puedes almacenar referencias a las filas o los IDs de las filas, depende de tu caso de uso), incluso si los datos tienen grupos, no necesitamos preocuparnos por eso, ya que la selección final son elementos, no grupos, así que si tienes un grupo con 10 filas y el usuario selecciona el grupo, simplemente añades las 10 filas al array de filas seleccionadas.
+
+Si necesitas ejecutar una acción sobre las filas seleccionadas en el backend, simplemente envías el array de filas seleccionadas (en la mayoría de los casos, es mejor enviar los IDs de las filas seleccionadas). Y el backend simplemente puede ejecutar la acción.
+
+Este caso es simple pero no escala bien de varias maneras: 
+- Necesitas cargar todos los datos en el cliente, probablemente a través de una llamada a la API, y el backend necesita obtenerlos de la base de datos, lo que significa tiempo de ejecución de la base de datos, tiempo de red, tiempo de parseo (CPU y memoria), y tiempo de renderizado en el cliente, además del uso de memoria en el cliente para almacenar todo el conjunto de datos, lo cual puede ser un problema si tienes muchos datos.
+- Necesitas mantener el seguimiento de las filas seleccionadas en el cliente, y de nuevo requerirá más memoria y uso de red a medida que el conjunto de datos sea más grande.
+
+
+## Selección en datos fragmentados (chunked)
+Así que el siguiente paso natural es fragmentar los datos y solo cargar un subconjunto de los datos a la vez, para reducir el uso de memoria y de red, pero esto trae algunos desafíos cuando se trata de la selección.
+
+Imagina que tienes una tabla con 1.000 millones de filas; esto probablemente será inmanejable en el cliente (estoy bastante seguro de que lo será), por lo que lo razonable es fragmentar los datos, por ejemplo, en fragmentos (páginas) de 1000 filas. Al hacer esto, tenemos un caso de uso máximo: sin importar cuántas filas tengas, solo tendrás 1000 filas en el cliente a la vez, por lo que el uso de memoria, el uso de CPU y el uso de red para cada carga tienen un límite superior.
+
+Esto nos trae un nuevo desafío: cómo manejar la selección.
+
+Puedes pensar que puede funcionar como el caso anterior, simplemente almacenando las filas seleccionadas en un array, y tienes razón, cuando se carga el fragmento de datos, conocemos los IDs de las filas y cuando el usuario selecciona una fila, simplemente añadimos el ID de la fila al array de filas seleccionadas; cuando el usuario navega a la siguiente página (fragmento) no limpiamos el array, simplemente seguimos añadiendo las nuevas filas seleccionadas.
+
+Pero en términos de Experiencia de Usuario (UX), esto obliga al usuario a visitar todas las páginas para seleccionar todas las filas, lo cual es una de las peores UX que puedo imaginar.
+
+Típicamente, tendremos un checkbox o botón de "seleccionar todo", que permite al usuario seleccionar todo, lo cual INDICA QUE ÉL/ELLA QUIERE seleccionar todas las filas, incluso las que no están cargadas.
+
+### Acción vs Deseo (Wants to)
+Ese es el punto clave: en el caso de datos no fragmentados, cuando el usuario selecciona una fila o hace clic en seleccionar todo, o selecciona todo en un grupo, simplemente estamos seleccionando las filas, añadiéndolas al array de filas seleccionadas, porque estamos ejecutando la acción que el usuario quiere ejecutar o la ejecutaremos ya que conocemos todos los elementos. Pero en el caso de datos fragmentados, no estamos ejecutando la acción (solo el backend podría ejecutarla); en este caso solo estamos indicando que el usuario quiere seleccionar todas las filas, o seleccionar un grupo, o una sola fila, pero es el backend el que ejecutará la acción, y para eso necesita ser capaz de recrear la lista real de elementos seleccionados basándose en los deseos del usuario, que es lo que almacenaremos en el cliente y enviaremos al backend.
+
+
+### Casos posibles
+
+
+#### Seleccionar todas las filas
+Como mencionamos, el usuario puede tener un botón o un checkbox (usemos esto en los ejemplos) para seleccionar/deseleccionar todas las filas. En este caso, necesitamos almacenar el estado de este checkbox (y enviarlo al backend más tarde).
+
+Podríamos representarlo así:
+```typescript
+const selectedStatus = {
+  all: false
+};
+```
+
+
+#### Seleccionar/Deseleccionar filas (select all es false)
+Cuando el usuario selecciona una fila, necesitamos almacenar el ID de la fila en el array de filas seleccionadas; podemos hacerlo ya que tenemos en memoria los IDs de las filas, así que podemos simplemente añadir un array de IDs de filas seleccionadas a nuestro `selectedStatus`, y añadir las filas seleccionadas y cuando el usuario las deseleccione, simplemente eliminar el ID de él. ¿Verdad? **Spoiler: NO**. Veamos el siguiente caso antes de eso.
+
+#### Seleccionar/Deseleccionar filas (select all es true)
+Imagina este caso: el usuario quiere seleccionar todas las filas, **excepto** una o dos, así que el usuario marca el checkbox de seleccionar todo y luego deselecciona las filas que no quiere seleccionar. Todavía no tenemos todas las filas en el cliente, así que necesitamos almacenar los deseos del usuario; en este caso, quiere seleccionar todas las filas excepto los IDs 1 y 2, por lo que podemos representarlo así:
+
+```typescript
+const selectedStatus = {
+  all: true,
+  rows: [{ id: 1, selected: false }, { id: 2, selected: false }]
+};
+```
+
+Con esta estructura simple, podemos representar los deseos del usuario y enviarlos al backend, para que el backend pueda recrear la lista real de elementos seleccionados.
+
+#### Grupos
+Si tenemos grupos, también debemos encargarnos de eso. Básicamente es repetir la misma lógica de las filas para los grupos.
+
+```typescript
+const selectedStatus = {
+  all: true,
+  groups: [
+ { id: 1, selected: true },
+ { id: 2, selected: false },
+ ]
+  rows: [{ id: 1, selected: false }, { id: 2, selected: false }, { id: 3, selected: true }]
+};
+```
+
+### Cómo recrear la lista real de elementos seleccionados
+
+Una vez que tenemos el objeto `selectedStatus` y acceso para consultar los elementos (por ejemplo, en el backend), podemos recrear la lista real de elementos seleccionados. La lógica es simple: empezar desde el alcance más amplio hacia el alcance más estrecho, aplicar las excepciones (que son el estado del alcance hijo), y **entender qué significa el valor undefined en el contexto de la selección, que es seguir el estado deseado del padre**.
+
+Por ejemplo, si tenemos el objeto `selectedStatus` como el anterior, y los datos que tenemos en el backend son:
+
+```typescript
+const data = {
+ total: 100,
+ groups: [
+  { id: 1, name: 'Group 1', rows: [
+    {id: 1, name: "Row 1"}, 
+    {id: 2, name: "Row 2"}
+  ]},
+  { id: 2, name: 'Group 2', rows: [
+    {id: 3, name: "Row 3"}, 
+    {id: 4, name: "Row 4"}, 
+    {id: 5, name: "Row 5"}
+  ]},
+  { id: 3, name: 'Group 3', rows: [
+    {id: 6, name: "Row 6"},
+    {id: 7, name: "Row 7"},
+    {id: 8, name: "Row 8"}
+  ]},
+ ],
+ rows: [
+  { id: 10, name: 'Row 1' },
+ ]
+};
+```
+
+Empezando con el alcance más amplio, la propiedad `all`, es true, por lo que seleccionaremos todos los elementos, así que cualquier hijo (grupo o fila) que no esté en el `selectedStatus` será seleccionado. En este caso, deberíamos añadir los elementos del grupo 1 (porque está seleccionado explícitamente) y el 3 (porque no está deseleccionado explícitamente).
+
+La siguiente iteración se centra en los elementos:
+- Las filas 1 y 2 (grupo 1) están deseleccionadas explícitamente, por lo que las eliminaremos de los elementos seleccionados en el grupo 1.
+- La fila 3 (grupo 2) está seleccionada, por lo que la añadiremos a los elementos seleccionados incluso si el grupo 2 no está seleccionado explícitamente ahora.
+
+
+
+
+### Filtrado
+
+Si tenemos un filtro aplicado a los datos, también debemos encargarnos de eso y pasar el filtro al backend, para que pueda aplicar el filtro a los elementos seleccionados y devolver solo los elementos que coincidan con el filtro.
+
+### Conclusión
+La selección en datos fragmentados es un tema complejo, pero no tanto como podrías pensar; es solo cuestión de entender que debes desacoplar las acciones (estado deseado) del usuario, que viven en el cliente, de los datos (estado real) que usualmente viven en el backend, y almacenar los deseos del usuario de una manera que pueda ser recreada fácilmente en el backend.

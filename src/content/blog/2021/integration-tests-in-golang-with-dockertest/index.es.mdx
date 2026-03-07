@@ -1,0 +1,180 @@
+---
+title: Pruebas de integración en Golang con dockertest
+lang: es
+pubDate: 2021-11-09T00:00:00.000Z
+slug: integration-tests-in-golang-with-dockertest/
+heroImage: ./dockertest-pexels-miguel-3785927.jpg
+tags:
+  - devops
+  - testing
+  - go
+
+excerpt: Realizar pruebas de integración (o pruebas de sistema) suele significar tener una base de datos poblada con datos, servicios como Redis, Elasticsearch, etc., funcionando; en general, cualquier infraestructura con la que interactúe nuestro software.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Realizar pruebas de integración (o pruebas de sistema) suele significar tener una base de datos poblada con datos, servicios como Redis, Elasticsearch, etc., funcionando; en general, cualquier infraestructura con la que interactúe nuestro software.
+
+La forma más común de hacerlo es tener una réplica de nuestra infraestructura de producción. De hecho, es relativamente fácil de lograr utilizando contenedores, por ejemplo, contenedores de Docker.
+
+Podemos configurar y ejecutar un contenedor para cada servicio que necesitemos replicar, podemos orquestarlo con docker-compose y crear algunos makefiles o simplemente un script sencillo para preparar la infraestructura y ejecutar las pruebas de integración.
+
+Si tus pruebas son independientes (deberían serlo), debes encontrar la manera de "reiniciar" los servicios de infraestructura entre pruebas, y esto puede ser difícil de conseguir con una configuración de infraestructura y pruebas separadas (la infraestructura se configura en un script y las pruebas están en archivos de Go).
+
+# dockertest
+
+Si estás usando Golang, puedes usar [dockertest](https://github.com/ory/dockertest), una librería con la que puedes gestionar y orquestar los contenedores en tus archivos de prueba de Go.
+
+Gestionar el contenedor de infraestructura de pruebas desde los archivos de Go nos permite controlar qué servicio necesitamos en cada prueba (por ejemplo, si algún paquete usa una base de datos pero no Redis, no tiene sentido ejecutar Redis para esa prueba).
+
+## Instalando dockertest
+
+Para instalar _dockertest_, simplemente ejecuta:
+
+```bash
+go get -u github.com/ory/dockertest/v3
+```
+
+## Usando dockertest
+
+La forma más sencilla de configurar la infraestructura con _dockertest_ es añadir el código de configuración en la función `TestMain` de tu archivo de prueba.
+
+`TestMain` es una función que se llama antes de ejecutar las pruebas en el paquete [Más información](https://medium.com/goingogo/why-use-testmain-for-testing-in-go-dafb52b406bc)
+
+Este es un ejemplo de cómo configurar un servicio de MySQL usando _dockertest_:
+
+```go
+package mypackage_test
+
+import (
+	"database/sql"
+	"fmt"
+	"log"
+	"os"
+	"testing"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/ory/dockertest/v3"
+)
+
+var db *sql.DB
+
+func TestMain(m *testing.M) {
+	// uses a sensible default on windows (tcp/http) and linux/osx (socket)
+	pool, err := dockertest.NewPool("")
+	if err != nil {
+		log.Fatalf("Could not connect to docker: %s", err)
+	}
+
+	// pulls an image, creates a container based on it and runs it
+	resource, err := pool.Run("mysql", "5.7", []string{"MYSQL_ROOT_PASSWORD=secret"})
+	if err != nil {
+		log.Fatalf("Could not start resource: %s", err)
+	}
+
+	// exponential backoff-retry, because the application in the container might not be ready to accept connections yet
+	if err := pool.Retry(func() error {
+		var err error
+		db, err = sql.Open("mysql", fmt.Sprintf("root:secret@(localhost:%s)/mysql", resource.GetPort("3306/tcp")))
+		if err != nil {
+			return err
+		}
+		return db.Ping()
+	}); err != nil {
+		log.Fatalf("Could not connect to docker: %s", err)
+	}
+
+    // RESERVED FOR DATABASE MIGRATIONS
+
+	code := m.Run()
+
+	// You can't defer this because os.Exit doesn't care for defer
+	if err := pool.Purge(resource); err != nil {
+		log.Fatalf("Could not purge resource: %s", err)
+	}
+
+	os.Exit(code)
+}
+```
+
+## Poblar la base de datos
+
+Ahora tenemos el servicio de base de datos funcionando, pero esta base de datos está vacía. _dockertest_ utiliza una imagen genérica de MySQL para el contenedor y no hay nada relacionado con nuestra aplicación allí.
+
+Si sigues mis publicaciones, recordarás que escribí un post sobre
+:astro-ref[migraciones de bases de datos]{path="blog/2021/database-migrations-in-golang"}
+(si no, puedes echarle un vistazo). En ese post hablé sobre _go-migrate_, una herramienta para ejecutar migraciones de bases de datos, pero en él me centré en su uso como herramienta de CLI; ahora la usaremos en nuestro código de Go.
+
+En el código anterior, en la línea donde escribimos `// RESERVED FOR DATABASE MIGRATIONS`, añadiremos este código:
+
+```go
+    m, err := migrate.NewWithDatabaseInstance("file://<path-to-migration-folder>, "mysql", driver)
+    if err != nil {
+        log.Fatalf("Error running migrations: %s", err)
+    }
+    err = m.Up()
+    if err != nil {
+        log.Fatal(err.Error())
+    }
+```
+
+Luego, después de que _dockertest_ levante la base de datos, la herramienta de migración puebla la base de datos y nuestras pruebas de integración pueden ejecutarse con los mismos datos en la base de datos.
+
+Si la aplicación tiene más de un paquete (que es la situación común), pongo el código de configuración de los servicios en un archivo independiente que se llama desde cada paquete:
+
+```go
+// it_utils.go
+package it_utils
+
+func IntegrationTestSetup() (*dockertest.Pool, *[]dockertestResource {
+  // Setup the services
+  //return the pool and the resources
+}
+
+func IntegrationTestTeardown(pool *dockertest.Pool, resources []*dockertest.Resource) {
+	for _, resource := range resources {
+		if err := pool.Purge(resource); err != nil {
+			fmt.Printf("Could not purge resource: %s\n", err)
+		}
+	}
+}
+```
+
+Luego, en la prueba de cada paquete, solo necesitamos añadir:
+
+```go
+package my_package
+
+func TestMyTests (t *testing.T) {
+    if testing.Short() {
+		t.Skip()
+	}
+	pool, resources := itutils.IntegrationTestSetup()
+	defer itutils.IntegrationTestTeardown(pool, resources)
+
+	t.Run("your test", func(t *testing.T) {
+	...
+	}
+}
+
+func TestOtherTests (t *testing.T) {
+    if testing.Short() {
+		t.Skip()
+	}
+	pool, resources := itutils.IntegrationTestSetup()
+	defer itutils.IntegrationTestTeardown(pool, resources)
+
+	t.Run("your other test", func(t *testing.T) {
+	...
+	}
+}
+```
+
+Al hacerlo de esa manera, en cada bloque de prueba el servicio se ejecuta en un contenedor nuevo, lo que hace que la prueba sea completamente independiente.
+
+Como último consejo, recomiendo poner la prueba de integración en un paquete diferente para evitar importaciones circulares.

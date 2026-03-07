@@ -1,0 +1,236 @@
+---
+title: Enums de TypeScript, const enums y readonly maps
+lang: es
+pubDate: 2023-01-29
+slug: typescript-enums
+heroImage: ./delila-ziebart-b0GSCFJ-Gzg-unsplash.jpg
+tags:
+  - typescript
+
+excerpt: "Conceptos básicos de los enums"
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+# Conceptos básicos de los enums
+
+Los *enums* son una de las cosas agradables que TypeScript aporta al entorno de desarrollo de JavaScript. Los *enums* te permiten definir un conjunto de valores con nombre (constantes), generalmente con un significado semántico.
+
+Una de las ventajas sobre las constantes regulares es la agrupación, lo que facilita conocer los diferentes valores que puedes usar en un lugar determinado (y limitar los posibles valores a utilizar).
+
+En TypeScript, un enum tiene esta forma:
+
+```typescript
+enum HttpResponseStatus {
+  NotFound,
+  Forbidden,
+  Ok,
+  InternalServerError,
+}
+```
+
+En el ejemplo, el enum representa una lista de posibles (una lista simplificada) estados de respuesta HTTP, y al usar los nombres es fácil recordar qué estado queremos usar en cada caso.
+
+La forma de usar un enum es muy sencilla, simplemente: nombre del Enum + punto + nombre del valor del Enum: `HttpResponseStatus.NotFound`, TypeScript lo reemplazará por un valor.
+
+Por defecto, y si no especificas más, TypeScript convierte cada valor del enum en un número, comenzando en 0. En nuestro ejemplo, el valor de `NotFound` es 0, `Forbidden` es 1, etc.
+
+Esto no encaja con el caso de uso esperado; esperamos, por ejemplo, que el valor de `NotFound` sea 404, `Ok` sea 200, etc.
+
+Incluso puedes definir el número inicial:
+
+```typescript
+enum Chapters {
+  Four = 4,
+  Five,
+  Six,
+  Seven,
+}
+```
+
+Pero, para cumplir con los valores esperados, solo necesitamos asignar los valores deseados para cada nombre de valor del enum de esta forma:
+
+```typescript
+enum HttpResponseStatus {
+  NotFound = 404,
+  Forbidden = 403,
+  Ok = 200,
+  InternalServerError = 500,
+}
+```
+
+Puedes usar expresiones para definir los valores, por ejemplo, cálculos, operaciones de bits, etc. Incluso números aleatorios (el valor aleatorio se evalúa solo una vez, por lo que será constante en el tiempo de ejecución), o valores devueltos por una función:
+
+```typescript
+enum MyEnum {
+  A = 404,
+  B = 1 << 2,
+  C = 1 * 3,
+  D = Math.random(),
+  E = someFunction(123),
+}
+```
+
+Después de definir un *enum*, puedes usarlo como un tipo, **con limitaciones\***, por ejemplo:
+
+```typescript
+function handleResponse(responseCode: HttpResponseStatus);
+```
+
+> (\*) La limitación principal es que puedes asignar cualquier número a un tipo numeric-enum y eso es intencionado (https://github.com/Microsoft/TypeScript/issues/26362#issuecomment-412198938).
+
+Por ejemplo, `handleResponse(123)` es válido, incluso si el valor 123 no es un valor en el enum `HttpResponseStatus`. Esto no sucede con los string-enums.
+
+Ahora que conoces los conceptos básicos de los enums, profundicemos más.
+
+# Enums en tiempo de ejecución (runtime)
+
+Los enums de TypeScript tienen una representación en runtime, pero quizás no sea como esperas; veamos cómo se compila el enum `HttpResponseStatus` a JS puro (vanilla JS):
+
+```javascript
+var HttpResponseStatus;
+(function (HttpResponseStatus) {
+  HttpResponseStatus[(HttpResponseStatus['NotFound'] = 404)] = 'NotFound';
+  HttpResponseStatus[(HttpResponseStatus['Forbidden'] = 403)] = 'Forbidden';
+  HttpResponseStatus[(HttpResponseStatus['Ok'] = 200)] = 'Ok';
+  HttpResponseStatus[(HttpResponseStatus['InternalServerError'] = 500)] = 'InternalServerError';
+})(HttpResponseStatus || (HttpResponseStatus = {}));
+```
+
+y si haces `console.log(HttpResponseStatus)`, este es el resultado:
+
+```json
+{
+  "200": "Ok",
+  "403": "Forbidden",
+  "404": "NotFound",
+  "500": "InternalServerError",
+  "NotFound": 404,
+  "Forbidden": 403,
+  "Ok": 200,
+  "InternalServerError": 500,
+  "Test": 0.48543608526338566,
+  "0.48543608526338566": "Test"
+}
+```
+
+Incluso el líder del equipo principal de RxJS escribió un tweet al respecto: https://twitter.com/benlesh/status/1510983348944056327
+
+La razón de este comportamiento es principalmente por:
+
+- **[Reverse Mapping](https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings)**: esto permite usar el enum en ambas direcciones, obtener el valor a partir del nombre del valor o obtener el nombre a partir del valor.
+- **Computed values**: El objeto que representa el enum se computa en una función para permitir valores calculados, como el aleatorio que usamos antes en el ejemplo.
+
+El mapeo inverso (reverse mapping) puede ser útil en algunos casos, por ejemplo, si quieres mostrar el nombre del valor en lugar del valor, incluso en un desplegable (dropdown), para listar todos los nombres de los valores y obtener el valor seleccionado, pero en este caso necesitas hacer una conversión extra para evitar valores repetidos: https://gist.github.com/sergiocarracedo/ac219a9b3f700b2e721cc9c2964b36c9
+
+## Const enums
+
+En la mayoría de los casos de uso no necesitas ni el Reverse mapping ni los valores calculados; entonces puedes usar **const enums**, simplemente añadiendo la palabra clave `const` antes de la definición del enum.
+
+```typescript
+const enum HttpResponseStatus {
+  NotFound = 404,
+  Forbidden = 403,
+  Ok = 200,
+  InternalServerError = 500,
+}
+```
+
+En este caso, el compilador de TypeScript simplemente reemplazará los usos de los elementos del enum por el valor, por ejemplo:
+
+```typescript
+someFunction(HttpResponseStatus.NotFound);
+// Compiler output
+someFunction(404 /* NotFound */);
+```
+
+## Union types
+
+Otra forma sencilla de "emular" el comportamiento de un enum manteniendo la seguridad de tipos y sin sobrecargar el bundle con código extra es simplemente usando **union types**.
+
+```typescript
+type HttpResponseStatus = 404 | 403 | 200 | 500;
+```
+
+Esta solución pierde el espíritu de un enum, pero el IDE puede hacer la "magia" de sugerir los valores disponibles cuando intentas completar un argumento de función tipado como `HttpResponseStatus`.
+
+Ambas soluciones son buenas en términos de tamaño del bundle, pero eliminan la posibilidad de conocer el nombre del valor.
+
+# Objeto const
+
+En el caso de que queramos tener el nombre del valor en runtime, podemos usar un objeto plano para emular el comportamiento del enum; entonces nuestro enum se convierte en:
+
+```typescript
+const HttpResponseStatus = {
+  NotFound: 404,
+  Forbidden: 403,
+  Ok: 200,
+  InternalServerError: 500,
+};
+```
+
+Podemos usarlo como un enum, referenciando un valor de la misma manera `HttpResponseStatus.NotFound`, **¿pero qué pasa con el tipado?**
+
+Si comprobamos el tipo del objeto obtenemos esto:
+
+```typescript
+const HttpResponseStatus: {
+  NotFound: number;
+  Forbidden: number;
+  Ok: number;
+  InternalServerError: number;
+};
+```
+
+Perdimos la posibilidad de usar el tipo, por ejemplo, en el argumento de una función: `function someFunction(status: HttpResponseStatus)` no funcionará, y deberíamos usar `number` como tipo de status.
+
+## Const assertion
+
+La [const assertion](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) de TypeScript resuelve esto, ya que obliga a que las propiedades del objeto sean `readonly`, y por eso el compilador de TypeScript es capaz de inferir los tipos de las propiedades y convertirlos como tipo:
+
+```typescript
+const HttpResponseStatus = {
+  NotFound: 404,
+  Forbidden: 403,
+  Ok: 200,
+  InternalServerError: 500,
+} as const;
+
+// The type infered by typescript
+const HttpResponseStatus: {
+  readonly NotFound: 404;
+  readonly Forbidden: 403;
+  readonly Ok: 200;
+  readonly InternalServerError: 500;
+};
+```
+
+Esto es un objeto y seguimos teniendo las claves en runtime como en un enum regular.
+
+Ahora podemos crear un tipo que contendrá la unión de todos los valores de las propiedades como tipo:
+
+```typescript
+type HttpResponseStatusEnum = (typeof HttpResponseStatus)[keyof typeof HttpResponseStatus];
+```
+
+Explicándolo un poco en detalle:
+
+- `typeof HttpResponseStatus` es el tipo del objeto.
+- `keyof typeof HttpResponseStatus` devuelve todas las claves del objeto: `"NotFound" | "Forbidden" | "Ok" | "InternalServerError"`
+- y finalmente usamos de nuevo `typeof HttpResponseStatus` para obtener el tipo del objeto, y accedemos al [tipo por índice](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html), pero como aplicamos eso sobre un union type, estamos aplicando el índice a cada elemento de la unión https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
+
+y luego podemos usar este "Enum type" como tipo:
+
+```typescript
+function someFunction(status: HttpResponseStatusEnum);
+```
+
+# Resumen
+
+Como has leído, hay varias formas de lograr el mismo comportamiento o uno similar, y ahora tienes información suficiente para decidir qué solución usar dependiendo del caso de uso. Si te preocupa el tamaño del bundle o la salida del código, quizás sea el momento de empezar a usar otra solución. La documentación de TypeScript recomienda la solución de *objeto con as const*, pero si no necesitas los nombres de los valores del enum, puedes usar el const enum o simplemente el union type.
+
+> En el TypeScript moderno, es posible que no necesites un enum cuando un objeto con `as const` podría ser suficiente (de https://www.typescriptlang.org/docs/handbook/enums.html#objects-vs-enums)

@@ -1,0 +1,94 @@
+---
+title: Manejando la paginación infinita
+lang: es
+pubDate: 2021-11-22
+slug: dealing-with-infinite-pagination/
+heroImage: ./infinite-pagination-GVYRkT5f1tA-unsplash.jpg
+tags:
+  - frontend
+
+excerpt: En el contexto del desarrollo de software, la paginación es el proceso de dividir una lista de elementos (filas) en grupos del mismo tamaño.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+En el contexto del desarrollo de software, la paginación es el proceso de dividir una lista de elementos (filas) en grupos del mismo tamaño.
+
+Por ejemplo, si tenemos estos elementos:
+
+```js
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+```
+
+y queremos paginar en páginas (grupos) de 5 elementos, deberíamos conocer la lista o el total de elementos en la lista, y así podemos calcular el número de páginas y cómo obtener los elementos de una página (asumiendo que el valor de la página comienza en 0):
+
+```js
+const itemsPerPage = 5;
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+
+const pages = Math.ceil(items.length / itemsPerPage);
+
+const getPageItems = (items, page, itemsPerPage) => {
+  return items.slice(page * itemsPerPage, itemsPerPage);
+};
+```
+
+Esta es la situación ideal donde se conoce la lista de elementos y estamos trabajando únicamente en el frontend o backend.
+
+La situación común es cuando tu frontend muestra los elementos y el paginador, y obtienes los datos de una API. En este caso, realizarás una petición como `https://example.com/list-items/?page=1` o, mejor aún, utilizando `offset` y `limit` en lugar de `page` para mayor flexibilidad: `https://example.com/list-items/offset=0&limit=5`
+
+En esta situación, para renderizar el paginador, debemos conocer el número total de elementos o páginas; es por eso que la respuesta del servidor debería ser algo similar a:
+
+```json
+{
+  "pagination": {
+    "totalItems": 16
+  },
+  "items": [...]
+}
+```
+
+Entonces, después de cargar la primera página, obtendremos el total de elementos en el servidor y podremos calcular el número de páginas y renderizar el paginador.
+
+Si nuestra tabla de la base de datos de donde obtenemos los elementos es grande, la operación de contar el número total de eventos puede ser muy costosa.
+
+# Paginación sin conocer el conteo total de elementos (también conocida como paginación infinita)
+
+El concepto es muy similar al _infinite scrolling_, donde el usuario hace scroll y, cuando el scroll llega al último elemento, tu componente carga unos pocos elementos más, y así sucesivamente.
+
+La diferencia es que debemos mostrar un paginador. ¿Cómo deberíamos mostrar el paginador?
+
+Como no conocemos el número total de páginas, tenemos algunas preguntas que responder:
+
+- ¿Cuántas páginas debemos mostrar en el paginador?
+- ¿Cuál es la última página?
+
+## El algoritmo
+
+Este algoritmo nos ayudará a saber cuántas páginas debemos mostrar y cómo conocer la última página.
+
+En nuestro componente de paginador debemos tener dos variables:
+
+- `page` es la página actual
+- `pages` es el número total de páginas
+- `lastPage` es la última página confirmada (valor por defecto `Number.POSITIVE_INFINITY`)
+
+`pages` es un valor dinámico, el valor inicial es `1`.
+
+1. Carga la primera página usando los parámetros `offset` y `limit`. El `offset` será 0 (es la primera página) y el limit será, digamos, 10.
+2. Si el conteo de elementos cargados es menor que el `limit` (en este caso 10), entonces sabemos que esta es la última página.
+3. Si no, si el conteo es 10, incrementamos el valor de `pages` en 1, entonces nuestro componente debe renderizar un nuevo botón de página.
+
+Hay un caso especial: ¿Qué pasa si la última página tiene exactamente 10 elementos?
+En ese caso, cuando el usuario intente ir a esa página, al cargarla obtendremos una lista vacía de elementos; entonces, debemos establecer el valor de `lastPage` a la última página con elementos y usar `lastPage` para renderizar únicamente ese número de páginas.
+
+Con este sencillo algoritmo podemos crear un paginador infinito y, obviamente, tiene algunas desventajas:
+
+- El usuario solo puede navegar las páginas en orden (No puede ir a la página 10 desde la página 1 sin pasar por la página 2, 3, 4, 5...).
+- Si tenemos el caso de 10 elementos (`limit` = elementos por página) en la última página, resulta extraño para el usuario volver a la última página y que se elimine el botón de siguiente.
+
+A pesar de estas desventajas, es una buena solución si nuestro backend no nos permite conocer el número total de páginas.

@@ -16,12 +16,12 @@
  *   GOOGLE_GENERATIVE_AI_API_KEY: Google AI API key
  */
 
-import { generateText } from 'ai';
-import { openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { google } from '@ai-sdk/google';
-import * as fs from 'fs';
-import * as path from 'path';
+import { openai } from '@ai-sdk/openai';
+import { generateText } from 'ai';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 type Locale = 'en' | 'es';
 type Provider = 'openai' | 'anthropic' | 'google';
@@ -33,16 +33,14 @@ interface TranslationOptions {
   dryRun?: boolean;
 }
 
-interface FrontmatterData {
-  [key: string]: unknown;
-}
+type FrontmatterData = Record<string, unknown>;
 
 /**
  * Parse MDX file into frontmatter and content
  */
 function parseMdx(content: string): { frontmatter: string; body: string; data: FrontmatterData } {
   const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
-  const match = content.match(frontmatterRegex);
+  const match = frontmatterRegex.exec(content);
 
   if (!match) {
     throw new Error('Invalid MDX file: missing frontmatter');
@@ -59,11 +57,11 @@ function parseMdx(content: string): { frontmatter: string; body: string; data: F
   let arrayValues: string[] = [];
 
   for (const line of lines) {
-    if (line.match(/^\s+-\s+/)) {
+    if (/^\s+-\s+/.exec(line)) {
       // Array item
       const value = line.replace(/^\s+-\s+/, '').replace(/^['"]|['"]$/g, '');
       arrayValues.push(value);
-    } else if (line.match(/^(\w+):\s*$/)) {
+    } else if (/^(\w+):\s*$/.exec(line)) {
       // Key with no value (start of array or object)
       if (currentKey && inArray) {
         data[currentKey] = arrayValues;
@@ -71,7 +69,7 @@ function parseMdx(content: string): { frontmatter: string; body: string; data: F
       }
       currentKey = line.replace(':', '').trim();
       inArray = true;
-    } else if (line.match(/^(\w+):\s*.+$/)) {
+    } else if (/^(\w+):\s*.+$/.exec(line)) {
       // Key-value pair
       if (currentKey && inArray) {
         data[currentKey] = arrayValues;
@@ -126,14 +124,14 @@ function buildFrontmatter(data: FrontmatterData): string {
 /**
  * Get the AI model based on provider
  */
-function getModel(provider: Provider) {
+function getModel(provider: Provider | (string & {})) {
   switch (provider) {
     case 'openai':
-      return openai('gpt-4o');
+      return openai('gpt-5');
     case 'anthropic':
-      return anthropic('claude-sonnet-4-20250514');
+      return anthropic('claude-sonnet-4-6');
     case 'google':
-      return google('gemini-2.0-flash');
+      return google('gemini-3-flash-preview');
     default:
       throw new Error(`Unknown provider: ${provider}`);
   }
@@ -227,16 +225,16 @@ async function translatePost(options: TranslationOptions): Promise<void> {
   const translated = await translateContent(toTranslate, sourceLang, targetLang, provider);
 
   // Parse translated content back
-  const titleMatch = translated.match(/^title:\s*(.+)$/m);
-  const descMatch = translated.match(/^description:\s*(.+)$/m);
-  const excerptMatch = translated.match(/^excerpt:\s*(.+)$/m);
+  const titleMatch = /^title:\s*(.+)$/m.exec(translated);
+  const descMatch = /^description:\s*(.+)$/m.exec(translated);
+  const excerptMatch = /^excerpt:\s*(.+)$/m.exec(translated);
 
   const translatedTitle = titleMatch ? titleMatch[1].trim() : data.title;
   const translatedDesc = descMatch ? descMatch[1].trim() : data.description;
   const translatedExcerpt = excerptMatch ? excerptMatch[1].trim() : data.excerpt;
 
   // Remove the frontmatter-like lines from the beginning
-  let translatedBody = translated
+  const translatedBody = translated
     .replace(/^title:\s*.+$/m, '')
     .replace(/^description:\s*.+$/m, '')
     .replace(/^excerpt:\s*.+$/m, '')

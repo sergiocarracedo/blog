@@ -1,0 +1,76 @@
+---
+newsletterSent: true
+title: "Sireno: Tu asistente de IA para formularios - Escribe, traduce y corrige en cualquier lugar"
+lang: es
+pubDate: 2026-02-13
+slug: sireno-assistant
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+tags:
+  - ai
+  - productivity
+excerpt: Una extensión de navegador que lleva la IA directamente a cualquier campo de texto en la web, eliminando el flujo de trabajo de copiar y pegar al mejorar, traducir o corregir texto.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+[:float-image[]{src="./chromewebstore.png" maxWidth="220px" float="right"}](https://chromewebstore.google.com/detail/sireno-assistant/ppnecnomfnadhbcpacgkfldiapoejogo)
+Imagina que estás escribiendo una publicación en LinkedIn. Quieres corregirla, mejorar el estilo o incluso traducirla a otro idioma.
+El flujo de trabajo habitual consiste en copiar el texto en ChatGPT, Gemini o cualquier otro LLM, solicitar los cambios y luego volver a pegar la versión mejorada. Funciona, pero requiere mucho tiempo y es un poco engorroso.
+
+# Product definition
+
+Quería que este flujo de trabajo fuera fluido: sin cambiar de pestaña, sin copiar y pegar extra.
+
+La solución más sencilla y natural era una extensión de navegador que funcionara en cualquier sitio web y pudiera interactuar con los campos de entrada de texto. Seleccionas la entrada que quieres mejorar y le pides al asistente que realice los cambios sin salir de la página.
+
+La extensión añade un botón junto a los campos de texto. Al hacer clic, aparece un modal de chat: puedes pedirle al asistente que corrija la gramática, mejore el estilo, traduzca, etc. El asistente actualiza el contenido del campo según tus instrucciones.
+:::gallery
+./inline01.png
+./inline02.png
+./inline03.png
+:::
+
+También quería que los usuarios pudieran personalizar el tono del asistente por sitio web. Por ejemplo, lo que quieres en LinkedIn suele ser diferente de lo que quieres en un sitio más informal como Twitter. Y si le das al asistente un poco de contexto (como tu información personal básica), puede escribir con una voz más personal y coherente.
+
+Para lograr esto, Sireno admite skills. Las skills son pequeños archivos de instrucciones que le dicen al asistente cómo comportarse. Por ejemplo, una skill de LinkedIn puede solicitar un estilo más formal e incluir algunos detalles sobre ti. Las skills solo están activas en los dominios que elijas, por lo que puedes mantener un asistente formal en LinkedIn y uno más informal en Twitter (o proporcionar un contexto diferente según el sitio).
+
+:::gallery
+./skill01.png
+./skill02.png
+:::
+
+¿Y por qué detenerse en un solo campo de entrada? En el panel lateral, puedes seleccionar con qué campos de la página quieres interactuar, configurar cuánto contexto de la página puede acceder el asistente y completar varios campos a la vez. Por ejemplo, cuando estás completando un formulario de registro, puedes usar una skill de datos personales para rellenarlo todo de una vez.
+
+:::gallery
+./chat01.png
+./chat02.png
+./chat03.png
+./chat04.png
+:::
+
+# How to use it
+
+:float-image[]{src="./extensions.png" maxWidth="220px" float="right"}
+
+Puedes instalar la extensión desde la [Chrome Web Store](https://chromewebstore.google.com/detail/sireno-assistant/ppnecnomfnadhbcpacgkfldiapoejogo). Una vez instalada, verás un nuevo botón de extensión en la barra de extensiones. Puedes hacer clic en él para abrir el panel lateral, donde puedes configurar el proveedor de IA en la pestaña de settings. Esto requiere una API key de cualquier proveedor de IA que quieras usar, lo cual tiene un coste —no demasiado— pero si no tienes una, planeo lanzar una actualización en las próximas semanas con soporte para Groq (no confundir con Grok), que ofrece un nivel gratuito que se puede usar con esta extensión.
+
+También puedes gestionar tus skills en la pestaña de skills, revisar los campos disponibles en la página actual en la pestaña de fields y, finalmente, interactuar con el asistente en la pestaña de chat.
+
+Recomiendo revisar las skills por defecto y actualizar la que tiene tu información básica (nombre, trabajo, etc.). Esto ayuda al asistente a escribir contenido más personalizado. También puedes crear nuevas skills para sitios web o casos de uso específicos.
+
+A partir de ahí, ya estás listo para usarlo todo en cualquier sitio web. Haz clic en el botón junto a cualquier campo de entrada de texto, o usa el chat del panel lateral para empezar a interactuar con el asistente.
+
+# Technical details
+
+Construí este proyecto como un experimento con OpenCode como herramienta de vibe-coding. Me ayudó a iterar rápidamente y lanzar un MVP pronto, pero aun así tuve que ensuciarme las manos con las partes complicadas que los LLM suelen pasar por alto: posicionar el icono de forma fiable, manejar iframes, Shadow DOM, etc. (Hablaré de mi experiencia con OpenCode en otro post).
+
+Esta extensión es open source en GitHub, así que puedes revisar el código y contribuir si quieres: https://github.com/sergiocarracedo/sireno-assistant
+
+Si te gusta y encuentras algún problema o tienes alguna sugerencia, por favor házmelo saber en los [GitHub repo issues](https://github.com/sergiocarracedo/sireno-assistant/issues)
+
+> Este es un proyecto paralelo que construí en mi tiempo libre solo para disfrutar haciendo cosas, pero es un MVP temprano, por lo que puede tener algunos bordes ásperos y errores, pero espero mejorarlo con el tiempo basándome en el feedback de los usuarios y las contribuciones.

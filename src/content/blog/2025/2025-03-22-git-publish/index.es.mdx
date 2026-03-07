@@ -1,0 +1,185 @@
+---
+title: "Git publish: Lanzamiento y publicación de paquetes npm efímeros"
+lang: es
+pubDate: 2025-04-12
+heroImage: ./pexels-pixabay-73871.jpg
+slug: git-publish
+tags:
+  - npm
+  - typescript
+  - packages
+  - dev experience
+
+excerpt: Lanzar y publicar un paquete JavaScript/TypeScript en un _npm registry_ es algo relativamente fácil de hacer.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Lanzar y publicar un paquete JavaScript/TypeScript en un _npm registry_ es algo relativamente fácil de hacer.
+
+Hay muchos tutoriales y guías en internet sobre cómo hacerlo, y el proceso está bien documentado en la documentación de
+npm/yarn/pnpm.
+
+**¿Pero qué pasa con el lanzamiento y la publicación de una versión efímera de un paquete?** Por ejemplo, cuando quieres probar una
+funcionalidad, un refactor o un fix en el que estás trabajando dentro de otro proyecto que utiliza el paquete, pero sin
+generar un lanzamiento o publicar una nueva versión (ni siquiera una versión alpha); o cuando quieres compartir esos cambios con un
+compañero de equipo en tu empresa para avisarle de que los cambios están en camino y darle la oportunidad de probarlos antes de realizar un
+alpha release.
+
+Puedes usar el mismo proceso que utilizas para un lanzamiento regular, pero etiquetando el paquete como alpha y, si
+estás usando semver, puedes usar una [pre-release tag](https://semver.org/#spec-item-9) como `1.0.0-alpha.1`.
+
+Pero este método tiene algunos inconvenientes:
+
+- Si automatizas el proceso de lanzamiento (pre-release) para crear una pre-release cuando se crea o sincroniza una PR,
+  acabarás con muchas pre-releases en el registry. Registries como npmjs.com solo te permiten eliminar la versión de un
+  paquete (unpublish) dentro de las 72 horas posteriores a su publicación y si no es utilizada por otro paquete.
+- Necesitas recordar aumentar la versión (bump) cuando quieras crear una nueva pre-release o automatizar el proceso para hacerlo.
+- Si tu paquete es público, las pre-releases serán visibles para todo el mundo, y puede que no quieras compartirlas con el
+  mundo.
+
+## Release branches
+
+Una release branch es una rama en tu repositorio donde puedes subir el build output de tu librería. Las release branches
+son fáciles de gestionar: puedes crearlas, eliminarlas y actualizarlas en lugar de publicar en un registry. Al ser una rama más, las release
+branches utilizan el control de acceso y los permisos del repositorio, por lo que si tu repositorio es privado, las release branches también lo serán.
+
+Nuestro objetivo es automatizar el proceso de creación, publicación y **eliminación** de la release branch, porque como dije antes, queremos
+eliminar esas ramas después de que la PR se fusione o se cierre (y se publique una versión estable).
+
+### Usar una release branch como dependencia
+
+Antes de explicar cómo automatizar la creación y publicación de la release branch, veamos cómo usar una release branch como
+dependencia.
+
+Cuando añades una dependencia a un paquete, normalmente usas la última versión estable del paquete:
+`npm add @myorg/mylib` (que es lo mismo que `npm add @myorg/mylib@latest`), también puedes definir
+una [versión específica o un rango de versiones](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#dependencies). Por
+ejemplo `npm add @myorg/mylib@^1.2.0`.
+
+Pero también puedes usar
+un [repositorio git como dependencia](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#repository), por ejemplo
+`npm add git+https://github.com/mmyorg/mylib.git`, lo cual usará la rama por defecto (`master` o `main`) del repositorio como
+fuente para la dependencia.
+
+Podemos ir más allá y usar una rama específica, un tag o un hash de commit como dependencia, por ejemplo:
+
+- `npm add git+ssh://git@github.com:myorg/mylib.git#v1.0.27 (tag)`
+- `npm add git+ssh://git@github.com:myorg/mylib.git#my-branch (branch)`
+- `npm add git+ssh://git@github.com:myorg/mylib.git#af2334345df45gfdfgdfg (commit hash)`
+
+> Para repositorios de GitHub, GitHub gist, Bitbucket o GitLab podemos usar atajos para hacerlo aún más fácil:
+>
+> - `npm add github:myorg/mylib`
+> - `npm add bitbucket:myorg/mylib`
+> - `npm add gitlab:myorg/mylib`
+> - `npm add gist:myorg/mylib`
+
+### El proceso de publicación de paquetes
+
+Antes de automatizar la creación y publicación de la release branch, permíteme explicar cómo es el proceso de publicación de un
+paquete npm:
+
+Después de compilar el código, ejecutas `npm publish`. Esta herramienta de CLI comprobará el archivo `package.json` para obtener el nombre del paquete
+y leer la propiedad `files` para saber qué archivos forman parte del paquete. Luego creará un tarball con
+esos archivos y lo subirá al registry.
+
+Si no se define la propiedad `files`, `npm` usará todos los archivos del proyecto (excepto
+los definidos en el archivo `.npmignore` si existe).
+
+Queremos replicar este proceso pero, en lugar de publicar el paquete en el registry, subiremos los archivos definidos
+en el `package.json` a una release branch.
+
+### Git publish
+
+[Git publish](https://www.npmjs.com/package/git-publish_) es un paquete de npm (puedes usarlo sin añadirlo como
+dependencia: `npx git-publish`)
+que te ofrece una herramienta de CLI que replica el proceso de `npm publish` pero, en lugar de crear un tarball y publicarlo
+en el registry, sube los archivos a una release branch. Solo los archivos definidos en el `package.json`, tal como
+hace `npm publish`.
+
+## Automatizando la creación y publicación de la release branch
+
+Para que esto sea útil, deberíamos automatizar todo el flujo de trabajo:
+
+1. Compilar el código y crear la release branch cuando se crea o sincroniza una PR (se suben nuevos commits).
+2. Eliminar la release branch cuando la PR se fusiona o se cierra.
+
+Puedes usar una herramienta de CI/CD como GitHub Actions, GitLab CI/CD, CircleCI, etc., para automatizar el proceso. En este ejemplo,
+usaré GitHub Actions:
+
+```yaml
+#.github/workflows/publish-release-branch.yml
+name: 'Build and Publish release branch'
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  publish-alpha:
+    name: 'Build and Publish release branch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+      - run: |
+          RELEASE_BRANCH="npm/release-branch-${{ github.event.pull_request.number }}"
+          pnpx  -b $RELEASE_BRANCH
+          LAST=$(git log -n 1 'origin/$RELEASE_BRANCH' --pretty=format:"%H")
+          # Shows a message in github actions to let the user know the package is published and how to install it
+          echo "::notice title='Package published'::Use pnpm i github:mycompany/mypackage#$RELEASE_BRANCH to install the package (or pnpm i github:mycompany/mypackage#${LAST} to install this specific commit)"
+```
+
+El flujo de trabajo se activará cuando se cree o sincronice una PR, compilará el código y creará una release branch
+que puedes usar como mencioné anteriormente. Para facilitar las cosas, las actions incluyen un mensaje con el comando para instalar el
+paquete en otros proyectos.
+
+Como queremos eliminar la release branch cuando la PR se fusione o se cierre, necesitamos añadir otro flujo de trabajo para eliminarla:
+
+```yaml
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  clear-release-braanches:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - if: ${{ github.event.pull_request.number }}
+        run: |
+          RELEASE_BRANCH="npm/release-branch-${{ github.event.pull_request.number }}"
+          git push origin --delete $RELEASE_BRANCH
+```
+
+## ¿Qué pasa si tengo un monorepo con múltiples paquetes?
+
+Bueno, esta herramienta aún no está lista para trabajar con monorepos, pero como tuve esta necesidad en un proyecto en el que estoy trabajando, creé
+un fork y un [Pull Request](https://github.com/privatenumber/git-publish/pull/10) para incluir una funcionalidad que permita definir el
+directorio de trabajo para que puedas usarlo en monorepos.
+
+Este PR no está fusionado en el momento de escribir este artículo, pero puedes usar la release branch de mi fork; solo necesitas
+reemplazar `pnpx  -b $RELEASE_BRANCH` con:
+
+```
+pnpx sergiocarracedo/git-publish#npm/feat/directory-support -b "[RELEASE_BRANCH_NAME]" --directory [PACKAGE_DIRECTORY]
+```
+
+Esto usará el `PACKAGE_DIRECTORY` como directorio de trabajo para crear la release branch, almacenando los archivos de lanzamiento
+en la carpeta raíz de la release branch.

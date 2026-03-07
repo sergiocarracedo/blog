@@ -1,0 +1,250 @@
+---
+title: Automatizando el incremento de versión de paquetes con Release Please
+lang: es
+pubDate: 2025-06-30T00:00:00.000Z
+slug: release-please
+heroImage: ./cover.png
+tags:
+  - ci-cd
+  - release
+  - npm
+  - javascript
+  - typescript
+
+excerpt: Cuando se trabaja en un proyecto que necesita ser publicado como un paquete, el incremento de versión (aumentar el número de versión dependiendo de los cambios) puede resultar tedioso.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Cuando se trabaja en un proyecto que necesita ser publicado como un paquete, el incremento de versión (aumentar el número de versión dependiendo de los cambios) puede resultar tedioso. 
+
+> Me centraré en los paquetes npm, pero los conceptos también se pueden aplicar a otros gestores de paquetes.
+
+Asumo que estás familiarizado con el sistema de [Semantic Versioning](https://semver.org/) (SemVer), que define cómo deben incrementarse los números de versión según el tipo de cambios realizados en el código base.
+
+Dado un número de versión MAJOR.MINOR.PATCH, incrementa la:
+
+- Versión **MAJOR** cuando realizas cambios de API incompatibles
+- Versión **MINOR** cuando añades funcionalidad de manera compatible con versiones anteriores
+- Versión **PATCH** cuando realizas correcciones de errores compatibles con versiones anteriores
+
+Realizar un nuevo lanzamiento requiere revisar los cambios manualmente, decidir el tipo de versión (major, minor, patch) y luego actualizar la versión en tu archivo `package.json` antes de compilar y publicar el paquete. Esto puede dar lugar a errores humanos e inconsistencias, especialmente en equipos grandes o proyectos con actualizaciones frecuentes.
+
+Si también quieres mantener un registro de cambios, tendrías que escribir manualmente los cambios en un archivo `CHANGELOG.md`, lo cual puede ser aún más propenso a errores y consumir mucho tiempo.
+
+
+## Automatizando el incremento de versión
+
+Si queremos automatizar este proceso, primero debemos definir un conjunto de reglas que nos permitan determinar el tipo de incremento de versión (major, minor, patch). 
+
+Una solución para esto es utilizar los mensajes de commit para especificar el tipo de cambio que incluye el commit. 
+
+### Conventional Commits al rescate
+
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) es una especificación para escribir mensajes de commit estandarizados que puede usarse para múltiples propósitos, incluido nuestro caso de uso: automatizar el incremento de versión.
+
+Existen otras ventajas al usar Conventional Commits, como la generación automática de changelogs.
+
+Conventional Commits propone un formato de mensaje de commit:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+El tipo puede ser `fix` o `feat` para correcciones de errores y nuevas funcionalidades, respectivamente. SI estos incluyen el carácter `!`, significa que el cambio es un breaking change, lo que debería activar un incremento de versión major.
+
+Se pueden usar otros tipos para categorizar los commits, como `chore`, `docs`, `style`, `refactor`, `perf` y `test`, pero estos no activarán un incremento de versión.
+
+Ejemplo:
+
+`feat(datacollection)!: Allow to group items in the collection`
+
+Este mensaje de commit indica que se añadió una nueva funcionalidad a la recolección de datos (el scope), y es un breaking change, por lo que debería activar un incremento de versión major.
+
+### Asegurando que los mensajes de commit sigan Conventional Commits
+
+Conventional Commits es una convención, por lo que nada impide que tú o tu equipo escribáis mensajes de commit que no sigan las especificaciones. Si quieres asegurarte de que todos los mensajes de commit sigan la especificación (deberías), puedes usar una herramienta como [commitlint](https://commitlint.js.org/), que junto con [husky](https://typicode.github.io/husky/#/) o una herramienta similar puede usarse para verificar y aplicar las reglas de los mensajes de commit.
+
+
+Una vez que acordamos con el equipo el formato de los mensajes de commit, estamos seguros de que todos los mensajes siguen el acuerdo y tenemos una herramienta para verificarlo, podemos proceder a automatizar el proceso de incremento de versión.
+
+## Release Please
+
+[Release Please](https://github.com/googleapis/release-please) es una herramienta desarrollada por Google que automatiza el proceso de incremento de versión y la generación de PRs de lanzamiento basada en Conventional Commits.
+
+Cuando se fusiona una PR de lanzamiento, release-please actualizará automáticamente el archivo `CHANGELOG.md`, actualizará la versión en el archivo `package.json` y creará un lanzamiento en GitHub.
+
+Release Please funciona con PRs de lanzamiento y gestiona el ciclo de vida de la PR, incluyendo la fusión de la misma cuando el lanzamiento está listo. También se puede configurar para publicar automáticamente el paquete en npm u otros gestores de paquetes.
+
+Pero esto no significa que no puedas usar entrega continua (CD) para publicar automáticamente el paquete cuando fusiones algo en main. Aún puedes usar Release Please para gestionar el incremento de versión y la generación del changelog, solo necesitas activar el flujo de trabajo de Release Please cuando el código se fusione en `main`.
+
+### Configurando Release Please
+
+
+El primer paso es configurar Release Please en tu repositorio. La forma recomendada es usar la GitHub Action [release-please-action](https://github.com/googleapis/release-please-action).
+
+
+Luego necesitas crear un archivo de configuración en la raíz de tu repositorio, llamado `release-please-config.json`. Este archivo definirá cómo debe comportarse Release Please, incluyendo el tipo de lanzamiento, el paquete o nombre del paquete, y otras opciones.
+
+Ejemplo:
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "packages": {
+    "packages/react": {
+      "pull-request-header": "🤖 React package stable release 🚀",
+      "pull-request-title-pattern": "chore${scope}: 🤖 React package release${component} ${version} 🚀",
+      "group-pull-request-title-pattern": "chore${scope}: 🤖 React package release ${version} 🚀"
+ },
+    "packages/react-native": {
+      "pull-request-header": "🤖 React Native 📱 stable release 🚀",
+      "pull-request-title-pattern": "chore${scope}: 🤖 React Native 📱 release${component} ${version}",
+      "group-pull-request-title-pattern": "chore${scope}: 🤖 React Native 📱 release ${version}"
+ },    
+ }
+}
+```
+
+En la primera ejecución, Release Please creará el archivo `.release-please-manifest.json` en la raíz de tu repositorio, el cual contendrá la información sobre las versiones actuales de los paquetes.
+
+Si tu proyecto solo tiene un paquete y no quieres configurar el mensaje de lanzamiento, etiquetas, etc., puedes saltarte este paso.
+
+
+Como queremos crear y fusionar automáticamente una PR de lanzamiento cuando se envíe un commit a la rama `main`, necesitamos configurar un flujo de trabajo de GitHub Actions que ejecute Release Please. Crea un archivo `.github/workflows/release-please.yml` con el siguiente contenido:
+
+```yaml
+name: "Create release"
+
+on:
+  push:
+    branches:
+ - main
+
+jobs:
+  release-please:
+    name: "Release library(s)"
+    # Prevents running on the release-please branch and create a loop
+    if: |
+ github.head_ref != 'release-please--branches--master' &&
+ !contains(github.event.pull_request.labels.*.name, 'autorelease')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      BRANCH: ${{ github.event.repository.default_branch }}
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      prs_created: ${{ steps.release.outputs.prs_created }}
+      pr: ${{ steps.release.outputs.pr }}
+    steps:
+ - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+ - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
+          target-branch: ${{ env.BRANCH }}
+
+ - name: Auto approves release-please PR
+        if: steps.release.outputs.prs_created == 'true'
+        uses: juliangruber/approve-pull-request-action@b71c44ff142895ba07fad34389f1938a4e8ee7b0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ fromJSON(steps.release.outputs.pr || '{}').number }}
+
+ - name: Merge release-please PR and create a release
+        run: |
+ if [ -z "$PR_NUMBER" ]; then
+ echo "No PR number found"
+ echo "::warning title='No release PR created by release-please'::Conventional commits didn't trigger a version bump and a release is not necessary"
+ exit 0
+ fi
+ echo "Merging PR $PR_NUMBER"
+ gh pr merge --squash --admin "$PR_NUMBER"
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
+          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr || '{}').number }}
+
+      # Set the output to true if a PR was created. This is used in other workflows to determine if a new version was created
+ - name: Set new_version output
+        if: ${{ steps.release.outputs.pr }}
+        id: set-output
+        run: echo "new_version=true" >> $GITHUB_OUTPUT
+```
+
+Este flujo de trabajo se ejecutará en cada push a la rama `main` y creará una PR de lanzamiento si hay cambios que requieran un incremento de versión. La PR se aprobará y fusionará automáticamente, y se creará un nuevo lanzamiento.
+
+> Dependiendo de tus reglas de protección de ramas de GitHub, específicamente si las PRs deben ser aprobadas por otros codeowners, necesitarás crear un token de GitHub con los permisos necesarios para crear y fusionar PRs. Puedes crear un personal access token y añadirlo a los secretos de tu repositorio como `RELEASE_PLEASE_GH_TOKEN`.
+
+El último paso del flujo de trabajo establecerá la salida `new_version` a `true` si se creó una nueva versión. Esto se puede usar en otros flujos de trabajo para activar acciones basadas en la nueva versión, como publicar el paquete en npm, como veremos en acción.
+
+## Publishing the package
+
+Para publicar el paquete en npm después de un incremento de versión, podemos crear otro flujo de trabajo de GitHub Actions que se ejecute cuando se cree una nueva versión. Este flujo de trabajo verificará si la salida `new_version` está establecida en `true` y, de ser así, publicará el paquete en npm.
+
+
+```yaml
+
+name: "Publish package"
+
+on:
+  release:
+    types: [released]
+  # Release is not triggered when the release was created by another workflow using GITHUB_TOKEN https://github.com/orgs/community/discussions/25281#discussioncomment-3300251
+  workflow_run:
+    workflows: [Create release]
+    types:
+ - completed
+
+  workflow_dispatch: # Allows manual triggering
+    inputs:
+      release_tag:
+        description: "The release tag to checkout"
+        required: true
+
+jobs:
+  publish:
+    name: "Publish to npm"
+    # Prevents running on the release-please branch
+    # For workflow_run trigger we need to check if the workflow_run was successful and if the new_version output was set to not run on it if no new version was released
+    if: |
+ contains(github.event.release.tag_name, 'react-v') &&
+ github.head_ref != 'release-please--branches--master' && !contains(github.event.pull_request.labels.*.name, 'autorelease') && 
+ github.event_name == 'workflow_dispatch' || github.event_name == 'release' || 
+ (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.outputs.new_version)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+ - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.event.inputs.release_tag || github.sha }} # Checkout the tagged release
+ - uses: ./.github/actions/publish-to-npmjs
+        id: publish
+        with:
+          workspace: "@myorg/my-package" # Replace with your package name
+          registry_token: ${{ secrets.NPMJS_TOKEN }}
+
+```
+
+
+Ahora, cuando alguien fusione una PR en `main` (después de pasar todas las validaciones que el equipo haya establecido), el primer flujo de trabajo se ejecutará y verificará si el commit incluye `feat` o `fix` (o un BREAKING CHANGE), creando una PR de lanzamiento; si no, simplemente se saltará los siguientes pasos. Release Please buscará el package.json del proyecto e incrementará la versión de acuerdo con los mensajes de commit, actualizará el archivo `CHANGELOG.md` con los cambios realizados en el lanzamiento y creará una PR con los cambios.
+
+En nuestro caso, aprobamos automáticamente la PR y la fusionamos porque queremos entrega continua, pero también puedes configurar el flujo de trabajo para crear los lanzamientos manualmente y activar el flujo de trabajo de Release Please en ese caso.
+.
+Con estos sencillos flujos de trabajo, podemos simplificar y automatizar el proceso de incremento de versión y publicación de paquetes, reduciendo el riesgo de error humano y asegurando un proceso de lanzamiento consistente, generando al mismo tiempo un archivo changelog con los cambios realizados en cada lanzamiento.

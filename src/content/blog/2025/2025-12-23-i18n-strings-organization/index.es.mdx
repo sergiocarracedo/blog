@@ -1,0 +1,145 @@
+---
+title: Organizar cadenas de i18n para la escalabilidad
+lang: es
+pubDate: 2026-01-18
+slug: i18n-strings-organization
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+tags:
+  - frontend
+  - i18n
+  - architecture
+
+excerpt: La traducción y la localización son aspectos críticos de las aplicaciones modernas, especialmente cuando te diriges a una audiencia global.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+La traducción y la localización son aspectos críticos de las aplicaciones modernas, especialmente cuando te diriges a una audiencia global. 
+
+Existen múltiples formas de traducir una aplicación, pero básicamente consiste en reemplazar una cadena (no traducida) por otra cadena (traducida) basándose en el idioma o locale del usuario.
+
+En otro post podemos discutir las diferentes formas de almacenar las traducciones (.po, json, yaml, etc.), la pluralización, las variaciones de género, etc., pero en este post quiero centrarme en cómo organizar las cadenas de i18n de una manera escalable.
+
+## ¿Por qué es importante organizar las cadenas de i18n?
+
+Supongamos una aplicación frontend donde las traducciones se almacenan en archivos JSON, un archivo por idioma, y todas las cadenas están en un único archivo.
+
+Esto funciona para aplicaciones pequeñas y simplifica mucho la carga de cadenas, la gestión de traducciones, etc. 
+
+Luego la aplicación crece, nuevos dominios, nuevas páginas, nuevos componentes, etc., y puedes empezar a usar las claves para agrupar las cadenas por dominio o página, y también tener la sección "common" para las cadenas que se usan en toda la aplicación, por ejemplo:
+
+```json
+{
+  "home": {
+    "title": "Welcome to our application",
+    "subtitle": "This is the best app ever"
+  },
+  "profile": {
+    "greeting": "Hello, {name}!",
+    "edit": "Edit your profile"
+  }
+  //... more domains or pages
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}
+``` 
+Esto es mejor, pero cuando la aplicación crece más y más, aparecen nuevos problemas:
+
+- **Tamaño del archivo**: El archivo JSON puede volverse muy grande, afectando el tiempo de carga y el rendimiento de la aplicación. 
+  No es algo extraño tener un archivo de traducciones más grande que toda la aplicación. Algunos IDEs pueden tener dificultades para abrir o indexar archivos muy grandes, lo que dificulta el trabajo con ellos.
+
+- **Escalabilidad**: Si necesitas dividir la aplicación en múltiples microfrontends o módulos, tener un único archivo de traducciones puede convertirse en un cuello de botella, ya que cada módulo puede necesitar cargar el archivo de traducciones completo incluso si solo usa un pequeño subconjunto de las cadenas.
+
+- **Rendimiento**: Cargar y procesar un archivo JSON grande puede ser lento, especialmente en dispositivos de gama baja o conexiones de red lentas. También necesitas cargar todas las traducciones incluso si solo se necesita un pequeño subconjunto para la página o componente actual, lo que afecta el tiempo de carga inicial y el rendimiento.
+
+- **Organización**: La organización de las cadenas puede volverse compleja, cada dominio se vuelve inmanejable y es común intentar añadir más niveles en el árbol, y la sección common típicamente se convierte en un caos.
+  Se volverá muy difícil encontrar una cadena específica y también identificar duplicados o inconsistencias.
+
+- **Cadenas huérfanas (Orphaned strings)**: A medida que la aplicación evoluciona, algunas cadenas pueden quedar en desuso u obsoletas; si los desarrolladores olvidan eliminarlas del archivo de traducciones, obtendrás un archivo lleno de cadenas huérfanas que ya no se utilizan.
+  Esto requerirá algunas herramientas para identificar y eliminar estas cadenas huérfanas mediante análisis de código, pero no es perfecto, ya que algunas cadenas pueden usarse dinámicamente, lo que dificulta identificar si se están usando o no.
+
+- **Mantenibilidad**: Cuando necesitas actualizar una traducción existente, es difícil saber cómo afectará esto a las otras partes de la aplicación. Por ejemplo, si cambias una cadena common que se usa en múltiples lugares, necesitas verificar que la nueva traducción siga siendo válida en todos los contextos y para eso necesitas una forma de encontrar todos los usos de la cadena, lo cual no siempre es trivial.  
+
+- **Desafíos de colaboración**: 
+  Cuando múltiples desarrolladores están trabajando en la aplicación y necesitan modificar el archivo de traducciones, esto puede generar conflictos de fusión (merge conflicts) y problemas de coordinación.
+  
+- **Contexto**: 
+  - Los traductores pueden carecer de contexto si las claves de las cadenas no están bien organizadas, porque solo verán una cadena sin saber dónde o cómo se usa en la aplicación, necesitando realizar un trabajo extra para entender el contexto.
+  - La misma cadena puede usarse en diferentes contextos, requiriendo traducciones diferentes. Por ejemplo, en inglés "Water" puede ser un sustantivo o un verbo: como verbo significa "regar las plantas" y como sustantivo significa "el líquido que bebemos", pero en español se traducen de forma diferente: "Agua" (sustantivo) y "Regar" (verbo). Es muy común intentar reutilizar esa clave de cadena en diferentes contextos, lo que lleva a traducciones incorrectas. Me he encontrado con este problema varias veces en proyectos reales, con un desarrollador de un equipo cambiando la traducción y afectando a otra página, y el desarrollador de esa página recibiendo un ticket sobre una traducción que fue cambiada y no es correcta, creando una especie de bucle de arreglar/romper.
+
+
+## ¿Cómo organizar las cadenas de i18n para la escalabilidad?
+
+Existen múltiples estrategias para organizar las cadenas de i18n de forma escalable; aquí describiré una que utilicé en el pasado y que funcionó bien (con sus pros y contras):
+
+> Divide et impera (divide y vencerás)
+
+Las ideas principales detrás de este enfoque son:
+
+- **Dividir las traducciones en múltiples archivos**: en lugar de tener un único archivo JSON por idioma con claves anidadas, crea múltiples archivos basados en dominios, páginas o componentes.
+
+- **Poner las cadenas más cerca de donde se usan**: ubica los archivos de cadenas de i18n en el mismo directorio que el código que las utiliza.
+
+- **Composición de traducciones**: ten traducciones comunes en los diferentes niveles (global, dominio, página, componente) y compónlas cuando sea necesario.
+
+- **Definir una jerarquía para la composición**: ten una jerarquía clara para los archivos de traducciones; las traducciones en niveles inferiores sobrescriben las traducciones en niveles superiores. Por ejemplo, las traducciones common pueden definir la cadena "Save money", la traducción de dominio define la misma clave como "Save my money" y la traducción de página la define como "Save all my money"; entonces, cuando se renderiza la página, la traducción final será "Save all my money".
+
+Ejemplo de estructura de directorios:
+
+```bash
+src/
+├── domains
+│   ├── Auth
+│   │   ├── i18n # directorio para cadenas de i18n relacionadas con el dominio Auth
+│   │   └── pages
+│   │       ├── Login
+│   │       │   ├── Login.tsx
+│   │       │   └── i18n # directorio para cadenas de i18n relacionadas con la página Login
+│   │       └── Register
+│   │           ├── Register.tsx
+│   │           └── i18n # directorio para cadenas de i18n relacionadas con la página Register
+│   └── Sales
+│       ├── i18n # directorio para cadenas de i18n relacionadas con el dominio Sales
+│       └── pages
+│           ├── Dashboard
+│           │   ├── Dashboard.tsx
+│           │   └── i18n  # directorio para cadenas de i18n relacionadas con la página Dashboard
+│           └── Reports
+│               ├── Reports.tsx
+│               └── i18n/ # directorio para cadenas de i18n relacionadas con la página Reports
+└── i18n
+    └── common
+        ├── en.json
+        └── es.json
+``` 
+
+## Pros
+- **Escalabilidad**: A medida que la aplicación crece, los nuevos dominios, páginas o componentes pueden tener sus propios archivos de traducciones sin afectar a los existentes. Si divides la aplicación en microfrontends, cada microfrontend puede tener sus propios archivos de traducciones.
+
+- **Mantenibilidad**: Es más fácil mantener y actualizar las traducciones, ya que cada archivo es más pequeño y está enfocado en un área específica de la aplicación.
+
+- **Contexto**: Los traductores pueden tener un mejor contexto de dónde y cómo se usan las cadenas, y los desarrolladores pueden encontrar y actualizar fácilmente las cadenas relacionadas con un dominio, página o componente específico. También elimina el riesgo de tener el problema del ejemplo de la cadena "Water" explicado anteriormente.
+
+- **Reducción de conflictos**: Con múltiples archivos, las posibilidades de conflictos de fusión se reducen, ya que los desarrolladores pueden trabajar en diferentes archivos de traducción simultáneamente.
+
+- **Rendimiento**: Al cargar solo los archivos de traducción necesarios para el dominio, página o componente actual, puedes mejorar el rendimiento y reducir el tiempo de carga inicial de la aplicación.
+
+- **Cadenas huérfanas**: Es más fácil identificar y eliminar cadenas huérfanas; por ejemplo, si eliminas una página, dado que las traducciones son parte del directorio de la página, eliminas todo el directorio y todas las cadenas relacionadas con esa página también se eliminan.
+
+## Contras
+- **Complejidad**: La organización y carga de las traducciones se vuelve más compleja, requiriendo un mecanismo para componer las traducciones de múltiples archivos. Aunque es fácil de implementar, requiere algo de trabajo extra.
+
+- **Sobrecarga (Overhead)**: Existe cierta sobrecarga al gestionar múltiples archivos, especialmente al añadir nuevos dominios, páginas o componentes, ya que necesitas crear los archivos de traducciones correspondientes.
+
+- **Duplicación**: Existe el riesgo de duplicar cadenas en diferentes archivos, especialmente para cadenas comunes. En mi opinión, no es un gran problema, ya que las traducciones deben tener contexto y no es un inconveniente si la misma cadena se traduce de forma diferente en contextos distintos. En cualquier caso, una forma de mitigar esto es usar 'referencias' en las traducciones.
+
+## Conclusión
+Organizar las cadenas de i18n de manera escalable es crucial para mantener y hacer crecer aplicaciones dirigidas a una audiencia global. El enfoque de dividir las traducciones en múltiples archivos basados en dominios, páginas o componentes, y componerlos según sea necesario, puede proporcionar beneficios significativos en términos de escalabilidad, mantenibilidad, contexto y rendimiento. 
+
+Sin embargo, también introduce cierta complejidad y sobrecarga que deben gestionarse con cuidado, y puede que no valga la pena para aplicaciones pequeñas. En general, este enfoque puede ser adecuado para muchas aplicaciones, especialmente aquellas que se espera que crezcan y evolucionen con el tiempo.

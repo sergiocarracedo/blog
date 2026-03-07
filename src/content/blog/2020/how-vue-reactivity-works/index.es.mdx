@@ -1,0 +1,212 @@
+---
+title: "Cómo funciona la reactividad de Vue (I): Object.defineProperty"
+lang: es
+pubDate: 2020-09-08
+slug: how-vue-reactivity-works-i/
+tags:
+  - vue
+  - reactivity
+  - javascript
+heroImage: ./object-define-property-pb-2361801.jpg
+
+excerpt: Tal vez no necesites saber cómo funciona la reactividad de Vue bajo el capó para crear aplicaciones con Vue, pero de todos modos será interesante y útil.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Tal vez no necesites saber cómo funciona la reactividad de Vue bajo el capó para crear aplicaciones con Vue, pero de todos modos será interesante y útil.
+
+En este contexto, **reactividad** significa, simplificando, la capacidad de detectar un cambio en los datos y hacer algo después de eso.
+
+En un componente de Vue, la **reactividad** significa que el componente se volverá a renderizar (total o parcialmente) tras un cambio en el valor de una variable para mostrar el componente actualizado con el nuevo valor. Por ejemplo, en este componente básico:
+
+```html
+<template>
+  <div>
+    <h6>Value: {{ clickCount }}</h6>
+    <button @click="onClick">Add 1 more</button>
+  </div>
+</template>
+<script>
+  export default {
+    data() {
+      return {
+        clickCount: 1,
+      };
+    },
+    methods: {
+      onClick() {
+        this.clickCount = this.clickCount + 1;
+      },
+    },
+  };
+</script>
+```
+
+Cada vez que haces clic en el botón "Add 1 more", el valor de la variable _clickCount_ se incrementa en una unidad y Vue inicia el _mecanismo_ para volver a renderizar el componente mostrando el nuevo valor en la plantilla. ¿Cómo es capaz Vue de saber cuándo una variable cambia su valor?
+
+## API _Object.defineProperty_
+
+La respuesta es [_Object.defineProperty_](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+
+Este es un método estático que define o modifica una propiedad en un objeto.
+
+```js
+const myObject = {};
+Object.defineProperty(myObject, 'myProperty', {
+  value: 'myValue',
+});
+```
+
+Probablemente te hayas dado cuenta de que es lo mismo que `myObject.myProperty = 'myValue'`, pero hay una diferencia importante: podemos configurar el comportamiento de la propiedad, por ejemplo:
+
+```js
+const myObject = {};
+Object.defineProperty(myObject, 'myProperty', {
+  value: 'myValue',
+  writable: false,
+});
+
+myObject.myProperty = 1;
+
+console.log(myObject.myProperty); // 'myValue'
+```
+
+En esta situación, si intentas cambiar el valor de la propiedad, no cambiará, y si estás usando _strict mode_ obtendrás una excepción.
+
+Con `Object.defineProperty` podrías definir un getter y un setter para la propiedad del objeto, como se muestra en el siguiente ejemplo. Cada vez que intentes asignar un valor a tu propiedad, se llama al setter.
+
+```js
+const myObject = {};
+let myProperyValue = 'my value';
+
+Object.defineProperty(myObject, 'myProperty', {
+  get: () => {
+    console.log('getter');
+    return myProperyValue;
+  },
+  set: (newValue) => {
+    console.log('setter');
+    myProperyValue = newValue;
+  },
+});
+
+myObject.myProperty = 123;
+
+console.log(myObject.myProperty);
+// setter
+// getter
+// 123
+```
+
+[Ejecutar en PlayCode](https://playcode.io/666482)
+
+Ten en cuenta que si usas un getter o un setter no puedes acceder al valor de la propiedad directamente; es decir, tienes que guardar el valor de la propiedad en algún otro _lugar_ (place).
+
+Volviendo a Vue, cuando creas un componente debes definir los valores reactivos en la clave `data`.
+
+```js
+export default {
+  data () {
+    return {
+      clickCount: 1
+     }
+  },
+  ...
+}
+```
+
+Bajo el capó, Vue crea un objeto con las propiedades que definiste usando _Object.defineProperty_ y genera un getter y un setter. Cada vez que el valor de una variable cambia, el setter intercepta el cambio y lanza el proceso de re-renderizado de Vue con el nuevo valor.
+
+Esta es la razón por la que no puedes añadir nuevas variables a tu componente directamente:
+
+```js
+export default {
+  data () {
+    return {
+      clickCount: 1
+     }
+  },
+  ...
+  methods: {
+    someMethod () {
+      this.newClickCount = 1
+      ...
+    }
+  }
+  ...
+}
+```
+
+En el ejemplo anterior, `newClickCount` no será reactivo porque Vue no puede saber cuándo añades una nueva propiedad directamente.
+
+Si necesitas añadir una nueva propiedad después de la definición del componente, Vue proporciona `Vue.set` o `vm.$set`:
+
+```js
+this.$set(this.someObject, 'b', 2);
+```
+
+Pero esto no funciona con el elemento raíz, es decir, no podemos añadir una nueva variable a `data`.
+
+_Object.defineProperty_ funciona desde IE9 y en todos los navegadores modernos: https://caniuse.com/?search=DefineProperty
+
+## ¿Cómo funciona con los arrays?
+
+¡No lo hace! Si intentas repetir el ejemplo anterior con una propiedad de tipo array:
+
+```js
+const myObject = {};
+let myProperyValue = [];
+
+Object.defineProperty(myObject, 'myProperty', {
+  get: () => {
+    console.log('getter');
+    return myProperyValue;
+  },
+  set: (newValue) => {
+    console.log('setter');
+    myProperyValue = newValue;
+  },
+});
+
+myObject.myProperty = [1, 2, 3, 4];
+
+console.log(myObject.myProperty);
+// setter
+// getter
+// [1, 2, 3, 4]
+```
+
+El setter funciona porque es una asignación directa, pero normalmente no trabajamos con arrays de esa manera, sino que usamos `.push`, `slice`, etc.
+
+```js
+myObject.myProperty.push(5);
+
+console.log(myObject.myProperty);
+// getter
+// getter
+// [1, 2, 3, 4, 5]
+```
+
+[Ejecutar en PlayCode](https://playcode.io/666496)
+
+Podemos ver que el getter ha sido llamado dos veces, pero el setter no ha sido llamado.
+
+### ¿Cómo lo resuelve Vue?
+
+Simple, parcheando los métodos de array de vanilla JS.
+
+Vue almacena el método original y crea uno nuevo que notifica el cambio y ejecuta el método original.
+
+Puedes ver cómo lo hace en detalle en:
+https://github.com/vuejs/vue/blob/bb253db0b3e17124b6d1fe93fbf2db35470a1347/packages/vue-template-compiler/build.js#L1087
+
+## ES6 Proxies
+
+Existe otra forma de saber cuándo cambia un valor (y otras cosas) en JS desde ES6: [Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
+
+Vue 3 utiliza _Proxies_ en lugar de _Object.defineProperty_ para gestionar la reactividad bajo el capó. Escribiré un post sobre Proxies pronto.

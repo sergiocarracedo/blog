@@ -1,0 +1,101 @@
+---
+title: Mejorando tu calidad de código y flujo de trabajo en Vue (y JS)
+lang: es
+pubDate: 2020-06-21T12:47:40.000Z
+slug: Improving-your-JS-workflow
+heroImage: ./js-workflow-38537.jpeg
+tags:
+  - javascript
+  - testing
+  - typescript
+  - react
+  - vue
+
+excerpt: Para empezar a programar en Javascript (y otros lenguajes), casi no necesitas nada, solo un editor de texto simple. Eso es bueno para empezar a programar cuando estás aprendiendo el lenguaje, simplemente programar sin distracciones.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Para empezar a programar en Javascript (y otros lenguajes), casi no necesitas nada, solo un editor de texto simple. Eso es bueno para empezar a programar cuando estás aprendiendo el lenguaje, simplemente programar sin distracciones.
+
+Pero cuando desarrollas proyectos más grandes o con otras personas, aparecen algunos problemas: organización del código, estilo de programación y otros. Esto se debe a que todos los lenguajes tienen, al menos, una guía de estilo de código limpio.
+
+Cosas como usar punto y coma o no al final de la línea, el número de espacios para la sangría del código, etc.
+
+En Javascript, tenemos varios estilos de código:
+
+- [Google Javascript Style Guide](https://google.github.io/styleguide/jsguide.html)
+- [AirBnb Javascript Style Guide](https://github.com/airbnb/javascript)
+- [Javascript Standard Style](https://standardjs.com/)
+- ...
+
+Personalmente prefiero StandardJS (Javascript Standard Style), a pesar de que este estilo prohíbe los puntos y coma, y yo vengo de PHP donde los puntos y coma son obligatorios.
+
+Y para complicarlo un poco más, si usas un framework de JS como Vue, Angular o React, estos tienen sus propios estilos de programación.
+
+Y también, si tu proyecto utiliza Typescript, este tiene su propia [guía de estilo de programación](https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines)
+
+Entonces, ¿cómo podríamos asegurar que todo nuestro código cumpla con las guías de estilo elegidas?
+
+## Lint
+
+Un [linter](<https://en.wikipedia.org/wiki/Lint_(software)>) es una herramienta que analiza estáticamente nuestro código para asegurar que cumpla las reglas de nuestro(s) estilo(s) de programación.
+
+Una de las herramientas más utilizadas en el mundo de Javascript es [ESLint](https://eslint.org/). Esta herramienta te permite encontrar errores de estilo de código y corregirlos automáticamente si es posible.
+
+Por ejemplo, cuando creas un proyecto de Vue usando `vue-cli`, el asistente de configuración te pregunta si quieres usar un Linter / Formatter (deberías) y te permite elegir el estilo de programación, y cuándo quieres que se ejecute el linter: al guardar el archivo y/o cuando haces commit de tus archivos.
+
+::asciinema[]{id="34AKksPvMuJ7qpUk6K5gBruyS"}
+
+Ten en cuenta que elijo "lint on commit". Cuando tu proyecto es pequeño, no hay problema en usar "lint on save", pero cuando el proyecto se hace más grande, comprobar los archivos al guardar sería muy lento e improductivo. Incluso con "lint on save", cuando estás probando cosas en tu código y, por ejemplo, comentas líneas y tienes un import sin usar, o eliminas el último valor de una lista manteniendo la coma final, el linter devuelve un error al guardar y hace que las pruebas sean más lentas. Cuando estás experimentando deberías estar concentrado en el experimento, no en el código; cuando todo funciona bien, entonces es momento de refactorizar y cuidar el estilo de programación.
+
+Hagamos un ejemplo añadiendo algunos puntos y coma `;` al final de línea, espacios entre líneas, etc.
+
+::asciinema[]{id="ghtOPskHMcmtMmj8q7RUQZb47"}
+
+Como puedes ver, antes de hacer commit del código, un git hook ejecuta el linter y corrige el código (no siempre es capaz de corregirlo automáticamente).
+
+Esta es la sección del `package.json` relacionada con los githooks y el linter:
+
+```json
+{
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue}": ["vue-cli-service lint", "git add"]
+  }
+}
+```
+
+Vue utiliza una herramienta llamada [Lint-staged](https://github.com/okonet/lint-staged) que permite al linter comprobar solo los archivos preparados (staged). Puedo asumir que todos los archivos en el repositorio (no modificados) están bien porque fueron procesados por el linter antes de hacer commit al repositorio.
+
+Si quieres, podrías gestionar los git hooks usando [Husky](https://github.com/typicode/husky)
+
+```json
+{
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "vue-cli-service test:unit",
+      "...": "..."
+    }
+  }
+}
+```
+
+Por ejemplo, puedes forzar la ejecución de las pruebas antes de hacer push.
+
+# Optimización
+
+Si estás usando Webpack, otra herramienta interesante para conocer la optimización de tu proyecto es [Speed Measure Pluing](https://github.com/stephencookdev/speed-measure-webpack-plugin)
+
+Esta herramienta muestra el tiempo transcurrido por cada plugin de webpack cuando construyes (incluso usando HRM) tu proyecto. Es muy útil para detectar si algún loader está tardando demasiado tiempo en ejecutarse.
+
+Si usas `vue-cli` en tu proyecto, puedes aprovechar el analizador integrado. Este te permite ver cada paquete importado, CSS o librería y comprobar los tamaños, para poner el foco en los más pesados e intentar optimizar las importaciones (no importando el paquete completo, sino solo las librerías necesarias).
+
+![](vue-cli.jpg)

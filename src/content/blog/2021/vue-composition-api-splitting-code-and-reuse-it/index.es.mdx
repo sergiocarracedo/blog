@@ -1,0 +1,232 @@
+---
+title: "Vue Composition API: Cómo dividir y reutilizar código"
+lang: es
+pubDate: 2021-11-02
+slug: vue-composition-api-how-to-split-and-reuse-code/
+heroImage: ./vue-composition-api-3y1zF4hIPCg-unsplash.jpg
+tags:
+  - vue
+
+excerpt: La Vue Composition API nos llegó en noviembre de 2018, hace 2 años, como una [preview](https://medium.com/vue-mastery/evan-you-previews-vue-js-3-0-ab063dec3547) y se volvió [algo controversial](https://dev.to/danielelkington/vue-s-darkest-day-3fgh), porque la gente creía que la Composition API reemplazaría a la tradicional Object API, pero no sería así.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+La Vue Composition API nos llegó en noviembre de 2018, hace 2 años, como una [preview](https://medium.com/vue-mastery/evan-you-previews-vue-js-3-0-ab063dec3547) y se volvió [algo controversial](https://dev.to/danielelkington/vue-s-darkest-day-3fgh), porque la gente creía que la Composition API reemplazaría a la tradicional Object API, pero no sería así.
+
+De todos modos, después de empezar a desarrollar aplicaciones Vue usando la Composition API no quiero volver atrás; tal vez para componentes muy pequeños te hace escribir más código que con la Object API, pero en la mayoría de los casos, puedes aprovechar las características de la Composition API.
+
+Una de estas características es la división de código (code splitting) y, por extensión, la reutilización de código.
+
+# Options API
+
+Con la Options API podíamos reutilizar código a través de los mixins. Los mixins en Vue funcionan como una especie de composición de objetos. Tu componente utilizará todos los datos, métodos, etc., presentes en el mixin, y puedes sobrescribirlos. Veamos un ejemplo.
+
+```vue
+// Mixing export default { props: { color: String, size: String }, computed: { colorClasses: () => {
+return [`color-${this.color}`] }, sizeClasses: () => { return [`size-${this.size}`] } } }
+```
+
+Imagina que tenemos componentes que podemos colorear o cambiar de tamaño; entonces nuestro mixin incluye las propiedades y la forma (computed) de obtener las clases a aplicar. El mixin de arriba hace exactamente eso.
+
+Ahora escribamos el componente
+
+```vue
+// Component
+<template>
+  <div :class="['component-a', ...colorClasses, ...sizeClasses]">....</div>
+</template>
+<script>
+import colorSizeMixin from '...';
+export default {
+  mixins: {
+    colorSizeMixin,
+  },
+};
+</script>
+```
+
+Esto funciona, pero solo mirando el archivo del componente, es muy difícil saber de dónde obtenemos `colorClasses` y `sizeClasses`. Necesitas ir a la definición del mixin para saber de dónde estamos obteniendo los valores o qué propiedades podrías usar en tu componente.
+
+Los mixins tienen otra limitación: un mixin no puede adaptar el comportamiento (de forma sencilla). Me refiero a que no puedes cambiar el comportamiento del mixin pasándole un flag; en este ejemplo, por ejemplo, una lista de colores válidos a aceptar.
+
+# Composition API
+
+Hagamos lo mismo con la Composition API
+
+```js
+// useClasses.js
+import { computed } from 'vue';
+export default (props) => {
+  const colorClasses = computed(() => [`color-${props.color}`]);
+  const sizeClasses = computed(() => [`size-${props.size}`]);
+
+  return {
+    colorClasses,
+    sizeClasses,
+  };
+};
+```
+
+```vue
+// Component (Vue 3)
+<template>
+  <div :class="['component-a', ...colorClasses, ...sizeClasses]">....</div>
+</template>
+<script>
+import { defineComponent } from 'vue';
+import useClasses from './useClasses.js';
+
+export default defineComponent({
+  props: {
+    color: String,
+    size: String,
+  },
+  setup(props) {
+    const { colorClasses, sizeClasses } = useClasses(props);
+
+    return {
+      colorClasses,
+      sizeClasses,
+    };
+  },
+});
+</script>
+```
+
+Ahora tenemos la misma funcionalidad; `colorClasses` y `sizeClasses` pueden ser reutilizables en otro componente como hacíamos usando mixins.
+
+Composition API tiene algunas ventajas:
+
+- Es muy fácil ver de dónde vienen `colorClasses` y `sizeClasses`, y qué entrada necesitan.
+- No necesitamos "importar" o usar todos los métodos como en los mixins; por ejemplo, aquí solo podemos obtener el valor computado de sizeClasses (`const { sizeClasses } = useClasses(props)`) sin ninguna modificación en `useClasses.js`.
+- Podemos parametrizar el comportamiento, por ejemplo:
+
+```js
+// useClasses.js
+import { computed } from 'vue'
+export default (props, allowedColors) => {
+    const colorClasses = computed(() =>  allowedColors.indexOf(props.color) !== 1
+        ? [`color-${props.color}`]
+        : []
+
+    const sizeClasses =  computed(() => [`size-${props.size}`])
+
+    return {
+      colorClasses,
+      sizeClasses
+    }
+
+}
+```
+
+Ahora podemos pasar a `useClass` un array con todos los colores permitidos que pueden ser diferentes en distintos componentes; con los mixins esto es difícil de lograr.
+
+## Splitting the code
+
+Usando esta técnica podemos dividir el código de nuestro componente en diferentes archivos "use", y si ponemos las funcionalidades relacionadas en el mismo archivo "use", podemos reutilizarlo. Por ejemplo, si tenemos algo que necesita controlar el scroll de la ventana, podemos escribir un archivo "use" como este:
+
+```js
+// useScroll.js
+import { onBeforeUnmount, onMounted, Ref, ref } from '@vue/composition-api';
+
+export default () => {
+  const scrollY = ref(0);
+  const scrollX = ref(0);
+  // Before update the reactive values we store it in a local variable
+  let localX = 0;
+  let localY = 0;
+
+  const onScroll = (e) => {
+    localX = window.scrollX;
+    localY = window.scrollY;
+  };
+
+  //We only update reactive values every 100 to avoid a update it too much
+  setInterval(() => {
+    if (localX !== scrollX.value) {
+      scrollX.value = localX;
+    }
+    if (localY !== scrollY.value) {
+      scrollY.value = localY;
+    }
+  }, 100);
+
+  onMounted(() => {
+    window.addEventListener('scroll', onScroll);
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('scroll', onScroll);
+  });
+
+  return {
+    scrollX,
+    scrollY,
+  };
+};
+```
+
+Ten en cuenta que podemos establecer la posición del scroll directamente en `scrollX` y `scrollY`, pero queremos evitar disparar el re-renderizado del componente varias veces, por lo que almacenamos los valores en una variable local y cada 100ms volcamos los valores a las variables reactivas.
+
+[vue-use-web](https://github.com/Tarektouati/vue-use-web) es una librería inspirada en eso.
+
+### Algunos consejos al pasar valores a los archivos "use"
+
+En el archivo de ejemplo `useClasses.js` pasé las `props` del componente, lo que significa que pasamos todas las props; esto no es muy bueno, porque el componente que usa el archivo "use" debe pasar las propiedades necesarias, y esto podría no ocurrir.
+
+Es mejor definir en la firma del "use" los parámetros que necesitamos. Este es el código anterior reescrito usando esto.
+
+```js
+// useClasses.js
+import { computed } from 'vue';
+export default (color, size) => {
+  const colorClasses = computed(() => [`color-${color}`]);
+  const sizeClasses = computed(() => [`size-${size}`]);
+
+  return {
+    colorClasses,
+    sizeClasses,
+  };
+};
+```
+
+Y en el componente
+
+```js
+...
+ const { colorClasses, sizeClasses } = useClasses(props.color, props.size)
+...
+```
+
+Probablemente te hayas dado cuenta de que ahora las variables computadas dentro del archivo use nunca se actualizarán incluso si la propiedad cambia. Eso es porque `props.color` es un string y se pasa como copia, no como referencia.
+
+Para solucionar eso, debemos pasar las propiedades a través de una función:
+
+```js
+...
+ const { colorClasses, sizeClasses } = useClasses(() => props.color, () =>  props.size)
+...
+```
+
+Y cambiar nuestro archivo "use", añadiendo el `()` para llamar a la función envolvente y obtener el valor "en vivo" de la propiedad
+
+```js
+// useClasses.js
+import { computed } from 'vue';
+export default (color, size) => {
+  const colorClasses = computed(() => [`color-${color()}`]);
+  const sizeClasses = computed(() => [`size-${size()}`]);
+
+  return {
+    colorClasses,
+    sizeClasses,
+  };
+};
+```
+
+Como opinión personal, he estado usando la Composition API durante mucho tiempo, incluso en Vue 2.x, y la prefiero sobre la Options API porque siento que el código es mejor, más fácil de leer, más fácil de reutilizar y podría ser código no relacionado con Vue; es decir, puedes escribir toda la lógica sin usar nada relacionado con Vue y, después de todos los "cálculos", poner los resultados en una variable reactiva, de modo que este código podría usarse en otros frameworks.

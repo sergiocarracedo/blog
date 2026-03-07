@@ -1,0 +1,210 @@
+---
+title: "Componente Await en React 18: Esperar una promesa en la UI"
+lang: es
+pubDate: 2025-07-13
+slug: await-component-in-react-18
+heroImage: ./hhh13-jU0jgjgJTHo-unsplash.jpg
+tags:
+  - frontend
+  - typescript
+  - react
+
+excerpt: Gestionar valores asíncronos en el frontend es nuestro trabajo diario, ya que normalmente obtienes los datos de una API y necesitas esperar la respuesta para renderizar la UI. En la mayoría de los casos, mostrarás al usuario un componente para indicar que los datos se están cargando y, cuando los datos estén listos, renderizarás el componente "real" con los datos.
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Gestionar valores asíncronos en el frontend es nuestro trabajo diario, ya que normalmente obtienes los datos de una API y necesitas esperar la respuesta para renderizar la UI. En la mayoría de los casos, mostrarás al usuario un componente para indicar que los datos se están cargando y, cuando los datos estén listos, renderizarás el componente "real" con los datos.
+
+En React 19 puedes usar la [nueva API `use`](https://react.dev/reference/react/use), que suspende cualquier componente que utilice este valor hasta que la promesa se resuelva, junto con `<Suspense>`, pero en React 18 no tienes esta API, por lo que necesitas usar un workaround para lograr el mismo resultado.
+
+La solución más sencilla es usar useState y useEffect en tu componente para gestionar los estados de carga y error, y esperar a que la promesa se resuelva:
+
+```tsx
+import React, { useState, useEffect } from 'react';
+
+export const MyComponent = () => {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('...');
+        const data = await response.json();
+        setData(data);
+ } catch (error) {
+        setHasError(true);
+ } finally {
+        setIsLoading(false);
+ }
+ };
+
+    fetchData();
+ }, []);
+
+
+  return (
+    <div>
+    {isLoading ? (
+      <p>Loading data...</p>
+ ) : hasError ? (
+      <p>Error fetching data</p>
+ ) : (
+      <div>
+        <h1>Data Loaded</h1>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      </div>
+ )}
+    </div>      
+ );
+};
+```
+
+
+Pero este código es muy verboso y necesitas repetir la misma lógica en cada componente que necesite esperar a que se resuelva una promesa, por lo que es mejor extraer esta lógica en un componente reutilizable.
+
+## Usando librerías de terceros
+Como este es un caso de uso muy común, muchas librerías ofrecen una solución para este problema, como [react-async](https://github.com/async-library/react-async), que proporciona un hook y un componente para gestionar los estados de carga.
+
+O el [componente Await](https://tanstack.com/router/v1/docs/framework/react/api/router/awaitComponent) de TanStack Router, una parte de la librería TanStack Router que proporciona un componente para esperar a que una promesa se resuelva y renderizar la UI en consecuencia.
+
+```tsx
+import { Await } from '@tanstack/react-router'
+
+function Component() {
+  const { deferredPromise } = route.useLoaderData()
+
+  return (
+    <Await promise={deferredPromise}>
+      {(data) => <div>{JSON.stringify(data)}</div>}
+    </Await>
+ )
+}
+```
+
+En mi caso de uso, el componente Await de TanStack parecía ser la solución, incluso si no uso TanStack Router, pero descubrí que nuestro caso de uso era un poco diferente.
+
+## Mi caso de uso
+
+Una cosa que me gusta hacer en los componentes es proporcionar una API lo más sencilla posible para el desarrollador, intentando cubrir múltiples formas de proporcionar valores a un componente. Por ejemplo, aceptando en una prop: un valor, una promesa, una función que devuelve un valor o una promesa para adaptarse a los casos de uso más comunes, sin necesidad de preocuparse por las diferentes formas de obtener el valor desde fuera del componente. En ese caso, el componente debe manejar los diferentes casos y proporcionar un comportamiento consistente.
+
+Los casos de uso para el componente await son un buen ejemplo de esto.
+
+Tenemos un componente que renderiza una tabla con grupos, y los grupos se renderizan en la UI con el nombre del grupo y el número de elementos en el grupo. Dependiendo de la fuente de datos, el número de elementos en el grupo puede ser un número o una promesa que se resuelve en un número. 
+
+Una forma de manejar esto es renderizar el componente Await si el valor es una promesa, y renderizar el valor directamente si no es una promesa, pero esto nos obliga a añadir la lógica en cada lugar donde queramos usar el valor. Entonces, ¿por qué no pensar en un valor "primitivo" como una promesa que se resuelve instantáneamente?
+
+Volviendo al componente await, eso significa que el componente debería aceptar un valor que puede ser una promesa o un valor, y si es una promesa, debería esperar a que se resuelva y renderizar el valor, y si no es una promesa, debería renderizar el valor directamente.
+
+Eso es algo que el componente Await de TanStack no hace, así que decidí implementar nuestro propio componente Await, que puede manejar ambos casos y también proporcionar un estado de carga y un estado de error.
+
+El componente es muy sencillo; acepta:
+- Una prop `resolve` que puede ser una promesa o un valor que es el valor que queremos esperar, 
+- Una prop `fallback` que se renderiza mientras la promesa se está resolviendo, por ejemplo, un skeleton, 
+- Una prop opcional `error` que se renderiza si la promesa es rechazada. Esto deliberadamente no se renderiza cuando se proporciona null para permitirnos fallar silenciosamente.
+- Una prop `children` que es una función que recibe el valor resuelto y devuelve la UI a renderizar.
+
+
+```tsx
+import { ReactNode, useEffect, useState } from "react"
+
+type AwaitProps<T> = {
+  resolve: Promise<T> | T
+  fallback: ReactNode
+  error?: ReactNode
+  className?: string
+  children: (value: T) => ReactNode
+}
+
+export const Await = <T,>({
+  resolve,
+  fallback,
+  error: errorFallback,
+  children,
+}: AwaitProps<T>): ReactNode => {
+  const [resolvedValue, setResolvedValue] = useState<T | null>(null)
+  const [error, setError] = useState<Error | null>(null)
+  const [isPending, setIsPending] = useState(false)
+
+  useEffect(() => {
+    if (resolve instanceof Promise) {
+      setIsPending(true)
+      resolve
+ .then((value) => {
+          setResolvedValue(value)
+ })
+ .catch((error) => {
+          setError(error)
+ })
+ .finally(() => {
+          setIsPending(false)
+ })
+ } else {
+      setResolvedValue(resolve)
+      setIsPending(false)
+ }
+ }, [resolve])
+
+  if (isPending) {
+    return fallback
+ }
+  if (error) {
+    return errorFallback ?? null
+ }
+  if (resolvedValue) {
+    return children(resolvedValue)
+ }
+  return null
+}
+```
+
+Puedes usar este componente así:
+
+```tsx
+import { Await } from './Await'
+import { Skeleton } from './Skeleton'
+import { fetchData } from './api'
+export const MyComponent = () => {
+  const dataPromise = fetchData()
+
+  return (
+    <Await
+      resolve={dataPromise}
+      fallback={<Skeleton />}
+      error={<div>Error loading data</div>}
+    >
+      {(data) => JSON.stringify(data, null, 2)}
+    </Await>
+ )
+}
+```
+Y funciona de la misma manera cuando las props resueltas son un valor real, como un número o un string:
+
+```tsx
+import { Await } from './Await'
+export const MyComponent = () => {
+  const data = 42
+  return (
+    <Await
+      resolve={data}
+      fallback={<Skeleton />}
+      error={<div>Error loading data</div>}
+    >
+      {(data) => data}
+    </Await>
+ )
+}
+```
+
+Puedes encontrar el código y la documentación de este componente en el [repositorio de GitHub de Factorial One](https://github.com/factorialco/factorial-one/tree/main/packages/react/src/components/Utilities/Await)
+
+
+## Conclusión
+
+El punto clave de este artículo es mostrarte cómo crear un componente helper reutilizable que renderice un valor o un componente que dependa de un valor, y que sea ese componente el que se encargue de adaptar su comportamiento a una promesa o a un valor, facilitando la vida de los desarrolladores y permitiéndoles centrarse en construir sus aplicaciones sin perder tiempo pensando en cómo manejar los diferentes casos de promesas y valores.

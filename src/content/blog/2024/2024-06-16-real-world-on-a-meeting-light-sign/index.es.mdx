@@ -1,0 +1,321 @@
+---
+title: Un letrero luminoso de "en una reunión" para el mundo real
+lang: es
+pubDate: 2024-06-16T00:00:00.000Z
+heroImage: ./IMG_20240518_172824.jpg
+slug: a-real-world-on-a-meeting-light-sign
+tags:
+  - hardware
+  - work-setup
+  - go
+
+excerpt: "Mi esposa y yo trabajamos en remoto y lo hacemos en la misma habitación, pero hay un problema: las reuniones, y obviamente, trabajando en remoto tenemos, digamos, más de las que nos gustaría, y no siempre es fácil saber cuándo el otro está en una reunión."
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Mi esposa y yo trabajamos en remoto y lo hacemos en la misma habitación, pero hay un problema: las reuniones, y obviamente, trabajando en remoto tenemos, digamos, más de las que nos gustaría, y no siempre es fácil saber cuándo el otro está en una reunión.
+
+Decidí buscar una solución para que fuera visible cuando alguien está en una reunión de forma sencilla, con solo un vistazo.
+
+La solución: Poner un letrero luminoso en la pared de la habitación de trabajo y encenderlo cuando estoy en una reunión y apagarlo cuando no, simple. :)
+
+## El letrero luminoso
+
+Encontré un [letrero tipo neón](https://www.aliexpress.com/item/1005005879624670.html) barato en una tienda online y lo pedí. Este letrero se alimenta por USB y se controla manualmente con un botón de interruptor, de modo que pudiera controlarlo automáticamente.
+El tipo neón es solo una tira LED con forma, así que pedí un [controlador led wifi](https://www.aliexpress.com/item/1005006762010047.html) (y una fuente de alimentación) para reemplazar el controlador del letrero, y ahora podemos controlar la luz vía wifi usando la app de Tuya.
+
+Solucionamos la parte del hardware, ahora debemos resolver cómo detectar cuándo estoy en una reunión.
+
+## Detectando cuándo estoy en una reunión
+
+Supongo que hay muchas formas de detectar cuándo estás en una reunión, pero decidí usar la webcam, así la solución funciona con cualquier aplicación de reuniones: Zoom, Google Meet, Discord, Slack, etc.
+
+Haciendo una búsqueda sencilla encontré que en Linux (si el kernel usa módulos, lo cual es común) puedes ejecutar:
+
+```
+$ lsmod | grep uvcvideo
+```
+
+Y obtener algo como:
+
+```
+uvcvideo 139264 0
+videobuf2_vmalloc 20480 1 uvcvideo
+uvc 12288 1 uvcvideo
+```
+
+El módulo `uvcvideo` es el que nos interesa (la primera línea); en esa línea, el primer número significa el tamaño del módulo en bytes (podemos ignorarlo) y el segundo significa el número de instancias del módulo en uso. En nuestro caso: `0` significa que la webcam no está en uso, `1` implica que la webcam está en uso.
+
+Entonces podemos crear un script o un programa para comprobar este valor y encender o apagar el controlador wifi, pero antes de ver el código:
+
+## Usando Home Assistant para controlar la luz
+
+Soy un gran fan de [Home Assistant](https://www.home-assistant.io/), ya que es una forma muy flexible de gestionar la domótica utilizando dispositivos de múltiples marcas.
+Esta es la razón por la que decidí usarlo; en lugar de pelearme con la API del fabricante del controlador wifi (si estuviera disponible), delegaré eso en Home Assistant, ya que puedes encontrar integraciones para muchos fabricantes estandarizando la forma en que controlamos la luz.
+
+Lo siguiente que hice fue crear un interruptor virtual en Home Assistant, esto me permitirá almacenar el estado de uso de la webcam en Home Assistant y luego activar una escena para encender o apagar la luz.
+
+> Ve a `Settings` > `Devices & services` > pestaña `Helpers` > Haz clic en `Create helper` > Selecciona `toggle`
+
+Hacer eso en lugar de cambiar el estado de la luz directamente nos permite ser más flexibles y crear mejores automatizaciones, por ejemplo, para encender también otra luz o _pausar la aspiradora cuando estás en una reunión para reducir el ruido ambiental_.
+
+Después de eso, necesitamos crear un token de acceso para la API de Home Assistant.
+
+> Haz clic sobre tu nombre de usuario > pestaña `Security` > Haz clic en `Create token`
+
+Estas son las automatizaciones que creé:
+
+```yml
+alias: Turn On meeting light
+description: ''
+trigger:
+  - platform: state
+    entity_id:
+      - input_boolean.on_a_meet
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 6 # Añadí un tiempo mínimo para evitar falsos positivos
+condition: []
+action:
+  - type: turn_on
+    device_id: #the light device id
+    entity_id: #the light entity id
+    domain: light
+    brightness_pct: 11
+mode: single
+```
+
+```yml
+alias: Turn Off meet light
+description: ''
+trigger:
+  - platform: state
+    entity_id:
+      - input_boolean.on_a_meet
+    to: 'off'
+condition: []
+action:
+  - type: turn_off
+    device_id: #the light device id
+    entity_id: #the light entity id
+    domain: light
+mode: single
+```
+
+Con eso, podemos crear un programa para comprobar el estado de la webcam y enviarlo a Home Assistant.
+
+## El observador
+
+He creado un programa escrito en Go para comprobar el estado del módulo `uvcvideo` y enviar los cambios a Home Assistant.
+
+```go
+package main
+
+import (
+	"bufio"
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"log"
+	"log/syslog"
+	"net/http"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+)
+
+var prevState *bool // nil = unknown, true = active, false = inactive
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
+
+func logError(e error) {
+	if e != nil {
+		fmt.Println(e.Error())
+		log.Default().Println(e.Error())
+	}
+}
+
+func updateHassStatus(ctx context.Context, status bool) (err error) {
+	host := getEnv("ON_A_MEET_HASS_SERVER", "http://192.168.0.104:8123")
+	token := os.Getenv("ON_A_MEET_HASS_TOKEN")
+	entityID := getEnv("ON_A_MEET_ENTITY_ID", "input_boolean.on_a_meet")
+
+	posturl := fmt.Sprintf("%s/%s/%s", host, "api/states", entityID)
+
+	state := "on"
+	if !status {
+		state = "off"
+	}
+
+	type Body struct {
+		State string `json:"state"`
+	}
+
+	body := Body{State: state}
+
+	bodyBytes, err := json.Marshal(body)
+	if err != nil {
+		return
+	}
+
+	r, err := http.NewRequest("POST", posturl, bytes.NewBuffer(bodyBytes))
+
+	r.Header.Add("Content-Type", "application/json")
+	r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
+
+	client := &http.Client{}
+	res, err := client.Do(r)
+	if err != nil {
+		return
+	}
+
+	defer res.Body.Close()
+
+	return
+}
+
+type ModuleMeta struct {
+	Name   string
+	Size   int64
+	UsedBy []string
+	InUse  bool
+}
+
+func getModuleMeta(name string) (meta ModuleMeta, err error) {
+	file, err := os.Open("/proc/modules")
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		s := strings.Split(scanner.Text(), " ")
+
+		if s[0] == name {
+			size, err := strconv.ParseInt(s[1], 10, 64)
+
+			if err != nil {
+				return ModuleMeta{}, err
+			}
+
+			return ModuleMeta{
+				Name:   s[0],
+				Size:   size,
+				UsedBy: strings.Split(s[3], ","),
+				InUse:  s[2] != "0",
+			}, nil
+		}
+	}
+
+	err = errors.New("module not found")
+	return
+}
+
+func loopCheckState(ctx context.Context) (err error) {
+	meta, err := getModuleMeta("uvcvideo")
+	if err != nil {
+		return
+	}
+
+	if prevState == nil || *prevState != meta.InUse {
+		log.Default().Printf("Module %s status changed to: %t\n", meta.Name, meta.InUse)
+		prevState = &meta.InUse
+		err = updateHassStatus(ctx, meta.InUse)
+	}
+
+	return
+
+}
+
+func main() {
+	logWriter, err := syslog.New(syslog.LOG_SYSLOG, "on-a-meet")
+	if err != nil {
+		log.Fatalln("Unable to set logfile:", err.Error())
+	}
+	log.SetOutput(logWriter)
+
+	ctx := context.TODO()
+
+	log.Default().Printf("Starting on-a-meet script")
+
+	for {
+		err = loopCheckState(ctx)
+		if err != nil {
+			logError(err)
+		}
+
+		time.Sleep(time.Duration(1 * time.Second))
+	}
+
+}
+```
+
+Un programa muy sencillo, solo mencionar que en lugar de usar `lsusb` leo `/proc/modules` para obtener los mismos datos.
+
+## Ejecutando el programa como un servicio de usuario
+
+Para ejecutar el programa cuando el ordenador se inicia, la mejor forma es convertirlo en un servicio.
+
+Solo necesitas crear un archivo, por ejemplo `on-a-meet.service`, con el siguiente contenido:
+
+```
+[Unit]
+Description="On A Meet Service"
+
+[Service]
+Type=simple
+ExecStart= Path/to/your/compiled/script
+Restart=on-failure
+StandardOutput=file:%h/log_file
+
+[Install]
+WantedBy=default.target
+```
+
+Luego:
+
+1. Cópialo en `/etc/systemd/user` (como usuario root)
+2. Ejecuta `systemctl --user edit on-a-meet.service` y añade lo siguiente (con los valores correctos para tu caso)
+
+   ```
+   [Service]
+   Environment="ON_A_MEET_HASS_SERVER="
+   Environment="ON_A_MEET_ENTITY_ID="
+   Environment="ON_A_MEET_HASS_TOKEN="
+   ```
+
+   Para establecer las variables de entorno que el servicio necesitará.
+
+3. Ejecuta `systemctl --user daemon-reload` (como tu usuario)
+4. Ejecuta `systemctl --user start on-a-meet.service`
+5. Ejecuta `systemctl --global enable on-a-meet.service` (como root)
+
+¡¡¡Y eso es todo!!! Después de eso, recibirás una notificación visual cuando tu cámara esté activa.
+
+## Míralo en acción
+
+::youtube[]{id="1Uizew2_PVQ"}
+
+## Los siguientes pasos
+
+- Me gustaría encender el letrero luminoso cuando al menos un ordenador de la habitación esté usando la webcam; creo que simplemente añadiendo el script a los otros ordenadores y ajustando un poco las escenas de Home Assistant sería fácil.
+- Añadir soporte para OSX; desafortunadamente, usaré un Mac por el trabajo, así que tendré que averiguar cómo comprobar cuándo la cámara está activa en OSX.
+- Entender por qué el módulo dice que está en uso durante un segundo cuando la cámara no está en uso, causando falsos positivos.
+
+¡Cualquier comentario, idea o feedback es bienvenido!

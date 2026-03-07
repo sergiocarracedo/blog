@@ -1,0 +1,153 @@
+---
+title: "Uso de gráficos en el frontend: Echarts con ejemplos"
+lang: es
+pubDate: 2022-11-22
+slug: using-charts-frontend-echarts-with-examples
+heroImage: ./pexels-lukas-590022.jpg
+tags:
+  - data visualization
+
+excerpt: "Si trabajas en frontend y en visualización de datos, una de las tareas que debes resolver es representar datos de diferentes formas (gráficos) y existen múltiples maneras de solucionarlo:"
+autoTranslated: true
+originalLang: en
+---
+
+
+
+
+
+Si trabajas en frontend y en visualización de datos, una de las tareas que debes resolver es representar datos de diferentes formas (gráficos) y existen múltiples maneras de solucionarlo:
+
+- Hacerlo desde cero, con js y css, svg, canvas, etc.
+- Usar una librería de bajo nivel que abstraiga por ti cosas como la manipulación del dom, escalas, etc., [d3.js](https://d3js.org/) es una muy buena: escribí un :astro-ref[post en el blog sobre ello]{path="blog/2021/understanding-d3-js-introduction"}
+- Usar librerías de gráficos
+
+Veamos algunos pros y contras de los diferentes enfoques; no existe una solución perfecta, depende de tus necesidades.
+
+| | Desde cero | d3.js | Librería de gráficos |
+|--------------------------|------------------|--|-------------------------------|
+| **Esfuerzo de personalización** | Bajo | Medio | Depende de la librería (Alto) |
+| **Experiencia del equipo requerida** | Mayor | Alta | Baja |
+| **Experiencia requerida** | Mayor | Alta | Baja |
+| **Funcionalidades listas para usar** | Ninguna | Ejes, transformaciones de datos, gestión de dibujo svg/canvas | Gráficos completos |
+| **Tiempo a producción** | Alto | Alto | Bajo |
+
+# El camino de las librerías de gráficos
+
+Usar una librería de gráficos para generar visualizaciones de datos puede parecer una forma sencilla de resolver la tarea, pero no lo es; depende de tus requisitos y de cuánto necesites personalizar el gráfico. Si tus requisitos en cuanto a estilo visual y comportamiento son sencillos, cualquier librería puede funcionar, pero la cosa puede complicarse cuando necesitas personalizarlos.
+
+A lo largo de mi carrera, exploré todas esas formas y muchas librerías de gráficos diferentes: amCharts, chart.js, highcharts.js, etc... y para cumplir con los requisitos que teníamos, empecé a crear y usar componentes de gráficos personalizados basados en d3.js, pero descubrí [ECharts](https://echarts.apache.org/en/index.html)
+
+# ECharts
+
+ECharts es una librería de visualización de código abierto en Javascript (y Typescript) escrita en javascript puro y basada en [zrender](https://github.com/ecomfe/zrender), incubada bajo la Apache Software Foundation (ASF) y creada originalmente por Baidu (esa es la razón por la que encontrarás muchas entradas en chino buscando ECharts, pero no deberías preocuparte por ello, también hay mucha documentación en inglés).
+
+Esta librería te permite crear una gran cantidad de gráficos diferentes y personalizables (tipos de series, como veremos más adelante), solo necesitas visitar la [página de ejemplos](https://echarts.apache.org/examples/en/index.html) para verlo, desde un simple gráfico de líneas hasta un globo 3D con líneas de vuelo, pasando por barras, donut, boxplot, candlestick, mapa, dispersión, mapa de calor, árbol, treemap, sunburst, paralelo, sankey, embudo, indicador, themeriver, calendario y gráficos completamente personalizados.
+
+::iframe[]{src="https://echarts.apache.org/examples/en/editor.html?c=lines3d-flights&gl=1" width="100%" height="500"}
+
+Probablemente encuentres el gráfico que necesitas para cumplir con tus requisitos con los gráficos disponibles de serie, pero en cualquier caso, puedes profundizar en la documentación y empezar a personalizar tus visualizaciones.
+
+## Qué hace diferente a ECharts
+
+Trabajando con otras librerías puedes personalizar cosas, pero no al nivel de personalización de ECharts.
+Tienes literalmente [miles de parámetros para personalizarlo](https://echarts.apache.org/en/option.html), cualquier cosa que quieras configurar existe en la configuración.
+
+Esta configuración es un objeto js plano e incluye todo: los datos del gráfico, la definición del gráfico, la configuración visual del gráfico y la configuración del comportamiento del gráfico.
+
+Mi primer pensamiento fue que tener una API de JS es mejor para personalizar los gráficos, pero créeme, solo usando este gran objeto puedes realizar personalizaciones y ajustes precisos.
+
+Otra cosa totalmente personalizable es el tema, puedes usar [temas pre-construidos](https://echarts.apache.org/en/download-theme.html) o [crear uno nuevo](https://echarts.apache.org/en/theme-builder.html) personalizando cada aspecto de los gráficos. Por ejemplo, puedes personalizar los colores predeterminados de las series para todos los gráficos sin necesidad de establecerlos en cada gráfico.
+
+Como mencioné antes, todas las configuraciones son objetos planos de js, por lo que puedes almacenar estos datos como JSON y luego importarlos como un `Object` y usar `Object.assign` para establecer valores superficiales predeterminados, o los valores predeterminados de lodash (`_.defaults`), por ejemplo, para establecer los valores predeterminados del tooltip.
+
+```js
+const echartsDefaults = {
+  tooltip: { show: true, trigger: 'axis', position: ['50%', '50%'] },
+  xAxis: { itemStyle: { color: '#f00' } }
+}
+...
+const chart = echarts.init(document.getElementById("app"));
+chart.setOption(_.defaults(
+  { tooltip: { trigger: 'item' },
+  xAxis: { type: "category", data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] }
+}, echartsDefaults))
+// The actual options
+// {
+//   tooltip: { show: true, trigger: 'item', position: ['50%', '50%'] },
+//   xAxis: { itemStyle: { color: '#f00' }, type: "category", data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] }
+// }
+```
+
+### Canvas vs SVG
+
+Una de las preguntas más comunes cuando empiezas a desarrollar una solución de gráficos es si usar SVG o Canvas.
+
+**SVG** define la representación visual como un documento, exactamente igual que el HTML define una página como un documento, los eventos funcionan de manera similar a como lo hacen en HTML, y la visualización de los elementos puede modificarse usando CSS simple. SVG también es mejor en términos de accesibilidad. **Es una representación vectorial**, por lo que los gráficos se verán bien en cualquier resolución, y ante cualquier cambio en un objeto SVG, el navegador se encargará del redibujado.
+
+**Canvas es una forma orientada a píxeles (bitmap)** de representar dibujos (SVG también puede incluir bitmap), básicamente después de dibujar un píxel el navegador deja de ocuparse del objeto que dibujaste y solo almacena los píxeles. Esto hace que debas encargarte del redibujado si algo cambia.
+
+> Canvas ofrece un mejor rendimiento en superficies pequeñas o con un gran número de objetos a dibujar, y SVG es mejor para superficies grandes y un número pequeño de objetos.
+
+ECharts utiliza ZRender, una librería que abstrae el dibujo 2D exponiendo la misma API para renderizar **canvas** o **SVG**. **Esto te permite decidir qué renderizador usar** pero sin realizar cambios adicionales en tu gráfico, es solo una bandera (flag).
+
+Como regla general, se recomienda canvas para conjuntos de datos grandes (>1000 elementos), y SVG en Android de gama baja o gráficos específicos. Más información en https://apache.github.io/echarts-handbook/en/best-practices/canvas-vs-svg/
+
+Esta característica hace que ECharts sea muy diferente de otras soluciones de gráficos, ya que estas usan SVG o Canvas, pero no puedes decidir (d3.js también te permite decidir el renderizador) el renderizado; debes realizar el renderizado en el sistema que utiliza la librería de gráficos.
+
+## Ejemplo básico
+
+Hagamos un ejemplo sencillo, un gráfico de barras
+::iframe[]{src="https://codesandbox.io/embed/practical-christian-lm8dmx?fontsize=14&view=preview&hidenavigation=1&module=%2Fsrc%2Fexample_1.js&theme=dark" width="100%" height="400"}
+
+Puedes comparar cómo crear un gráfico similar en d3.js [aquí](https://d3-graph-gallery.com/graph/barplot_basic.html)
+
+La cantidad de código es mayor incluso para el caso básico, y la versión de d3.js no incluye el tooltip ni los degradados.
+
+Crear un gráfico es tan simple (revisa el código) como llenar un objeto js plano; tal vez necesites tiempo para encontrar la propiedad que necesitas usar, pero básicamente definimos el xAxis, yAxis, las series (los valores), el tipo de serie y el estilo de esos elementos en el mismo objeto.
+
+## Ejemplo de múltiples series
+
+El tipo de representación (gráfico) está definido por las series, por lo que podemos mezclar diferentes tipos de visualización en el mismo gráfico. Veamos un ejemplo.
+
+::iframe[]{src="https://codesandbox.io/embed/echarts-examples-lm8dmx?fontsize=14&view=preview&hidenavigation=1&initialpath=%2Fexample_2.html&module=%2Fsrc%2Fexample_2.js&theme=dark" width="100%" height="400"}
+
+Las series podrían compartir el eje, pero en el ejemplo, añadimos un nuevo eje con una escala y unidades diferentes.
+
+### Ejemplo de animaciones
+
+ECharts te ofrece la posibilidad de transformar un tipo de serie en otro mediante animación; es tan fácil como cambiar el objeto de opciones de ECharts y ECharts hará la animación por ti.
+
+::iframe[]{src="https://codesandbox.io/embed/echarts-examples-lm8dmx?fontsize=14&view=preview&hidenavigation=1&initialpath=%2Fexample_3.html&module=%2Fsrc%2Fexample_3.js&theme=dark" width="100%" height="400"}
+
+## Series personalizadas
+
+Además de los tipos de series que mencioné antes (hay muchos), puedes usar el tipo de serie personalizada y [usando una función](https://echarts.apache.org/en/option.html#series-custom) puedes definir programáticamente cómo debe renderizarse cada elemento. Esta característica te da más control sobre la representación.
+
+E incluso, si realmente lo necesitas, puedes escribir un tipo de plugin para crear un nuevo tipo de serie para una representación de datos personalizada, por ejemplo, una visualización de nube de palabras: https://github.com/ecomfe/echarts-wordcloud
+
+Pero en la mayoría de los casos no necesitas profundizar y crear un tipo de serie personalizada o usar una personalizada, puedes usar múltiples series para lograr el resultado que deseas. Por ejemplo, este gráfico de líneas con banda de confianza usa un tipo de línea y un tipo de área apilando las series.
+
+::iframe[]{src="https://echarts.apache.org/examples/en/editor.html?c=confidence-band" width="100%" height="400"}
+
+Usando otras características como `visualMap` puedes establecer diferentes colores en diferentes partes de la serie.
+
+::iframe[]{src="https://echarts.apache.org/examples/en/editor.html?c=line-sections" width="100%" height="400"}
+
+## Vue, React, Angular
+
+Puedes usar ECharts con tu framework de js favorito, hay wrappers disponibles que se encargan de la responsabilidad de los datos y de redimensionar el gráfico al cambiar el ancho de la ventana.
+
+- Vue: https://vue-echarts.dev/
+- React: https://git.hust.cc/echarts-for-react/
+- Angular: https://xieziyu.github.io/ngx-echarts
+
+## Resumen
+
+ECharts es una librería de gráficos increíble que te permite personalizarla de muchas formas diferentes, y que probablemente resuelva tus requisitos sin escribir código, solo usando opciones de personalización.
+
+Hay muchas características que no mencioné pero que son muy interesantes, lo haré en otro post.
+
+Te invito a probarlo y experimentar un poco, pronto te darás cuenta de que puedes hacer casi cualquier cosa solo usando opciones, sin programar ni una línea.
+
+> Si te gusta este post y estás interesado en ECharts, házmelo saber con un comentario o un tweet y escribiré más posts con otros casos de uso.
