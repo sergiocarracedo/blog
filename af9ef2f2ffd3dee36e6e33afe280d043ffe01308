@@ -1,0 +1,23 @@
+scripts/translate-post.ts
+  610f36855df90cf4 224-230,235-237,239-241,244-245,247-248,255,260-261
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "af9ef2f2ffd3dee36e6e33afe280d043ffe01308",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 21,
+      "total_deletions": 12,
+      "accepted_lines": 20,
+      "overriden_lines": 0
+    }
+  }
+}
