@@ -364,7 +364,7 @@ export const ui: Record<Locale, Record<string, string>> = {
     'legal.cookie.updated': 'Actualizado: 1/12/2019',
 
     // About page
-    'about.connectWithMe': 'Conéctate conmigo',
+    'about.connectWithMe': 'Conecta conmigo',
 
     // Accessibility
     'a11y.skipToContent': 'Saltar al contenido',
@@ -381,5 +381,5 @@ export const ui: Record<Locale, Record<string, string>> = {
  * Get a specific translation key
  */
 export function getTranslation(locale: Locale, key: string): string {
-  return ui[locale][key] ?? ui['en'][key] ?? key;
+  return ui[locale][key] ?? ui.en[key] ?? key;
 }
