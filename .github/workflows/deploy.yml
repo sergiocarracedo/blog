@@ -47,14 +47,14 @@ jobs:
       - name: Translate pending posts
         id: translate
         env:
-          AI_PROVIDER: ${{ secrets.AI_PROVIDER }}
+          AI_PROVIDER: google
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
         run: |
           echo "Translating posts missing ES translation..."
-          pnpm translate:all --to es
+          pnpm translate:missing --to es
 
           echo "Translating posts missing EN translation..."
-          pnpm translate:all --to en
+          pnpm translate:missing --to en
 
       - name: Commit translated posts
         run: |
