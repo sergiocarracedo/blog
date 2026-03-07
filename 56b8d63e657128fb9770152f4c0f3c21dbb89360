@@ -1,0 +1,23 @@
+src/content/blog/2024/2024-05-26-monsgeek-m5-review/index.en.t.mdx
+  610f36855df90cf4 9,45,73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "56b8d63e657128fb9770152f4c0f3c21dbb89360",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 13,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
