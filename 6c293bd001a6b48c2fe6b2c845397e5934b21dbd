@@ -1,0 +1,31 @@
+src/i18n/ui.ts
+  610f36855df90cf4 89-124,126,128-177,270-307,309,311-361
+src/components/NewsletterForm.astro
+  610f36855df90cf4 3,11,21-27,34,38,45,48,52,77-85,97-103,114,119,133,140,143,171
+src/components/NewsletterToast.astro
+  610f36855df90cf4 3,10,15,21
+src/pages/[lang]/legal/cookie-policy.astro
+  610f36855df90cf4 4,12,15-16,28,30,32-33,35,37-38,40-41,43,45-46,48-49,51,53-54,56-57,59-60,62-63,65-66,68,70,73,75,79-80,85-86,89-90,92,94-97,100
+src/pages/[lang]/newsletter/subscribe.astro
+  610f36855df90cf4 5,13-23,27,32-33,40-41,46,53,55-60,75,77,89,92,94,99-101,106-110,124
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "6c293bd001a6b48c2fe6b2c845397e5934b21dbd",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 339,
+      "total_deletions": 187,
+      "accepted_lines": 302,
+      "overriden_lines": 0
+    }
+  }
+}
