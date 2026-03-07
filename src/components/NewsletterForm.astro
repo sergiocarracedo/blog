@@ -1,6 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
-import type { Locale } from '@/i18n';
+import { useTranslations, type Locale } from '@/i18n';
 
 interface Props {
   placement?: 'footer' | 'toast';
@@ -8,35 +8,48 @@ interface Props {
 }
 
 const { placement = 'footer', lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
 
 // API URL - uses Cloudflare Worker in production
 const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-api.sergiocarracedo.workers.dev';
 ---
 
-<newsletter-form data-placement={placement} data-api-url={apiUrl} data-lang={lang} class="block">
+<newsletter-form
+  data-placement={placement}
+  data-api-url={apiUrl}
+  data-lang={lang}
+  data-msg-invalid-email={t('newsletter.errorInvalidEmail')}
+  data-msg-subscribing={t('newsletter.subscribing')}
+  data-msg-success={t('newsletter.successMessage')}
+  data-msg-error={t('newsletter.errorGeneric')}
+  data-msg-network={t('newsletter.errorNetwork')}
+  data-label-subscribe={t('newsletter.subscribe')}
+  data-label-subscribing={t('newsletter.subscribing')}
+  class="block"
+>
   <form class="w-full" data-newsletter-form>
     <div class="flex flex-col gap-3">
       <div class="flex items-center gap-2">
         <Icon name="outline/mail-outline" />
-        <h3 class="m-0 text-xl font-bold text-primary dark:text-secondary">Stay Updated</h3>
+        <h3 class="m-0 text-xl font-bold text-primary dark:text-secondary">{t('newsletter.stayUpdated')}</h3>
       </div>
 
       <p class="m-0 text-sm text-slate-600 dark:text-gray-300">
-        Get monthly digests of new posts delivered to your inbox
+        {t('newsletter.digest')}
       </p>
 
       <div class="flex flex-col gap-2 sm:flex-row sm:items-stretch">
         <input
           type="email"
           name="email"
-          placeholder="your@email.com"
+          placeholder={t('newsletter.emailPlaceholder')}
           required
           class="w-full rounded-lg border-2 border-primary-lighter dark:border-secondary-light bg-white dark:bg-primary-600 px-3.5 py-2.5 text-[15px] transition-all duration-200 ease-in-out placeholder:text-slate-400 dark:placeholder:text-gray-400 focus:outline-none focus:border-primary dark:focus:border-secondary focus:ring-4 focus:ring-primary-lighter dark:focus:ring-secondary-light sm:min-w-50 sm:flex-1"
-          aria-label="Email address"
+          aria-label={t('newsletter.emailLabel')}
         />
 
         <button type="submit" class="btn flex w-full items-center justify-center gap-2 sm:w-auto">
-          <span data-newsletter-button-text>Subscribe</span>
+          <span data-newsletter-button-text>{t('newsletter.subscribe')}</span>
         </button>
       </div>
 
@@ -61,6 +74,15 @@ const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-
     apiUrl!: string;
     lang!: string;
 
+    // i18n messages from data attributes
+    msgInvalidEmail!: string;
+    msgSubscribing!: string;
+    msgSuccess!: string;
+    msgError!: string;
+    msgNetwork!: string;
+    labelSubscribe!: string;
+    labelSubscribing!: string;
+
     constructor() {
       super();
 
@@ -72,6 +94,14 @@ const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-
       this.apiUrl = this.getAttribute('data-api-url') || '';
       this.lang = this.getAttribute('data-lang') || 'en';
 
+      this.msgInvalidEmail = this.getAttribute('data-msg-invalid-email') || 'Please enter a valid email address';
+      this.msgSubscribing = this.getAttribute('data-msg-subscribing') || 'Subscribing…';
+      this.msgSuccess = this.getAttribute('data-msg-success') || 'Success! Check your email to confirm your subscription.';
+      this.msgError = this.getAttribute('data-msg-error') || 'Something went wrong. Please try again.';
+      this.msgNetwork = this.getAttribute('data-msg-network') || 'Network error. Please check your connection and try again.';
+      this.labelSubscribe = this.getAttribute('data-label-subscribe') || 'Subscribe';
+      this.labelSubscribing = this.getAttribute('data-label-subscribing') || 'Subscribing…';
+
       this.form.addEventListener('submit', this.handleSubmit.bind(this));
     }
 
@@ -81,12 +111,12 @@ const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-
       const email = this.emailInput.value.trim();
 
       if (!email || !this.isValidEmail(email)) {
-        this.showMessage('Please enter a valid email address', 'error');
+        this.showMessage(this.msgInvalidEmail, 'error');
         return;
       }
 
       this.setLoading(true);
-      this.showMessage('Subscribing...', 'loading');
+      this.showMessage(this.msgSubscribing, 'loading');
 
       try {
         const response = await fetch(`${this.apiUrl}/subscribe`, {
@@ -100,17 +130,17 @@ const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-
         const data = await response.json();
 
         if (response.ok) {
-          this.showMessage(data.message || 'Success! Check your email to confirm your subscription.', 'success');
+          this.showMessage(data.message || this.msgSuccess, 'success');
           this.emailInput.value = '';
           
           // Emit success event for toast
           const successEvent = new CustomEvent('newsletter:success');
           document.dispatchEvent(successEvent);
         } else {
-          this.showMessage(data.error || 'Something went wrong. Please try again.', 'error');
+          this.showMessage(data.error || this.msgError, 'error');
         }
       } catch (error) {
-        this.showMessage('Network error. Please check your connection and try again.', 'error');
+        this.showMessage(this.msgNetwork, 'error');
       } finally {
         this.setLoading(false);
       }
@@ -138,7 +168,7 @@ const apiUrl = import.meta.env.PUBLIC_NEWSLETTER_API_URL || 'https://newsletter-
     setLoading(loading: boolean) {
       this.submitButton.disabled = loading;
       this.emailInput.disabled = loading;
-      this.buttonTextEl.textContent = loading ? 'Subscribing...' : 'Subscribe';
+      this.buttonTextEl.textContent = loading ? this.labelSubscribing : this.labelSubscribe;
     }
   }
 

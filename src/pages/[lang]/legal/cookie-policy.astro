@@ -1,7 +1,7 @@
 ---
 import SectionHeader from '@/components/SectionHeader.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { locales, type Locale } from '@/i18n';
+import { locales, type Locale, useTranslations } from '@/i18n';
 
 export function getStaticPaths() {
   return locales.map((l) => ({ params: { lang: l } }));
@@ -9,10 +9,11 @@ export function getStaticPaths() {
 
 const { lang: langParam } = Astro.params;
 const lang = langParam as Locale;
+const t = useTranslations(lang);
 
 const meta = {
-  title: 'Cookie Policy',
-  description: 'How we use cookies on this website.',
+  title: t('legal.cookiePolicy'),
+  description: t('legal.cookie.intro').slice(0, 160),
   keywords: ['legal', 'cookies'],
 };
 ---
@@ -24,111 +25,79 @@ const meta = {
 
   <div class="wrapper-no-padding">
     <div class="prose p-6 sm:p-6 lg:p-8">
-      <p>
-        This website, like many others, uses cookies to improve your experience as a user. In compliance with applicable law,
-        we will inform you about what they are, which ones we use, how to delete them, and we will ask for your consent for
-        their use.
-      </p>
+      <p>{t('legal.cookie.intro')}</p>
 
-      <h2>INFORMATION</h2>
+      <h2>{t('legal.cookie.infoHeading')}</h2>
 
-      <h3>What are cookies?</h3>
-      <p>
-        Cookies are small text files that are downloaded and installed on your computer or mobile device through your browser
-        (Internet Explorer, Firefox, Chrome, Safari…). Cookies allow websites to "remember" you, either during a visit (via
-        "session cookies") or across multiple visits (via "persistent cookies"), storing your preferences to offer a
-        personalized, easier, and faster experience. Only the server that installed them can read their content, which is
-        anonymous. Although they are stored on your hard drive, being only text they cannot access personal information on
-        your computer, transmit viruses, or do anything other than track navigation on a website.
-      </p>
+      <h3>{t('legal.cookie.whatHeading')}</h3>
+      <p>{t('legal.cookie.whatBody')}</p>
 
-      <h2>COOKIES BY DURATION</h2>
+      <h2>{t('legal.cookie.byDurationHeading')}</h2>
 
-      <h3>SESSION COOKIES</h3>
-      <p>
-        Designed to collect and store data while the user accesses a web page. They are used to store information that is only
-        needed for a single session.
-      </p>
+      <h3>{t('legal.cookie.sessionHeading')}</h3>
+      <p>{t('legal.cookie.sessionBody')}</p>
 
-      <h3>PERSISTENT COOKIES</h3>
-      <p>
-        A type of cookie in which data remains stored on the device and can be accessed and processed for a period defined by
-        the cookie controller, ranging from a few minutes to several years.
-      </p>
+      <h3>{t('legal.cookie.persistentHeading')}</h3>
+      <p>{t('legal.cookie.persistentBody')}</p>
 
-      <h2>COOKIES BY CONTROLLER</h2>
+      <h2>{t('legal.cookie.byControllerHeading')}</h2>
 
-      <h3>FIRST-PARTY COOKIES</h3>
-      <p>Cookies created by the owner of the website.</p>
+      <h3>{t('legal.cookie.firstPartyHeading')}</h3>
+      <p>{t('legal.cookie.firstPartyBody')}</p>
 
-      <h3>THIRD-PARTY COOKIES</h3>
-      <p>
-        Cookies created and managed by other entities, such as advertising, personalization, or analytics service providers.
-        These third parties may report anonymous data.
-      </p>
+      <h3>{t('legal.cookie.thirdPartyHeading')}</h3>
+      <p>{t('legal.cookie.thirdPartyBody')}</p>
 
-      <h2>COOKIES BY PURPOSE</h2>
+      <h2>{t('legal.cookie.byPurposeHeading')}</h2>
 
-      <h3>TECHNICAL COOKIES</h3>
-      <p>Enable the user to navigate the website, platform or application and use its different options or services.</p>
+      <h3>{t('legal.cookie.technicalHeading')}</h3>
+      <p>{t('legal.cookie.technicalBody')}</p>
 
-      <h3>PERSONALIZATION COOKIES</h3>
-      <p>
-        Allow the user to access the service with predefined general characteristics based on criteria on the user's terminal,
-        such as language, browser type, regional settings, etc.
-      </p>
+      <h3>{t('legal.cookie.personalizationHeading')}</h3>
+      <p>{t('legal.cookie.personalizationBody')}</p>
 
-      <h3>ANALYTICS COOKIES</h3>
-      <p>
-        Allow the cookie controller to track and analyze the behavior of website users. Information collected through these
-        cookies is used to measure website activity and create browsing profiles.
-      </p>
+      <h3>{t('legal.cookie.analyticsHeading')}</h3>
+      <p>{t('legal.cookie.analyticsBody')}</p>
 
-      <h3>ADVERTISING COOKIES</h3>
-      <p>Allow the most efficient management of advertising spaces that the publisher has included on a web page.</p>
+      <h3>{t('legal.cookie.advertisingHeading')}</h3>
+      <p>{t('legal.cookie.advertisingBody')}</p>
 
-      <h3>BEHAVIORAL ADVERTISING COOKIES</h3>
-      <p>
-        Allow management of advertising spaces by storing information about user behavior obtained through continuous
-        observation of their browsing habits.
-      </p>
+      <h3>{t('legal.cookie.behavioralHeading')}</h3>
+      <p>{t('legal.cookie.behavioralBody')}</p>
 
-      <h2>What cookies does this website use?</h2>
+      <h2>{t('legal.cookie.usedHeading')}</h2>
 
-      <h3>FIRST-PARTY COOKIES</h3>
+      <h3>{t('legal.cookie.firstPartyHeading')}</h3>
 
       <h5>cookieconsent_status</h5>
-      <p>Stores the cookie consent response for 1 year.</p>
+      <p>{t('legal.cookie.consentCookieBody')}</p>
 
-      <h3>THIRD-PARTY COOKIES</h3>
+      <h3>{t('legal.cookie.thirdPartyHeading')}</h3>
 
       <h4>Google Analytics</h4>
       <p>
-        Third-party analytics cookies used by us and Google.
-        <a href="https://developers.google.com/analytics/devguides/collection/gajs/cookie-usage">More information</a>
+        {t('legal.cookie.gaBody')}
+        <a href="https://developers.google.com/analytics/devguides/collection/gajs/cookie-usage">{t('legal.cookie.gaMore')}</a>
       </p>
 
       <h4>Disqus</h4>
       <p>
-        Cookies required by the Disqus comment system.
-        <a href="https://help.disqus.com/en/articles/1717103-disqus-privacy-policy">More information</a>
+        {t('legal.cookie.disqusBody')}
+        <a href="https://help.disqus.com/en/articles/1717103-disqus-privacy-policy">{t('legal.cookie.disqusMore')}</a>
       </p>
 
-      <h2>Revoking consent</h2>
-      <p>
-        If you later decide to revoke your consent, configure your browser to reject cookies and clear your browsing history
-        to remove already installed cookies.
-      </p>
+      <h2>{t('legal.cookie.revokeHeading')}</h2>
+      <p>{t('legal.cookie.revokeBody')}</p>
 
-      <h2>Disabling cookies</h2>
+      <h2>{t('legal.cookie.disableHeading')}</h2>
       <ul>
-        <li>Internet Explorer: <a href="http://windows.microsoft.com/en-us/windows-vista/block-or-allow-cookies">More information</a></li>
-        <li>Firefox: <a href="http://support.mozilla.org/en/kb/enable-and-disable-cookies-website-preferences">More information</a></li>
-        <li>Chrome: <a href="https://support.google.com/chrome/answer/95647?hl=en">More information</a></li>
-        <li>Safari: <a href="http://www.apple.com/legal/privacy/en/cookies/">More information</a></li>
+        <li>Internet Explorer: <a href="http://windows.microsoft.com/en-us/windows-vista/block-or-allow-cookies">{t('legal.cookie.disableIE')}</a></li>
+        <li>Firefox: <a href="http://support.mozilla.org/en/kb/enable-and-disable-cookies-website-preferences">{t('legal.cookie.disableFF')}</a></li>
+        <li>Chrome: <a href="https://support.google.com/chrome/answer/95647?hl=en">{t('legal.cookie.disableChrome')}</a></li>
+        <li>Safari: <a href="http://www.apple.com/legal/privacy/en/cookies/">{t('legal.cookie.disableSafari')}</a></li>
       </ul>
 
-      <p>Updated: 1/12/2019</p>
+      <p>{t('legal.cookie.updated')}</p>
     </div>
   </div>
 </BaseLayout>

@@ -2,7 +2,7 @@
 import NewsletterForm from '@/components/NewsletterForm.astro';
 import SectionHeader from '@/components/SectionHeader.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { locales, type Locale } from '@/i18n';
+import { locales, useTranslations, useTranslatedPath, type Locale } from '@/i18n';
 
 export function getStaticPaths() {
   return locales.map((l) => ({ params: { lang: l } }));
@@ -10,94 +10,71 @@ export function getStaticPaths() {
 
 const { lang: langParam } = Astro.params;
 const lang = langParam as Locale;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const errorMessagesJson = JSON.stringify({
+  invalid: t('newsletter.subscribePage.errorInvalid'),
+  not_found: t('newsletter.subscribePage.errorNotFound'),
+  invalid_token: t('newsletter.subscribePage.errorInvalidToken'),
+  expired: t('newsletter.subscribePage.errorExpired'),
+  server: t('newsletter.subscribePage.errorServer'),
+  fallback: t('newsletter.subscribePage.errorFallback'),
+});
 ---
 
-<BaseLayout title="Subscribe to Newsletter" description="Get monthly digests of new posts" lang={lang}>
+<BaseLayout
+  meta={{ title: t('newsletter.subscribePage.title'), description: t('newsletter.subscribePage.description') }}
+  lang={lang}
+>
   <section class="wrapper mb-10">
     <SectionHeader
-      title="Subscribe to Newsletter"
-      description="Get monthly digests of new posts delivered to your inbox"
+      title={t('newsletter.subscribePage.title')}
+      description={t('newsletter.subscribePage.description')}
       class="mb-10"
     />
 
     <div class="max-w-2xl mx-auto">
       <!-- Success message (hidden by default, shown via JS) -->
       <div id="success-message" class="hidden bg-emerald-100 border border-emerald-500 text-emerald-900 rounded-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold mb-2">Subscription Confirmed!</h2>
-        <p>Thank you for subscribing! You'll receive monthly digests of new posts.</p>
+        <h2 class="text-xl font-semibold mb-2">{t('newsletter.subscribePage.confirmedTitle')}</h2>
+        <p>{t('newsletter.subscribePage.confirmedBody')}</p>
       </div>
 
       <!-- Error message (hidden by default, shown via JS) -->
       <div id="error-message" class="hidden bg-red-100 border border-red-500 text-red-900 rounded-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold mb-2">Subscription Error</h2>
+        <h2 class="text-xl font-semibold mb-2">{t('newsletter.subscribePage.errorTitle')}</h2>
         <p id="error-text"></p>
       </div>
 
       <div id="subscribe-content">
         <div class="bg-secondary/60 backdrop-blur-xs rounded-lg p-8 mb-8">
           <div class="mb-6">
-            <h2 class="text-2xl font-semibold mb-4 text-primary dark:text-secondary">What You'll Get</h2>
+            <h2 class="text-2xl font-semibold mb-4 text-primary dark:text-secondary">{t('newsletter.subscribePage.whatYouGet')}</h2>
             <ul class="space-y-3 text-left">
-              <li class="flex items-start gap-3">
-                <svg
-                  class="w-6 h-6 text-primary dark:text-secondary flex-shrink-0 mt-0.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span>Monthly digest of new blog posts</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <svg
-                  class="w-6 h-6 text-primary dark:text-secondary flex-shrink-0 mt-0.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span>AI-generated summaries of each post</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <svg
-                  class="w-6 h-6 text-primary dark:text-secondary flex-shrink-0 mt-0.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span>No spam, only quality content about web development</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <svg
-                  class="w-6 h-6 text-primary dark:text-secondary flex-shrink-0 mt-0.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span>Unsubscribe anytime with one click</span>
-              </li>
+              {[
+                t('newsletter.subscribePage.benefit1'),
+                t('newsletter.subscribePage.benefit2'),
+                t('newsletter.subscribePage.benefit3'),
+                t('newsletter.subscribePage.benefit4'),
+              ].map((benefit) => (
+                <li class="flex items-start gap-3">
+                  <svg
+                    class="w-6 h-6 text-primary dark:text-secondary flex-shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>{benefit}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -109,28 +86,28 @@ const lang = langParam as Locale;
 
       <div class="mt-8 text-center">
         <p class="text-sm opacity-70 mb-4">
-          I respect your privacy. Your email will only be used for this newsletter.
+          {t('newsletter.subscribePage.privacy')}
         </p>
         <div class="flex gap-4 justify-center flex-wrap text-sm">
-          <a href="/newsletter/unsubscribe" class="link"> How to unsubscribe </a>
+          <a href={translatePath('/newsletter/unsubscribe')} class="link">{t('newsletter.subscribePage.howToUnsubscribe')}</a>
           <span class="opacity-50">•</span>
-          <a href="/" class="link"> Back to homepage </a>
+          <a href={translatePath('/')} class="link">{t('newsletter.subscribePage.backToHome')}</a>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- i18n error strings for client-side JS -->
+  <div id="subscribe-i18n" data-messages={errorMessagesJson} hidden />
 </BaseLayout>
 
 <script>
-  const errorMessages: Record<string, string> = {
-    invalid: 'Invalid confirmation link. Please try subscribing again.',
-    not_found: 'Email not found. Please subscribe again.',
-    invalid_token: 'Invalid or corrupted confirmation link. Please try subscribing again.',
-    expired: 'Confirmation link has expired. Please subscribe again.',
-    server: 'Something went wrong. Please try again later.',
-  };
-
   document.addEventListener('DOMContentLoaded', () => {
+    const i18nEl = document.getElementById('subscribe-i18n');
+    const errorMessages: Record<string, string> = i18nEl
+      ? JSON.parse(i18nEl.dataset.messages || '{}')
+      : {};
+
     const params = new URLSearchParams(window.location.search);
     const success = params.get('success') === 'true';
     const error = params.get('error');
@@ -144,7 +121,7 @@ const lang = langParam as Locale;
       successEl.classList.remove('hidden');
       contentEl.classList.add('hidden');
     } else if (error && errorEl && errorTextEl) {
-      const message = errorMessages[error] || 'An error occurred. Please try again.';
+      const message = errorMessages[error] || errorMessages['fallback'] || 'An error occurred. Please try again.';
       errorTextEl.textContent = message;
       errorEl.classList.remove('hidden');
     }
