@@ -45,8 +45,7 @@ const translatePath = useTranslatedPath(lang);
 
 <MenuOverlay lang={lang} />
 
-<script set:script>
-  const header = document.getElementById('site-header');
+<script>
   const onTopClasses = [
     'max-w-[900px]',
     'bg-secondary/40',
@@ -61,16 +60,28 @@ const translatePath = useTranslatedPath(lang);
     'backdrop-blur-xs',
     'top-0',
   ];
-  const onScroll = () => {
+
+  function initHeaderScroll() {
+    const header = document.getElementById('site-header');
     if (!header) return;
-    if (window.scrollY === 0) {
-      header.classList.add(...onTopClasses);
-      header.classList.remove(...scrolledClasses);
-    } else {
-      header.classList.remove(...onTopClasses);
-      header.classList.add(...scrolledClasses);
-    }
-  };
-  window.addEventListener('scroll', onScroll);
-  onScroll(); // Initial check
+
+    const onScroll = () => {
+      if (window.scrollY === 0) {
+        header.classList.add(...onTopClasses);
+        header.classList.remove(...scrolledClasses);
+      } else {
+        header.classList.remove(...onTopClasses);
+        header.classList.add(...scrolledClasses);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll);
+    onScroll(); // Initial check
+  }
+
+  // Run on first load
+  initHeaderScroll();
+
+  // Re-run after every View Transition navigation
+  document.addEventListener('astro:after-swap', initHeaderScroll);
 </script>

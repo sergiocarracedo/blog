@@ -1,14 +1,21 @@
 ---
 import Hero from '@/components/home/Hero.astro';
 import SectionHeader from '@/components/SectionHeader.astro';
-import { getLangFromUrl, useTranslatedPath, useTranslations } from '@/i18n';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
 import Search from 'astro-pagefind/components/Search';
-import PostTeaser from '../components/posts/PostTeaser.astro';
-import { SITE_TITLE } from '../consts';
+import PostTeaser from '@/components/posts/PostTeaser.astro';
+import { SITE_TITLE } from '@/consts';
+import { useTranslations, useTranslatedPath, locales, defaultLocale, type Locale } from '@/i18n';
 
-const lang = getLangFromUrl(Astro.url);
+export function getStaticPaths() {
+  return locales
+    .filter((l) => l !== defaultLocale)
+    .map((l) => ({ params: { lang: l } }));
+}
+
+const { lang: langParam } = Astro.params;
+const lang = langParam as Locale;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
@@ -26,9 +33,9 @@ const homePosts = posts.slice(0, 5);
           title={t('blog.title')}
           subtitle={t('blog.latestPosts')}
           description={t('site.description')}
-          class="mb-2 md:min-w-0 md:flex-1"
+          class="mb-2"
         />
-        <div class="flex-1 items-end md:max-w-[350px] md:w-[200px]">
+        <div class="flex-1 items-end md:max-w-[350px]">
           <Search className="pagefind-ui-dark pagefind-ui-floating" />
         </div>
       </div>
@@ -37,18 +44,18 @@ const homePosts = posts.slice(0, 5);
         {
           homePosts.map((post, index) => (
             <li>
-              <PostTeaser style={index === 0 ? 'highlighted' : 'default'} post={post} lang={lang} />
+              <PostTeaser
+                style={index === 0 ? 'highlighted' : 'default'}
+                post={post}
+                lang={lang}
+              />
             </li>
           ))
         }
       </ul>
 
       <div class="text-center mt-8 mb-10">
-        <a
-          class="btn text-xl"
-          href={translatePath('/blog')}
-          title={`${t('post.allPosts')} [${posts.length}]`}
-        >
+        <a class="btn text-xl" href={translatePath('/blog')} title={`${t('post.allPosts')} [${posts.length}]`}>
           {t('post.allPosts')} [{posts.length}]
         </a>
       </div>
