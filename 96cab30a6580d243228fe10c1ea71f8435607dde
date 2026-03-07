@@ -1,0 +1,23 @@
+.github/workflows/deploy.yml
+  610f36855df90cf4 5,10,18,21-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "96cab30a6580d243228fe10c1ea71f8435607dde",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 63,
+      "total_deletions": 13,
+      "accepted_lines": 62,
+      "overriden_lines": 0
+    }
+  }
+}
