@@ -1,21 +1,18 @@
 import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '../consts';
+import { getLocalizedPosts, getRoutingSlug, getLocalizedPostUrl } from '../utils/getLocalizedPosts';
 
 export async function GET(context) {
-  const posts = await getCollection('blog');
-  // English feed: posts without lang (show in both) or explicitly English posts
-  // Exclude auto-translated Spanish posts
-  const enPosts = posts.filter((post) => !post.data.lang || post.data.lang === 'en');
+  const posts = await getLocalizedPosts('en');
   return rss({
-    title: `${SITE_TITLE} | EN`,
+    title: `${SITE_TITLE}`,
     description: SITE_DESCRIPTION,
     site: context.site,
-    items: enPosts
-      .sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate))
-      .map((post) => ({
-        ...post.data,
-        link: `${post.id}`,
-      })),
+    items: posts.map((post) => ({
+      title: post.data.title,
+      pubDate: post.data.pubDate,
+      description: post.data.description,
+      link: getLocalizedPostUrl(getRoutingSlug(post), 'en'),
+    })),
   });
 }
