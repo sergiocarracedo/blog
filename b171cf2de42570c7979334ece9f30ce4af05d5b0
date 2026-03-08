@@ -1,0 +1,23 @@
+src/content/blog/2026/2026-03-08-opencode-gym-agent/index.en.mdx
+  7ebc601eded57fd1 18,20,22,24,26,28,34,38,40,42,44,46,52-54,56,58,257,259,263,267,269,271,273,279,281,283,285
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "b171cf2de42570c7979334ece9f30ce4af05d5b0",
+  "prompts": {
+    "7ebc601eded57fd1": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "c9f92143-94c5-4881-bc51-1e8a614b5bb7",
+        "model": "copilot/gpt-5.3-codex"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 28,
+      "total_deletions": 28,
+      "accepted_lines": 28,
+      "overriden_lines": 0
+    }
+  }
+}
