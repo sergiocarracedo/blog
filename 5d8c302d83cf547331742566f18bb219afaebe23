@@ -1,0 +1,78 @@
+src/content/blog/2026/2026-03-08-opencode-gym-agent/index.en.mdx
+  c09b062ae4172b8f 36,71,80,85,87,95,101,108,186,200,208,257,275
+  c02d0730809ac5cc 17
+src/mdx-components.ts
+  f8ef24be3fc34185 11
+src/remark-plugins/remark-directive-iframe/README.md
+  c09b062ae4172b8f 1-32
+astro.config.mjs
+  c02d0730809ac5cc 81
+src/components/AsciinemaPlayer.astro
+  c02d0730809ac5cc 1-3,10-19,37-39,42-43,45-48,50-59
+  c09b062ae4172b8f 21-23
+  f8ef24be3fc34185 4-9,20,24-36,41,44,49
+src/remark-plugins/remark-directive-spotify/README.md
+  c09b062ae4172b8f 1-37
+src/remark-plugins/remark-directive-asciinema/README.md
+  c09b062ae4172b8f 1-52
+src/remark-plugins/remark-directive-astro-entry-ref/README.md
+  c09b062ae4172b8f 1-57
+src/remark-plugins/remark-directive-youtube/README.md
+  c09b062ae4172b8f 1-23
+src/remark-plugins/remark-directive-codeblock/README.md
+  c09b062ae4172b8f 1-62
+src/remark-plugins/remark-directive-float-image/README.md
+  c09b062ae4172b8f 1-39
+src/remark-plugins/remark-directive-asciinema/index.js
+  c09b062ae4172b8f 15-17,33-96,98,125-126,128
+src/remark-plugins/remark-directive-gallery/README.md
+  c09b062ae4172b8f 1-54
+src/styles/prose.css
+  c09b062ae4172b8f 187
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "5d8c302d83cf547331742566f18bb219afaebe23",
+  "prompts": {
+    "c02d0730809ac5cc": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3311463beffez3q5RPuEjZkw25",
+        "model": "github-copilot/claude-opus-4.6"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 151,
+      "total_deletions": 78,
+      "accepted_lines": 52,
+      "overriden_lines": 10
+    },
+    "c09b062ae4172b8f": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_330c773c2ffeC607ZhZc5XW00O",
+        "model": "github-copilot/claude-sonnet-4.6"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 518,
+      "total_deletions": 109,
+      "accepted_lines": 444,
+      "overriden_lines": 0
+    },
+    "f8ef24be3fc34185": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "bc0dd3f6-2fef-4b5f-96cd-80e0cbd49c1e",
+        "model": "copilot/grok-code-fast-1"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 104,
+      "total_deletions": 65,
+      "accepted_lines": 24,
+      "overriden_lines": 1
+    }
+  }
+}
