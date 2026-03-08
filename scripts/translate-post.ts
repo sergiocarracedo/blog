@@ -54,28 +54,47 @@ function parseMdx(content: string): { frontmatter: string; body: string; data: F
   const lines = frontmatter.split('\n');
   let currentKey = '';
   let inArray = false;
+  let inObject = false;
   let arrayValues: string[] = [];
+  let objectValues: Record<string, string> = {};
+
+  const flushCurrent = () => {
+    if (!currentKey) return;
+    if (inArray && arrayValues.length > 0) {
+      data[currentKey] = arrayValues;
+    } else if (inObject && Object.keys(objectValues).length > 0) {
+      data[currentKey] = objectValues;
+    }
+    // If the block was empty (bare key with no children), omit it entirely
+    arrayValues = [];
+    objectValues = {};
+    inArray = false;
+    inObject = false;
+    currentKey = '';
+  };
 
   for (const line of lines) {
     if (/^\s+-\s+/.exec(line)) {
       // Array item
       const value = line.replace(/^\s+-\s+/, '').replace(/^['"]|['"]$/g, '');
-      arrayValues.push(value);
-    } else if (/^(\w+):\s*$/.exec(line)) {
-      // Key with no value (start of array or object)
-      if (currentKey && inArray) {
-        data[currentKey] = arrayValues;
-        arrayValues = [];
-      }
-      currentKey = line.replace(':', '').trim();
       inArray = true;
+      inObject = false;
+      arrayValues.push(value);
+    } else if (/^\s+(\w[\w-]*):\s*(.*)$/.exec(line)) {
+      // Indented key-value pair → sub-object entry
+      const subMatch = /^\s+(\w[\w-]*):\s*(.*)$/.exec(line)!;
+      const subKey = subMatch[1];
+      const subValue = subMatch[2].replace(/^['"]|['"]$/g, '');
+      inObject = true;
+      inArray = false;
+      objectValues[subKey] = subValue;
+    } else if (/^(\w+):\s*$/.exec(line)) {
+      // Top-level bare key — start of array or object block
+      flushCurrent();
+      currentKey = line.replace(':', '').trim();
     } else if (/^(\w+):\s*.+$/.exec(line)) {
-      // Key-value pair
-      if (currentKey && inArray) {
-        data[currentKey] = arrayValues;
-        arrayValues = [];
-        inArray = false;
-      }
+      // Top-level key-value pair
+      flushCurrent();
       const [key, ...rest] = line.split(':');
       const value = rest
         .join(':')
@@ -86,10 +105,8 @@ function parseMdx(content: string): { frontmatter: string; body: string; data: F
     }
   }
 
-  // Handle last array
-  if (currentKey && inArray && arrayValues.length > 0) {
-    data[currentKey] = arrayValues;
-  }
+  // Handle last block
+  flushCurrent();
 
   return { frontmatter, body, data };
 }
