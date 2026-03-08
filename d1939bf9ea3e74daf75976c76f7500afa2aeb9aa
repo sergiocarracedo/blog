@@ -1,0 +1,23 @@
+src/content/blog/2026/2026-03-08-opencode-gym-agent/index.en.mdx
+  f8ef24be3fc34185 275
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "d1939bf9ea3e74daf75976c76f7500afa2aeb9aa",
+  "prompts": {
+    "f8ef24be3fc34185": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "bc0dd3f6-2fef-4b5f-96cd-80e0cbd49c1e",
+        "model": "copilot/grok-code-fast-1"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 2,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
