@@ -1,0 +1,25 @@
+src/pages/rss.xml.js
+  610f36855df90cf4 2-3,6,8,11-15
+src/pages/[lang]/rss.xml.js
+  610f36855df90cf4 1-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "3db60a28bf2e87f974199bd108911e0a40983be3",
+  "prompts": {
+    "610f36855df90cf4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_33b68243fffeZ6UdxGUo7IHCES",
+        "model": "anthropic/claude-opus-4-5"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 42,
+      "total_deletions": 13,
+      "accepted_lines": 41,
+      "overriden_lines": 0
+    }
+  }
+}
