@@ -1,5 +1,5 @@
 ---
-title: 'Creating a gym AI-trainer agent (or any other) with OpenCode'
+title: 'Creating a gym AI-trainer agent (or any other agent) easily with OpenCode'
 pubDate: 2026-03-08
 slug: creating-a-gym-ai-trainer-agent-with-opencode
 heroVideo: ./cover.webm
@@ -15,47 +15,47 @@ tags:
 
 :::codeblock{maxHeight=300}
 
-1 month ago I became a kind of low level gym-bro, Last time I went to a gym before that was almost 15 years ago, and a lot of things have changed since then, specially regarding the use of technology in gyms.
+A month ago I became a kind of low-level gym bro. The last time I had gone to a gym before that was almost 15 years ago, and a lot of things have changed since then, especially regarding the use of technology in gyms.
 
-Nowadays with a smartphone you can track your workouts, prepare routines for the next training, and even get feedback on your form. A friend of mine, [Eloy Coto](https://acalustra.com/pages/about.html) suggested me to use [Hevy](https://www.hevyapp.com/) to track my workouts, and use the AI to ask for the best routines based in my background and goals, I started simple, with Gemini, but nothing sophisticated, just using the chat interface, and asking for advice on how to improve my routine. I was really surprised by the quality of the suggestions, **at least for a newbie like me**.
+Nowadays, with a smartphone you can track your workouts, prepare routines for the next training session, and even get feedback on your form. A friend of mine, [Eloy Coto](https://acalustra.com/pages/about.html), suggested that I use [Hevy](https://www.hevyapp.com/) to track my workouts and ask AI for the best routines based on my background and goals. I started simple, with Gemini, but nothing sophisticated, just using the chat interface and asking for advice on how to improve my routine. I was really surprised by the quality of the suggestions, **at least for a newbie like me**.
 
-Next days I used the export feature Hevy has to export my workouts as CSV file, and uploaded it to the Gemini chat, using always the same conversation to keep the context. Gemini was able to analyze the data, and give me feedback on how to improve my routine, and also suggest new exercises to try new weights for the same exercises. I also asked Gemini to gimme the names of the exercises for Hevy to find them in the app, and it was able to do it without any problem.
+Over the next few days, I used the export feature that Hevy has to export my workouts as a CSV file, and uploaded it to the Gemini chat, always using the same conversation to keep the context. Gemini was able to analyze the data and give me feedback on how to improve my routine, and also suggest new exercises or new weights for the same exercises. I also asked Gemini to give me the names of the exercises as they appear in Hevy so I could find them in the app, and it was able to do it without any problem.
 
-This workend well, but still require a lot of manual work: I had to export the data from Hevy, upload it to Gemini, and ask for the feedback, and then take the suggestions and update my routine in Hevy.
+This worked well, but it still required a lot of manual work: I had to export the data from Hevy, upload it to Gemini, ask for feedback, and then take the suggestions and update my routine in Hevy.
 
-I started to think that it would be great if I could automate this process but I didn'want to spend too much time on it. My first thought was to videcode a simple app using [AI SDK](https://ai-sdk.dev/), but still need to manage the authentication with Hevy, and the agent context storage, manage the config files, provide the agent basic tools to fetch data, update files, or a database for the context, compact the context, when it become too big, etc... and I didn't want to spend time on that for this simple thing, I wanted to focus on the agent logic, not on the infrastructure.
+I started to think that it would be great if I could automate this process, but I didn't want to spend too much time on it. My first thought was to vibe-code a simple app using [AI SDK](https://ai-sdk.dev/), but I would still need to manage authentication with Hevy, agent context storage, config files, basic tools to fetch data, file updates, maybe a database for the context, and context compaction when it became too big, etc. I didn't want to spend time on all of that for this simple thing. I wanted to focus on the agent logic, not on the infrastructure.
 
-Then I remembered that [OpenCode](https://opencode.ai/) has a new feature called "agents", that allows you to create agents that you can limit to use only a few tools, to have a "personality" (An initial prompt to give the agent a specific behavior), also can manage and compact the context for you and manage and use skills.
+Then I remembered that [OpenCode](https://opencode.ai/) has a feature called "agents", which allows you to create agents that you can limit to only a few tools, give a "personality" (an initial prompt that gives the agent a specific behavior), and rely on to manage and compact context and use skills.
 
 Before going deeper into the implementation, I want to explain what is OpenCode, what are OpenCode custom agents, and some key differences with Claude Code subagents.
 
 ## What is OpenCode?
 
-OpenCode is an "open source AI coding agent", can use a lot of providers and models, to execute task the user ask for, it is designed to be a "coding agent", but it can be used for a lot of different use cases, not only coding related.
+OpenCode is an "open source AI coding agent". It can use many providers and models to execute tasks the user asks for. It is designed to be a coding agent, but it can be used for many different use cases, not only coding-related ones.
 
 > OpenCode developer company provides free models to use, so you don't need to pay for the models, but you can also use your own API keys for providers like OpenAI, Azure, etc... and use the models you want.
 
-## What are the OpenCode custom agents and Claude Code subagents differences?
+## What are the differences between OpenCode custom agents and Claude Code subagents?
 
-Both are defined in the same way, with a markdown file with a frontmatter with the agent configuration (for example, the model to use, the tools, can use, the skills to load, etc.), and a markdown body with the agent documentation.
+Both are defined in a similar way: a Markdown file with frontmatter for the agent configuration (for example, the model to use, the tools it can use, the skills to load, etc.), and a Markdown body with the agent documentation.
 
-But the main difference is that Claude Code subagents needs to be invoked from a parent agent (Build or Plan) or explicitly by the user, while OpenCode custom agents can be used directly by the user, without the need of a parent agent ("Use the test-runner subagent to fix failing tests").
+But the main difference is that Claude Code subagents need to be invoked from a parent agent (Build or Plan) or explicitly by the user, while OpenCode custom agents can be used directly by the user, without the need for a parent agent ("Use the test-runner subagent to fix failing tests").
 
-OpenCode allows you to create [first level custom agents](https://opencode.ai/docs/agents/) the user can select with the tab key, like the "Build" or "Plan" agents, and they are first level agents, You are sure are only doing what the agent is designed to do, without the risk of the main "build" or "plan" agent get the control back and do something else, or use other subagent.
+OpenCode allows you to create [first-level custom agents](https://opencode.ai/docs/agents/) that the user can select with the Tab key, like the "Build" or "Plan" agents. They are first-level agents, so you can be sure you're only doing what that agent is designed to do, without the risk of the main "build" or "plan" agent getting control back and doing something else, or using another subagent.
 
-Open code also allows to create a project level config to make only a set of agents available for the user, so you we can force it to only use the gym agent (in this case).
+OpenCode also allows you to create a project-level config to make only a set of agents available for the user, so we can force it to only use the gym agent (in this case).
 
 ## How I created the gym agent?
 
 I created a new project, and opened OpenCode as usual, and as in other projects I started with a plan.
 
-I wanted an agent became a gym trainer, it can use and analyze the data from Hevy, and give me feedback on how to improve my routine, and also suggest new exercises to try new weights for the same exercises and change it directly by itself.
-Also provide goals I could use as motivationand track the progress.
-I also need the agent knows about user (me): age, weight, height, the equipament the gym has, the time I can spend in the gym, injuries, limits, previous physical conditions, etc. to give the better suggestions.
+I wanted an agent to become a gym trainer, one that could use and analyze data from Hevy, give me feedback on how to improve my routine, and also suggest new exercises or new weights for the same exercises and change them directly by itself.
+I also wanted it to provide goals I could use as motivation and track progress.
+I also needed the agent to know about the user (me): age, weight, height, the equipment the gym has, the time I can spend in the gym, injuries, limits, previous physical conditions, etc., to give better suggestions.
 
-Also to have memory of me, the goals and previous conversations, with out need to use a database or something like that, just using the markdown files.
+I also wanted it to have memory of me, the goals, and previous conversations, without the need to use a database or something like that, just using Markdown files.
 
-And of course I need a API key to fetch the data from Hevy, and update the routine with the suggestions, but I wanted to make it easy, so the agent can ask for the API key if it is not present, and store it for future use, without the need to do it manually.
+And of course I needed an API key to fetch data from Hevy and update the routine with the suggestions, but I wanted to make it easy, so the agent could ask for the API key if it wasn't present and store it for future use, without the need to do it manually.
 
 And this is the plan we created:
 
@@ -254,32 +254,32 @@ npm start
 }
 ```
 
-I used the plan to vibecode the implementation, and the coding agent, created the agent and the skills, and also the scripts for the skills, and the agent logic, all with a simple "vibecode" command, and asking for the implementation of each part, and how to connect them together.
+I used the plan to vibe-code the implementation, and the coding agent created the agent and the skills, as well as the scripts for the skills and the agent logic, all with a simple "vibecode" command and prompts for the implementation of each part and how to connect them together.
 
-I also asked to create a start script to launch the agent with a simple command and manage the dependencies and the project structure, to make it easy to run for non technical users.
+I also asked it to create a start script to launch the agent with a simple command and manage dependencies and project structure, to make it easy to run for non-technical users.
 
 # The result
 
-After a few iterations, and some adjustments to the initial plan, I can share with all of you this agent, simple in architecture but really powerful:
+After a few iterations, and some adjustments to the initial plan, I can share this agent with all of you: simple in architecture but really powerful.
 
 https://github.com/sergiocarracedo/gym-ai-trainer
 
-You only need to clone the repo, install the dependencies, and run the start script, **or just to ask to a generic agent to visit the page and install the agent for you**.
+You only need to clone the repo, install the dependencies, and run the start script, **or just ask a generic agent to visit the page and install the agent for you**.
 
-In the first iteration the agent will ask you for the API key, and if you don't have it, it will guide you to get it, and also ask for your profile information, and then it will start to analyze your workouts and give you feedback on how to improve your routine, and also suggest new exercises to try new weights for the same exercises.
+In the first run, the agent will ask you for the API key, and if you don't have it, it will guide you to get it. It will also ask for your profile information, and then it will start analyzing your workouts and giving you feedback on how to improve your routine, and suggest new exercises or new weights for the same exercises.
 
-All will be stored in the `data/` folder, so you can check your profile, your goals, and the conversation history with the agent, and also backup it.
+Everything will be stored in the `data/` folder, so you can check your profile, your goals, and the conversation history with the agent, and also back it up.
 
-Lets see it in action:
+Let's see it in action:
 
 ::asciinema[]{src="./ai-trainer.cast" idleTimeLimit="2" speed="1.5" cols="186" rows="41"}
 
 # Conclusion
 
-This is a example of how you can take advantage of the features, and tools OpenCode provide out of the box: UI, models, providers, custom agents, skills, tools, context management, etc... to create a powerful agent with a simple implementation.
+This is an example of how you can take advantage of the features and tools OpenCode provides out of the box—UI, models, providers, custom agents, skills, tools, context management, etc.—to create a powerful agent with a simple implementation.
 
-Obviously this can not be provided as a final app for any kind of user, but it can help you to create your own custom agents for your specific needs, with a minimal effort.
+Obviously this cannot be provided as a final app for every kind of user, but it can help you create your own custom agents for your specific needs, with minimal effort.
 
-What use cases can you imagine for this kind of agents?
+What use cases can you imagine for these kinds of agents?
 
-Do you have any idea for a agent that can help you in your daily life? Let me know in the comments!
+Do you have any idea for an agent that can help you in your daily life? Let me know in the comments!
