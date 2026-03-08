@@ -1,0 +1,23 @@
+scripts/translate-post.ts
+  439264aac84c9987 57,59,61-74,80-81,83-90,92-93,96-97,108-109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "d14ac482b4f9f364f281e82fd3c83e1c19869252",
+  "prompts": {
+    "439264aac84c9987": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_330a4e716ffeSXUzF4OhP2KnMb",
+        "model": "github-copilot/claude-sonnet-4.6"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 34,
+      "total_deletions": 24,
+      "accepted_lines": 33,
+      "overriden_lines": 0
+    }
+  }
+}
