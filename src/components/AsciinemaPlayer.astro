@@ -1,0 +1,59 @@
+---
+interface Props {
+  src: string;
+  cols?: number | string;
+  rows?: number | string;
+  autoPlay?: boolean | string;
+  loop?: boolean | string;
+  speed?: number | string;
+  idleTimeLimit?: number | string;
+  theme?: string;
+  fit?: string;
+}
+
+const PLAYER_VERSION = '3.9.0';
+const PLAYER_CSS = `https://cdn.jsdelivr.net/npm/asciinema-player@${PLAYER_VERSION}/dist/bundle/asciinema-player.css`;
+const PLAYER_JS = `https://cdn.jsdelivr.net/npm/asciinema-player@${PLAYER_VERSION}/dist/bundle/asciinema-player.min.js`;
+
+const { src, ...opts } = Astro.props;
+const uid = `asciinema-${Math.random().toString(36).slice(2, 9)}`;
+
+// src is already a content-hashed public URL resolved by Vite's asset pipeline
+// (injected as an ESM import with ?url by the remark plugin).
+const resolvedSrc = src;
+
+const normalizedOpts: Record<string, string | number | boolean> = {};
+if (opts.cols !== undefined) normalizedOpts.cols = Number(opts.cols);
+if (opts.rows !== undefined) normalizedOpts.rows = Number(opts.rows);
+if (opts.autoPlay !== undefined)
+  normalizedOpts.autoPlay = opts.autoPlay === true || opts.autoPlay === 'true';
+if (opts.loop !== undefined) normalizedOpts.loop = opts.loop === true || opts.loop === 'true';
+if (opts.speed !== undefined) normalizedOpts.speed = Number(opts.speed);
+if (opts.idleTimeLimit !== undefined) normalizedOpts.idleTimeLimit = Number(opts.idleTimeLimit);
+if (opts.theme !== undefined) normalizedOpts.theme = String(opts.theme);
+if (opts.fit !== undefined) normalizedOpts.fit = String(opts.fit);
+
+const optsJson = JSON.stringify(normalizedOpts);
+---
+
+<link rel="stylesheet" type="text/css" href={PLAYER_CSS} />
+<div id={uid} class="mb-5"></div>
+<script is:inline define:vars={{ PLAYER_JS, uid, resolvedSrc, optsJson }}>
+  function loadPlayer() {
+    if (typeof AsciinemaPlayer !== 'undefined') {
+      AsciinemaPlayer.create(resolvedSrc, document.getElementById(uid), JSON.parse(optsJson));
+    } else {
+      const script = document.createElement('script');
+      script.src = PLAYER_JS;
+      script.onload = () => {
+        AsciinemaPlayer.create(resolvedSrc, document.getElementById(uid), JSON.parse(optsJson));
+      };
+      document.head.appendChild(script);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadPlayer);
+  } else {
+    loadPlayer();
+  }
+</script>

@@ -1,5 +1,5 @@
 ---
-title: 'Creating a gym AI-trainer agent with OpenCode'
+title: 'Creating a gym AI-trainer agent (or any other) with OpenCode'
 pubDate: 2026-03-08
 slug: creating-a-gym-ai-trainer-agent-with-opencode
 heroVideo: ./cover.webm
@@ -13,13 +13,15 @@ tags:
   - agents
 ---
 
+:::codeblock{maxHeight=300}
+
 1 month ago I became a kind of low level gym-bro, Last time I went to a gym before that was almost 15 years ago, and a lot of things have changed since then, specially regarding the use of technology in gyms.
 
 Nowadays with a smartphone you can track your workouts, prepare routines for the next training, and even get feedback on your form. A friend of mine, [Eloy Coto](https://acalustra.com/pages/about.html) suggested me to use [Hevy](https://www.hevyapp.com/) to track my workouts, and use the AI to ask for the best routines based in my background and goals, I started simple, with Gemini, but nothing sophisticated, just using the chat interface, and asking for advice on how to improve my routine. I was really surprised by the quality of the suggestions, **at least for a newbie like me**.
 
 Next days I used the export feature Hevy has to export my workouts as CSV file, and uploaded it to the Gemini chat, using always the same conversation to keep the context. Gemini was able to analyze the data, and give me feedback on how to improve my routine, and also suggest new exercises to try new weights for the same exercises. I also asked Gemini to gimme the names of the exercises for Hevy to find them in the app, and it was able to do it without any problem.
 
-This workend well, but still require a lot of manual work: I had to export the data from Hevy, upload it to Gemini, and ask for the feedback, and then take the suggestions and update my routine in Hevy. 
+This workend well, but still require a lot of manual work: I had to export the data from Hevy, upload it to Gemini, and ask for the feedback, and then take the suggestions and update my routine in Hevy.
 
 I started to think that it would be great if I could automate this process but I didn'want to spend too much time on it. My first thought was to videcode a simple app using [AI SDK](https://ai-sdk.dev/), but still need to manage the authentication with Hevy, and the agent context storage, manage the config files, provide the agent basic tools to fetch data, update files, or a database for the context, compact the context, when it become too big, etc... and I didn't want to spend time on that for this simple thing, I wanted to focus on the agent logic, not on the infrastructure.
 
@@ -31,7 +33,7 @@ Before going deeper into the implementation, I want to explain what is OpenCode,
 
 OpenCode is an "open source AI coding agent", can use a lot of providers and models, to execute task the user ask for, it is designed to be a "coding agent", but it can be used for a lot of different use cases, not only coding related.
 
-> OpenCode developer company provides free models to use, so you don't need to pay for the models, but you can also use your own API keys for providers like OpenAI, Azure, etc... and use the models you want. 
+> OpenCode developer company provides free models to use, so you don't need to pay for the models, but you can also use your own API keys for providers like OpenAI, Azure, etc... and use the models you want.
 
 ## What are the OpenCode custom agents and Claude Code subagents differences?
 
@@ -47,7 +49,7 @@ Open code also allows to create a project level config to make only a set of age
 
 I created a new project, and opened OpenCode as usual, and as in other projects I started with a plan.
 
-I wanted an agent became a gym trainer, it can use and analyze the data from Hevy, and give me feedback on how to improve my routine, and also suggest new exercises to try new weights for the same exercises and change it directly by itself. 
+I wanted an agent became a gym trainer, it can use and analyze the data from Hevy, and give me feedback on how to improve my routine, and also suggest new exercises to try new weights for the same exercises and change it directly by itself.
 Also provide goals I could use as motivationand track the progress.
 I also need the agent knows about user (me): age, weight, height, the equipament the gym has, the time I can spend in the gym, injuries, limits, previous physical conditions, etc. to give the better suggestions.
 
@@ -66,6 +68,7 @@ And this is the plan we created:
 ## Overview
 
 An OpenCode agent that helps users optimize their gym training by:
+
 - Analyzing workout history from Hevy
 - Providing personalized recommendations based on user profile
 - Setting and tracking measurable goals
@@ -74,11 +77,14 @@ An OpenCode agent that helps users optimize their gym training by:
 ## User Requirements
 
 ### Data Access
+
 - **Primary**: Hevy API with user-provided API key
 - **Fallback**: CSV export via browser-mcp when no API key available
 
 ### User Profile (`data/user.md`)
+
 Agent collects on first interaction:
+
 - Preferred language (asked first, used throughout)
 - Personal info: name, age, gender, weight (kg), height (cm)
 - Physical background: experience level, previous sports, fitness level
@@ -86,17 +92,20 @@ Agent collects on first interaction:
 - Schedule: available days, session duration, equipment access
 
 ### Goals (`data/goals.md`)
+
 - General training goal (suggested based on profile)
 - Measurable monthly goals with targets and deadlines
 - Progress tracking with motivation
 
 ### Training Intelligence
+
 - Progressive overload suggestions
 - Periodization planning
 - Recovery recommendations based on days since last workout
 - Date-aware session planning
 
 ### Constraints
+
 - Read-only access to Hevy data (never modify workouts)
 - Full conversation logging in `data/conversation.md`
 
@@ -104,70 +113,66 @@ Agent collects on first interaction:
 
 ## Project Structure
 
-```
 ai-trainer/
-├── .env                          # HEVY_API_KEY
-├── .env.example                  # Template for .env
+├── .env # HEVY_API_KEY
+├── .env.example # Template for .env
 ├── .gitignore
 ├── package.json
 ├── tsconfig.json
 ├── opencode.json
-├── start.sh                      # Launch script
+├── start.sh # Launch script
 ├── .opencode/
-│   ├── agents/
-│   │   └── gym-ai-trainer.md     # Primary agent definition
-│   └── skills/
-│       ├── hevy-api/             # API-based data access
-│       │   ├── SKILL.md
-│       │   ├── scripts/
-│       │   │   ├── fetch-workouts.ts
-│       │   │   ├── fetch-routines.ts
-│       │   │   ├── analyze-progress.ts
-│       │   │   ├── check-goal-progress.ts
-│       │   │   └── suggest-updates.ts
-│       │   └── references/
-│       │       └── HEVY-API.md
-│       └── hevy-export/          # Browser-based CSV export
-│           ├── SKILL.md
-│           └── scripts/
-│               └── parse-csv.ts
-└── data/                         # User data (gitignored)
-    └── .gitkeep
-```
+│ ├── agents/
+│ │ └── gym-ai-trainer.md # Primary agent definition
+│ └── skills/
+│ ├── hevy-api/ # API-based data access
+│ │ ├── SKILL.md
+│ │ ├── scripts/
+│ │ │ ├── fetch-workouts.ts
+│ │ │ ├── fetch-routines.ts
+│ │ │ ├── analyze-progress.ts
+│ │ │ ├── check-goal-progress.ts
+│ │ │ └── suggest-updates.ts
+│ │ └── references/
+│ │ └── HEVY-API.md
+│ └── hevy-export/ # Browser-based CSV export
+│ ├── SKILL.md
+│ └── scripts/
+│ └── parse-csv.ts
+└── data/ # User data (gitignored)
+└── .gitkeep
 
 ---
 
 ## Agent Behavior Flow
 
-```
 ┌─────────────────────────────────────────────────────────────┐
-│                     SESSION START                           │
+│ SESSION START │
 ├─────────────────────────────────────────────────────────────┤
-│ 0. Check .env for HEVY_API_KEY                              │
-│    ├─ Missing → Ask user for key or offer CSV fallback      │
-│    └─ Present → Continue                                    │
+│ 0. Check .env for HEVY_API_KEY │
+│ ├─ Missing → Ask user for key or offer CSV fallback │
+│ └─ Present → Continue │
 ├─────────────────────────────────────────────────────────────┤
-│ 1. Check data/user.md                                       │
-│    ├─ Missing → Ask preferred language FIRST                │
-│    │            Then collect full profile                   │
-│    │            Save to data/user.md                        │
-│    └─ Present → Load profile, use stored language           │
+│ 1. Check data/user.md │
+│ ├─ Missing → Ask preferred language FIRST │
+│ │ Then collect full profile │
+│ │ Save to data/user.md │
+│ └─ Present → Load profile, use stored language │
 ├─────────────────────────────────────────────────────────────┤
-│ 2. Check data/goals.md                                      │
-│    ├─ Missing → Suggest goals based on profile              │
-│    │            Help set measurable monthly targets         │
-│    │            Save to data/goals.md                       │
-│    └─ Present → Load goals                                  │
+│ 2. Check data/goals.md │
+│ ├─ Missing → Suggest goals based on profile │
+│ │ Help set measurable monthly targets │
+│ │ Save to data/goals.md │
+│ └─ Present → Load goals │
 ├─────────────────────────────────────────────────────────────┤
-│ 3. Regular Session                                          │
-│    a. Run `date` for current date context                   │
-│    b. Fetch recent workouts from Hevy                       │
-│    c. Calculate days since last workout                     │
-│    d. Compare performance to goals                          │
-│    e. Recommend: rest, push, or next workout                │
-│    f. Log conversation to data/conversation.md              │
+│ 3. Regular Session │
+│ a. Run `date` for current date context │
+│ b. Fetch recent workouts from Hevy │
+│ c. Calculate days since last workout │
+│ d. Compare performance to goals │
+│ e. Recommend: rest, push, or next workout │
+│ f. Log conversation to data/conversation.md │
 └─────────────────────────────────────────────────────────────┘
-```
 
 ---
 
@@ -178,6 +183,7 @@ ai-trainer/
 Primary skill for API-based access to Hevy data.
 
 **Scripts:**
+
 - `fetch-workouts.ts` - Fetch recent workouts with pagination
 - `fetch-routines.ts` - Fetch all user routines
 - `analyze-progress.ts` - Calculate trends for specific exercise
@@ -191,24 +197,25 @@ Fallback skill for browser-based CSV export when no API key is available.
 **Requirements:** browser-mcp installed
 
 **Scripts:**
+
 - `parse-csv.ts` - Convert Hevy CSV export to JSON format
 
 ---
 
 ## Key Features
 
-| Feature | Implementation |
-|---------|----------------|
-| User profile collection | Agent prompts on first run, stores in `user.md` |
-| Language preference | Asked first, used for all communication |
-| Goal setting | Suggested based on profile, measurable with deadlines |
-| Progress tracking | Scripts analyze Hevy data vs goals |
-| Rest/push recommendations | Based on days since last workout + performance |
-| Date awareness | `date` command for current context |
-| Conversation memory | Full log in `conversation.md` |
-| Read-only for Hevy | Agent can only fetch, never modify workout data |
-| API key management | Stored in `.env`, asked if missing |
-| CSV fallback | Browser automation when no API key |
+| Feature                   | Implementation                                        |
+| ------------------------- | ----------------------------------------------------- |
+| User profile collection   | Agent prompts on first run, stores in `user.md`       |
+| Language preference       | Asked first, used for all communication               |
+| Goal setting              | Suggested based on profile, measurable with deadlines |
+| Progress tracking         | Scripts analyze Hevy data vs goals                    |
+| Rest/push recommendations | Based on days since last workout + performance        |
+| Date awareness            | `date` command for current context                    |
+| Conversation memory       | Full log in `conversation.md`                         |
+| Read-only for Hevy        | Agent can only fetch, never modify workout data       |
+| API key management        | Stored in `.env`, asked if missing                    |
+| CSV fallback              | Browser automation when no API key                    |
 
 ---
 
@@ -216,16 +223,12 @@ Fallback skill for browser-based CSV export when no API key is available.
 
 ### Quick Start
 
-```bash
 ./start.sh
-```
 
 Or:
 
-```bash
 npm install
 npm start
-```
 
 ### First Run
 
@@ -239,21 +242,19 @@ npm start
 
 ## Dependencies
 
-```json
 {
-  "devDependencies": {
-    "typescript": "^5.4.0",
-    "tsx": "^4.7.0",
-    "@types/node": "^20.11.0"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.0"
-  }
+"devDependencies": {
+"typescript": "^5.4.0",
+"tsx": "^4.7.0",
+"@types/node": "^20.11.0"
+},
+"dependencies": {
+"dotenv": "^16.4.0"
+}
 }
 ```
 
-
-I used the plan to vibecode the implementation, and the coding agent, created the agent and the skills, and also the scripts for the skills, and the agent logic, all with a simple "vibecode" command, and asking for the implementation of each part, and how to connect them together. 
+I used the plan to vibecode the implementation, and the coding agent, created the agent and the skills, and also the scripts for the skills, and the agent logic, all with a simple "vibecode" command, and asking for the implementation of each part, and how to connect them together.
 
 I also asked to create a start script to launch the agent with a simple command and manage the dependencies and the project structure, to make it easy to run for non technical users.
 
@@ -263,35 +264,22 @@ After a few iterations, and some adjustments to the initial plan, I can share wi
 
 https://github.com/sergiocarracedo/gym-ai-trainer
 
-You only need to clone the repo, install the dependencies, and run the start script, **or just to ask to a generic agent to visit the page and install the agent for you**. 
+You only need to clone the repo, install the dependencies, and run the start script, **or just to ask to a generic agent to visit the page and install the agent for you**.
 
 In the first iteration the agent will ask you for the API key, and if you don't have it, it will guide you to get it, and also ask for your profile information, and then it will start to analyze your workouts and give you feedback on how to improve your routine, and also suggest new exercises to try new weights for the same exercises.
 
 All will be stored in the `data/` folder, so you can check your profile, your goals, and the conversation history with the agent, and also backup it.
 
-
 Lets see it in action:
 
-::asciinema[]{id="PLACEHOLDER"}
+::asciinema[]{src="./ai-trainer.cast" idleTimeLimit="2" speed="1.5" cols="186" rows="41"}
 
 # Conclusion
 
-This is a simple example of how you can take advantage of the features, and tools OpenCode provide out of the box: UI, models, providers, custom agents, skills, tools, context management, etc... to create a powerful agent with a simple implementation, and without the need to worry about the infrastructure, or the implementation details of the agent logic. 
+This is a example of how you can take advantage of the features, and tools OpenCode provide out of the box: UI, models, providers, custom agents, skills, tools, context management, etc... to create a powerful agent with a simple implementation.
+
 Obviously this can not be provided as a final app for any kind of user, but it can help you to create your own custom agents for your specific needs, with a minimal effort.
 
+What use cases can you imagine for this kind of agents?
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Do you have any idea for a agent that can help you in your daily life? Let me know in the comments!

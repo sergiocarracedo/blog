@@ -184,7 +184,7 @@
       word-wrap: break-word;
     }
 
-    pre {
+    pre:not(.ap-terminal) {
       @apply bg-[#272822] p-6 border-y border-transparent overflow-auto text-[#ccc] block leading-[1.4em] my-6 font-mono rounded-md;
       max-height: var(--code-block-max-h);
       scrollbar-width: thin;

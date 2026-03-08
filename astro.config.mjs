@@ -78,6 +78,7 @@ export default defineConfig({
     ],
   },
   vite: {
+    assetsInclude: ['**/*.cast'],
     resolve: {
       alias: {
         '@': '/src',
