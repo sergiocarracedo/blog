@@ -13,13 +13,13 @@ tags:
   - agents
 ---
 
-:::codeblock{maxHeight=300}
+
 
 A month ago I became a kind of low-level gym bro. The last time I had gone to a gym before that was almost 15 years ago, and a lot of things have changed since then, especially regarding the use of technology in gyms.
 
 Nowadays, with a smartphone you can track your workouts, prepare routines for the next training session, and even get feedback on your form. A friend of mine, [Eloy Coto](https://acalustra.com/pages/about.html), suggested that I use [Hevy](https://www.hevyapp.com/) to track my workouts and ask AI for the best routines based on my background and goals. I started simple, with Gemini, but nothing sophisticated, just using the chat interface and asking for advice on how to improve my routine. I was really surprised by the quality of the suggestions, **at least for a newbie like me**.
 
-Over the next few days, I used the export feature that Hevy has to export my workouts as a CSV file, and uploaded it to the Gemini chat, always using the same conversation to keep the context. Gemini was able to analyze the data and give me feedback on how to improve my routine, and also suggest new exercises or new weights for the same exercises. I also asked Gemini to give me the names of the exercises as they appear in Hevy so I could find them in the app, and it was able to do it without any problem.
+:float-image[]{src="./hevy.png" maxWidth="320px" float="right"}Over the next few days, I used the export feature that Hevy has to export my workouts as a CSV file, and uploaded it to the Gemini chat, always using the same conversation to keep the context. Gemini was able to analyze the data and give me feedback on how to improve my routine, and also suggest new exercises or new weights for the same exercises. I also asked Gemini to give me the names of the exercises as they appear in Hevy so I could find them in the app, and it was able to do it without any problem.
 
 This worked well, but it still required a lot of manual work: I had to export the data from Hevy, upload it to Gemini, ask for feedback, and then take the suggestions and update my routine in Hevy.
 
@@ -34,6 +34,12 @@ Before going deeper into the implementation, I want to explain what is OpenCode,
 OpenCode is an "open source AI coding agent". It can use many providers and models to execute tasks the user asks for. It is designed to be a coding agent, but it can be used for many different use cases, not only coding-related ones.
 
 > OpenCode developer company provides free models to use, so you don't need to pay for the models, but you can also use your own API keys for providers like OpenAI, Azure, etc... and use the models you want.
+
+:::gallery{cols="3"}
+opencode01.png
+opencode02.png
+opencode03.png
+:::
 
 ## What are the differences between OpenCode custom agents and Claude Code subagents?
 
@@ -59,6 +65,7 @@ And of course I needed an API key to fetch data from Hevy and update the routine
 
 And this is the plan we created:
 
+:::codeblock{maxHeight=300}
 ```markdown
 # Gym AI Trainer - Design Document
 
