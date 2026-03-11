@@ -128,10 +128,12 @@ function buildFrontmatter(data: FrontmatterData): string {
     } else if (typeof value === 'object' && value !== null) {
       lines.push(`${key}:`);
       for (const [subKey, subValue] of Object.entries(value)) {
-        lines.push(`  ${subKey}: ${subValue}`);
+        const formattedSubValue = subValue === '' ? `''` : subValue;
+        lines.push(`  ${subKey}: ${formattedSubValue}`);
       }
     } else {
-      lines.push(`${key}: ${value}`);
+      const formattedValue = value === '' ? `''` : value;
+      lines.push(`${key}: ${formattedValue}`);
     }
   }
 
