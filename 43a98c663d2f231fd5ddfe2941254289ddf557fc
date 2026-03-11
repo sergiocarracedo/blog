@@ -1,0 +1,23 @@
+scripts/translate-post.ts
+  f6be1ef6e34fe19a 131-132,135-136
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.10",
+  "base_commit_sha": "43a98c663d2f231fd5ddfe2941254289ddf557fc",
+  "prompts": {
+    "f6be1ef6e34fe19a": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_32cc036d8ffe8GIYAVUNqaLxxc",
+        "model": "anthropic/claude-sonnet-4-6"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 4,
+      "total_deletions": 2,
+      "accepted_lines": 4,
+      "overriden_lines": 0
+    }
+  }
+}
