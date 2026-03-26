@@ -35,6 +35,27 @@ interface TranslationOptions {
 
 type FrontmatterData = Record<string, unknown>;
 
+function unquoteYamlString(value: string): string {
+  const trimmed = value.trim();
+
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return trimmed.slice(1, -1);
+    }
+  }
+
+  return trimmed;
+}
+
+function quoteYamlString(value: string): string {
+  return JSON.stringify(value);
+}
+
 /**
  * Parse MDX file into frontmatter and content
  */
@@ -76,7 +97,7 @@ function parseMdx(content: string): { frontmatter: string; body: string; data: F
   for (const line of lines) {
     if (/^\s+-\s+/.exec(line)) {
       // Array item
-      const value = line.replace(/^\s+-\s+/, '').replace(/^['"]|['"]$/g, '');
+      const value = unquoteYamlString(line.replace(/^\s+-\s+/, ''));
       inArray = true;
       inObject = false;
       arrayValues.push(value);
@@ -84,7 +105,7 @@ function parseMdx(content: string): { frontmatter: string; body: string; data: F
       // Indented key-value pair → sub-object entry
       const subMatch = /^\s+(\w[\w-]*):\s*(.*)$/.exec(line)!;
       const subKey = subMatch[1];
-      const subValue = subMatch[2].replace(/^['"]|['"]$/g, '');
+      const subValue = unquoteYamlString(subMatch[2]);
       inObject = true;
       inArray = false;
       objectValues[subKey] = subValue;
@@ -96,10 +117,7 @@ function parseMdx(content: string): { frontmatter: string; body: string; data: F
       // Top-level key-value pair
       flushCurrent();
       const [key, ...rest] = line.split(':');
-      const value = rest
-        .join(':')
-        .trim()
-        .replace(/^['"]|['"]$/g, '');
+      const value = unquoteYamlString(rest.join(':').trim());
       data[key.trim()] = value;
       currentKey = key.trim();
     }
@@ -121,18 +139,18 @@ function buildFrontmatter(data: FrontmatterData): string {
     if (Array.isArray(value)) {
       lines.push(`${key}:`);
       for (const item of value) {
-        lines.push(`  - ${item}`);
+        lines.push(`  - ${quoteYamlString(String(item))}`);
       }
     } else if (typeof value === 'boolean') {
       lines.push(`${key}: ${value}`);
     } else if (typeof value === 'object' && value !== null) {
       lines.push(`${key}:`);
       for (const [subKey, subValue] of Object.entries(value)) {
-        const formattedSubValue = subValue === '' ? `''` : subValue;
+        const formattedSubValue = quoteYamlString(String(subValue));
         lines.push(`  ${subKey}: ${formattedSubValue}`);
       }
     } else {
-      const formattedValue = value === '' ? `''` : value;
+      const formattedValue = typeof value === 'string' ? quoteYamlString(value) : value;
       lines.push(`${key}: ${formattedValue}`);
     }
   }
@@ -243,9 +261,9 @@ async function translatePost(options: TranslationOptions): Promise<void> {
   // Prepare content for translation (title + optional description/excerpt + body)
   // Only include description/excerpt lines if they are non-empty to avoid the AI
   // concatenating them into malformed YAML like "description: excerpt:"
-  const metaLines = [`title: ${data.title}`];
-  if (data.description) metaLines.push(`description: ${data.description}`);
-  if (data.excerpt) metaLines.push(`excerpt: ${data.excerpt}`);
+  const metaLines = [`title: ${quoteYamlString(String(data.title))}`];
+  if (data.description) metaLines.push(`description: ${quoteYamlString(String(data.description))}`);
+  if (data.excerpt) metaLines.push(`excerpt: ${quoteYamlString(String(data.excerpt))}`);
   const toTranslate = `${metaLines.join('\n')}\n\n${body}`;
 
   // Translate
@@ -259,9 +277,9 @@ async function translatePost(options: TranslationOptions): Promise<void> {
   const descMatch = /^description:\s*(.+)$/m.exec(translatedClean);
   const excerptMatch = /^excerpt:\s*(.+)$/m.exec(translatedClean);
 
-  const translatedTitle = titleMatch ? titleMatch[1].trim() : data.title;
-  const translatedDesc = descMatch ? descMatch[1].trim() : undefined;
-  const translatedExcerpt = excerptMatch ? excerptMatch[1].trim() : undefined;
+  const translatedTitle = titleMatch ? unquoteYamlString(titleMatch[1]) : data.title;
+  const translatedDesc = descMatch ? unquoteYamlString(descMatch[1]) : undefined;
+  const translatedExcerpt = excerptMatch ? unquoteYamlString(excerptMatch[1]) : undefined;
 
   // Remove the frontmatter-like lines from the translated body
   const translatedBody = translatedClean
