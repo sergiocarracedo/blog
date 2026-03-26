@@ -50,6 +50,7 @@ const meta = {
   date: post.data.pubDate,
   tags: post.data.tags || [],
   type: 'article',
+  ...(post.data.canonicalUrl ? { canonical: post.data.canonicalUrl } : {}),
 };
 ---
 

@@ -77,7 +77,7 @@ const switcher = await getPostSwitcherUrls(post);
 // For fallback pages the canonical points to the EN URL
 const canonicalUrl = isFallback
   ? new URL(`/${slug}`, SITE_URL).toString()
-  : undefined;
+  : post.data.canonicalUrl;
 
 const hreflangOverride = isFallback
   ? { en: canonicalUrl!, es: canonicalUrl!, 'x-default': canonicalUrl! }
