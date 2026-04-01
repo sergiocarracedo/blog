@@ -1,0 +1,128 @@
+---
+title: "Ejecuta y controla múltiples agentes en tu Raspberry Pi: Spacebot + Home Assistant"
+pubDate: "2026-04-01"
+slug: "run-and-control-multiple-agents-raspberrypi-spacebot-home-assistant"
+heroVideo: "./cover.webm"
+heroImage: "./cover.png"
+heroImageMeta:
+  prompt: ""
+  author: "Gemini Nano Banana 3"
+tags:
+  - "ai"
+  - "spacebot"
+  - "home assistant"
+  - "agents"
+autoTranslated: true
+originalLang: "en"
+---
+
+Cuando creé el :astro-ref[agente entrenador de gimnasio con IA]{path="blog/2026/2026-03-08-opencode-gym-agent"} usando Opencode, sentí que necesitaba poder interactuar con el agente desde cualquier lugar, y el siguiente paso natural era usar mi teléfono. Exploré diferentes opciones, como [Kimaki](https://github.com/remorses/kimaki), una forma de integrar Opencode dentro de Discord, pero no quería usar mi ordenador como servidor. Quería usar mi Raspberry Pi, que siempre está encendida y tiene un bajo consumo de energía, para ejecutar Opencode y Kimaki, pero entonces encontré una opción mejor: [SpaceBot](https://spacebot.sh/).
+
+# SpaceBot
+ 
+Spacebot es un gestor avanzado de agentes de IA (sí, en plural), construido en Rust y diseñado para plataformas multiusuario como Discord, Telegram, Slack y más. Te permite crear, gestionar e interactuar con múltiples agentes de IA simultáneamente.
+
+A diferencia de los chatbots estándar o agentes como OpenClaw que gestionan una solicitud a la vez, Spacebot está diseñado para:
+
+- **Manejar la concurrencia**: Puede participar en docenas de conversaciones simultáneamente a través de diferentes canales sin "bloquearse" ni ralentizarse, utilizando el concepto de branches (ramas) para gestionar diferentes conversaciones o diferentes solicitudes dentro de la misma conversación.
+
+- **Retener memoria**: Mantiene un grafo de memoria, puede aprender de las interacciones, o puedes introducir información en él y utilizar esa información en futuras interacciones.
+
+- **Ejecución de tareas**: Puede ejecutar tareas, como navegar por la web, ejecutar código o interactuar con APIs, lo que lo convierte en una herramienta potente para automatizar flujos de trabajo complejos.
+
+- **Programar tareas**: Puedes programar tareas para que se ejecuten en momentos o intervalos específicos, lo que permite la automatización de tareas rutinarias. Por ejemplo, pedirle que envíe un resumen de las noticias cada mañana a las 8 a. m.
+
+- **IU/Asistente**: Spacebot tiene una interfaz de usuario web donde puedes ver y gestionar los agentes, los workers, sus interacciones, el grafo de memoria, configurar los proveedores, los canales y más. También tiene un asistente de IA integrado que puede ayudarte a crear agentes, configurarlos y más, simplemente preguntándole.
+
+## Agentes
+
+Cada agente en Spacebot se puede personalizar con su propia IDENTITY, SOUL y ROLE, lo que permite crear agentes con diferentes personalidades. Cada agente también tiene su propia memoria, espacio de trabajo y datos, aislados de los demás.
+
+## Orquestación de agentes (jerarquía)
+
+A pesar de que existen otras herramientas que pueden ejecutar agentes, Spacebot está diseñado para ejecutar múltiples agentes al mismo tiempo y definir una jerarquía entre ellos, con un grafo claro de interacciones.
+
+![Grafo de jerarquía de agentes de Spacebot](./dashboard.png)
+
+Puedes definir los enlaces entre los agentes y la dirección del flujo de información, permitiendo que los agentes deleguen tareas a otros agentes y reciban los resultados de vuelta, creando una potente orquestación de agentes.
+
+## Un ejemplo
+
+En mi caso, tengo un agente principal llamado "AmbrosIA", un agente especializado en controlar mi casa a través de Home Assistant llamado "Teixugo", un agente especializado en fitness llamado Gym AI Trainer, y un agente de broma llamado "Grumpy Sergio", que es una versión aún más gruñona de mí mismo que uso para divertirme.
+
+Puedo interactuar con cada agente de forma independiente a través de Discord (y en algunos casos a través de Telegram), pero AmbrosIA (el agente principal) puede usar a Teixugo y Gym AI Trainer para tareas específicas. Por ejemplo, si le hago a AmbrosIA una pregunta relacionada con el fitness, puede delegar la pregunta a Gym AI Trainer y luego devolverme la respuesta. También puede manejar interacciones más complejas, por ejemplo, si le pido a AmbrosIA que diga "Ve al gimnasio" en mi altavoz Google Nest, controlado por Home Assistant, si no hice ejercicio ese día. Esa tarea implica preguntar a Gym AI Trainer si hice ejercicio ese día y, si la respuesta es no, pedirle a Teixugo que diga "Ve al gimnasio" en el altavoz Google Nest.
+
+## Cortex y memorias
+
+Cortex es un proceso LLM que se ejecuta en segundo plano y es responsable de decidir qué información de cada conversación es importante para el futuro, y de almacenar esa información en el grafo de memoria, permitiendo que los agentes tengan memoria a largo plazo de las interacciones y utilicen esa información en futuras interacciones.
+
+![Grafo de memoria de Spacebot](./memories.png)
+
+Pero también puedes introducir información manualmente en el grafo de memoria simplemente arrastrando archivos a la interfaz de usuario, y Spacebot los fragmentará, los procesará a través de herramientas de memoria LLM y producirá el grafo de memoria.
+
+Por ejemplo, imagina que estás creando un agente de soporte para un producto. Puedes introducir la documentación del producto en el grafo de memoria y el agente podrá utilizar esa información para responder preguntas relacionadas con el producto, o incluso utilizar el navegador para seguir las instrucciones de la documentación para resolver problemas.
+
+## Skills y MCPs
+
+Puedes definir skills (incluyendo una interfaz de usuario para instalarlas y gestionarlas desde skills.sh con un solo clic) y MCPs para cada agente, dotándolos de capacidades específicas. Por ejemplo, he definido un MCP para que Teixugo interactúe con Home Assistant, permitiéndole controlar mis dispositivos domésticos inteligentes, y una skill para que Gym AI Trainer interactúe con la API de Hevy, permitiéndole responder preguntas sobre mis entrenamientos.
+
+
+## Proveedores, modelos y enrutamiento de modelos
+
+Spacebot admite múltiples proveedores y modelos. En el momento de escribir este post: OpenRouter, Kilo Gateway, OpenCode Zen, OpenCode Go, Anthropic, Azure, OpenAI, ChatGPT Plus, Z.AI Coding plan, Z.ai, Groq, Together AI, Fireworks AI, DeepSeek, xAI, Mistral AI, Google Gemini, NVIDIA NIM, Minimax, Minimax CN, Moonshot AI, GitHub Copilot y Ollama.
+
+Como puedes ver, probablemente hay más proveedores y modelos de los que puedo recordar, pero eso es necesario para la flexibilidad. Cada agente puede configurarse para usar un proveedor y modelo específicos. Además, para cada modelo puedes definir el enrutamiento para tareas específicas: canales, branches, workers, compactors, Cortex e incluso voz (sí, también puedes enviar mensajes de voz).
+
+
+## Canales
+
+Como mencioné antes, Spacebot está diseñado para plataformas multiusuario y admite múltiples canales, como Discord, Telegram, Slack, Twitch, correo electrónico y webhooks en este momento, pero están trabajando para añadir más canales: WhatsApp, Matrix, iMessage, IRC, Lark, DingTalk, etc.
+
+Puedes configurar cada canal para que esté vinculado a agentes específicos, con condiciones específicas. Por ejemplo, puedes configurar Discord como un canal y vincularlo a AmbrosIA, pero solo para mensajes directos de un usuario específico, o para un canal específico en un servidor, permitiendo diferentes interacciones en diferentes canales.
+
+También puedes configurar el canal para que requiera una mención o respuesta para activar al agente y evitar interacciones no deseadas.
+
+
+# Add-on de Home Assistant
+
+Como mencioné antes, quería ejecutar Spacebot en mi Raspberry Pi, y la forma más sencilla de hacerlo era utilizando el add-on de Home Assistant (ahora llamado apps). Esto es, simplificándolo, un Dockerfile que ejecuta Spacebot en un contenedor y te permite configurarlo a través de la interfaz de usuario de Home Assistant, al tiempo que te permite usar funciones de Home Assistant como secretos y más.
+
+:::center
+:btn[Consulta el add-on en GitHub]{url="https://github.com/sergiocarracedo/spacebot-ha-addon"}
+:::
+
+
+El add-on está disponible en mi repositorio, y puedes instalarlo en tu instancia de Home Assistant a través de HACS añadiendo mi repositorio como un repositorio personalizado y luego buscando Spacebot en la sección de complementos (add-ons):
+
+1. Abre Home Assistant.
+2. Ve a **Ajustes** → **Apps** → **Tienda de aplicaciones**.
+3. Haz clic en el menú de tres puntos (arriba a la derecha) → **Repositorios**.
+4. Añade la URL de este repositorio:
+   https://github.com/sergiocarracedo/spacebot-ha-addon
+5. Busca Spacebot en la tienda e instálalo.
+
+
+![Add-on de Home Assistant](./addon.png)
+
+Una vez instalado, puedes iniciar el add-on, acceder al panel de control de Spacebot a través del botón "Abrir interfaz web" en la página del add-on y empezar a crear tus agentes, configurar los proveedores, canales y más.
+
+Toda la configuración se almacena en la carpeta compartida de Home Assistant, por lo que las copias de seguridad de Home Assistant incluirán la configuración de Spacebot, los agentes, las memorias y más.
+
+Para simplificar la gestión de Spacebot a través de la terminal, incluí una terminal web en el add-on, a la que puedes acceder a través del botón "Abrir terminal web" en la página del add-on para obtener acceso a la shell del contenedor.
+
+**Con esta sencilla configuración, puedes tener tu propio gestor de agentes de IA funcionando las 24 horas, los 7 días de la semana en tu Raspberry Pi, siempre encendido y listo para interactuar contigo a través de tus canales preferidos, y con la capacidad de crear orquestaciones complejas de agentes para automatizar tareas, controlar tu hogar inteligente o simplemente divertirte chateando con tus agentes personalizados.**
+
+
+He dejado algunas capturas de pantalla del panel de control, el grafo de memoria y la jerarquía de agentes para que te hagas una idea de cómo se ve, pero te animo a que lo compruebes y lo pruebes tú mismo; es una herramienta potente que puede abrir muchas posibilidades para los agentes de IA en tu vida diaria.
+
+:::gallery{cols="4"}
+./image01.png
+./image09.png
+./image02.png
+./image03.png
+./image04.png
+./image05.png
+./image06.png
+./image07.png
+./image08.png
+:::
