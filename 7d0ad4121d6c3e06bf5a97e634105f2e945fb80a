@@ -1,0 +1,29 @@
+src/remark-plugins/remark-directive-center/index.js
+  0cbb06cee64a7805 1-23,25-48
+src/content/blog/2026/2026-03-31-spacebot/index.en.mdx
+  0cbb06cee64a7805 2,17,21,23,27,29,31,33,37,41,49,51,55,59,61,65,70,72,77,79,81,84,86,88,90,93,105,107,109
+astro.config.mjs
+  0cbb06cee64a7805 16,61
+src/remark-plugins/remark-directive-btn/index.js
+  0cbb06cee64a7805 39-40,44-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.22",
+  "base_commit_sha": "7d0ad4121d6c3e06bf5a97e634105f2e945fb80a",
+  "prompts": {
+    "0cbb06cee64a7805": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "1befdced-eb98-4f1c-9084-4ee9743ef127",
+        "model": "copilot/gpt-5-mini"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 114,
+      "total_deletions": 192,
+      "accepted_lines": 86,
+      "overriden_lines": 4
+    }
+  }
+}
