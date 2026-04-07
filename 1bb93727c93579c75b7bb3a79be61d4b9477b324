@@ -1,0 +1,42 @@
+src/remark-plugins/remark-directive-center/index.js
+  0cbb06cee64a7805 1-23,25-48
+src/remark-plugins/remark-directive-btn/index.js
+  0cbb06cee64a7805 39-40,44-49
+astro.config.mjs
+  0cbb06cee64a7805 16,61
+src/content/blog/2026/2026-03-31-spacebot/index.en.mdx
+  0cbb06cee64a7805 2,17,21,23,27,29,31,33,37,41,49,51,55,59,61,65,70,72,77,79,81,84,86,88,90,93,105,107,109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "1bb93727c93579c75b7bb3a79be61d4b9477b324",
+  "prompts": {
+    "0cbb06cee64a7805": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "1befdced-eb98-4f1c-9084-4ee9743ef127",
+        "model": "copilot/gpt-5-mini"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 86,
+      "overriden_lines": 0
+    },
+    "f6be1ef6e34fe19a": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_32cc036d8ffe8GIYAVUNqaLxxc",
+        "model": "anthropic/claude-sonnet-4-6"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 4,
+      "overriden_lines": 0
+    }
+  }
+}
