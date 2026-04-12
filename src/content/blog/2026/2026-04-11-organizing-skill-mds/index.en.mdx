@@ -15,9 +15,9 @@ tags:
 ---
 
 
-Nowadays, using skill files (SKILL.md) is an extended way to provide context and knowledge (or new capabilities and expertise as the official skills specification [website](https://agentskills.io/home) describes) to a LLM or agent.
+Nowadays, using skill files (SKILL.md) is a common way to provide context and knowledge (or new capabilities and expertise, as the official skills specification [website](https://agentskills.io/home) describes) to an LLM or agent.
 
-In a infra point of view, an skill is a folder containing a SKILL.md file and all the necessary files to work scripts, references, etc. This folder must be in the `.agents/skills` (or `.claude/skills`, or the name your agent tool uses).
+From an infrastructure point of view, a skill is a folder containing a SKILL.md file and all the necessary files for it to work: scripts, references, etc. This folder must be in `.agents/skills` (or `.claude/skills`, or whatever name your agent tool uses).
 
 
 ```
@@ -29,7 +29,7 @@ skill-name/
 └── ...               # Any additional files or directories
 ```
 
-**The tools only read directories in the first level in the `.agents/skills` folder**, no subfolders, so as you create or download more and more skills, the skills folder become something like this:
+**The tools only read directories at the first level of the `.agents/skills` folder**, not subfolders, so as you create or download more and more skills, the skills folder becomes something like this:
 
 
 :::codeblock{maxHeight=150}
@@ -70,23 +70,23 @@ skill-name/
 ├── zod-schema-scaffolder/
 ```
 
-This makes it almost impossible to organize the skills as you want, for example, your skills or 3rd party skills in one folder, or by topic: coding skills, text skills, etc. 
+This makes it almost impossible to organize the skills however you want, for example, by keeping your own skills and third-party skills in separate folders, or by topic: coding skills, text skills, etc.
 
-This is specially problematic when you have a lot of skills, or multiple skills sources (for example, you have some skills you created, and some skills downloaded from the community, your company skills), for example if your company provides the global skills in a repo, you can not just clone the repo into a folder in the skills directory, you need to copy or create a symlink for each skill folder into the skills directory, mixing them with any other skill, making hard to know which are yours, and which are from the company or third parties.
+This is especially problematic when you have a lot of skills, or multiple skill sources. For example, you may have some skills you created, some downloaded from the community, and some provided by your company. If your company provides shared skills in a repo, you cannot just clone that repo into a folder in the skills directory. You need to copy or create a symlink for each skill folder into the skills directory, mixing them with any other skill and making it hard to know which are yours and which are from the company or third parties.
 
 
 ## A simple solution: organizing skills in folders
 
-To solve the organization issue, I thought to have a multilevel subfolder structure in the skills directory is nice and simple solution, but as I mentioned before, the tools only read directories in the first level, so that is not possible. 
+To solve the organization issue, I thought that having a multilevel subfolder structure in the skills directory would be a nice and simple solution, but as I mentioned before, the tools only read directories at the first level, so that is not possible.
 
-Well, it is not possible, directly, but we can use a simple and smart (I guess) solution:
+Well, it is not possible directly, but we can use a simple and smart solution:
 
 
 ### 1. Create an `organized skills` folder
 
 Use a different folder to store the organized skills, for example, `organized-skills`.
 
-Here we can create as many folders and subfolders as we want, for example:
+Here we can create as many folders and subfolders as we want. For example:
 
 :::codeblock{maxHeight=450}
 ```text
@@ -123,11 +123,11 @@ organized-skills/
 
 ### 2. Keep the sync
 
-Create a bash script to create symlinks for each skill in the `organized-skills` folder into the `.agents/skills` folder flattened.
+Create a Bash script to create symlinks for each skill in the `organized-skills` folder, flattened into the `.agents/skills` folder.
 
-for example `organized-skills/my-skills/coding-skills/astro-performance-auditor` will be symlinked to `.agents/skills/my-skills-coding-skills-astro-performance-auditor`
+For example, `organized-skills/my-skills/coding-skills/astro-performance-auditor` will be symlinked to `.agents/skills/my-skills-coding-skills-astro-performance-auditor`.
 
-Resulting something like this:
+Resulting in something like this:
 
 ```text
 .agents/skills/
@@ -147,9 +147,9 @@ Resulting something like this:
 ├── IMPORTANT.md # to notice this is a generated folder with symlinks and not the real skills
 ```
 
-This way we can have the skills organized in folders as we want (in the `.agents/organized-skills` folder), and the tools can still reading the skills from the flattened symlinks in the `.agents/skills` folder.
+This way, we can have the skills organized in folders however we want (in the `.agents/organized-skills` folder), and the tools can still read the skills from the flattened symlinks in the `.agents/skills` folder.
 
-This is the script I use to create the symlinks, you can customize it as you want:
+This is the script I use to create the symlinks. You can customize it however you want:
 
 ```bash
 #!/usr/bin/env bash
@@ -396,17 +396,17 @@ main() {
 main "$@"
 ```
 
-The script creates the symlinks for the skills in the `organized-skills` folder into the `skills` folder, and also removes any stale symlinks that are not in `organized-skills` anymore, but keeps any "non-managed" folder in the `skills` folder, to allow you and any tools to add skills directly in the `skills` folder without being removed by the script.
+The script creates symlinks for the skills in the `organized-skills` folder into the `skills` folder, and it also removes any stale symlinks that are no longer in `organized-skills`. At the same time, it keeps any "non-managed" folder in the `skills` folder, allowing you and any tools to add skills directly to the `skills` folder without having them removed by the script.
 
 
 ### 3. Watch file changes (optional)
 
-With the previous script, you need to run it every time you create, delete or move a skill in the `organized-skills` folder. But we can automate this using pooling or even better,`inotify-watcher` in linux and a service. This will detect any change in the folder and run the script to keep the symlinks in sync.
+With the previous script, you need to run it every time you create, delete, or move a skill in the `organized-skills` folder. But we can automate this using polling or, even better, `inotify-watcher` on Linux and a service. This will detect any change in the folder and run the script to keep the symlinks in sync.
 
-I left all the scrips, the organized skills folder and an example of systemd service in a github repo, feel free to check it and adapt it to your needs.
+I left all the scripts, the organized skills folder, and an example of a systemd service in a GitHub repo. Feel free to check it out and adapt it to your needs.
 
 :::center
 :btn[Check the sync scripts at GitHub]{url="https://github.com/sergiocarracedo/skills-in-folders-sync"}
 :::
 
-> I hope you feel this is useful or interesting and it can help you or your company to keep your skills organized and easy to manage.
+> I hope you find this useful or interesting, and that it helps you or your company keep your skills organized and easy to manage.
