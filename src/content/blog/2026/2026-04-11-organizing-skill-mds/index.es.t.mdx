@@ -1,0 +1,413 @@
+---
+title: "Organizando tus archivos SKILL.md en carpetas"
+pubDate: "2026-04-11"
+slug: "organizing-skill-md-files-in-folders"
+heroVideo: "./cover.webm"
+heroImage: "./cover.png"
+heroImageMeta:
+  prompt: ""
+  author: "Gemini Nano Banana 3"
+tags:
+  - "ai"
+  - "skills"
+  - "agents"
+  - "organization"
+autoTranslated: true
+originalLang: "en"
+---
+
+Hoy en día, el uso de archivos de habilidades (SKILL.md) es una forma común de proporcionar contexto y conocimiento (o nuevas capacidades y experiencia, como describe el [sitio web](https://agentskills.io/home) oficial de la especificación de habilidades) a un LLM o agente.
+
+Desde el punto de vista de la infraestructura, una habilidad es una carpeta que contiene un archivo SKILL.md y todos los archivos necesarios para que funcione: scripts, referencias, etc. Esta carpeta debe estar en `.agents/skills` (o `.claude/skills`, o cualquier nombre que utilice tu herramienta de agente).
+
+
+```
+skill-name/
+├── SKILL.md          # Required: metadata + instructions
+├── scripts/          # Optional: executable code
+├── references/       # Optional: documentation
+├── assets/           # Optional: templates, resources
+└── ...               # Any additional files or directories
+```
+
+**Las herramientas solo leen directorios en el primer nivel de la carpeta `.agents/skills`**, no subcarpetas, por lo que a medida que creas o descargas más y más habilidades, la carpeta de habilidades se convierte en algo como esto:
+
+
+:::codeblock{maxHeight=150}
+```.agents/skills/
+├── api-testing-helper/
+├── astro-content-auditor/
+├── changelog-writer/
+├── cli-release-checklist/
+├── commit-message-linter/
+├── css-animation-recipes/
+├── design-token-curator/
+├── docker-debug-playbook/
+├── docs-style-enforcer/
+├── feature-flag-rollout-guide/
+├── frontend-performance-reviewer/
+├── markdown-link-fixer/
+├── newsletter-copy-editor/
+├── seo-meta-validator/
+├── shell-script-safety-checker/
+├── sitemap-consistency-check/
+├── slide-deck-outline-helper/
+├── social-card-generator/
+├── static-site-migration-guide/
+├── storybook-docs-curator/
+├── tailwind-class-auditor/
+├── test-flake-investigator/
+├── translation-qa-assistant/
+├── typescript-error-explainer/
+├── ui-copy-tone-reviewer/
+├── ux-research-note-summarizer/
+├── visual-regression-triager/
+├── vite-config-tuner/
+├── webhook-payload-inspector/
+├── workflow-automation-designer/
+├── writing-style-harmonizer/
+├── yaml-frontmatter-repair/
+├── youtube-embed-optimizer/
+├── zod-schema-scaffolder/
+```
+
+Esto hace que sea casi imposible organizar las habilidades como quieras, por ejemplo, manteniendo tus propias habilidades y las de terceros en carpetas separadas, o por tema: habilidades de programación, habilidades de texto, etc.
+
+Esto es especialmente problemático cuando tienes muchas habilidades o múltiples fuentes de habilidades. Por ejemplo, puedes tener algunas habilidades que creaste tú, otras descargadas de la comunidad y otras proporcionadas por tu empresa. Si tu empresa proporciona habilidades compartidas en un repositorio, no puedes simplemente clonar ese repositorio en una carpeta dentro del directorio de habilidades. Necesitas copiar o crear un enlace simbólico (symlink) para cada carpeta de habilidad en el directorio de habilidades, mezclándolas con cualquier otra habilidad y dificultando saber cuáles son tuyas y cuáles son de la empresa o de terceros.
+
+
+## Una solución sencilla: organizar las habilidades en carpetas
+
+Para resolver el problema de organización, pensé que tener una estructura de subcarpetas multinivel en el directorio de habilidades sería una solución agradable y sencilla, pero como mencioné antes, las herramientas solo leen directorios en el primer nivel, por lo que eso no es posible.
+
+Bueno, no es posible directamente, pero podemos usar una solución simple e inteligente:
+
+
+### 1. Crea una carpeta de `habilidades organizadas`
+
+Usa una carpeta diferente para almacenar las habilidades organizadas, por ejemplo, `organized-skills`.
+
+Aquí podemos crear tantas carpetas y subcarpetas como queramos. Por ejemplo:
+
+:::codeblock{maxHeight=450}
+```text
+organized-skills/
+├── generic
+├── starter
+├── my-skills/
+│   ├── coding-skills/
+│   │   ├── astro-performance-auditor/
+│   │   └── typescript-error-explainer/
+│   ├── text-skills/
+│   │   ├── newsletter-copy-editor/
+│   │   └── writing-style-harmonizer/
+│   └── personal-workflows/
+│       └── weekly-review-assistant/
+├── company-skills/
+│   ├── coding-skills/
+│   │   ├── internal-api-checklist/
+│   │   └── release-train-coordinator/
+│   ├── compliance/
+│   │   └── pii-review-helper/
+│   └── onboarding/
+│       └── engineering-ramp-up-guide/
+├── community-skills/
+│   ├── frontend/
+│   │   ├── design-token-curator/
+│   │   └── visual-regression-triager/
+│   └── content/
+│       └── markdown-link-fixer/
+└── experimental/
+  └── research/
+    └── prompt-pattern-lab/
+``` 
+
+### 2. Mantén la sincronización
+
+Crea un script de Bash para crear enlaces simbólicos (symlinks) para cada habilidad en la carpeta `organized-skills`, aplanados en la carpeta `.agents/skills`.
+
+Por ejemplo, `organized-skills/my-skills/coding-skills/astro-performance-auditor` se enlazará simbólicamente a `.agents/skills/my-skills-coding-skills-astro-performance-auditor`.
+
+Dando como resultado algo como esto:
+
+```text
+.agents/skills/
+├── my-skills--coding--skills--astro-performance-auditor/
+├── my-skills--coding--skills--typescript-error-explainer/
+├── my-skills--text--skills--newsletter-copy-editor/
+├── my-skills--text--skills--writing-style-harmonizer/
+├── my-skills--personal--workflows--weekly-review-assistant/
+├── company-skills--coding--skills--internal-api-checklist/
+├── company-skills--coding--skills--release-train-coordinator/
+├── company-skills--compliance--pii-review-helper/
+├── company-skills--onboarding--engineering-ramp-up-guide/
+├── community-skills--frontend--design-token-curator/
+├── community-skills--frontend--visual-regression-triager/
+├── community-skills--content--markdown-link-fixer/
+├── experimental--research--prompt-pattern-lab/
+├── IMPORTANT.md # to notice this is a generated folder with symlinks and not the real skills
+```
+
+De esta manera, podemos tener las habilidades organizadas en carpetas como queramos (en la carpeta `.agents/organized-skills`), y las herramientas aún pueden leer las habilidades desde los enlaces simbólicos aplanados en la carpeta `.agents/skills`.
+
+Este es el script que utilizo para crear los enlaces simbólicos. Puedes personalizarlo como quieras:
+
+```bash
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE_DIR="$ROOT_DIR/skills-organized"
+TARGET_DIR="$ROOT_DIR/skills"
+
+DRY_RUN=0
+
+if [[ -t 1 ]]; then
+  COLOR_RESET=$'\033[0m'
+  COLOR_GREEN=$'\033[32m'
+  COLOR_YELLOW=$'\033[33m'
+  COLOR_RED=$'\033[31m'
+  COLOR_BLUE=$'\033[34m'
+  COLOR_BOLD=$'\033[1m'
+else
+  COLOR_RESET=''
+  COLOR_GREEN=''
+  COLOR_YELLOW=''
+  COLOR_RED=''
+  COLOR_BLUE=''
+  COLOR_BOLD=''
+fi
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/sync-organized-skills.sh [--dry-run]
+
+Sync skills from skills-organized/ into flattened symlinks under skills/.
+
+Rules:
+- Any directory containing SKILL.md is treated as a skill.
+- Directories without SKILL.md are treated as organization folders.
+- Organization folders may be nested to any depth.
+- A skill at skills-organized/personal/pr-create becomes skills/personal--pr-create.
+- A skill at skills-organized/personal/training/hevy becomes skills/personal--training--hevy.
+- Once a directory contains SKILL.md, it is treated as a terminal skill and child folders are not scanned.
+- Only symlinks that point into skills-organized/ are managed and cleaned up.
+EOF
+}
+
+format_path() {
+  printf '%s%s%s' "$COLOR_BOLD$COLOR_BLUE" "$1" "$COLOR_RESET"
+}
+
+print_status() {
+  local color=$1
+  local status=$2
+  local message=$3
+
+  printf '%b%-6s%b %s\n' "$color" "$status" "$COLOR_RESET" "$message"
+}
+
+ok() {
+  print_status "$COLOR_GREEN" "OK" "$1"
+}
+
+info() {
+  print_status "$COLOR_BLUE" "INFO" "$1"
+}
+
+warn() {
+  print_status "$COLOR_YELLOW" "WARN" "$1" >&2
+}
+
+error() {
+  print_status "$COLOR_RED" "ERROR" "$1" >&2
+}
+
+run() {
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    info "DRY-RUN $(printf '%q ' "$@")"
+    return 0
+  fi
+
+  "$@"
+}
+
+# Compute a stable relative path without depending on the caller's cwd.
+relative_path() {
+  local source=$1
+  local target=$2
+
+  python3 -c 'import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$source" "$target"
+}
+
+declare -A DESIRED_TARGETS=()
+
+# Walk the tree until we reach a directory that contains SKILL.md.
+# That directory is the terminal skill; child directories are not scanned.
+collect_skills() {
+  local dir=$1
+
+  if [[ -f "$dir/SKILL.md" ]]; then
+    local rel_path
+    rel_path=$(relative_path "$dir" "$SOURCE_DIR")
+    local flat_name=${rel_path//\//--}
+    local target_path="$TARGET_DIR/$flat_name"
+
+    if [[ -n "${DESIRED_TARGETS[$target_path]+x}" ]]; then
+      error "Flattening collision: $(format_path "${dir#$ROOT_DIR/}") and $(format_path "${DESIRED_TARGETS[$target_path]#$ROOT_DIR/}") both map to $(format_path "${target_path#$ROOT_DIR/}")"
+      exit 1
+    fi
+
+    DESIRED_TARGETS["$target_path"]="$dir"
+    return
+  fi
+
+  local child
+  while IFS= read -r -d '' child; do
+    collect_skills "$child"
+  done < <(find "$dir" -mindepth 1 -maxdepth 1 -type d -print0 | sort -z)
+}
+
+# Managed links are the ones created by this sync process: top-level symlinks in
+# skills/ that resolve into skills-organized/. Broken managed links cannot be
+# resolved, so we also inspect the raw symlink target and normalize it.
+is_managed_symlink() {
+  local path=$1
+
+  [[ -L "$path" ]] || return 1
+
+  local resolved
+  resolved=$(realpath "$path" 2>/dev/null || true)
+
+  if [[ -n "$resolved" && ( "$resolved" == "$SOURCE_DIR" || "$resolved" == "$SOURCE_DIR"/* ) ]]; then
+    return 0
+  fi
+
+  local link_target normalized
+  link_target=$(readlink "$path") || return 1
+
+  if [[ "$link_target" = /* ]]; then
+    normalized=$(realpath -m "$link_target")
+  else
+    normalized=$(realpath -m "$(dirname "$path")/$link_target")
+  fi
+
+  [[ "$normalized" == "$SOURCE_DIR" || "$normalized" == "$SOURCE_DIR"/* ]]
+}
+
+sync_target() {
+  local target_path=$1
+  local source_path=$2
+
+  if [[ ! -d "$source_path" || ! -f "$source_path/SKILL.md" ]]; then
+    error "Refusing to link missing skill source $(format_path "${source_path#$ROOT_DIR/}")"
+    return
+  fi
+
+  local parent_dir
+  parent_dir=$(dirname "$target_path")
+  local desired_link
+  desired_link=$(relative_path "$source_path" "$parent_dir")
+
+  if [[ -L "$target_path" ]]; then
+    local current_resolved desired_resolved
+    current_resolved=$(realpath "$target_path" 2>/dev/null || true)
+    desired_resolved=$(realpath -m "$source_path")
+
+    if [[ "$current_resolved" == "$desired_resolved" ]]; then
+      ok "$(format_path "${target_path#$ROOT_DIR/}")"
+      return
+    fi
+
+    if is_managed_symlink "$target_path"; then
+      info "LINK   $(format_path "${target_path#$ROOT_DIR/}") -> $(format_path "${source_path#$ROOT_DIR/}")"
+      run ln -sfn "$desired_link" "$target_path"
+      return
+    fi
+
+    warn "Skipping $(format_path "${target_path#$ROOT_DIR/}"): existing symlink is not managed"
+    return
+  fi
+
+  if [[ -e "$target_path" ]]; then
+    warn "Skipping $(format_path "${target_path#$ROOT_DIR/}"): target already exists and is not a managed symlink"
+    return
+  fi
+
+  info "CREATE $(format_path "${target_path#$ROOT_DIR/}") -> $(format_path "${source_path#$ROOT_DIR/}")"
+  run ln -s "$desired_link" "$target_path"
+}
+
+cleanup_stale_links() {
+  local entry
+  while IFS= read -r -d '' entry; do
+    if ! is_managed_symlink "$entry"; then
+      continue
+    fi
+
+    if [[ -n "${DESIRED_TARGETS[$entry]+x}" ]]; then
+      continue
+    fi
+
+    info "REMOVE $(format_path "${entry#$ROOT_DIR/}")"
+    run rm "$entry"
+  done < <(find "$TARGET_DIR" -mindepth 1 -maxdepth 1 -type l -print0 | sort -z)
+}
+
+main() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --dry-run)
+        DRY_RUN=1
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        error "Unknown argument: $1"
+        usage
+        exit 1
+        ;;
+    esac
+    shift
+  done
+
+  if [[ ! -d "$SOURCE_DIR" ]]; then
+    error "Missing source directory: $(format_path "$SOURCE_DIR")"
+    exit 1
+  fi
+
+  if [[ ! -d "$TARGET_DIR" ]]; then
+    error "Missing target directory: $(format_path "$TARGET_DIR")"
+    exit 1
+  fi
+
+  collect_skills "$SOURCE_DIR"
+
+  local target_path
+  while IFS= read -r target_path; do
+    sync_target "$target_path" "${DESIRED_TARGETS[$target_path]}"
+  done < <(printf '%s\n' "${!DESIRED_TARGETS[@]}" | sort)
+
+  cleanup_stale_links
+}
+
+main "$@"
+```
+
+El script crea enlaces simbólicos para las habilidades en la carpeta `organized-skills` dentro de la carpeta `skills`, y también elimina cualquier enlace simbólico obsoleto que ya no esté en `organized-skills`. Al mismo tiempo, mantiene cualquier carpeta "no gestionada" en la carpeta `skills`, permitiéndote a ti y a cualquier herramienta añadir habilidades directamente a la carpeta `skills` sin que el script las elimine.
+
+
+### 3. Monitorear cambios en los archivos (opcional)
+
+Con el script anterior, necesitas ejecutarlo cada vez que creas, eliminas o mueves una habilidad en la carpeta `organized-skills`. Pero podemos automatizar esto usando sondeo (polling) o, mejor aún, `inotify-watcher` en Linux y un servicio. Esto detectará cualquier cambio en la carpeta y ejecutará el script para mantener los enlaces simbólicos sincronizados.
+
+He dejado todos los scripts, la carpeta de habilidades organizadas y un ejemplo de un servicio de systemd en un repositorio de GitHub. Siéntete libre de echarle un vistazo y adaptarlo a tus necesidades.
+
+:::center
+:btn[Consulta los scripts de sincronización en GitHub]{url="https://github.com/sergiocarracedo/skills-in-folders-sync"}
+:::
+
+> Espero que esto te resulte útil o interesante, y que te ayude a ti o a tu empresa a mantener vuestras habilidades organizadas y fáciles de gestionar.
