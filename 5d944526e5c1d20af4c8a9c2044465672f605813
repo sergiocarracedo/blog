@@ -1,0 +1,23 @@
+src/content/blog/2026/2026-04-11-organizing-skill-mds/index.en.mdx
+  a9cf6db27693878f 34,37-50,92-93,98-99,101-104,106-121
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "5d944526e5c1d20af4c8a9c2044465672f605813",
+  "prompts": {
+    "a9cf6db27693878f": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "7046ca40-2c03-4ba8-bff5-4bd97a32ebc6",
+        "model": "copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo",
+      "messages": [],
+      "total_additions": 40,
+      "total_deletions": 33,
+      "accepted_lines": 39,
+      "overriden_lines": 0
+    }
+  }
+}
