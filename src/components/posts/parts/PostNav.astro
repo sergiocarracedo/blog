@@ -1,6 +1,6 @@
 ---
 import type { CollectionKey } from 'astro:content';
-import { getSortedCollection } from '../../../utils/getSortedCollection';
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
 import PostMiniNav from './PostMiniNav.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '@/i18n';
 
@@ -15,15 +15,16 @@ const lang = propLang ?? getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
-const posts = await getSortedCollection('blog');
+const posts = collection === 'blog' ? await getLocalizedPosts(lang) : [];
 
 const post = posts.find((p) => p.id === id);
 if (!post) {
   return;
 }
 
-const nextIndex = posts.findIndex((p) => p.id === id) + 1;
-const prevIndex = posts.findIndex((p) => p.id === id) - 1;
+const currentIndex = posts.findIndex((p) => p.id === id);
+const nextIndex = currentIndex + 1;
+const prevIndex = currentIndex - 1;
 const nextPost = posts[nextIndex];
 const prevPost = posts[prevIndex];
 ---
