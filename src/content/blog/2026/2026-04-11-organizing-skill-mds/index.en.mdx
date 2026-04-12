@@ -1,0 +1,412 @@
+---
+title: 'Organizing your SKILL.md files in folders'
+pubDate: 2026-04-11
+slug: organizing-skill-md-files-in-folders
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+heroImageMeta:
+  prompt: ''
+  author: 'Gemini Nano Banana 3'
+tags:
+  - ai
+  - skills
+  - agents
+  - organization
+---
+
+
+Nowadays, using skill files (SKILL.md) is an extended way to provide context and knowledge (or new capabilities and expertise as the official skills specification [website](https://agentskills.io/home) describes) to a LLM or agent.
+
+In a infra point of view, an skill is a folder containing a SKILL.md file and all the necessary files to work scripts, references, etc. This folder must be in the `.agents/skills` (or `.claude/skills`, or the name your agent tool uses).
+
+
+```
+skill-name/
+├── SKILL.md          # Required: metadata + instructions
+├── scripts/          # Optional: executable code
+├── references/       # Optional: documentation
+├── assets/           # Optional: templates, resources
+└── ...               # Any additional files or directories
+```
+
+**The tools only read directories in the first level in the `.agents/skills` folder**, no subfolders, so as you create or download more and more skills, the skills folder become something like this:
+
+
+:::codeblock{maxHeight=150}
+```.agents/skills/
+├── api-testing-helper/
+├── astro-content-auditor/
+├── changelog-writer/
+├── cli-release-checklist/
+├── commit-message-linter/
+├── css-animation-recipes/
+├── design-token-curator/
+├── docker-debug-playbook/
+├── docs-style-enforcer/
+├── feature-flag-rollout-guide/
+├── frontend-performance-reviewer/
+├── markdown-link-fixer/
+├── newsletter-copy-editor/
+├── seo-meta-validator/
+├── shell-script-safety-checker/
+├── sitemap-consistency-check/
+├── slide-deck-outline-helper/
+├── social-card-generator/
+├── static-site-migration-guide/
+├── storybook-docs-curator/
+├── tailwind-class-auditor/
+├── test-flake-investigator/
+├── translation-qa-assistant/
+├── typescript-error-explainer/
+├── ui-copy-tone-reviewer/
+├── ux-research-note-summarizer/
+├── visual-regression-triager/
+├── vite-config-tuner/
+├── webhook-payload-inspector/
+├── workflow-automation-designer/
+├── writing-style-harmonizer/
+├── yaml-frontmatter-repair/
+├── youtube-embed-optimizer/
+├── zod-schema-scaffolder/
+```
+
+This makes it almost impossible to organize the skills as you want, for example, your skills or 3rd party skills in one folder, or by topic: coding skills, text skills, etc. 
+
+This is specially problematic when you have a lot of skills, or multiple skills sources (for example, you have some skills you created, and some skills downloaded from the community, your company skills), for example if your company provides the global skills in a repo, you can not just clone the repo into a folder in the skills directory, you need to copy or create a symlink for each skill folder into the skills directory, mixing them with any other skill, making hard to know which are yours, and which are from the company or third parties.
+
+
+## A simple solution: organizing skills in folders
+
+To solve the organization issue, I thought to have a multilevel subfolder structure in the skills directory is nice and simple solution, but as I mentioned before, the tools only read directories in the first level, so that is not possible. 
+
+Well, it is not possible, directly, but we can use a simple and smart (I guess) solution:
+
+
+### 1. Create an `organized skills` folder
+
+Use a different folder to store the organized skills, for example, `organized-skills`.
+
+Here we can create as many folders and subfolders as we want, for example:
+
+:::codeblock{maxHeight=450}
+```text
+organized-skills/
+├── generic
+├── starter
+├── my-skills/
+│   ├── coding-skills/
+│   │   ├── astro-performance-auditor/
+│   │   └── typescript-error-explainer/
+│   ├── text-skills/
+│   │   ├── newsletter-copy-editor/
+│   │   └── writing-style-harmonizer/
+│   └── personal-workflows/
+│       └── weekly-review-assistant/
+├── company-skills/
+│   ├── coding-skills/
+│   │   ├── internal-api-checklist/
+│   │   └── release-train-coordinator/
+│   ├── compliance/
+│   │   └── pii-review-helper/
+│   └── onboarding/
+│       └── engineering-ramp-up-guide/
+├── community-skills/
+│   ├── frontend/
+│   │   ├── design-token-curator/
+│   │   └── visual-regression-triager/
+│   └── content/
+│       └── markdown-link-fixer/
+└── experimental/
+  └── research/
+    └── prompt-pattern-lab/
+``` 
+
+### 2. Keep the sync
+
+Create a bash script to create symlinks for each skill in the `organized-skills` folder into the `.agents/skills` folder flattened.
+
+for example `organized-skills/my-skills/coding-skills/astro-performance-auditor` will be symlinked to `.agents/skills/my-skills-coding-skills-astro-performance-auditor`
+
+Resulting something like this:
+
+```text
+.agents/skills/
+├── my-skills--coding--skills--astro-performance-auditor/
+├── my-skills--coding--skills--typescript-error-explainer/
+├── my-skills--text--skills--newsletter-copy-editor/
+├── my-skills--text--skills--writing-style-harmonizer/
+├── my-skills--personal--workflows--weekly-review-assistant/
+├── company-skills--coding--skills--internal-api-checklist/
+├── company-skills--coding--skills--release-train-coordinator/
+├── company-skills--compliance--pii-review-helper/
+├── company-skills--onboarding--engineering-ramp-up-guide/
+├── community-skills--frontend--design-token-curator/
+├── community-skills--frontend--visual-regression-triager/
+├── community-skills--content--markdown-link-fixer/
+├── experimental--research--prompt-pattern-lab/
+├── IMPORTANT.md # to notice this is a generated folder with symlinks and not the real skills
+```
+
+This way we can have the skills organized in folders as we want (in the `.agents/organized-skills` folder), and the tools can still reading the skills from the flattened symlinks in the `.agents/skills` folder.
+
+This is the script I use to create the symlinks, you can customize it as you want:
+
+```bash
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE_DIR="$ROOT_DIR/skills-organized"
+TARGET_DIR="$ROOT_DIR/skills"
+
+DRY_RUN=0
+
+if [[ -t 1 ]]; then
+  COLOR_RESET=$'\033[0m'
+  COLOR_GREEN=$'\033[32m'
+  COLOR_YELLOW=$'\033[33m'
+  COLOR_RED=$'\033[31m'
+  COLOR_BLUE=$'\033[34m'
+  COLOR_BOLD=$'\033[1m'
+else
+  COLOR_RESET=''
+  COLOR_GREEN=''
+  COLOR_YELLOW=''
+  COLOR_RED=''
+  COLOR_BLUE=''
+  COLOR_BOLD=''
+fi
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/sync-organized-skills.sh [--dry-run]
+
+Sync skills from skills-organized/ into flattened symlinks under skills/.
+
+Rules:
+- Any directory containing SKILL.md is treated as a skill.
+- Directories without SKILL.md are treated as organization folders.
+- Organization folders may be nested to any depth.
+- A skill at skills-organized/personal/pr-create becomes skills/personal--pr-create.
+- A skill at skills-organized/personal/training/hevy becomes skills/personal--training--hevy.
+- Once a directory contains SKILL.md, it is treated as a terminal skill and child folders are not scanned.
+- Only symlinks that point into skills-organized/ are managed and cleaned up.
+EOF
+}
+
+format_path() {
+  printf '%s%s%s' "$COLOR_BOLD$COLOR_BLUE" "$1" "$COLOR_RESET"
+}
+
+print_status() {
+  local color=$1
+  local status=$2
+  local message=$3
+
+  printf '%b%-6s%b %s\n' "$color" "$status" "$COLOR_RESET" "$message"
+}
+
+ok() {
+  print_status "$COLOR_GREEN" "OK" "$1"
+}
+
+info() {
+  print_status "$COLOR_BLUE" "INFO" "$1"
+}
+
+warn() {
+  print_status "$COLOR_YELLOW" "WARN" "$1" >&2
+}
+
+error() {
+  print_status "$COLOR_RED" "ERROR" "$1" >&2
+}
+
+run() {
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    info "DRY-RUN $(printf '%q ' "$@")"
+    return 0
+  fi
+
+  "$@"
+}
+
+# Compute a stable relative path without depending on the caller's cwd.
+relative_path() {
+  local source=$1
+  local target=$2
+
+  python3 -c 'import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$source" "$target"
+}
+
+declare -A DESIRED_TARGETS=()
+
+# Walk the tree until we reach a directory that contains SKILL.md.
+# That directory is the terminal skill; child directories are not scanned.
+collect_skills() {
+  local dir=$1
+
+  if [[ -f "$dir/SKILL.md" ]]; then
+    local rel_path
+    rel_path=$(relative_path "$dir" "$SOURCE_DIR")
+    local flat_name=${rel_path//\//--}
+    local target_path="$TARGET_DIR/$flat_name"
+
+    if [[ -n "${DESIRED_TARGETS[$target_path]+x}" ]]; then
+      error "Flattening collision: $(format_path "${dir#$ROOT_DIR/}") and $(format_path "${DESIRED_TARGETS[$target_path]#$ROOT_DIR/}") both map to $(format_path "${target_path#$ROOT_DIR/}")"
+      exit 1
+    fi
+
+    DESIRED_TARGETS["$target_path"]="$dir"
+    return
+  fi
+
+  local child
+  while IFS= read -r -d '' child; do
+    collect_skills "$child"
+  done < <(find "$dir" -mindepth 1 -maxdepth 1 -type d -print0 | sort -z)
+}
+
+# Managed links are the ones created by this sync process: top-level symlinks in
+# skills/ that resolve into skills-organized/. Broken managed links cannot be
+# resolved, so we also inspect the raw symlink target and normalize it.
+is_managed_symlink() {
+  local path=$1
+
+  [[ -L "$path" ]] || return 1
+
+  local resolved
+  resolved=$(realpath "$path" 2>/dev/null || true)
+
+  if [[ -n "$resolved" && ( "$resolved" == "$SOURCE_DIR" || "$resolved" == "$SOURCE_DIR"/* ) ]]; then
+    return 0
+  fi
+
+  local link_target normalized
+  link_target=$(readlink "$path") || return 1
+
+  if [[ "$link_target" = /* ]]; then
+    normalized=$(realpath -m "$link_target")
+  else
+    normalized=$(realpath -m "$(dirname "$path")/$link_target")
+  fi
+
+  [[ "$normalized" == "$SOURCE_DIR" || "$normalized" == "$SOURCE_DIR"/* ]]
+}
+
+sync_target() {
+  local target_path=$1
+  local source_path=$2
+
+  if [[ ! -d "$source_path" || ! -f "$source_path/SKILL.md" ]]; then
+    error "Refusing to link missing skill source $(format_path "${source_path#$ROOT_DIR/}")"
+    return
+  fi
+
+  local parent_dir
+  parent_dir=$(dirname "$target_path")
+  local desired_link
+  desired_link=$(relative_path "$source_path" "$parent_dir")
+
+  if [[ -L "$target_path" ]]; then
+    local current_resolved desired_resolved
+    current_resolved=$(realpath "$target_path" 2>/dev/null || true)
+    desired_resolved=$(realpath -m "$source_path")
+
+    if [[ "$current_resolved" == "$desired_resolved" ]]; then
+      ok "$(format_path "${target_path#$ROOT_DIR/}")"
+      return
+    fi
+
+    if is_managed_symlink "$target_path"; then
+      info "LINK   $(format_path "${target_path#$ROOT_DIR/}") -> $(format_path "${source_path#$ROOT_DIR/}")"
+      run ln -sfn "$desired_link" "$target_path"
+      return
+    fi
+
+    warn "Skipping $(format_path "${target_path#$ROOT_DIR/}"): existing symlink is not managed"
+    return
+  fi
+
+  if [[ -e "$target_path" ]]; then
+    warn "Skipping $(format_path "${target_path#$ROOT_DIR/}"): target already exists and is not a managed symlink"
+    return
+  fi
+
+  info "CREATE $(format_path "${target_path#$ROOT_DIR/}") -> $(format_path "${source_path#$ROOT_DIR/}")"
+  run ln -s "$desired_link" "$target_path"
+}
+
+cleanup_stale_links() {
+  local entry
+  while IFS= read -r -d '' entry; do
+    if ! is_managed_symlink "$entry"; then
+      continue
+    fi
+
+    if [[ -n "${DESIRED_TARGETS[$entry]+x}" ]]; then
+      continue
+    fi
+
+    info "REMOVE $(format_path "${entry#$ROOT_DIR/}")"
+    run rm "$entry"
+  done < <(find "$TARGET_DIR" -mindepth 1 -maxdepth 1 -type l -print0 | sort -z)
+}
+
+main() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --dry-run)
+        DRY_RUN=1
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        error "Unknown argument: $1"
+        usage
+        exit 1
+        ;;
+    esac
+    shift
+  done
+
+  if [[ ! -d "$SOURCE_DIR" ]]; then
+    error "Missing source directory: $(format_path "$SOURCE_DIR")"
+    exit 1
+  fi
+
+  if [[ ! -d "$TARGET_DIR" ]]; then
+    error "Missing target directory: $(format_path "$TARGET_DIR")"
+    exit 1
+  fi
+
+  collect_skills "$SOURCE_DIR"
+
+  local target_path
+  while IFS= read -r target_path; do
+    sync_target "$target_path" "${DESIRED_TARGETS[$target_path]}"
+  done < <(printf '%s\n' "${!DESIRED_TARGETS[@]}" | sort)
+
+  cleanup_stale_links
+}
+
+main "$@"
+```
+
+The script creates the symlinks for the skills in the `organized-skills` folder into the `skills` folder, and also removes any stale symlinks that are not in `organized-skills` anymore, but keeps any "non-managed" folder in the `skills` folder, to allow you and any tools to add skills directly in the `skills` folder without being removed by the script.
+
+
+### 3. Watch file changes (optional)
+
+With the previous script, you need to run it every time you create, delete or move a skill in the `organized-skills` folder. But we can automate this using pooling or even better,`inotify-watcher` in linux and a service. This will detect any change in the folder and run the script to keep the symlinks in sync.
+
+I left all the scrips, the organized skills folder and an example of systemd service in a github repo, feel free to check it and adapt it to your needs.
+
+:::center
+:btn[Check the sync scripts at GitHub]{url="https://github.com/sergiocarracedo/skills-in-folders-sync"}
+:::
+
+> I hope you feel this is useful or interesting and it can help you or your company to keep your skills organized and easy to manage.
