@@ -1,0 +1,23 @@
+src/components/posts/parts/PostNav.astro
+  feba7d17bbcbb602 3,18,25-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "06fddc83ae1468a3971af24f149d13b0f3bae894",
+  "prompts": {
+    "feba7d17bbcbb602": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_27dcade5bffe5KxMotoxbE3PmG",
+        "model": "github-copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo",
+      "messages": [],
+      "total_additions": 5,
+      "total_deletions": 4,
+      "accepted_lines": 5,
+      "overriden_lines": 0
+    }
+  }
+}
