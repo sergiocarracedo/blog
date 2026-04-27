@@ -28,6 +28,7 @@ Also supported:
 | `lang` | no | Override the code-block language. If omitted, the plugin infers it from the file extension. |
 | `meta` | no | Extra code-block metadata passed through to the generated mdast `code` node. |
 | `title` | no | Title shown in the header above the code block. Defaults to the source filename. |
+| `maxHeight` | no | Maximum block height. Plain numbers are treated as pixels. Defaults to `300px`. |
 | `download-label` | no | Label for the download button. `downloadLabel` is also supported as an alias. |
 | `encoding` | no | File encoding used to read the source file. Defaults to `utf8`. |
 | `from` | no | First line to include, 1-based. |
@@ -84,6 +85,12 @@ Custom download label:
 
 ```markdown
 ::codefrom[]{path="./assets/input.json" download-label="Download full payload"}
+```
+
+Custom max height:
+
+```markdown
+::codefrom[]{path="./assets/input.json" maxHeight="480"}
 ```
 
 Slice a file:

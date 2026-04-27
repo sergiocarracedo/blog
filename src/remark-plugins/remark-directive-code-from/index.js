@@ -185,6 +185,34 @@ function createExpressionAttribute(name, identifier) {
   };
 }
 
+function createClassAttribute(value) {
+  return {
+    type: 'mdxJsxAttribute',
+    name: 'class',
+    value,
+  };
+}
+
+function normalizeCssSize(value) {
+  if (!value) return undefined;
+
+  const trimmed = String(value).trim();
+  if (trimmed === '' || trimmed.toLowerCase() === 'none') return 'none';
+
+  if (/^\d+(?:\.\d+)?$/.test(trimmed)) return `${trimmed}px`;
+
+  return trimmed;
+}
+
+function createTextElement(name, className, value) {
+  return {
+    type: 'mdxJsxTextElement',
+    name,
+    attributes: className ? [createClassAttribute(className)] : [],
+    children: [{ type: 'text', value }],
+  };
+}
+
 export function remarkDirectiveCodeFrom(options = {}) {
   return (tree, file) => {
     const importedFiles = new Map();
@@ -244,50 +272,62 @@ export function remarkDirectiveCodeFrom(options = {}) {
         tree.children.unshift(createImportNode(importName, importPath));
       }
 
-      const componentNode = {
-        type: 'mdxJsxFlowElement',
-        name: 'CodeFromBlock',
-        attributes: [
-          { type: 'mdxJsxAttribute', name: 'fileName', value: pathModule.basename(filePath) },
-          createExpressionAttribute('downloadUrl', importName),
-        ],
-        children: [
-          {
-            type: 'code',
-            lang: attributes.lang || inferLanguage(filePath),
-            meta: attributes.meta ? String(attributes.meta) : null,
-            value: slicedValue,
-          },
-        ],
-      };
+      const maxHeight = attributes.maxHeight ?? attributes.maxheight ?? attributes.height;
+      const downloadLabel = attributes.downloadLabel || attributes['download-label'];
+      const heading = attributes.title ? String(attributes.title) : pathModule.basename(filePath);
+      const toolbarChildren = [
+        {
+          type: 'mdxJsxFlowElement',
+          name: 'div',
+          attributes: [createClassAttribute('code-from-meta')],
+          children: [createTextElement('span', 'code-from-title', heading)],
+        },
+        {
+          type: 'mdxJsxFlowElement',
+          name: 'a',
+          attributes: [
+            createClassAttribute('code-from-download'),
+            createExpressionAttribute('href', importName),
+            { type: 'mdxJsxAttribute', name: 'download', value: pathModule.basename(filePath) },
+          ],
+          children: [{ type: 'text', value: String(downloadLabel || 'Download original') }],
+        },
+      ];
 
       if (selectionLabel) {
-        componentNode.attributes.push({
+        toolbarChildren[0].children.push(
+          createTextElement('span', 'code-from-selection', selectionLabel)
+        );
+      }
+
+      const wrapperAttributes = [createClassAttribute('code-from')];
+      const normalizedMaxHeight = normalizeCssSize(maxHeight);
+      if (normalizedMaxHeight) {
+        wrapperAttributes.push({
           type: 'mdxJsxAttribute',
-          name: 'selectionLabel',
-          value: selectionLabel,
+          name: 'style',
+          value: `--code-from-max-h: ${normalizedMaxHeight};`,
         });
       }
 
-      if (attributes.title) {
-        componentNode.attributes.push({
-          type: 'mdxJsxAttribute',
-          name: 'title',
-          value: String(attributes.title),
-        });
-      }
-
-      const downloadLabel = attributes.downloadLabel || attributes['download-label'];
-
-      if (downloadLabel) {
-        componentNode.attributes.push({
-          type: 'mdxJsxAttribute',
-          name: 'downloadLabel',
-          value: String(downloadLabel),
-        });
-      }
-
-      parent.children.splice(index, 1, componentNode);
+      node.type = 'mdxJsxFlowElement';
+      node.name = 'div';
+      node.attributes = wrapperAttributes;
+      node.children = [
+        {
+          type: 'mdxJsxFlowElement',
+          name: 'div',
+          attributes: [createClassAttribute('code-from-toolbar')],
+          children: toolbarChildren,
+        },
+        {
+          type: 'code',
+          lang: attributes.lang || inferLanguage(filePath),
+          meta: attributes.meta ? String(attributes.meta) : null,
+          value: slicedValue,
+        },
+      ];
+      node.data = undefined;
     });
   };
 }

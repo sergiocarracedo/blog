@@ -143,6 +143,11 @@
       @apply my-0;
     }
 
+    .code-from > pre,
+    .code-from > .code-block > pre {
+      max-height: var(--code-from-max-h, 300px);
+    }
+
     .code-block:hover .code-copy-button {
       @apply opacity-100;
       pointer-events: auto;

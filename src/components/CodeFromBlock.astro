@@ -3,14 +3,27 @@ const {
   downloadUrl,
   downloadLabel = 'Download original',
   fileName,
+  maxHeight,
   title,
   selectionLabel,
 } = Astro.props;
 
+function normalizeCssSize(value) {
+  if (!value) return '300px';
+
+  const trimmed = String(value).trim();
+  if (trimmed === '' || trimmed.toLowerCase() === 'none') return 'none';
+
+  if (/^\d+(?:\.\d+)?$/.test(trimmed)) return `${trimmed}px`;
+
+  return trimmed;
+}
+
 const heading = title || fileName;
+const resolvedMaxHeight = normalizeCssSize(maxHeight);
 ---
 
-<div class="code-from">
+<div class="code-from" style={`--code-from-max-h: ${resolvedMaxHeight};`}>
   <div class="code-from-toolbar">
     <div class="code-from-meta">
       {heading ? <span class="code-from-title">{heading}</span> : null}

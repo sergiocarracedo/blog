@@ -1,15 +1,6 @@
 {
   "model": "models/gemini-3-flash-preview",
-  "contents": [
-    {
-      "parts": [
-        {
-          "text": "gimme a simple view and description of this project"
-        }
-      ],
-      "role": "user"
-    }
-  ],
+
   "generationConfig": {
     "maxOutputTokens": 32000,
     "temperature": 1,
@@ -446,23 +437,12 @@
               "modelId": {
                 "type": "STRING",
                 "description": "Optional. The model to use for generation.",
-                "enum": [
-                  "MODEL_ID_UNSPECIFIED",
-                  "GEMINI_3_PRO",
-                  "GEMINI_3_FLASH",
-                  "GEMINI_3_1_PRO"
-                ]
+                "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_PRO", "GEMINI_3_FLASH", "GEMINI_3_1_PRO"]
               },
               "deviceType": {
                 "type": "STRING",
                 "description": "The type of device that captured the screenshot, e.g., mobile or desktop.",
-                "enum": [
-                  "DEVICE_TYPE_UNSPECIFIED",
-                  "MOBILE",
-                  "DESKTOP",
-                  "TABLET",
-                  "AGNOSTIC"
-                ]
+                "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"]
               }
             },
             "required": ["projectId", "prompt"]
@@ -479,23 +459,12 @@
               "modelId": {
                 "type": "STRING",
                 "description": "Optional. The model to use for generation.",
-                "enum": [
-                  "MODEL_ID_UNSPECIFIED",
-                  "GEMINI_3_PRO",
-                  "GEMINI_3_FLASH",
-                  "GEMINI_3_1_PRO"
-                ]
+                "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_PRO", "GEMINI_3_FLASH", "GEMINI_3_1_PRO"]
               },
               "deviceType": {
                 "type": "STRING",
                 "description": "Optional. The type of device that captured the screenshot, e.g., mobile or desktop.",
-                "enum": [
-                  "DEVICE_TYPE_UNSPECIFIED",
-                  "MOBILE",
-                  "DESKTOP",
-                  "TABLET",
-                  "AGNOSTIC"
-                ]
+                "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"]
               },
               "prompt": {
                 "type": "STRING",
@@ -527,23 +496,12 @@
               "deviceType": {
                 "type": "STRING",
                 "description": "Optional. The type of device that captured the screenshot, e.g., mobile or desktop.",
-                "enum": [
-                  "DEVICE_TYPE_UNSPECIFIED",
-                  "MOBILE",
-                  "DESKTOP",
-                  "TABLET",
-                  "AGNOSTIC"
-                ]
+                "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"]
               },
               "modelId": {
                 "type": "STRING",
                 "description": "Optional. The model to use for generation.",
-                "enum": [
-                  "MODEL_ID_UNSPECIFIED",
-                  "GEMINI_3_PRO",
-                  "GEMINI_3_FLASH",
-                  "GEMINI_3_1_PRO"
-                ]
+                "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_PRO", "GEMINI_3_FLASH", "GEMINI_3_1_PRO"]
               },
               "variantOptions": {
                 "type": "TYPE_UNSPECIFIED",
@@ -565,12 +523,7 @@
                 }
               }
             },
-            "required": [
-              "projectId",
-              "selectedScreenIds",
-              "prompt",
-              "variantOptions"
-            ]
+            "required": ["projectId", "selectedScreenIds", "prompt", "variantOptions"]
           },
           "behavior": "UNSPECIFIED"
         },
