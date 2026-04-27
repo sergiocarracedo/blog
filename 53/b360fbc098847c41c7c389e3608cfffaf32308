@@ -1,0 +1,23 @@
+src/remark-plugins/remark-directive-code-from/index.js
+  a4229ddaf1d271b2 304-309
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "53b360fbc098847c41c7c389e3608cfffaf32308",
+  "prompts": {
+    "a4229ddaf1d271b2": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "4766087b-7721-49fa-a418-e54e6cf7c761",
+        "model": "copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 8,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    }
+  }
+}
