@@ -1,0 +1,220 @@
+---
+title: 'AI Context in deep'
+pubDate: 2026-04-26
+slug: ai-context-in-deep
+heroVideo: ./cover.webm
+heroImage: ./cover.png
+heroImageMeta:
+  prompt: ''
+  author: 'Gemini Nano Banana 3'
+tags:
+  - ai
+  - skills
+  - agents 
+---
+
+I guess all of us were in interacted with an AI at some point, maybe just using the chat to ask something, or as a developer to use coding agents.
+
+But, did you take the time to understand how it works? **To see what happens when you ask a small question, or you are using MCPs, skills, tools, etc?**
+
+Maybe yes, but just in case I did it for you.
+
+# The LLMs
+
+AI is much more than LLMs, but nowadays they are the most visible part of it. 
+
+Simplifiying a lot, a LLM is a model that has been trained with a lot of data, and it has learned to predict the next words in a sentence. Like you mobile phone's keyboard, but in scale.
+
+Other way to see it is like a black box that takes a prompt as input, and gives you a response as output.
+
+![](./blackbox.png)
+
+
+What happens inside the black box is out of the scope of this post.
+
+But what happens when I ask a question to an LLM?
+
+For example, a very simple question: "What time is it?", or running OpenCode: "gimme a simple view and description of this project", and that exactly what I did.
+
+Google Gemini models via Google AI Studio, for projects with Billing enabled, allows you to log all the interactions with the models, so you can see the exact prompt that is being sent to the model, and the response that it gives back.
+
+And this is what I got for the opencode question:
+
+::codefrom[]{path="./assets/input.json"}
+
+That's big!! Much more than the question I asked, right? Lets break it down.
+
+Thee first think to notice is that the prompt became a json object, with a lot of information. The JSON structure will depend on the model provider you are using, but in general, all are similar, lets focus on the most important parts:
+
+### Metadata
+
+This is the information about the request, like the model you want to use for the request, the temperature, the max tokens, etc. This is the part can be be more different between providers.
+
+### Contents
+
+Here the app sends to the model ALL the conversation, both the user and the model responded messages. This is important, because we can think a model as a stateless machine, so it needs to receive all the context of the conversation in each request. 
+
+In our case, the conversation just started and we only have the user message.
+
+```json
+"contents": [
+    {
+      "parts": [
+        {
+          "text": "gimme a simple view and description of this project"
+        }
+      ],
+      "role": "user"      
+    }
+  ],
+
+```
+
+### System prompt / System instructions
+
+This is a very important and big part. Here the app send instructions to the model about how it should behave, what it should do, what it should not do, about the context.
+
+This is like a content message, but the model put more attention to it.
+
+Here we can see interesting things:
+
+For example as I used OpenCode as the agentic tool, it add its own system instructions. Lets break it down:
+
+#### Who you are (persona)
+
+The frist sentence is a summary about the model "personality", this gives the model context about who it is, obviously the real behavior will depend on the model itself, but this is a way to give it a "persona" and context about how it should behave.
+
+```
+You are opencode, an interactive CLI agent specializing in software engineering tasks. Your primary goal is to help users safely and efficiently, adhering strictly to the following instructions and utilizing your available tools.
+```
+
+
+Next a list of topic organized in sections:
+
+```
+opencode CLI Agent Instructions
+├── Core Mandates
+│   ├── Conventions: Adhere to project standards
+│   ├── Libraries/Frameworks: Verify usage before adding
+│   ├── Style & Structure: Mimic existing architecture
+│   ├── Idiomatic Changes: Ensure natural integration
+│   ├── Comments: Sparse, "why" not "what"
+│   ├── Proactiveness: Fulfill implied follow-ups
+│   ├── Confirm Ambiguity/Expansion: Confirm if scope grows
+│   ├── Explaining Changes: No summaries unless asked
+│   ├── Path Construction: Always use absolute paths
+│   └── Do Not revert changes: Unless errors occur or requested
+│
+├── Primary Workflows
+│   ├── Software Engineering Tasks
+│   │   └── Understand → Plan → Implement → Verify (Tests) → Verify (Standards)
+│   └── New Applications
+│       └── Requirements → Propose Plan → User Approval → Implementation → Verify → Feedback
+│
+├── Operational Guidelines
+│   ├── Tone and Style (CLI Interaction)
+│   │   ├── Concise & Direct: Professional CLI tone
+│   │   ├── Minimal Output: Target < 3 lines
+│   │   ├── Clarity over Brevity: Explain if ambiguous
+│   │   ├── No Chitchat: No filler or preambles
+│   │   ├── Formatting: GitHub-flavored Markdown
+│   │   ├── Tools vs. Text: Tools for action, text for talk
+│   │   └── Handling Inability: Brief refusal statement
+│   ├── Security and Safety Rules
+│   │   ├── Explain Critical Commands: Warning before bash mods
+│   │   └── Security First: No secret/API key leaks
+│   └── Tool Usage
+│       ├── File Paths: Absolute only
+│       ├── Parallelism: Parallel searches
+│       ├── Command Execution: Use bash tool
+│       ├── Background Processes: Use & for servers
+│       ├── Interactive Commands: Avoid; use non-interactive flags
+│       └── Respect User Confirmations: Honor cancellations
+│
+├── Interaction Details
+│   ├── Help Command: /help
+│   └── Feedback: /bug
+│
+├── Examples (Illustrating Tone and Workflow)
+│   ├── Simple Queries: 1+2; Primality tests
+│   ├── File Operations: Listing files; Absolute pathing
+│   ├── Process Management: Starting background servers
+│   ├── Refactoring Workflow: Analysis → Verification net → Dependency check → Execution
+│   ├── Destructive Actions: rm -rf explanations/warnings
+│   ├── Testing: Reading source → Finding test conventions → Writing/Running tests
+│   ├── Codebase Discovery: Using grep and read to answer "How-to" questions
+│   └── Ambiguity Management: Identifying multiple config files and asking for direction
+│
+└── # Final Reminder
+    ├── Efficiency & Safety: The core function of the agent
+    ├── Conciseness vs. Clarity: Balancing brevity with safety warnings
+    ├── No Assumptions: Use read rather than assuming file contents
+    └── Agent Persistence: Keep going until the query is fully resolved
+```
+
+This is a very, very summarized and simplified version of the system instructions, but you can see that it is very detailed and gives a lot of context to the model about how it should behave, what it should do, what it should not do, etc.
+
+This is important, because this **can make a difference in the performance of different tools even when using the same provider and the same model**. For example, I use Github Copilot as a provider, and the results quality are better using OpenCode than VsCode using the same model, and that is because of the system instructions, not because of the model itself.
+
+I invite you to check all the system instructions, [here](./assets/system-instructions._md), they are very interesting and give a lot of context about how the model should behave.
+
+But there more in the System instructions, after all this instructions continued providing information about the "physical context"
+
+```
+You are powered by the model named gemini-3-flash-preview. The exact model ID is google/gemini-3-flash-preview
+Here is some useful information about the environment you are running in:
+<env>
+ Working directory: /works/vigotech/vigotech.github.io
+ Workspace root folder: /works/vigotech/vigotech.github.io
+ Is directory a git repo: yes
+ Platform: linux
+ Today's date: Sun Mar 29 2026
+</env>
+```
+
+> Note is very common in the prompts to use XML tags to group concepts. Models understand it very well.
+
+Read the last line: "Today's date: Sun Mar 29 2026". As we mentioned before, LLMs are stateless, so they don't have a concept of time, they don't know what day it is, and one way to let model knwo what day it is, is to provide that information in the system instructions. (there are other and more effective ways like using tools, but this is a simple way to do it)
+
+
+### The skills 
+
+The next part of the system instructions are the [skills](https://agentskills.io/).
+Skills are a way to give the model more capabilities, they are like plugins that the model can use to do specific tasks. They are based in markdown files, and the most important characteristic they have a name and a short description, that is used by the model to decide when to use them.
+
+So the next lines in the system instructions are a list of the available skills, with their name, description and location. As it is indicated in the first line "Use the skill tool to load a skill when a task matches its description.", the model will decide to use a skill when it thinks that a task matches the description of the skill and in that case it will load all the skill content, not just the description.
+
+```
+Skills provide specialized instructions and workflows for specific tasks.
+Use the skill tool to load a skill when a task matches its description.
+<available_skills>
+ <skill>
+ <name>agent-browser</name>
+ <description>Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. Triggers include requests to \"open a website\", \"fill out a form\", \"click a button\", \"take a screenshot\", \"scrape data from a page\", \"test this web app\", \"login to a site\", \"automate browser actions\", or any task requiring programmatic web interaction.</description>
+ <location>file:///home/sergio/.agents/skills/agent-browser/SKILL.md</location>
+ </skill>
+ <skill>
+ <name>agent-tasks</name>
+ <description>Create and execute tasks using Taskwarrior for multi-agent workflows. Use when (1) breaking down objectives into tasks during planning, (2) executing pending project tasks in parallel, (3) managing task status across agent sessions, or (4) coordinating work between multiple agents. Integrates with git repository structure for automatic project naming.</description>
+ <location>file:///home/sergio/.agents/skills/\_sc-agent-tasks/SKILL.md</location>
+ </skill>
+ ....
+ </available_skills>
+ ```
+
+
+
+
+
+
+
+
+3. **Tools**:
+
+
+
+
+
+
+
+
