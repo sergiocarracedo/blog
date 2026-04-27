@@ -1,0 +1,323 @@
+---
+title: "Contexto de IA en profundidad"
+pubDate: "2026-04-26"
+slug: "ai-context-in-depth"
+heroVideo: "./cover.webm"
+heroImage: "./cover.png"
+heroImageMeta:
+  prompt: ""
+  author: "Gemini Nano Banana 3"
+tags:
+  - "ai"
+  - "skills"
+  - "agents"
+autoTranslated: true
+originalLang: "en"
+---
+
+Supongo que todos hemos interactuado con una IA en algún momento, tal vez simplemente usando un chat para preguntar algo, o como desarrolladores usando agentes de codificación.
+
+Pero, ¿te has tomado el tiempo para entender cómo funciona? **¿Para ver qué sucede cuando haces una pregunta pequeña o cuando estás usando MCPs, skills, tools, etc.?**
+
+Tal vez sí, pero por si acaso, yo lo hice por ti.
+
+# Los LLMs
+
+La IA es mucho más que los LLMs, pero hoy en día son la parte más visible de ella.
+
+Simplificando mucho, un LLM es un modelo que ha sido entrenado con una gran cantidad de datos y ha aprendido a predecir las siguientes palabras de una frase. Como el teclado de tu teléfono móvil, pero a gran escala.
+
+Otra forma de verlo es como una caja negra que recibe un prompt como entrada y te devuelve una respuesta como salida.
+
+![](./blackbox.png)
+
+
+Lo que sucede dentro de la caja negra está fuera del alcance de este post.
+
+Pero, ¿qué pasa cuando le hago una pregunta a un LLM?
+
+Por ejemplo, una pregunta muy simple: "What time is it?", o ejecutando OpenCode: "gimme a simple view and description of this project". Y eso es exactamente lo que hice.
+
+Los modelos Google Gemini a través de Google AI Studio, para proyectos con Billing habilitado, te permiten registrar todas las interacciones con los modelos, de modo que puedes ver el prompt exacto que se está enviando al modelo y la respuesta que este devuelve.
+
+Y esto es lo que obtuve para la pregunta de opencode:
+
+::codefrom[]{path="./assets/input.json"}
+
+Eso es mucho. Mucho más que la pregunta que hice, ¿verdad? Vamos a desglosarlo.
+
+Lo primero que se nota es que el prompt se convirtió en un objeto JSON con mucha información. La estructura JSON dependerá del proveedor del modelo que estés utilizando, pero en general todos son similares. Centrémonos en las partes más importantes:
+
+## Metadata
+
+Esta es la información sobre la solicitud, como el modelo que quieres usar, la temperature, los max tokens, etc. Esta es la parte que puede ser más diferente entre proveedores.
+
+## Contents
+
+Aquí la aplicación envía al modelo TODA la conversación, tanto los mensajes del usuario como las respuestas del modelo. Esto es importante, porque podemos pensar en un modelo como una máquina stateless (sin estado), por lo que necesita recibir todo el contexto de la conversación en cada solicitud.
+
+En nuestro caso, la conversación acaba de empezar y solo tenemos el mensaje del usuario.
+
+```json
+"contents": [
+    {
+      "parts": [
+        {
+          "text": "gimme a simple view and description of this project"
+        }
+      ],
+      "role": "user"      
+    }
+  ],
+
+```
+
+## System prompt / System instructions
+
+Esta es una parte muy importante y extensa. Aquí la aplicación envía instrucciones al modelo sobre cómo debe comportarse, qué debe hacer, qué no debe hacer y sobre el contexto.
+
+Es como un mensaje de contenido, pero el modelo le presta más atención.
+
+Aquí podemos ver cosas interesantes:
+
+Por ejemplo, como usé OpenCode como herramienta agéntica (agentic tool), añadió sus propias system instructions. Vamos a desglosarlo:
+
+### Quién eres (persona)
+
+La primera frase es un resumen de la "personalidad" del modelo. Esto le da al modelo contexto sobre quién es. Obviamente, el comportamiento real dependerá del modelo en sí, pero esta es una forma de darle una "persona" y contexto sobre cómo debe comportarse.
+
+```
+You are opencode, an interactive CLI agent specializing in software engineering tasks. Your primary goal is to help users safely and efficiently, adhering strictly to the following instructions and utilizing your available tools.
+```
+
+
+A continuación, una lista de temas organizados en secciones:
+
+```
+opencode CLI Agent Instructions
+├── Core Mandates
+│   ├── Conventions: Adhere to project standards
+│   ├── Libraries/Frameworks: Verify usage before adding
+│   ├── Style & Structure: Mimic existing architecture
+│   ├── Idiomatic Changes: Ensure natural integration
+│   ├── Comments: Sparse, "why" not "what"
+│   ├── Proactiveness: Fulfill implied follow-ups
+│   ├── Confirm Ambiguity/Expansion: Confirm if scope grows
+│   ├── Explaining Changes: No summaries unless asked
+│   ├── Path Construction: Always use absolute paths
+│   └── Do Not revert changes: Unless errors occur or requested
+│
+├── Primary Workflows
+│   ├── Software Engineering Tasks
+│   │   └── Understand → Plan → Implement → Verify (Tests) → Verify (Standards)
+│   └── New Applications
+│       └── Requirements → Propose Plan → User Approval → Implementation → Verify → Feedback
+│
+├── Operational Guidelines
+│   ├── Tone and Style (CLI Interaction)
+│   │   ├── Concise & Direct: Professional CLI tone
+│   │   ├── Minimal Output: Target < 3 lines
+│   │   ├── Clarity over Brevity: Explain if ambiguous
+│   │   ├── No Chitchat: No filler or preambles
+│   │   ├── Formatting: GitHub-flavored Markdown
+│   │   ├── Tools vs. Text: Tools for action, text for talk
+│   │   └── Handling Inability: Brief refusal statement
+│   ├── Security and Safety Rules
+│   │   ├── Explain Critical Commands: Warning before bash mods
+│   │   └── Security First: No secret/API key leaks
+│   └── Tool Usage
+│       ├── File Paths: Absolute only
+│       ├── Parallelism: Parallel searches
+│       ├── Command Execution: Use bash tool
+│       ├── Background Processes: Use & for servers
+│       ├── Interactive Commands: Avoid; use non-interactive flags
+│       └── Respect User Confirmations: Honor cancellations
+│
+├── Interaction Details
+│   ├── Help Command: /help
+│   └── Feedback: /bug
+│
+├── Examples (Illustrating Tone and Workflow)
+│   ├── Simple Queries: 1+2; Primality tests
+│   ├── File Operations: Listing files; Absolute pathing
+│   ├── Process Management: Starting background servers
+│   ├── Refactoring Workflow: Analysis → Verification net → Dependency check → Execution
+│   ├── Destructive Actions: rm -rf explanations/warnings
+│   ├── Testing: Reading source → Finding test conventions → Writing/Running tests
+│   ├── Codebase Discovery: Using grep and read to answer "How-to" questions
+│   └── Ambiguity Management: Identifying multiple config files and asking for direction
+│
+└── # Final Reminder
+    ├── Efficiency & Safety: The core function of the agent
+    ├── Conciseness vs. Clarity: Balancing brevity with safety warnings
+    ├── No Assumptions: Use read rather than assuming file contents
+    └── Agent Persistence: Keep going until the query is fully resolved
+```
+
+Esta es una versión muy, muy resumida y simplificada de las system instructions, pero puedes ver que es muy detallada y le da mucho contexto al modelo sobre cómo debe comportarse, qué debe hacer, qué no debe hacer, etc.
+
+Esto es importante, porque esto **puede marcar la diferencia en el rendimiento de diferentes herramientas incluso cuando se utiliza el mismo proveedor y el mismo modelo**. Por ejemplo, yo uso GitHub Copilot como proveedor, y la calidad de los resultados es mejor usando OpenCode que VS Code usando el mismo modelo, y eso se debe a las system instructions, no al modelo en sí.
+
+Te invito a revisar todas las system instructions [aquí](./assets/system-instructions._md). Son muy interesantes y dan mucho contexto sobre cómo debe comportarse el modelo.
+
+Pero hay más en las System instructions. Después de todo esto, las instrucciones continuaron proporcionando información sobre el "contexto físico":
+
+```
+You are powered by the model named gemini-3-flash-preview. The exact model ID is google/gemini-3-flash-preview
+Here is some useful information about the environment you are running in:
+<env>
+ Working directory: /works/vigotech/vigotech.github.io
+ Workspace root folder: /works/vigotech/vigotech.github.io
+ Is directory a git repo: yes
+ Platform: linux
+ Today's date: Sun Mar 29 2026
+</env>
+```
+
+> Nota: Es muy común en los prompts usar etiquetas XML para agrupar conceptos. Los modelos las entienden muy bien.
+
+Lee la última línea: "Today's date: Sun Mar 29 2026". Como mencionamos antes, los LLMs son stateless, por lo que no tienen un concepto del tiempo, no saben qué día es, y una forma de que el modelo sepa qué día es es proporcionar esa información en las system instructions. (Hay otras formas más efectivas, como usar tools, pero esta es una forma sencilla de hacerlo).
+
+
+### Las skills 
+
+La siguiente parte de las instrucciones del sistema son las [skills](https://agentskills.io/).
+Las skills son una forma de darle al modelo más capacidades. Son como plugins que el modelo puede usar para realizar tareas específicas. Se basan en archivos Markdown, y su característica más importante es que tienen un nombre y una descripción corta, que el modelo utiliza para decidir cuándo usarlas.
+
+Así que las siguientes líneas en las system instructions son una lista de las skills disponibles, con su nombre, descripción y ubicación. Como se indica en la primera línea, "Use the skill tool to load a skill when a task matches its description.", el modelo decidirá usar una skill cuando considere que una tarea coincide con la descripción de la misma, y en ese caso cargará todo el contenido de la skill, no solo la descripción.
+
+```
+Skills provide specialized instructions and workflows for specific tasks.
+Use the skill tool to load a skill when a task matches its description.
+<available_skills>
+ <skill>
+ <name>agent-browser</name>
+ <description>Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. Triggers include requests to \"open a website\", \"fill out a form\", \"click a button\", \"take a screenshot\", \"scrape data from a page\", \"test this web app\", \"login to a site\", \"automate browser actions\", or any task requiring programmatic web interaction.</description>
+ <location>file:///home/sergio/.agents/skills/agent-browser/SKILL.md</location>
+ </skill>
+ <skill>
+ <name>agent-tasks</name>
+ <description>Create and execute tasks using Taskwarrior for multi-agent workflows. Use when (1) breaking down objectives into tasks during planning, (2) executing pending project tasks in parallel, (3) managing task status across agent sessions, or (4) coordinating work between multiple agents. Integrates with git repository structure for automatic project naming.</description>
+ <location>file:///home/sergio/.agents/skills/\_sc-agent-tasks/SKILL.md</location>
+ </skill>
+ ....
+ </available_skills>
+ ```
+
+## Tools
+
+La última parte de las instrucciones del sistema es la lista de herramientas (tools) disponibles que el modelo puede usar para completar la tarea. Las tools son como funciones que el modelo puede llamar para hacer cosas específicas, como leer un archivo, escribir un archivo, ejecutar un comando, etc.
+
+No todos los modelos admiten tools, pero hoy en día la mayoría lo hace. De todos modos, se pueden lograr resultados similares, aunque menos precisos, usando system instructions, como hice hace 3 años en [esta prueba de concepto](/blog/2023/2023-06-29-generative-ai-models/) antes de que las tools fueran algo común.
+
+
+:::codeblock{maxHeight=300}
+```json
+"tools": [
+    {
+      "functionDeclarations": [
+        {
+          "name": "question",
+          "description": "Use this tool when you need to ask the user questions during execution. This allows you to:\n1. Gather user preferences or requirements\n2. Clarify ambiguous instructions\n3. Get decisions on implementation choices as you work\n4. Offer choices to the user about what direction to take.\n\nUsage notes:\n- When `custom` is enabled (default), a \"Type your own answer\" option is added automatically; don't include \"Other\" or catch-all options\n- Answers are returned as arrays of labels; set `multiple: true` to allow selecting more than one\n- If you recommend a specific option, make that the first option in the list and add \"(Recommended)\" at the end of the label\n",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "questions": {
+                "type": "ARRAY",
+                "description": "Questions to ask",
+                "items": {
+                  "type": "OBJECT",
+                  "properties": {
+                    "question": {
+                      "type": "STRING",
+                      "description": "Complete question"
+                    },
+                    "multiple": {
+                      "type": "BOOLEAN",
+                      "description": "Allow selecting multiple choices"
+                    },
+                    "options": {
+                      "type": "ARRAY",
+                      "description": "Available choices",
+                      "items": {
+                        "type": "OBJECT",
+                        "properties": {
+                          "label": {
+                            "type": "STRING",
+                            "description": "Display text (1-5 words, concise)"
+                          },
+                          "description": {
+                            "type": "STRING",
+                            "description": "Explanation of choice"
+                          }
+                        },
+                        "required": ["label", "description"]
+                      }
+                    },
+                    "header": {
+                      "type": "STRING",
+                      "description": "Very short label (max 30 chars)"
+                    }
+                  },
+                  "required": ["question", "header", "options"]
+                }
+              }
+            },
+            "required": ["questions"]
+          },
+          "behavior": "UNSPECIFIED"
+        },
+        {
+          "name": "bash",
+          "description": "Executes a given bash command in a persistent shell session with optional timeout, ensuring proper handling and security measures.\n\nAll commands run in current working directory by default. Use the `workdir` parameter if you need to run a command in a different directory. AVOID using `cd <directory> && <command>` patterns - use `workdir` instead.\n\nIMPORTANT: This tool is for terminal operations like git, npm, docker, etc. DO NOT use it for file operations (reading, writing, editing, searching, finding files) - use the specialized tools for this instead.\n\nBefore executing the command, please follow these steps:\n\n1. Directory Verification:\n   - If the command will create new directories or files, first use `ls` to verify the parent directory exists and is the correct location\n   - For example, before running \"mkdir foo/bar\", first use `ls foo` to check that \"foo\" exists and is the intended parent directory\n\n2. Command Execution:\n   - Always quote file paths that contain spaces with double quotes (e.g., rm \"path with spaces/file.txt\")\n   - Examples of proper quoting:\n     - mkdir \"/Users/name/My Documents\" (correct)\n     - mkdir /Users/name/My Documents (incorrect - will fail)\n     - python \"/path/with spaces/script.py\" (correct)\n     - python /path/with spaces/script.py (incorrect - will fail)\n   - After ensuring proper quoting, execute the command.\n   - Capture the output of the command.\n\nUsage notes:\n  - The command argument is required.\n  - You can specify an optional timeout in milliseconds. If not specified, commands will time out after 120000ms (2 minutes).\n  - It is very helpful if you write a clear, concise description of what this command does in 5-10 words.\n  - If the output exceeds 2000 lines or 51200 bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use `head`, `tail`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.\n\n  - Avoid using Bash with the `find`, `grep`, `cat`, `head`, `tail`, `sed`, `awk`, or `echo` commands, unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:\n    - File search: Use Glob (NOT find or ls)\n    - Content search: Use Grep (NOT grep or rg)\n    - Read files: Use Read (NOT cat/head/tail)\n    - Edit files: Use Edit (NOT sed/awk)\n    - Write files: Use Write (NOT echo >/cat <<EOF)\n    - Communication: Output text directly (NOT echo/printf)\n  - When issuing multiple commands:\n    - If the commands are independent and can run in parallel, make multiple Bash tool calls in a single message. For example, if you need to run \"git status\" and \"git diff\", send a single message with two Bash tool calls in parallel.\n    - If the commands depend on each other and must run sequentially, use a single Bash call with '&&' to chain them together (e.g., `git add . && git commit -m \"message\" && git push`). For instance, if one operation must complete before another starts (like mkdir before cp, Write before Bash for git operations, or git add before git commit), run these operations sequentially instead.\n    - Use ';' only when you need to run commands sequentially but don't care if earlier commands fail\n    - DO NOT use newlines to separate commands (newlines are ok in quoted strings)\n  - AVOID using `cd <directory> && <command>`. Use the `workdir` parameter to change directories instead.\n    <good-example>\n    Use workdir=\"/foo/bar\" with command: pytest tests\n    </good-example>\n    <bad-example>\n    cd /foo/bar && pytest tests\n    </bad-example>\n\n# Committing changes with git\n\nOnly create commits when requested by the user. If unclear, ask first. When the user asks you to create a new git commit, follow these steps carefully:\n\nGit Safety Protocol:\n- NEVER update the git config\n- NEVER run destructive/irreversible git commands (like push --force, hard reset, etc) unless the user explicitly requests them\n- NEVER skip hooks (--no-verify, --no-gpg-sign, etc) unless the user explicitly requests it\n- NEVER run force push to main/master, warn the user if they request it\n- Avoid git commit --amend. ONLY use --amend when ALL conditions are met:\n  (1) User explicitly requested amend, OR commit SUCCEEDED but pre-commit hook auto-modified files that need including\n  (2) HEAD commit was created by you in this conversation (verify: git log -1 --format='%an %ae')\n  (3) Commit has NOT been pushed to remote (verify: git status shows \"Your branch is ahead\")\n- CRITICAL: If commit FAILED or was REJECTED by hook, NEVER amend - fix the issue and create a NEW commit\n- CRITICAL: If you already pushed to remote, NEVER amend unless user explicitly requests it (requires force push)\n- NEVER commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked, otherwise the user will feel that you are being too proactive.\n\n1. You can call multiple tools in a single response. When multiple independent pieces of information are requested and all commands are likely to succeed, run multiple tool calls in parallel for optimal performance. run the following bash commands in parallel, each using the Bash tool:\n  - Run a git status command to see all untracked files.\n  - Run a git diff command to see both staged and unstaged changes that will be committed.\n  - Run a git log command to see recent commit messages, so that you can follow this repository's commit message style.\n2. Analyze all staged changes (both previously staged and newly added) and draft a commit message:\n  - Summarize the nature of the changes (eg. new feature, enhancement to an existing feature, bug fix, refactoring, test, docs, etc.). Ensure the message accurately reflects the changes and their purpose (i.e. \"add\" means a wholly new feature, \"update\" means an enhancement to an existing feature, \"fix\" means a bug fix, etc.).\n  - Do not commit files that likely contain secrets (.env, credentials.json, etc.). Warn the user if they specifically request to commit those files\n  - Draft a concise (1-2 sentences) commit message that focuses on the \"why\" rather than the \"what\"\n  - Ensure it accurately reflects the changes and their purpose\n3. You can call multiple tools in a single response. When multiple independent pieces of information are requested and all commands are likely to succeed, run multiple tool calls in parallel for optimal performance. run the following commands:\n   - Add relevant untracked files to the staging area.\n   - Create the commit with a message\n   - Run git status after the commit completes to verify success.\n   Note: git status depends on the commit completing, so run it sequentially after the commit.\n4. If the commit fails due to pre-commit hook, fix the issue and create a NEW commit (see amend rules above)\n\nImportant notes:\n- NEVER run additional commands to read or explore code, besides git bash commands\n- NEVER use the TodoWrite or Task tools\n- DO NOT push to the remote repository unless the user explicitly asks you to do so\n- IMPORTANT: Never use git commands with the -i flag (like git rebase -i or git add -i) since they require interactive input which is not supported.\n- If there are no changes to commit (i.e., no untracked files and no modifications), do not create an empty commit\n\n# Creating pull requests\nUse the gh command via the Bash tool for ALL GitHub-related tasks including working with issues, pull requests, checks, and releases. If given a GitHub URL use the gh command to get the information needed.\n\nIMPORTANT: When the user asks you to create a pull request, follow these steps carefully:\n\n1. You can call multiple tools in a single response. When multiple independent pieces of information are requested and all commands are likely to succeed, run multiple tool calls in parallel for optimal performance. run the following bash commands in parallel using the Bash tool, in order to understand the current state of the branch since it diverged from the main branch:\n   - Run a git status command to see all untracked files\n   - Run a git diff command to see both staged and unstaged changes that will be committed\n   - Check if the current branch tracks a remote branch and is up to date with the remote, so you know if you need to push to the remote\n   - Run a git log command and `git diff [base-branch]...HEAD` to understand the full commit history for the current branch (from the time it diverged from the base branch)\n2. Analyze all changes that will be included in the pull request, making sure to look at all relevant commits (NOT just the latest commit, but ALL commits that will be included in the pull request!!!), and draft a pull request summary\n3. You can call multiple tools in a single response. When multiple independent pieces of information are requested and all commands are likely to succeed, run multiple tool calls in parallel for optimal performance. run the following commands in parallel:\n   - Create new branch if needed\n   - Push to remote with -u flag if needed\n   - Create PR using gh pr create with the format below. Use a HEREDOC to pass the body to ensure correct formatting.\n<example>\ngh pr create --title \"the pr title\" --body \"$(cat <<'EOF'\n## Summary\n<1-3 bullet points>\n</example>\n\nImportant:\n- DO NOT use the TodoWrite or Task tools\n- Return the PR URL when you're done, so the user can see it\n\n# Other common operations\n- View comments on a GitHub PR: gh api repos/foo/bar/pulls/123/comments\n",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "workdir": {
+                "type": "STRING",
+                "description": "The working directory to run the command in. Defaults to /works/vigotech/vigotech.github.io. Use this instead of 'cd' commands."
+              },
+              "description": {
+                "type": "STRING",
+                "description": "Clear, concise description of what this command does in 5-10 words. Examples:\nInput: ls\nOutput: Lists files in current directory\n\nInput: git status\nOutput: Shows working tree status\n\nInput: npm install\nOutput: Installs package dependencies\n\nInput: mkdir foo\nOutput: Creates directory 'foo'"
+              },
+              "timeout": {
+                "type": "NUMBER",
+                "description": "Optional timeout in milliseconds"
+              },
+              "command": {
+                "type": "STRING",
+                "description": "The command to execute"
+              }
+            },
+            "required": ["command", "description"]
+          },
+          "behavior": "UNSPECIFIED"
+        },
+      }
+      .....
+    }
+  }
+}
+```
+
+Las tools incluyen MCPs, que son la forma en que tú, como usuario, puedes darle más herramientas al modelo.
+
+Como puedes ver aquí, las descripciones son más grandes que las de las skills, consumiendo más tokens. Esta es una de las razones por las que, en algunos casos, es mejor usar skills que MCPs.
+
+
+### El tamaño del contexto
+
+El archivo `input.json` que obtuve de Google AI Studio tiene un tamaño de 108 KB y utiliza 23k tokens, solo para la pregunta inicial. Si añades los elementos de la conversación anterior, los resultados de las herramientas (por ejemplo, cuando la herramienta lee un archivo, su contenido, o al menos parte de él, se añade a la conversación), etc.
+
+El contexto puede crecer muy rápido, y eso es algo a tener en cuenta, ya que los resultados empeoran cuando el contexto crece (degradación del contexto o context rot), y también por el coste, ya que la mayoría de los proveedores cobran por token.
+
+
+Como referencia, así es como se ve una salida (output), incluyendo las llamadas a herramientas (tool calls):
+
+::codefrom[]{path="./assets/output-with-skill-usage.json"}
+
+
+# Conclusión
+
+El contexto es una de las cosas más importantes a tener en cuenta al trabajar con IA, y entender cómo funciona internamente te dará conocimientos valiosos sobre cómo obtener los mejores resultados con el menor coste, la mejor velocidad, etc.
