@@ -114,6 +114,35 @@
       pointer-events: auto;
     }
 
+    .code-from {
+      @apply my-6;
+    }
+
+    .code-from-toolbar {
+      @apply mb-2 flex flex-wrap items-center justify-between gap-3;
+    }
+
+    .code-from-meta {
+      @apply flex flex-wrap items-center gap-2 text-sm font-sans text-primary/80 dark:text-white/80;
+    }
+
+    .code-from-title {
+      @apply font-semibold;
+    }
+
+    .code-from-selection {
+      @apply rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary dark:bg-white/10 dark:text-white/80;
+    }
+
+    .code-from-download {
+      @apply btn m-0 px-2 py-1 text-xs no-underline;
+    }
+
+    .code-from > pre,
+    .code-from > .code-block {
+      @apply my-0;
+    }
+
     .code-block:hover .code-copy-button {
       @apply opacity-100;
       pointer-events: auto;

@@ -14,6 +14,7 @@ import { remarkDirectiveASCIInema } from './src/remark-plugins/remark-directive-
 import { remarkDirectiveAstroEntryRef } from './src/remark-plugins/remark-directive-astro-entry-ref';
 import { remarkDirectiveBtn } from './src/remark-plugins/remark-directive-btn';
 import { remarkDirectiveCenter } from './src/remark-plugins/remark-directive-center';
+import { remarkDirectiveCodeFrom } from './src/remark-plugins/remark-directive-code-from';
 import { remarkDirectiveCodeblock } from './src/remark-plugins/remark-directive-codeblock';
 import { remarkDirectiveFloatImage } from './src/remark-plugins/remark-directive-float-image';
 import { remarkDirectiveGallery } from './src/remark-plugins/remark-directive-gallery';
@@ -54,6 +55,7 @@ export default defineConfig({
       [remarkDirectiveYoutube, {}],
       [remarkDirectiveAstroEntryRef, {}],
       [remarkDirectiveSpotify, {}],
+      [remarkDirectiveCodeFrom, {}],
       [remarkDirectiveIframe, {}],
       [remarkDirectiveASCIInema, {}],
       [remarkDirectiveFloatImage, {}],

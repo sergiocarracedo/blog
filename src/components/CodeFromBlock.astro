@@ -1,0 +1,28 @@
+---
+const {
+  downloadUrl,
+  downloadLabel = 'Download original',
+  fileName,
+  title,
+  selectionLabel,
+} = Astro.props;
+
+const heading = title || fileName;
+---
+
+<div class="code-from">
+  <div class="code-from-toolbar">
+    <div class="code-from-meta">
+      {heading ? <span class="code-from-title">{heading}</span> : null}
+      {selectionLabel ? <span class="code-from-selection">{selectionLabel}</span> : null}
+    </div>
+    {
+      downloadUrl ? (
+        <a class="code-from-download" href={downloadUrl} download={fileName || true}>
+          {downloadLabel}
+        </a>
+      ) : null
+    }
+  </div>
+  <slot />
+</div>
