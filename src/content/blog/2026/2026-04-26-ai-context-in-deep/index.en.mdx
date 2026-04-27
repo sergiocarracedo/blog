@@ -1,7 +1,7 @@
 ---
-title: 'AI Context in deep'
+title: 'AI Context in depth'
 pubDate: 2026-04-26
-slug: ai-context-in-deep
+slug: ai-context-in-depth
 heroVideo: ./cover.webm
 heroImage: ./cover.png
 heroImageMeta:
@@ -13,46 +13,46 @@ tags:
   - agents 
 ---
 
-I guess all of us were in interacted with an AI at some point, maybe just using the chat to ask something, or as a developer to use coding agents.
+I guess all of us have interacted with an AI at some point, maybe just by using chat to ask something, or as developers using coding agents.
 
-But, did you take the time to understand how it works? **To see what happens when you ask a small question, or you are using MCPs, skills, tools, etc?**
+But did you take the time to understand how it works? **To see what happens when you ask a small question or when you are using MCPs, skills, tools, etc.?**
 
 Maybe yes, but just in case I did it for you.
 
 # The LLMs
 
-AI is much more than LLMs, but nowadays they are the most visible part of it. 
+AI is much more than LLMs, but nowadays they are the most visible part of it.
 
-Simplifiying a lot, a LLM is a model that has been trained with a lot of data, and it has learned to predict the next words in a sentence. Like you mobile phone's keyboard, but in scale.
+Simplifying a lot, an LLM is a model that has been trained with a lot of data, and it has learned to predict the next words in a sentence. Like your mobile phone's keyboard, but at scale.
 
-Other way to see it is like a black box that takes a prompt as input, and gives you a response as output.
+Another way to see it is as a black box that takes a prompt as input and gives you a response as output.
 
 ![](./blackbox.png)
 
 
-What happens inside the black box is out of the scope of this post.
+What happens inside the black box is outside the scope of this post.
 
 But what happens when I ask a question to an LLM?
 
-For example, a very simple question: "What time is it?", or running OpenCode: "gimme a simple view and description of this project", and that exactly what I did.
+For example, a very simple question: "What time is it?", or running OpenCode: "gimme a simple view and description of this project". And that's exactly what I did.
 
-Google Gemini models via Google AI Studio, for projects with Billing enabled, allows you to log all the interactions with the models, so you can see the exact prompt that is being sent to the model, and the response that it gives back.
+Google Gemini models via Google AI Studio, for projects with Billing enabled, allow you to log all the interactions with the models, so you can see the exact prompt that is being sent to the model and the response that it gives back.
 
 And this is what I got for the opencode question:
 
 ::codefrom[]{path="./assets/input.json"}
 
-That's big!! Much more than the question I asked, right? Lets break it down.
+That's big. Much more than the question I asked, right? Let's break it down.
 
-Thee first think to notice is that the prompt became a json object, with a lot of information. The JSON structure will depend on the model provider you are using, but in general, all are similar, lets focus on the most important parts:
+The first thing to notice is that the prompt became a JSON object with a lot of information. The JSON structure will depend on the model provider you are using, but in general they are all similar. Let's focus on the most important parts:
 
 ## Metadata
 
-This is the information about the request, like the model you want to use for the request, the temperature, the max tokens, etc. This is the part can be be more different between providers.
+This is the information about the request, like the model you want to use for the request, the temperature, the max tokens, etc. This is the part that can be more different between providers.
 
 ## Contents
 
-Here the app sends to the model ALL the conversation, both the user and the model responded messages. This is important, because we can think a model as a stateless machine, so it needs to receive all the context of the conversation in each request. 
+Here the app sends the model ALL the conversation, both the user's messages and the model's responses. This is important, because we can think of a model as a stateless machine, so it needs to receive all the context of the conversation in each request.
 
 In our case, the conversation just started and we only have the user message.
 
@@ -72,24 +72,24 @@ In our case, the conversation just started and we only have the user message.
 
 ## System prompt / System instructions
 
-This is a very important and big part. Here the app send instructions to the model about how it should behave, what it should do, what it should not do, about the context.
+This is a very important and big part. Here the app sends instructions to the model about how it should behave, what it should do, what it should not do, and about the context.
 
-This is like a content message, but the model put more attention to it.
+This is like a content message, but the model pays more attention to it.
 
 Here we can see interesting things:
 
-For example as I used OpenCode as the agentic tool, it add its own system instructions. Lets break it down:
+For example, as I used OpenCode as the agentic tool, it added its own system instructions. Let's break it down:
 
 ### Who you are (persona)
 
-The frist sentence is a summary about the model "personality", this gives the model context about who it is, obviously the real behavior will depend on the model itself, but this is a way to give it a "persona" and context about how it should behave.
+The first sentence is a summary of the model's "personality". This gives the model context about who it is. Obviously, the real behavior will depend on the model itself, but this is a way to give it a "persona" and context about how it should behave.
 
 ```
 You are opencode, an interactive CLI agent specializing in software engineering tasks. Your primary goal is to help users safely and efficiently, adhering strictly to the following instructions and utilizing your available tools.
 ```
 
 
-Next a list of topic organized in sections:
+Next, a list of topics organized in sections:
 
 ```
 opencode CLI Agent Instructions
@@ -154,11 +154,11 @@ opencode CLI Agent Instructions
 
 This is a very, very summarized and simplified version of the system instructions, but you can see that it is very detailed and gives a lot of context to the model about how it should behave, what it should do, what it should not do, etc.
 
-This is important, because this **can make a difference in the performance of different tools even when using the same provider and the same model**. For example, I use Github Copilot as a provider, and the results quality are better using OpenCode than VsCode using the same model, and that is because of the system instructions, not because of the model itself.
+This is important, because this **can make a difference in the performance of different tools even when using the same provider and the same model**. For example, I use GitHub Copilot as a provider, and the results quality is better using OpenCode than VS Code using the same model, and that is because of the system instructions, not because of the model itself.
 
-I invite you to check all the system instructions, [here](./assets/system-instructions._md), they are very interesting and give a lot of context about how the model should behave.
+I invite you to check all the system instructions [here](./assets/system-instructions._md). They are very interesting and give a lot of context about how the model should behave.
 
-But there more in the System instructions, after all this instructions continued providing information about the "physical context"
+But there is more in the System instructions. After all this, the instructions continued by providing information about the "physical context":
 
 ```
 You are powered by the model named gemini-3-flash-preview. The exact model ID is google/gemini-3-flash-preview
@@ -172,17 +172,17 @@ Here is some useful information about the environment you are running in:
 </env>
 ```
 
-> Note is very common in the prompts to use XML tags to group concepts. Models understand it very well.
+> Note: It is very common in prompts to use XML tags to group concepts. Models understand them very well.
 
-Read the last line: "Today's date: Sun Mar 29 2026". As we mentioned before, LLMs are stateless, so they don't have a concept of time, they don't know what day it is, and one way to let model knwo what day it is, is to provide that information in the system instructions. (there are other and more effective ways like using tools, but this is a simple way to do it)
+Read the last line: "Today's date: Sun Mar 29 2026". As we mentioned before, LLMs are stateless, so they don't have a concept of time, they don't know what day it is, and one way to let the model know what day it is is to provide that information in the system instructions. (There are other and more effective ways, like using tools, but this is a simple way to do it.)
 
 
 ### The skills 
 
 The next part of the system instructions are the [skills](https://agentskills.io/).
-Skills are a way to give the model more capabilities, they are like plugins that the model can use to do specific tasks. They are based in markdown files, and the most important characteristic they have a name and a short description, that is used by the model to decide when to use them.
+Skills are a way to give the model more capabilities. They are like plugins that the model can use to do specific tasks. They are based on Markdown files, and their most important characteristic is that they have a name and a short description, which is used by the model to decide when to use them.
 
-So the next lines in the system instructions are a list of the available skills, with their name, description and location. As it is indicated in the first line "Use the skill tool to load a skill when a task matches its description.", the model will decide to use a skill when it thinks that a task matches the description of the skill and in that case it will load all the skill content, not just the description.
+So the next lines in the system instructions are a list of the available skills, with their name, description, and location. As indicated in the first line, "Use the skill tool to load a skill when a task matches its description.", the model will decide to use a skill when it thinks that a task matches the description of the skill, and in that case it will load all the skill content, not just the description.
 
 ```
 Skills provide specialized instructions and workflows for specific tasks.
@@ -206,7 +206,7 @@ Use the skill tool to load a skill when a task matches its description.
 
 The last part of the system instructions is the list of available tools the model can use to complete the task. Tools are like functions that the model can call to do specific things, like read a file, write a file, execute a command, etc.
 
-Not all the models supports tools, but nowadays most of them, anyway you can achive similar results (less precise) using the system instructions as I did 3 years ago before tools were a thing in :astro-ref[this proof of concept]{path="blog/2023/2023-06-29-generative-ai-models" lang="en" title="Generative AI models: a technical overview"}.
+Not all models support tools, but nowadays most of them do. Anyway, you can achieve similar results, although less precise, using system instructions, as I did 3 years ago in [this proof of concept](/blog/2023/2023-06-29-generative-ai-models/) before tools were a thing.
 
 
 :::codeblock{maxHeight=300}
@@ -299,23 +299,23 @@ Not all the models supports tools, but nowadays most of them, anyway you can ach
 }
 ```
 
-Tools includes the MCPs, the way you as user can give more tools to the model.
+Tools include MCPs, which are the way you as a user can give more tools to the model.
 
-As you can see here, the descriptions are bigger than the ones in the skills, consuming more tokens. This one of the reasons in some cases it is better to use skills than MCPs.
+As you can see here, the descriptions are bigger than the ones in the skills, consuming more tokens. This is one of the reasons why, in some cases, it is better to use skills than MCPs.
 
 
 ### The context size
 
-The `input.json` file I got from the Google AI Studio size is 108KB, and uses 23k tokens, just for the initial question, if you add the previous conversation elements, the tools results (for example when the tool reads a file it contents (at least a part are added to the conversation), etc
+The `input.json` file I got from Google AI Studio is 108 KB in size and uses 23k tokens, just for the initial question. If you add the previous conversation elements, the tool results (for example, when the tool reads a file, its contents, or at least part of them, are added to the conversation), etc.
 
-The context can grow very fast, and that is something to take into account as the results become worse when the context grows (context rot), and also because of the cost, as most of the providers charge by token.
+The context can grow very fast, and that is something to take into account, as the results become worse when the context grows (context rot), and also because of the cost, as most providers charge by token.
 
 
-For your reference this is how an output, including the tools calls looks like:
+For reference, this is what an output, including the tool calls, looks like:
 
 ::codefrom[]{path="./assets/output-with-skill-usage.json"}
 
 
 # Conclusion
 
-The context is one of the most important things to take into account when working with AI, and understand how it works under the hood will give you a powerful knowledge about how to get the best results with the least cost, best speed, etc.
+The context is one of the most important things to take into account when working with AI, and understanding how it works under the hood will give you valuable knowledge about how to get the best results with the lowest cost, best speed, etc.
