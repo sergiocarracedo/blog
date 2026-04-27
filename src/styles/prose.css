@@ -220,7 +220,7 @@
 
     pre:not(.ap-terminal) {
       @apply bg-[#272822] p-6 border-y border-transparent overflow-auto text-[#ccc] block leading-[1.4em] my-6 font-mono rounded-md;
-      max-height: var(--code-block-max-h);
+      max-height: var(--code-from-max-h, var(--code-block-max-h, none));
       scrollbar-width: thin;
       scrollbar-color: theme('colors.white') transparent;
     }
