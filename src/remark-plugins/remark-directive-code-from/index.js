@@ -301,14 +301,12 @@ export function remarkDirectiveCodeFrom(options = {}) {
       }
 
       const wrapperAttributes = [createClassAttribute('code-from')];
-      const normalizedMaxHeight = normalizeCssSize(maxHeight);
-      if (normalizedMaxHeight) {
-        wrapperAttributes.push({
-          type: 'mdxJsxAttribute',
-          name: 'style',
-          value: `--code-from-max-h: ${normalizedMaxHeight};`,
-        });
-      }
+      const normalizedMaxHeight = normalizeCssSize(maxHeight) ?? '300px';
+      wrapperAttributes.push({
+        type: 'mdxJsxAttribute',
+        name: 'style',
+        value: `--code-from-max-h: ${normalizedMaxHeight};`,
+      });
 
       node.type = 'mdxJsxFlowElement';
       node.name = 'div';
