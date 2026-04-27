@@ -1,0 +1,44 @@
+astro.config.mjs
+  h_a4417d1a5d273e 17
+  a4229ddaf1d271b2 58
+src/remark-plugins/remark-directive-code-from/README.md
+  a4229ddaf1d271b2 1-100
+src/content/blog/2026/2026-04-26-ai-context-in-deep/assets/core-mandates.txt
+  h_a4417d1a5d273e 1-12
+src/components/CodeFromBlock.astro
+  h_a4417d1a5d273e 1-28
+src/styles/prose.css
+  a4229ddaf1d271b2 117-145
+src/remark-plugins/remark-directive-code-from/index.js
+  a4229ddaf1d271b2 5-290
+src/mdx-components.ts
+  a4229ddaf1d271b2 2,9
+src/content/blog/2026/2026-04-26-ai-context-in-deep/index.en.mdx
+  a4229ddaf1d271b2 43,72,207
+  h_a4417d1a5d273e 1-42,44-71,73-206,208-220
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "54db7b24df671fd03aebe56d3310abbedf6ba120",
+  "prompts": {
+    "a4229ddaf1d271b2": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "4766087b-7721-49fa-a418-e54e6cf7c761",
+        "model": "copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo",
+      "messages": [],
+      "total_additions": 385,
+      "total_deletions": 25,
+      "accepted_lines": 381,
+      "overriden_lines": 2
+    }
+  },
+  "humans": {
+    "h_a4417d1a5d273e": {
+      "author": "Sergio Carracedo"
+    }
+  }
+}
