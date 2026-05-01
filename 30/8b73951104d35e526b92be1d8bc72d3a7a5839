@@ -1,0 +1,36 @@
+.github/workflows/newsletter-send.yml
+  91637e1e2b7df117 72-76,79-83,215,219-222,228-231
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "308b73951104d35e526b92be1d8bc72d3a7a5839",
+  "prompts": {
+    "91637e1e2b7df117": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_21c9dfc35ffetpkHei6bxNXKGB",
+        "model": "github-copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo",
+      "messages": [],
+      "total_additions": 19,
+      "total_deletions": 5,
+      "accepted_lines": 19,
+      "overriden_lines": 0
+    },
+    "a4229ddaf1d271b2": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "4766087b-7721-49fa-a418-e54e6cf7c761",
+        "model": "copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo",
+      "messages": [],
+      "total_additions": 23,
+      "total_deletions": 15,
+      "accepted_lines": 23,
+      "overriden_lines": 0
+    }
+  }
+}
