@@ -59,6 +59,57 @@ export interface NewsletterContent {
   posts: NewsletterPost[];
 }
 
+function isRateLimitError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+
+  return (
+    error.message.includes('Resource exhausted') ||
+    error.message.includes('statusCode: 429') ||
+    error.message.includes('429')
+  );
+}
+
+function withTrailingPunctuation(text: string): string {
+  const trimmed = text.trim();
+  if (trimmed.length === 0) return trimmed;
+  return /[.!?]$/.test(trimmed) ? trimmed : `${trimmed}.`;
+}
+
+function buildFallbackSummary(
+  posts: Array<{ title: string; description: string }>,
+  locale: 'en' | 'es'
+): string {
+  if (locale === 'es') {
+    if (posts.length === 1) {
+      return `Este mes he publicado una nueva entrada: ${posts[0].title}.`;
+    }
+
+    return `Este mes he publicado ${posts.length} nuevas entradas: ${posts
+      .map((post) => post.title)
+      .join(', ')}.`;
+  }
+
+  if (posts.length === 1) {
+    return `This month I published one new post: ${posts[0].title}.`;
+  }
+
+  return `This month I published ${posts.length} new posts: ${posts
+    .map((post) => post.title)
+    .join(', ')}.`;
+}
+
+function buildFallbackTeaser(
+  post: { title: string; description: string; content: string },
+  locale: 'en' | 'es'
+): string {
+  const baseText = withTrailingPunctuation(post.description || post.content || post.title);
+
+  if (baseText.length <= 160) return baseText;
+
+  const truncated = baseText.slice(0, 157).trimEnd();
+  return locale === 'es' ? `${truncated}...` : `${truncated}...`;
+}
+
 /**
  * Given a post directory, find the best candidate file for a given locale.
  * Priority: index.{locale}.mdx > index.{locale}.t.mdx
@@ -294,14 +345,24 @@ Requirements:
 - 2-3 sentences maximum
 `;
 
-  const { text: summary } = await generateText({ model, prompt: summaryPrompt });
+  let summary: string;
 
-  // Generate teasers and optimise images in parallel
-  const postsWithTeasers = await Promise.all(
-    posts.map(async (post, i) => {
-      const lp = localePosts[i];
+  try {
+    ({ text: summary } = await generateText({ model, prompt: summaryPrompt }));
+  } catch (error: unknown) {
+    if (!isRateLimitError(error)) throw error;
 
-      const teaserPrompt = `
+    console.warn(`⚠️  Gemini rate limit hit while generating ${locale.toUpperCase()} summary.`);
+    summary = buildFallbackSummary(localePosts, locale);
+  }
+
+  // Generate teasers sequentially to avoid hitting provider rate limits.
+  const postsWithTeasers: NewsletterPost[] = [];
+
+  for (const [i, post] of posts.entries()) {
+    const lp = localePosts[i];
+
+    const teaserPrompt = `
 Create a compelling 1-2 sentence teaser for this blog post.
 Make it intriguing but don't give everything away. Use action-oriented language.
 ${langInstruction}
@@ -318,29 +379,36 @@ Requirements:
 - Don't use clickbait language
 `;
 
-      const [{ text: teaser }, imageUrl] = await Promise.all([
-        generateText({ model, prompt: teaserPrompt }),
-        optimiseHeroImage(post, siteUrl),
-      ]);
+    const imageUrl = await optimiseHeroImage(post, siteUrl);
 
-      // Build the post URL: EN at /{slug}, ES at /es/{slug}
-      const slugPath = post.slug.startsWith('/') ? post.slug : `/${post.slug}`;
-      const url = locale === 'es' ? `${siteUrl}/es${slugPath}` : `${siteUrl}${slugPath}`;
+    let teaser: string;
 
-      return {
-        title: lp.title,
-        url,
-        description: lp.description,
-        teaser: teaser.trim(),
-        image: imageUrl,
-        date: post.pubDate.toLocaleDateString(dateLocale, {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-        }),
-      };
-    })
-  );
+    try {
+      ({ text: teaser } = await generateText({ model, prompt: teaserPrompt }));
+    } catch (error: unknown) {
+      if (!isRateLimitError(error)) throw error;
+
+      console.warn(`⚠️  Gemini rate limit hit while generating teaser for "${lp.title}".`);
+      teaser = buildFallbackTeaser(lp, locale);
+    }
+
+    // Build the post URL: EN at /{slug}, ES at /es/{slug}
+    const slugPath = post.slug.startsWith('/') ? post.slug : `/${post.slug}`;
+    const url = locale === 'es' ? `${siteUrl}/es${slugPath}` : `${siteUrl}${slugPath}`;
+
+    postsWithTeasers.push({
+      title: lp.title,
+      url,
+      description: lp.description,
+      teaser: teaser.trim(),
+      image: imageUrl,
+      date: post.pubDate.toLocaleDateString(dateLocale, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+    });
+  }
 
   const latestDate = posts[0].pubDate;
   const month = latestDate.toLocaleDateString(dateLocale, { month: 'long' });
