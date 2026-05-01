@@ -1,0 +1,23 @@
+scripts/generate-newsletter.ts
+  91637e1e2b7df117 62-112,348,350-357,359-365,382,384,386-411
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "bb01f35208e24206b1f61b269e4c2a18bdb95543",
+  "prompts": {
+    "91637e1e2b7df117": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_21c9dfc35ffetpkHei6bxNXKGB",
+        "model": "github-copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo",
+      "messages": [],
+      "total_additions": 95,
+      "total_deletions": 27,
+      "accepted_lines": 95,
+      "overriden_lines": 0
+    }
+  }
+}
