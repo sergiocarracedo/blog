@@ -69,8 +69,17 @@ jobs:
           fi
 
           # Run generation script and save output to file for later use
-          pnpm tsx scripts/generate-newsletter.ts $DAYS_BACK > newsletter-output.txt 2>&1
+          set +e
+          pnpm tsx scripts/generate-newsletter.ts "$DAYS_BACK" > newsletter-output.txt 2>&1
+          GENERATE_EXIT_CODE=$?
+          set -e
+
           cat newsletter-output.txt
+
+          if [ "$GENERATE_EXIT_CODE" -ne 0 ]; then
+            echo "❌ Newsletter generation failed with exit code $GENERATE_EXIT_CODE"
+            exit "$GENERATE_EXIT_CODE"
+          fi
 
           # Check if posts were found
           if grep -q "No new posts found" newsletter-output.txt; then
@@ -203,18 +212,23 @@ jobs:
             git push
           fi
 
-      - name: Upload newsletter log
+      - name: Upload newsletter artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: newsletter-log
-          path: newsletter-*.log
+          name: newsletter-artifacts
+          path: |
+            newsletter-output.txt
+            newsletter-*.log
           if-no-files-found: ignore
 
       - name: Summary
         if: always()
         run: |
-          if [ "${{ steps.generate.outputs.has_posts }}" = "true" ]; then
+          if [ "${{ steps.generate.outcome }}" = "failure" ]; then
+            echo "### Newsletter generation failed" >> $GITHUB_STEP_SUMMARY
+            echo "Check the uploaded newsletter artifacts for newsletter-output.txt and logs." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.generate.outputs.has_posts }}" = "true" ]; then
             echo "### Newsletter sent successfully! 🎉" >> $GITHUB_STEP_SUMMARY
           else
             echo "### No new posts found for newsletter 📭" >> $GITHUB_STEP_SUMMARY
