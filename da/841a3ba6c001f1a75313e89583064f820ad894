@@ -1,0 +1,28 @@
+src/content/blog/2026/2026-05-14-la-ai-el-humano-y-el-simil-de-los-robots-en-una-cadena/index.es.mdx
+  s_0a0f6b9169a1c4::t_63bbc0bd26025c 1-44
+src/components/YoutubeEmbed.astro
+  h_f90ee31b03fc41 7
+src/content/blog/2026/2026-05-08-la-tik-tok-izacio-n-del-desarrollo-con-ai/index.es.mdx
+  s_0a0f6b9169a1c4::t_a62e5d6060f983 1-45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "da841a3ba6c001f1a75313e89583064f820ad894",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_0a0f6b9169a1c4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1d7e3aa84ffeAVjtOxw0mWzddK",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
