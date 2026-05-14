@@ -1,0 +1,38 @@
+scripts/generate-newsletter.ts
+  91637e1e2b7df117 62-112,348,350-357,359-365,382,384,386-411
+src/styles/prose.css
+  a4229ddaf1d271b2 141-142,146-147
+src/remark-plugins/remark-directive-code-from/index.js
+  a4229ddaf1d271b2 304,317-334
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "2272fdf48e58eee8d4266cbd9a042467d349ab72",
+  "prompts": {
+    "91637e1e2b7df117": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_21c9dfc35ffetpkHei6bxNXKGB",
+        "model": "github-copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>",
+      "total_additions": 95,
+      "total_deletions": 27,
+      "accepted_lines": 101,
+      "overriden_lines": 0
+    },
+    "a4229ddaf1d271b2": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "4766087b-7721-49fa-a418-e54e6cf7c761",
+        "model": "copilot/gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo",
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 23,
+      "overriden_lines": 0
+    }
+  }
+}
