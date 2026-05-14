@@ -300,13 +300,8 @@ export function remarkDirectiveCodeFrom(options = {}) {
         );
       }
 
-      const wrapperAttributes = [createClassAttribute('code-from')];
       const normalizedMaxHeight = normalizeCssSize(maxHeight) ?? '300px';
-      wrapperAttributes.push({
-        type: 'mdxJsxAttribute',
-        name: 'style',
-        value: `--code-from-max-h: ${normalizedMaxHeight};`,
-      });
+      const wrapperAttributes = [createClassAttribute('code-from')];
 
       node.type = 'mdxJsxFlowElement';
       node.name = 'div';
@@ -319,10 +314,24 @@ export function remarkDirectiveCodeFrom(options = {}) {
           children: toolbarChildren,
         },
         {
-          type: 'code',
-          lang: attributes.lang || inferLanguage(filePath),
-          meta: attributes.meta ? String(attributes.meta) : null,
-          value: slicedValue,
+          type: 'mdxJsxFlowElement',
+          name: 'div',
+          attributes: [
+            createClassAttribute('code-from-content'),
+            {
+              type: 'mdxJsxAttribute',
+              name: 'style',
+              value: `max-height: ${normalizedMaxHeight}; overflow-y: auto;`,
+            },
+          ],
+          children: [
+            {
+              type: 'code',
+              lang: attributes.lang || inferLanguage(filePath),
+              meta: attributes.meta ? String(attributes.meta) : null,
+              value: slicedValue,
+            },
+          ],
         },
       ];
       node.data = undefined;

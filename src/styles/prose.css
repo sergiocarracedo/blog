@@ -138,14 +138,13 @@
       @apply btn m-0 px-2 py-1 text-xs no-underline;
     }
 
-    .code-from > pre,
-    .code-from > .code-block {
+    .code-from > .code-from-content > pre,
+    .code-from > .code-from-content > .code-block {
       @apply my-0;
     }
 
-    .code-from > pre,
-    .code-from > .code-block > pre {
-      max-height: var(--code-from-max-h, 300px);
+    .code-from-content {
+      @apply my-0;
     }
 
     .code-block:hover .code-copy-button {
