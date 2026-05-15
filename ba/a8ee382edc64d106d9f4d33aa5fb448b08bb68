@@ -1,0 +1,20 @@
+src/components/PreferredSourcesButton.astro
+  s_19b4e7bcc07559::t_ba982b4c9ffcaf 42,98-105
+  s_19b4e7bcc07559::t_4692d430c6e3b2 86-91,110-111,152-153,169-170,173
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "baa8ee382edc64d106d9f4d33aa5fb448b08bb68",
+  "prompts": {},
+  "sessions": {
+    "s_19b4e7bcc07559": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "c459d9e4-44e5-4090-b583-ceac0ccccfab",
+        "model": "gpt-5-mini"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
