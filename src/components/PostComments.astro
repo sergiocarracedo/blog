@@ -1,0 +1,96 @@
+---
+import { DISQUS } from '@/consts';
+import { getLangFromUrl, useTranslations, type Locale } from '@/i18n';
+
+interface Props {
+  identifier: string;
+  title: string;
+  lang?: Locale;
+}
+
+const { identifier, title, lang: propLang } = Astro.props;
+const lang = propLang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<aside class="wrapper mb-6 rounded-xl bg-[#8BC2B933] dark:bg-primary-600/50 text-[#333] dark:text-gray-300 py-6 backdrop-blur-sm">
+  <div
+    id="disqus_thread"
+    class="p-4 text-center text-[#333] dark:text-gray-300"
+    data-disqus-identifier={identifier}
+    data-disqus-title={title}
+    data-disqus-shortname={DISQUS}
+    data-comments-placeholder={t('post.commentsCookiePolicy')}
+  >
+    {t('post.commentsCookiePolicy')}
+  </div>
+</aside>
+
+<script>
+  const MAX_RETRIES = 15;
+  const RETRY_DELAY_MS = 1000;
+
+  function loadDisqusIfAllowed() {
+    const thread = document.getElementById('disqus_thread');
+    if (!thread) return;
+
+    const cookieConsent = window.CookieConsent;
+    const hasConsent = cookieConsent?.acceptedService?.('disqus', 'analytics') ?? false;
+
+    if (!hasConsent) {
+      thread.textContent = thread.dataset.commentsPlaceholder || '';
+      return false;
+    }
+
+    const pageUrl = window.location.href;
+    const identifier = thread.dataset.disqusIdentifier || pageUrl;
+    const title = thread.dataset.disqusTitle || document.title;
+    const shortname = thread.dataset.disqusShortname;
+
+    if (!shortname) return;
+
+    window.disqus_config = function() {
+      this.page.url = pageUrl;
+      this.page.identifier = identifier;
+      this.page.title = title;
+    };
+
+    const existingDisqus = window.DISQUS;
+    if (existingDisqus?.reset) {
+      existingDisqus.reset({
+        reload: true,
+        config: window.disqus_config,
+      });
+      return true;
+    }
+
+    if (document.querySelector('script[data-disqus-script="true"]')) {
+      return true;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://${shortname}/embed.js`;
+    script.async = true;
+    script.setAttribute('data-timestamp', String(Date.now()));
+    script.dataset.disqusScript = 'true';
+    document.body.append(script);
+    return true;
+  }
+
+  function initDisqusLoader(retryCount = 0) {
+    const loaded = loadDisqusIfAllowed();
+
+    if (!loaded && retryCount < MAX_RETRIES) {
+      window.setTimeout(() => {
+        initDisqusLoader(retryCount + 1);
+      }, RETRY_DELAY_MS);
+    }
+  }
+
+  if (!window.__disqusLoaderInitialized) {
+    document.addEventListener('astro:after-swap', initDisqusLoader);
+    window.__disqusLoaderInitialized = true;
+  }
+
+  initDisqusLoader();
+</script>

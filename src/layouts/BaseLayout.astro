@@ -2,10 +2,11 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import PreferredSourcesButton from '../components/PreferredSourcesButton.astro';
 import NewsletterToast from '../components/NewsletterToast.astro';
 import NewsletterSuccessToast from '../components/NewsletterSuccessToast.astro';
 
-import { DISQUS, GA } from '../consts';
+import { GA } from '../consts';
 import { getLangFromUrl, type Locale } from '@/i18n';
 
 interface Props {
@@ -36,8 +37,14 @@ const lang = propLang ?? getLangFromUrl(Astro.url);
       <slot />
     </main>
     <Footer lang={lang} />
-    <NewsletterToast lang={lang} />
-    <NewsletterSuccessToast />
+    <div
+      class="fixed right-4 bottom-4 z-1000 flex w-[min(calc(100vw-2rem),25rem)] flex-col items-end gap-3 sm:right-6 sm:bottom-6 sm:w-[min(calc(100vw-3rem),25rem)]"
+      aria-label="Floating actions"
+    >
+      <PreferredSourcesButton lang={lang} />
+      <NewsletterToast lang={lang} />
+      <NewsletterSuccessToast />
+    </div>
 
     <script
       async
@@ -54,11 +61,5 @@ const lang = propLang ?? getLangFromUrl(Astro.url);
 
       gtag('config', 'G-87X78TXEGE');
     </script>
-
-    <script
-      async
-      data-category="analytics"
-      data-service="disqus"
-      data-src={`https://${DISQUS}/embed.js`}></script>
   </body>
 </html>

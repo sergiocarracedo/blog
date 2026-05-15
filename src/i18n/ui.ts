@@ -97,6 +97,9 @@ export const ui: Record<Locale, Record<string, string>> = {
     'newsletter.errorNetwork': 'Network error. Please check your connection and try again.',
     'newsletter.maybeLater': 'Maybe later',
     'newsletter.close': 'Close',
+    'preferredSources.cta': 'Select Sergio Carracedo as a preferred source on Google',
+    'preferredSources.collapse': 'Hide preferred sources button',
+    'preferredSources.expand': 'Show preferred sources button',
     // Subscribe page
     'newsletter.subscribePage.title': 'Subscribe to Newsletter',
     'newsletter.subscribePage.description': 'Get monthly digests of new posts',
@@ -282,6 +285,9 @@ export const ui: Record<Locale, Record<string, string>> = {
       'Error de red. Por favor comprueba tu conexión e inténtalo de nuevo.',
     'newsletter.maybeLater': 'Quizás más tarde',
     'newsletter.close': 'Cerrar',
+    'preferredSources.cta': 'Selecciona a Sergio Carracedo como fuente preferida en Google',
+    'preferredSources.collapse': 'Ocultar boton de fuentes preferidas',
+    'preferredSources.expand': 'Mostrar boton de fuentes preferidas',
     // Subscribe page
     'newsletter.subscribePage.title': 'Suscribirse al boletín',
     'newsletter.subscribePage.description': 'Recibe resúmenes mensuales de nuevos posts',

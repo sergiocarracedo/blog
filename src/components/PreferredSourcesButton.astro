@@ -1,0 +1,183 @@
+---
+import { useTranslations, type Locale } from '@/i18n';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
+const assets =
+  lang === 'es'
+    ? {
+        light: '/google-preferred-sources/ES/google_preferred_source_badge_light_ES.png',
+        light2x: '/google-preferred-sources/ES/google_preferred_source_badge_light_ES@2x.png',
+        dark: '/google-preferred-sources/ES/google_preferred_source_badge_dark_ES.png',
+        dark2x: '/google-preferred-sources/ES/google_preferred_source_badge_dark_ES@2x.png',
+      }
+    : {
+        light: '/google-preferred-sources/EN/google_preferred_source_badge_light_en.png',
+        light2x: '/google-preferred-sources/EN/google_preferred_source_badge_light_en@2x.png',
+        dark: '/google-preferred-sources/EN/google_preferred_source_badge_dark_en.png',
+        dark2x: '/google-preferred-sources/EN/google_preferred_source_badge_dark_en@2x.png',
+      };
+const preferredSourceUrl = 'https://google.com/preferences/source?q=sergiocarracedo.es';
+const shadowClass =
+  'shadow-[0_14px_30px_-16px_rgba(15,23,42,0.5),0_8px_14px_-10px_rgba(15,23,42,0.3)]';
+const shadowHoverClass =
+  'hover:shadow-[0_18px_38px_-16px_rgba(15,23,42,0.55),0_10px_18px_-10px_rgba(15,23,42,0.35)]';
+---
+
+<preferred-sources-toggle class="flex w-full justify-end overflow-hidden">
+  <div
+    class:list={[
+      'inline-flex max-w-full items-center gap-0 transform-gpu opacity-100 transition-[transform,opacity, width] duration-220 ease-out will-change-transform rounded-full overflow-hidden bg-black hover:scale-98',
+    ]}
+    data-preferred-sources-wrapper
+  >
+    <a
+      class:list={[
+        'block  max-w-[12rem] rounded-full transition-all duration-180 ease-out  focus-visible:outline-3 focus-visible:outline-offset-3 pl-2 focus-visible:outline-secondary-light max-sm:max-w-[10.5rem] bg-black radius-lg ',
+        shadowClass,
+        shadowHoverClass,
+      ]}
+      href={preferredSourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={t('preferredSources.cta')}
+      title={t('preferredSources.cta')}
+      data-preferred-sources-panel
+    >
+      <picture class="max-w-full">
+        <source
+          srcset={`${assets.dark2x} 2x, ${assets.dark} 1x`}
+          media="(prefers-color-scheme: dark)"
+        />
+        <img
+          src={assets.light}
+          srcset={`${assets.light2x} 2x, ${assets.light} 1x`}
+          alt={t('preferredSources.cta')}
+          width="192"
+          height="48"
+          loading="lazy"
+        />
+      </picture>
+    </a>
+
+    <button
+      class:list={[
+        'inline-flex h-12 w-12 items-center justify-center rounded-full text-xl leading-none text-white transition-all duration-180 ease-out focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-secondary-light max-sm:h-10 max-sm:w-10 cursor-pointer bg-black z-10 overflow-hidden',
+        shadowClass,
+        shadowHoverClass,
+      ]}
+      type="button"
+      aria-label={t('preferredSources.collapse')}
+      title={t('preferredSources.collapse')}
+      data-preferred-sources-toggle
+      aria-expanded="true"
+    >
+      <Icon
+        name={'outline/chevron-right-outline'}
+        class="inline-block transition-all duration-180 ease-out"
+        data-preferred-sources-toggle-arrow
+      />
+      <Icon name={'outline/google'} width={15} data-preferred-sources-toggle-google-icon />
+    </button>
+  </div>
+</preferred-sources-toggle>
+
+<script>
+  const STORAGE_KEY = 'preferred-sources-collapsed';
+  const COLLAPSED_PANEL_CLASSES = ['w-[0px]', 'pointer-events-none', 'hidden'];
+  const EXPANDED_PANEL_CLASSES = ['w-[140px]'];
+
+  const COLLAPSED_TOGGLE_BUTTON_CLASSES = ['rotate-180'];
+  const EXPANDED_TOGGLE_BUTTON_CLASSES: string[] = [];
+
+  const COLLAPSED_GOOGLE_ICON_CLASSES: string[] = [];
+  const EXPANDED_GOOGLE_ICON_CLASSES = ['hidden'];
+
+  const COLLAPSED_WRAPPER_CLASSES: string[] = [];
+  const EXPANDED_WRAPPER_CLASSES: string[] = [];
+  const sanitizeTokens = (tokens: string[]) => tokens.filter((token) => token.trim().length > 0);
+
+  class PreferredSourcesToggle extends HTMLElement {
+    collapsed = false;
+    panel: Element | null;
+    toggleButton: Element | null;
+    toggleButtonArrow: Element | null;
+    wrapper: Element | null;
+    toggleButtonGoogleIcon: Element | null;
+
+    constructor() {
+      super();
+
+      this.panel = this.querySelector('[data-preferred-sources-panel]');
+      this.toggleButton = this.querySelector('[data-preferred-sources-toggle]');
+      this.toggleButton?.addEventListener('click', () => this.toggle());
+
+      this.toggleButtonArrow = this.querySelector('[data-preferred-sources-toggle-arrow]');
+      this.toggleButtonGoogleIcon = this.querySelector(
+        '[data-preferred-sources-toggle-google-icon]'
+      );
+
+      this.wrapper = this.querySelector('[data-preferred-sources-wrapper]');
+    }
+
+    connectedCallback() {
+      const collapsed = localStorage.getItem(STORAGE_KEY) === 'true';
+      this.setCollapsed(collapsed, false);
+    }
+
+    setCollapsed(collapsed: boolean, persist = true) {
+      this.collapsed = collapsed;
+
+      const collapsedPanelClasses = sanitizeTokens(COLLAPSED_PANEL_CLASSES);
+      const expandedPanelClasses = sanitizeTokens(EXPANDED_PANEL_CLASSES);
+      const collapsedToggleClasses = sanitizeTokens(COLLAPSED_TOGGLE_BUTTON_CLASSES);
+      const expandedToggleClasses = sanitizeTokens(EXPANDED_TOGGLE_BUTTON_CLASSES);
+      const collapsedWrapperClasses = sanitizeTokens(COLLAPSED_WRAPPER_CLASSES);
+      const expandedWrapperClasses = sanitizeTokens(EXPANDED_WRAPPER_CLASSES);
+
+      // panel (google badge)
+      this.panel?.classList.remove(...collapsedPanelClasses, ...expandedPanelClasses);
+      this.panel?.classList.add(...(this.collapsed ? collapsedPanelClasses : expandedPanelClasses));
+
+      // toggle button arrow
+      this.toggleButtonArrow?.classList.remove(...collapsedToggleClasses, ...expandedToggleClasses);
+      this.toggleButtonArrow?.classList.add(
+        ...(this.collapsed ? collapsedToggleClasses : expandedToggleClasses)
+      );
+
+      // toggle button google icon
+      console.log(this.toggleButtonGoogleIcon);
+      this.toggleButtonGoogleIcon?.classList.remove(
+        ...COLLAPSED_GOOGLE_ICON_CLASSES,
+        ...EXPANDED_GOOGLE_ICON_CLASSES
+      );
+      this.toggleButtonGoogleIcon?.classList.add(
+        ...(this.collapsed ? COLLAPSED_GOOGLE_ICON_CLASSES : EXPANDED_GOOGLE_ICON_CLASSES)
+      );
+
+      // wrapper
+      this.wrapper?.classList.remove(...collapsedWrapperClasses, ...expandedWrapperClasses);
+      this.wrapper?.classList.add(
+        ...(this.collapsed ? collapsedWrapperClasses : expandedWrapperClasses)
+      );
+
+      if (persist) {
+        localStorage.setItem(STORAGE_KEY, String(this.collapsed));
+      }
+    }
+
+    toggle(persist = true) {
+      this.setCollapsed(!this.collapsed, persist);
+    }
+  }
+
+  if (!customElements.get('preferred-sources-toggle')) {
+    customElements.define('preferred-sources-toggle', PreferredSourcesToggle);
+  }
+</script>

@@ -14,6 +14,7 @@ import ReadingTime from './parts/ReadingTime.astro';
 import PostMainMedia from './parts/PostMainMedia.astro';
 import AIGeneratedBadge from './parts/AIGeneratedBadge.astro';
 import AutoTranslatedNotice from '../AutoTranslatedNotice.astro';
+import PostComments from '../PostComments.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath, type Locale } from '@/i18n';
 
 type Props = {
@@ -163,8 +164,4 @@ const { Content } = await render(post);
   <Search className="pagefind-ui-dark" uiOptions={{ filters: { language: lang } }} />
 </aside>
 
-<aside class="wrapper mb-6 rounded-xl bg-[#8BC2B933] dark:bg-primary-600/50 text-[#333] dark:text-gray-300 py-6 backdrop-blur-sm">
-  <div id="disqus_thread" class="p-4 text-center text-[#333] dark:text-gray-300">
-    {t('post.commentsCookiePolicy')}
-  </div>
-</aside>
+<PostComments identifier={post.id} title={title} lang={lang} />

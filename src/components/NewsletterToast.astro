@@ -10,7 +10,7 @@ const { lang = 'en' } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<newsletter-toast>
+<newsletter-toast class="block w-full max-w-[400px]">
   <div class="newsletter-toast" hidden>
     <button class="newsletter-toast__close" aria-label={t('newsletter.close')} type="button">
       ✕
@@ -26,11 +26,8 @@ const t = useTranslations(lang);
 
 <style>
   .newsletter-toast {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 90%;
-    max-width: 400px;
+    position: relative;
+    width: 100%;
     background: white;
     border-radius: 12px;
     box-shadow:
@@ -134,11 +131,7 @@ const t = useTranslations(lang);
 
   @media (max-width: 640px) {
     .newsletter-toast {
-      bottom: 1rem;
-      right: 1rem;
-      left: 1rem;
       max-width: none;
-      width: auto;
     }
   }
 </style>
@@ -159,7 +152,7 @@ const t = useTranslations(lang);
       this.closeButton = this.querySelector('.newsletter-toast__close')!;
       this.dismissButton = this.querySelector('.newsletter-toast__dismiss')!;
 
-      this.closeButton.addEventListener('click', () => this.dismiss(false));
+      this.closeButton.addEventListener('click', () => this.dismiss(true));
       this.dismissButton.addEventListener('click', () => this.dismiss(true));
 
       // Listen for successful subscription to close the toast
