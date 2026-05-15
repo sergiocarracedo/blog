@@ -39,7 +39,7 @@ const shadowHoverClass =
   >
     <a
       class:list={[
-        'block  max-w-[12rem] rounded-full transition-all duration-180 ease-out  focus-visible:outline-3 focus-visible:outline-offset-3 pl-2 focus-visible:outline-secondary-light max-sm:max-w-[10.5rem] bg-black radius-lg ',
+        'block max-w-[12rem] rounded-full transition-all duration-180 ease-out focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-secondary-light max-sm:max-w-[10.5rem] bg-black radius-lg overflow-hidden',
         shadowClass,
         shadowHoverClass,
       ]}
@@ -83,21 +83,32 @@ const shadowHoverClass =
         class="inline-block transition-all duration-180 ease-out"
         data-preferred-sources-toggle-arrow
       />
-      <Icon name={'outline/google'} width={15} data-preferred-sources-toggle-google-icon />
+      <Icon
+        name={'outline/google'}
+        width={15}
+        class="inline-block transition-all duration-180 ease-out origin-center"
+        data-preferred-sources-toggle-google-icon
+      />
     </button>
   </div>
 </preferred-sources-toggle>
 
 <script>
   const STORAGE_KEY = 'preferred-sources-collapsed';
-  const COLLAPSED_PANEL_CLASSES = ['w-[0px]', 'pointer-events-none', 'hidden'];
-  const EXPANDED_PANEL_CLASSES = ['w-[140px]'];
+  const COLLAPSED_PANEL_CLASSES = [
+    'w-[0px]',
+    'pl-0',
+    'opacity-0',
+    '-translate-x-2',
+    'pointer-events-none',
+  ];
+  const EXPANDED_PANEL_CLASSES = ['w-[140px]', 'pl-2', 'opacity-100', 'translate-x-0'];
 
   const COLLAPSED_TOGGLE_BUTTON_CLASSES = ['rotate-180'];
   const EXPANDED_TOGGLE_BUTTON_CLASSES: string[] = [];
 
-  const COLLAPSED_GOOGLE_ICON_CLASSES: string[] = [];
-  const EXPANDED_GOOGLE_ICON_CLASSES = ['hidden'];
+  const COLLAPSED_GOOGLE_ICON_CLASSES = ['w-[15px]', 'opacity-100', 'scale-100'];
+  const EXPANDED_GOOGLE_ICON_CLASSES = ['w-0', 'opacity-0', 'scale-75', 'pointer-events-none'];
 
   const COLLAPSED_WRAPPER_CLASSES: string[] = [];
   const EXPANDED_WRAPPER_CLASSES: string[] = [];
@@ -138,6 +149,8 @@ const shadowHoverClass =
       const expandedPanelClasses = sanitizeTokens(EXPANDED_PANEL_CLASSES);
       const collapsedToggleClasses = sanitizeTokens(COLLAPSED_TOGGLE_BUTTON_CLASSES);
       const expandedToggleClasses = sanitizeTokens(EXPANDED_TOGGLE_BUTTON_CLASSES);
+      const collapsedGoogleIconClasses = sanitizeTokens(COLLAPSED_GOOGLE_ICON_CLASSES);
+      const expandedGoogleIconClasses = sanitizeTokens(EXPANDED_GOOGLE_ICON_CLASSES);
       const collapsedWrapperClasses = sanitizeTokens(COLLAPSED_WRAPPER_CLASSES);
       const expandedWrapperClasses = sanitizeTokens(EXPANDED_WRAPPER_CLASSES);
 
@@ -152,13 +165,12 @@ const shadowHoverClass =
       );
 
       // toggle button google icon
-      console.log(this.toggleButtonGoogleIcon);
       this.toggleButtonGoogleIcon?.classList.remove(
-        ...COLLAPSED_GOOGLE_ICON_CLASSES,
-        ...EXPANDED_GOOGLE_ICON_CLASSES
+        ...collapsedGoogleIconClasses,
+        ...expandedGoogleIconClasses
       );
       this.toggleButtonGoogleIcon?.classList.add(
-        ...(this.collapsed ? COLLAPSED_GOOGLE_ICON_CLASSES : EXPANDED_GOOGLE_ICON_CLASSES)
+        ...(this.collapsed ? collapsedGoogleIconClasses : expandedGoogleIconClasses)
       );
 
       // wrapper
