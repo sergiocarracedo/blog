@@ -1,0 +1,28 @@
+src/components/PreferredSourcesButton.astro
+  h_f90ee31b03fc41 3,35-38,40-68,71,78,81-86,93-104,107-113,118-126,134-167,169,171,173-176
+src/icons/outline/google.svg
+  h_f90ee31b03fc41 1
+src/layouts/BaseLayout.astro
+  s_64b0de859898e6::t_42c8ed53ae71b0 41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "176ba740d80d166f05100e0d25389c1b9e1dd776",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_64b0de859898e6": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "c5b2c486-98a6-4219-b557-952efa02fdf0",
+        "model": "gpt-5-mini"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
