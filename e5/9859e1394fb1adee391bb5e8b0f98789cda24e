@@ -1,0 +1,55 @@
+.planning/codebase/CONVENTIONS.md
+  s_a77dea51df9501::t_959be879d2a488 1-79
+.planning/codebase/STACK.md
+  s_1d0da4de558680::t_5a011dd125ee04 1-172
+.planning/codebase/STRUCTURE.md
+  s_1528e1f5b14a1d::t_d0d9b4476f2b6b 1-163
+.planning/codebase/CONCERNS.md
+  s_e59fa13c3aadb3::t_786ea593102607 1-72
+.planning/codebase/TESTING.md
+  s_a77dea51df9501::t_6569fc85963429 1-77
+.planning/codebase/INTEGRATIONS.md
+  s_1d0da4de558680::t_5a011dd125ee04 1-222
+.planning/codebase/ARCHITECTURE.md
+  s_1528e1f5b14a1d::t_d0d9b4476f2b6b 1-109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "e59859e1394fb1adee391bb5e8b0f98789cda24e",
+  "prompts": {},
+  "sessions": {
+    "s_1528e1f5b14a1d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1b9cf8498ffeMb189owlCEP4jA",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    },
+    "s_1d0da4de558680": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1b9cf84d3ffeNblZZHmEWXYuz1",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    },
+    "s_a77dea51df9501": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1b9cf8464ffeuqQIGwftq93JTH",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    },
+    "s_e59fa13c3aadb3": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1b9cf8432ffe41SPglbluuzSUz",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
