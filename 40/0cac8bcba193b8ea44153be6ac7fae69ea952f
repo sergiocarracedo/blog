@@ -1,0 +1,14 @@
+src/content/blog/2026/2026-05-17-ai-vendor-locking/index.en.mdx
+  h_f90ee31b03fc41 1-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "400cac8bcba193b8ea44153be6ac7fae69ea952f",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
