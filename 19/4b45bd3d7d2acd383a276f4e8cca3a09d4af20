@@ -1,0 +1,20 @@
+.gitignore
+  s_d4203810007c0f::t_955e57317c4bb9 35
+  s_d4203810007c0f::t_571582dffd1830 34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "194b45bd3d7d2acd383a276f4e8cca3a09d4af20",
+  "prompts": {},
+  "sessions": {
+    "s_d4203810007c0f": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1b9d1918fffeJoN2mUDEeVV5f1",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
