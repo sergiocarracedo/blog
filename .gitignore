@@ -31,3 +31,5 @@ newsletter-*.log
 
 # Wrangler (Cloudflare Workers)
 .wrangler/
+.opencode/
+.planning/
