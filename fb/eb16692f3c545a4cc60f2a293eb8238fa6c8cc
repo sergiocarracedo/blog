@@ -1,0 +1,41 @@
+src/content/blog/2026/2026-05-21-ai-harness/index.en.mdx
+  s_3415ec0f5411d0::t_381812562ab07f 129,131,133,137
+  h_f90ee31b03fc41 3,9
+  s_3415ec0f5411d0::t_05e3f1871c1b95 140
+  s_3415ec0f5411d0::t_64d5ea108c9fab 154
+  s_3415ec0f5411d0::t_4ad0bdbf49df4b 110,114,118,120
+  s_3415ec0f5411d0::t_cbb928cff171bb 40,61,63
+  s_3415ec0f5411d0::t_6e7124bdaf65c4 122,125
+  s_3415ec0f5411d0::t_27ee0c3cf62c80 106-108
+  s_5290860b629c0a::t_ced1669e781717 135-136,144,156
+  s_3415ec0f5411d0::t_b847f7ac423fe0 20,22,32,34,36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "fbeb16692f3c545a4cc60f2a293eb8238fa6c8cc",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_3415ec0f5411d0": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "34a995d8-5a03-4da5-aff6-f1672cea629a",
+        "model": "gpt-5-mini"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    },
+    "s_5290860b629c0a": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "bbf0c7ae-d830-43f5-acb6-c0830e330b5a",
+        "model": "gpt-5-mini"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
