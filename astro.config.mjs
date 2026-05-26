@@ -23,6 +23,7 @@ import { remarkDirectiveSpotify } from './src/remark-plugins/remark-directive-sp
 import { remarkDirectiveYoutube } from './src/remark-plugins/remark-directive-youtube';
 
 import icon from 'astro-icon';
+import mermaid from 'astro-mermaid';
 
 import pagefind from 'astro-pagefind';
 
@@ -42,6 +43,10 @@ export default defineConfig({
     cookieconsent(cookieConsentConfig),
     react({
       experimentalReactChildren: true,
+    }),
+    mermaid({
+      theme: 'dark',
+      autoTheme: true,
     }),
   ],
   image: {
