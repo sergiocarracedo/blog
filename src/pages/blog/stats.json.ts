@@ -2,7 +2,7 @@ import { getBlogStats } from '@/utils/getBlogStats';
 import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async () => {
-  const stats = await getBlogStats();
+  const stats = await getBlogStats('en');
 
   return new Response(JSON.stringify(stats, null, 2), {
     status: 200,

@@ -12,8 +12,9 @@ export function getStaticPaths() {
 const { lang: langParam } = Astro.params;
 const lang = langParam as Locale;
 const t = useTranslations(lang);
+const statsJsonPath = `/${lang}/blog/stats.json`;
 
-const stats = await getBlogStats();
+const stats = await getBlogStats(lang);
 const meta = {
   title: t('footer.blogStats'),
   description: 'Visual analytics for blog publishing cadence, words, and tags.',
@@ -34,7 +35,10 @@ const meta = {
     <div class="p-6 sm:p-6 lg:p-8">
       <BlogStatsCharts stats={stats} client:only="react" />
       <div class="mt-8 text-sm text-slate-500">
-        Stats JSON: <a class="underline" href="/blog/stats.json">/blog/stats.json</a>
+        Stats JSON:{' '}
+        <a class="underline" href={statsJsonPath}>
+          {statsJsonPath}
+        </a>
       </div>
     </div>
   </section>

@@ -1,4 +1,5 @@
-import { getCollection } from 'astro:content';
+import type { Locale } from '@/i18n';
+import { getLocalizedPosts } from '@/utils/getLocalizedPosts';
 
 type MonthKey = string;
 
@@ -11,6 +12,11 @@ interface TimeStats {
   posts: number;
   words: number;
   avgWords: number;
+}
+
+interface WordUsage {
+  word: string;
+  count: number;
 }
 
 export interface BlogStats {
@@ -45,7 +51,188 @@ export interface BlogStats {
       tags: Record<string, number>;
     }>;
   };
+  topWordsByYear: Array<{
+    year: number;
+    words: WordUsage[];
+  }>;
 }
+
+const TOP_WORDS_PER_YEAR = 12;
+
+const STOPWORDS: Record<Locale, Set<string>> = {
+  en: new Set([
+    'a',
+    'about',
+    'after',
+    'all',
+    'also',
+    'an',
+    'and',
+    'any',
+    'are',
+    'as',
+    'at',
+    'be',
+    'been',
+    'being',
+    'but',
+    'by',
+    'can',
+    'could',
+    'did',
+    'do',
+    'does',
+    'for',
+    'from',
+    'had',
+    'has',
+    'have',
+    'how',
+    'if',
+    'in',
+    'into',
+    'is',
+    'it',
+    'its',
+    'just',
+    'more',
+    'most',
+    'my',
+    'new',
+    'not',
+    'of',
+    'on',
+    'one',
+    'or',
+    'our',
+    'out',
+    'over',
+    'so',
+    'some',
+    'than',
+    'that',
+    'the',
+    'their',
+    'them',
+    'there',
+    'these',
+    'they',
+    'this',
+    'to',
+    'up',
+    'use',
+    'used',
+    'using',
+    'was',
+    'we',
+    'were',
+    'what',
+    'when',
+    'which',
+    'who',
+    'why',
+    'will',
+    'with',
+    'you',
+    'your',
+  ]),
+  es: new Set([
+    'a',
+    'al',
+    'algo',
+    'algun',
+    'alguna',
+    'algunas',
+    'algunos',
+    'ante',
+    'asi',
+    'aunque',
+    'como',
+    'con',
+    'contra',
+    'cual',
+    'cuando',
+    'de',
+    'del',
+    'desde',
+    'donde',
+    'dos',
+    'el',
+    'ella',
+    'ellas',
+    'ellos',
+    'en',
+    'entre',
+    'era',
+    'eran',
+    'eres',
+    'es',
+    'esa',
+    'esas',
+    'ese',
+    'eso',
+    'esos',
+    'esta',
+    'estaba',
+    'estado',
+    'estan',
+    'estar',
+    'este',
+    'esto',
+    'estos',
+    'fue',
+    'ha',
+    'han',
+    'hasta',
+    'hay',
+    'la',
+    'las',
+    'le',
+    'les',
+    'lo',
+    'los',
+    'mas',
+    'me',
+    'mi',
+    'mis',
+    'mucho',
+    'muy',
+    'ni',
+    'no',
+    'nos',
+    'nuestra',
+    'nuestro',
+    'o',
+    'otra',
+    'otro',
+    'para',
+    'pero',
+    'por',
+    'porque',
+    'que',
+    'se',
+    'sin',
+    'sobre',
+    'solo',
+    'su',
+    'sus',
+    'te',
+    'tambien',
+    'tener',
+    'tiene',
+    'todo',
+    'todos',
+    'tu',
+    'un',
+    'una',
+    'uno',
+    'unos',
+    'usar',
+    'uso',
+    'ya',
+    'y',
+  ]),
+};
 
 const countWords = (text: string) => {
   const trimmed = text.trim();
@@ -81,29 +268,55 @@ const MONTH_LABELS = [
 const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const getMonthRange = (from: Date, to: Date) => {
-  const months: MonthKey[] = [];
-  const cursor = new Date(from.getFullYear(), from.getMonth(), 1);
-  const last = new Date(to.getFullYear(), to.getMonth(), 1);
+  const firstMonthIndex = from.getFullYear() * 12 + from.getMonth();
+  const lastMonthIndex = to.getFullYear() * 12 + to.getMonth();
+  const totalMonths = lastMonthIndex - firstMonthIndex + 1;
 
-  while (cursor <= last) {
-    months.push(toMonthKey(cursor));
-    cursor.setMonth(cursor.getMonth() + 1);
-  }
+  return Array.from({ length: totalMonths }, (_, offset) => {
+    const monthIndex = firstMonthIndex + offset;
+    const year = Math.floor(monthIndex / 12);
+    const month = monthIndex % 12;
 
-  return months;
+    return toMonthKey(new Date(year, month, 1));
+  });
+};
+
+const getYearRange = (from: Date, to: Date) => {
+  const firstYear = from.getFullYear();
+  const lastYear = to.getFullYear();
+
+  return Array.from({ length: lastYear - firstYear + 1 }, (_, offset) => firstYear + offset);
 };
 
 const toAvg = (stats: PerPeriodStats) =>
   stats.posts === 0 ? 0 : Math.round((stats.words / stats.posts) * 100) / 100;
 
-export const getBlogStats = async (): Promise<BlogStats> => {
-  const posts = await getCollection('blog');
+const normalizeWord = (word: string) =>
+  word
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+const getWords = (text: string, locale: Locale) => {
+  const stopwords = STOPWORDS[locale];
+  const matches = text.match(/[\p{L}\p{N}]+/gu) ?? [];
+
+  return matches
+    .map(normalizeWord)
+    .filter((word) => word.length > 1)
+    .filter((word) => !/^\d+$/.test(word))
+    .filter((word) => !stopwords.has(word));
+};
+
+export const getBlogStats = async (locale: Locale): Promise<BlogStats> => {
+  const posts = await getLocalizedPosts(locale);
 
   const entries = posts
     .map((post) => ({
       date: post.data.pubDate,
       words: countWords(post.body ?? ''),
       tags: post.data.tags ?? [],
+      text: [post.data.title, post.data.description ?? '', post.body ?? ''].join(' '),
     }))
     .sort((a, b) => a.date.valueOf() - b.date.valueOf());
 
@@ -113,6 +326,7 @@ export const getBlogStats = async (): Promise<BlogStats> => {
   const perDayOfWeek = new Map<number, PerPeriodStats>();
   const tagTotals = new Map<string, number>();
   const tagYearly = new Map<number, Map<string, number>>();
+  const topWordsByYear = new Map<number, Map<string, number>>();
 
   entries.forEach((entry, index) => {
     const year = toYear(entry.date);
@@ -141,6 +355,7 @@ export const getBlogStats = async (): Promise<BlogStats> => {
     perDayOfWeek.set(dayOfWeek, dayOfWeekStats);
 
     const yearTagStats = tagYearly.get(year) ?? new Map<string, number>();
+    const yearWordStats = topWordsByYear.get(year) ?? new Map<string, number>();
 
     entry.tags.forEach((tag) => {
       const total = (tagTotals.get(tag) ?? 0) + 1;
@@ -149,17 +364,28 @@ export const getBlogStats = async (): Promise<BlogStats> => {
       yearTagStats.set(tag, (yearTagStats.get(tag) ?? 0) + 1);
     });
 
+    getWords(entry.text, locale).forEach((word) => {
+      yearWordStats.set(word, (yearWordStats.get(word) ?? 0) + 1);
+    });
+
     tagYearly.set(year, yearTagStats);
+    topWordsByYear.set(year, yearWordStats);
   });
 
-  const perYearArray = Array.from(perYear.entries())
-    .sort(([a], [b]) => a - b)
-    .map(([year, stats]) => ({
+  const yearRange = entries.length
+    ? getYearRange(entries[0].date, entries[entries.length - 1].date)
+    : [];
+
+  const perYearArray = yearRange.map((year) => {
+    const stats = perYear.get(year) ?? { posts: 0, words: 0 };
+
+    return {
       year,
       posts: stats.posts,
       words: stats.words,
       avgWords: toAvg(stats),
-    }));
+    };
+  });
 
   const monthKeys = entries.length
     ? getMonthRange(entries[0].date, entries[entries.length - 1].date)
@@ -206,6 +432,16 @@ export const getBlogStats = async (): Promise<BlogStats> => {
       tags: Object.fromEntries(tags.entries()),
     }));
 
+  const topWordsByYearArray = Array.from(topWordsByYear.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([year, words]) => ({
+      year,
+      words: Array.from(words.entries())
+        .sort(([wordA, countA], [wordB, countB]) => countB - countA || wordA.localeCompare(wordB))
+        .slice(0, TOP_WORDS_PER_YEAR)
+        .map(([word, count]) => ({ word, count })),
+    }));
+
   const totalPosts = entries.length;
   const totalWords = entries.reduce((sum, entry) => sum + entry.words, 0);
 
@@ -224,5 +460,6 @@ export const getBlogStats = async (): Promise<BlogStats> => {
       totals: tagTotalsObject,
       yearly: tagYearlyArray,
     },
+    topWordsByYear: topWordsByYearArray,
   };
 };
