@@ -1,0 +1,83 @@
+src/pages/blog/stats.json.ts
+  s_38bd160da220b8::t_fc0eb70db58290 5
+src/components/blog/stats/StatsSectionNav.tsx
+  s_38bd160da220b8::t_2de857e455efd4 7-19,21-23
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-6,20
+src/components/blog/stats/TopWordsByYearCards.tsx
+  s_38bd160da220b8::t_4ef293821d0f6c 34-36
+  s_38bd160da220b8::t_62f216dbe9f4c9 10,12,16,20,23,63-65,77-79,85,91-92,94-96
+  s_38bd160da220b8::t_8c3c620e2949ef 38-39
+  s_38bd160da220b8::t_63d5a97c9fab5d 31-32,49,51,55,57,61-62,66-68,71,75,82,93
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-9,11,13-15,17-19,21-22,24-30,33,37,40-48,50,52-54,56,58-60,69-70,72-74,76,80-81,83-84,86-90,97-103
+src/components/blog/BlogStatsCharts.tsx
+  s_38bd160da220b8::t_ec81e6614941c1 32-34
+  s_38bd160da220b8::t_fdd1c0e07eb120 3-9,16,38-43
+  s_46ee4ba70533d8::t_129d32d4c75e2b 1
+src/components/blog/stats/PostsStatsSection.tsx
+  s_38bd160da220b8::t_4ef293821d0f6c 88-92
+  h_f90ee31b03fc41 34
+  s_38bd160da220b8::t_0718a11c59b5e9 47-48,51
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-33,36-46,49-50,52-83,85-87,93-115
+  s_38bd160da220b8::t_08fbe5444e34fa 35,84
+src/pages/[lang]/blog/stats.astro
+  s_38bd160da220b8::t_fc0eb70db58290 17,38,41
+  s_38bd160da220b8::t_ec81e6614941c1 15,39-40
+src/pages/[lang]/blog/stats.json.ts
+  s_38bd160da220b8::t_fc0eb70db58290 1,3,8-25
+  s_38bd160da220b8::t_ec81e6614941c1 2,4-7
+src/components/blog/stats/TagsStatsSection.tsx
+  s_38bd160da220b8::t_0718a11c59b5e9 42,51
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-16,19-20,24-29,37-41,43-50,52-75
+  s_38bd160da220b8::t_2de857e455efd4 21,30-36
+  s_38bd160da220b8::t_2a354478f5a78c 17-18,22-23
+src/components/blog/stats/StatsSectionHeading.tsx
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-5
+  s_38bd160da220b8::t_2de857e455efd4 6-11
+src/components/blog/stats/WordsStatsSection.tsx
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-9,11-36,38-108,113-117
+  s_38bd160da220b8::t_62f216dbe9f4c9 10,109-112
+  s_38bd160da220b8::t_65c016bab00a3f 37
+src/components/blog/stats/StatsOverview.tsx
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-7,20,23,29-30
+  s_38bd160da220b8::t_2de857e455efd4 8-19,21-22,24-25,31-33
+  s_38bd160da220b8::t_1ecec530e89b55 26-28
+src/utils/getBlogStats.ts
+  s_38bd160da220b8::t_ec81e6614941c1 271-273,275-278,280-281
+  s_38bd160da220b8::t_65a11530e8ea67 1-2,17-21,54-57,60-235,294-311,319,329,358,367-370,372,435-444,463
+  s_38bd160da220b8::t_5db9978dc7dbe9 375-377
+  s_38bd160da220b8::t_0718a11c59b5e9 284-288,312,378-382,387-388
+src/components/blog/stats/chartUtils.ts
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-50
+src/components/blog/stats/TopWordsByYearChart.tsx
+  s_38bd160da220b8::t_fdd1c0e07eb120 1-16,27-35,37-104
+  s_38bd160da220b8::t_4ef293821d0f6c 17-26,36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "a18bb9f30251125600855df9ae6bca541404e8d2",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_38bd160da220b8": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_196769f5affej4jyqarboYdX9d",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    },
+    "s_46ee4ba70533d8": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_19a199178ffeKAHRBaKoVXgmSY",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
