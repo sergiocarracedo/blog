@@ -1,0 +1,24 @@
+.github/workflows/deploy.yml
+  s_e1200f0d49a4d8::t_a50c73a86c76bf 67-68
+  s_e1200f0d49a4d8::t_874e6b9a60ad25 24
+.github/workflows/newsletter-send.yml
+  s_e1200f0d49a4d8::t_99651b62e63dba 33
+.github/workflows/deploy-worker.yml
+  s_e1200f0d49a4d8::t_f0376be96326d9 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "92a637d373049d3fdab223a30262e4fa790acd7e",
+  "prompts": {},
+  "sessions": {
+    "s_e1200f0d49a4d8": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_16c7b513fffecoA9oAmenuhjXc",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
