@@ -11,71 +11,71 @@ tags:
   - frontend
 ---
 
-When we have a SPA, or any app which uses a browser-like to run, we usually don't put attention to links and buttons more than the visual part, most UI kits include them as 2 different components: [HeroUI Button](https://heroui.com/en/docs/react/components/button) and [HeroUI Link](https://heroui.com/en/docs/react/components/link)
+When we have a SPA, or any app running in a browser-like environment, we usually don't pay attention to links and buttons beyond the visual part—most UI kits include them as two different components: [HeroUI Button](https://heroui.com/en/docs/react/components/button) and [HeroUI Link](https://heroui.com/en/docs/react/components/link)
 
 ![Button and link](./button-link.png)
 
 
-As you can see, both are visually differents and at first view i guess you now when use one and when use the other one. Really?
+As you can see, both look different and at first glance I guess you know when to use one and when to use the other. Really?
 
 
-## What a button and a link are?
+## What are buttons and links?
 
-According with the W3C ARIA, *"[A button is a widget that enables users to trigger an action or event, such as submitting a form, opening a dialog, canceling an action](https://www.w3.org/WAI/ARIA/apg/patterns/button/)"*.
+According to the W3C ARIA, *"[A button is a widget that enables users to trigger an action or event, such as submitting a form, opening a dialog, canceling an action](https://www.w3.org/WAI/ARIA/apg/patterns/button/)"*.
 
 Regarding the link: *"[A link widget provides an interactive reference to a resource.](https://www.w3.org/WAI/ARIA/apg/patterns/link/)"*
 
 
-Links (using an anchor, `a`) can also content any other element inside (except another `a`), but buttons only should contain some inline elements according the standard: `strong`, `em`, `span`, `small`, `br`, `img`, `svg`, `canvas`, etc.
+Links (using an anchor, `a`) can also contain any other element inside (except another `a`), but buttons should only contain some inline elements according to the standard: `strong`, `em`, `span`, `small`, `br`, `img`, `svg`, `canvas`, etc.
 
-**But futher than that, the standard doesn't define how button or link should look like, the standard defines the semantic meaning and the behavior.**
+**But further than that, the standard doesn't define how a button or link should look; the standard defines the semantic meaning and the behavior.**
 
-We see them in a different way because the browsers applies the "User Agent StyleSheet", default CSS the brwoser applies to the tags. That is the reason why a button (without any user CSS) looks different in different browsers or devices.
+We see them differently because the browser applies the "User Agent stylesheet" — default CSS the browser applies to the tags. That is why a button (without any user CSS) looks different across browsers or devices.
 
-![Buttons in diferent broswers](./buttons.png)
+![Buttons in different browsers](./buttons.png)
 
 
 ## A common use case
 
-Imagine this example, which represents a detail page of an element, and in the header we have the actions buttons, the arrows allows to navigate to the previous and next item, a button to delete the item and another to add a new item
+Imagine this example, which represents a detail page of an element. In the header we have the action buttons: the arrows allow navigation to the previous and next item, a button to delete the item, and another to add a new item.
 
 ![](./app-example.png)
 
 
-But, are you sure all should be buttons? They looks like buttons, but not all should behave as buttons in the same way W3C defines a button.
+But are you sure all should be buttons? They look like buttons, but not all should behave as buttons in the same way the W3C defines a button.
 
 A typical mistake is to do the navigation programatically: `<button onClick="navigateTo('/item/23')">`
 
-That seems to work, **but you are loosing a lot and degrading the user experiencie:**
+That seems to work, **but you are losing a lot and degrading the user experience:**
 
 - The user can not use mouse middle button to open the link in a new tab
-- Browser's back button will not back to the previous page (this will depend on how your router add the navigation to the navigation history)
+- Browser's back button will not go back to the previous page (this will depend on how your router adds the navigation to the navigation history)
 - User can not do right click and share the link
 - In general any behavior the native link can provide
 
 
-#### "But that looks like a button...": button/link semantics vs button/link visuals
+### "But that looks like a button...": button/link semantics vs button/link visuals
 
-Talking about a button or a link, is not talking just about a single thing, we can talk about the behavior or talk about the visuals, That's is important, looking back the example:
+Talking about a button or a link is not just about a single thing — we can talk about the behavior or talk about the visuals. This is important. Looking back at the example:
 
-- The arrow buttons are visually buttons, but semantically links,
-- The "Delete" button, it is visually semantically a button as triggers an action
-- The "Add new" button, it will depend, but if it navigates to a new page or changes the url to force to open a popup it should be a link semantically
+- The arrow buttons are visually buttons but semantically links.
+- The "Delete" button is visually and semantically a button as it triggers an action.
+- The "Add new" button depends; if it navigates to a new page or changes the URL to force open a popup, it should be semantically a link.
 
-You could wrap the button in an anchor but in my opinion that is not a nice solution.
+You could wrap the button in an anchor but in my opinion that is not an ideal solution.
 
 
 ## A solution
 
-The solution I like to implement in the design systems I create or maintain is just to have just an internal `Action` component which uses `<button>` or `a` (or the framework's router tag you use) as content wrapper depending on the props passed:
+The solution I like to implement in the design systems I create or maintain is to have an internal `Action` component which uses `<button>` or `a` (or the framework's router tag you use) as content wrapper depending on the props passed:
 
-If the prop `to` (or `href` for pure links) is set, that means we want to navigate, so it should be semantically a link, in other case, it should be a button.
+If the prop `to` (or `href` for pure links) is set, that means we want to navigate, so it should be semantically a link; otherwise, it should be a button.
 
-And regarding the visual part, as it can be also useful to provide visual variants to the links like the buttons: `primary`, `secondary`, `danger`, etc.
+And regarding the visual part, it is also useful to provide visual variants to the links like the buttons: `primary`, `secondary`, `danger`, etc.
 
-Then for this internal component we expose a prop to decide if the visuals must be as a button or as a link (`render-as`)
+For this internal component we expose a prop to decide if the visuals must be as a button or as a link (`render-as`).
 
-This component should accept more props related to button behavior or link bahavior, so if we are using typescript we can use discriminated unions:
+This component should accept more props related to button behavior or link behavior, so if we are using TypeScript we can use discriminated unions:
 
 ```ts
 type ActionProps = {
@@ -94,14 +94,14 @@ type ActionProps = {
 )
 ```
 
-The idea behind this is to be able to provide the same behavior for the button and link content, for example icons, loading state, disabled, etc.
+The idea is to provide the same behavior for the button and link content, for example icons, loading state, disabled, etc.
 
-Theorically you can create a button behavior with the link visuals, but It can be confusing for the users, so I prefer to avoid this case exposing two public components:
+Theoretically you can create a button behavior with the link visuals, but it can be confusing for the users, so I prefer to avoid this case by exposing two public components:
 
-- A `Button` component will always rendered as a button, but can behave as like depending ok the presence of the `to` or `href` prop
-- A `Link` component behaves and visually renders as link
+- A `Button` component is always rendered as a button, but can behave as a link depending on the presence of the `to` or `href` prop.
+- A `Link` component behaves and visually renders as a link.
 
-As I mentioned, both components are just a proxy which limits the props exposed and wires then to the internal Action component
+As I mentioned, both components are just a proxy which limits the props exposed and wires them to the internal Action component.
 
 
 The full decision flow looks like this:
@@ -129,19 +129,19 @@ flowchart TD
     Nav -- "no (type, disabled)" --> BtnTag["Render: button tag<br/>action semantics"]:::tag
 ```
 
-### Accesibility
+### Accessibility
 
-As the button behaves as a button and the link as a link, you don't need to do anything special, no need to add `role` attribute. A screen reader will anunce the link as any other link and button as a button.
+As the button behaves as a button and the link behaves as a link, you don't need to do anything special — no need to add a `role` attribute. A screen reader will announce the link as any other link and the button as a button.
 
 
 ### Other considerations
 
-- **Style reset**: You must be very careful reseting the styles of `<button>` and `<a>` in the Action component as the user should not notice any visual difference between then (including the aligment when you have both in the same line)
+- **Style reset**: You must be very careful resetting the styles of `<button>` and `<a>` in the Action component as the user should not notice any visual difference between them (including the alignment when you have both on the same line).
 
 
 ## Summary
 
-Understanding the difference between the visuals and the semanting regarding button and links, allows you to create better applications, at least for me try to open something which navigates in a new tab and being not able of doing is very frustrating, this is the typical detail that reduces the perception of quality of a product.
+Understanding the difference between the visuals and the semantics regarding buttons and links allows you to create better applications. At least for me, trying to open something that navigates in a new tab and not being able to do so is very frustrating. This is the kind of detail that reduces the perceived quality of a product.
 
 
 
