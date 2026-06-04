@@ -1,0 +1,14 @@
+src/content/blog/2026/2026-06-04-button-and-links/index.en.mdx
+  h_f90ee31b03fc41 1-151
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "7c0288ee44237b1bd7a64c4f309a71812e92554a",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
