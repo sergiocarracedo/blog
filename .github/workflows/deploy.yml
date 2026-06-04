@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -64,7 +64,8 @@ jobs:
           if git diff --staged --quiet; then
             echo "No new translations to commit"
           else
-            git commit -m "chore: auto-translate pending posts [skip ci]"
+            git pull --rebase origin main
+            git commit --amend --no-edit
             git push
             echo "✅ Translations committed and pushed"
           fi
