@@ -1,0 +1,51 @@
+src/content/blog/2026/2026-06-04-button-and-links/index.en.mdx
+  s_e1200f0d49a4d8::t_f63aaa609dab4d 22
+  s_e1200f0d49a4d8::t_39700473896f3d 33
+  s_e1200f0d49a4d8::t_9f0742028ba367 14
+  s_e1200f0d49a4d8::t_bef6f6aae4f04b 52
+  s_e1200f0d49a4d8::t_be90a716a7871a 99
+  s_e1200f0d49a4d8::t_c2511e10b0a844 76
+  s_e1200f0d49a4d8::t_629db60fc9ce0f 35
+  s_e1200f0d49a4d8::t_84feb108df0896 49
+  s_e1200f0d49a4d8::t_6d26fed42f9f32 45
+  s_e1200f0d49a4d8::t_bc9a2a98136f11 61-63
+  s_e1200f0d49a4d8::t_051ae4eeda517b 78
+  s_e1200f0d49a4d8::t_f3abf08d0570d4 104
+  s_e1200f0d49a4d8::t_1dd2b5a60cf92d 31
+  s_e1200f0d49a4d8::t_fecdc257ba67d8 101-102
+  s_e1200f0d49a4d8::t_4b2230619b5885 132
+  s_e1200f0d49a4d8::t_25f238eeda41a8 139
+  s_e1200f0d49a4d8::t_d623d47f0dd783 19
+  s_e1200f0d49a4d8::t_5bdf8cd7027ee2 70
+  s_e1200f0d49a4d8::t_dd611930399578 144
+  s_e1200f0d49a4d8::t_f7129e8dc4c5dd 134
+  s_e1200f0d49a4d8::t_5b2be583db6ba0 59
+  s_e1200f0d49a4d8::t_fedaf59099379c 72
+  s_e1200f0d49a4d8::t_9e4330325220f7 97
+  s_e1200f0d49a4d8::t_aed78d09e839f8 29
+  s_e1200f0d49a4d8::t_a84efa5e6aafba 74
+  s_e1200f0d49a4d8::t_3d38e8694d5300 65
+  s_e1200f0d49a4d8::t_6e71d09fcff6c7 40
+  s_e1200f0d49a4d8::t_83c24a91d37daf 24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "7607f0484a872612c4bc1c8b86c699e1c819e8f0",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_e1200f0d49a4d8": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_16c7b513fffecoA9oAmenuhjXc",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
