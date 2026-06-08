@@ -10,74 +10,74 @@ heroImageMeta:
 tags:
   - frontend
   - ui
+  - design-systems
+  - architecture
 ---
 
-An issue I saw a lot in UI component libraries is that they expose a `className` prop, `style` prop or any other way to modify the component style to allow developers to customize the component to adapt it to "their needs" (I will explain what their needs are), but this **is a bad practice and you should avoid it**. 
+An issue I see a lot in UI component libraries is exposing a `className` prop, `style` prop, or any other way to modify the component's appearance so developers can customize it to suit "their needs" (I will explain what those needs are). But this **is a bad practice and you should avoid it**.
 
-In this post, I will explain why you should avoid it.
-
-
-## What kinds of UI component libraries this applies to?
-
-Before going into the topic, I want to clarify that there are different types of UI component libraries, we can group or categorize them in multiple ways:
-But for this post: 
+In this post, I will explain why.
 
 
-- **Generalistic components' libs**: Libraries that provide a set of components that are slightly opinionated but they are more focused on providing a set of components that can be used in any project. For example, [HeroUI](https://heroui.com/en/docs/react/components/button) or [Radix UI](https://www.radix-ui.com/primitives/docs/components/button).
+## What kinds of UI component libraries does this apply to?
 
-- **Brand / app components' lib**: It is absolutely opinionated, as it represents the company UX language, UX patterns and it should part of the brand identity. In other words, the ones that are not just a set of components but they also define a design system
+Before diving in, I want to clarify that there are different types of UI component libraries. We can group them in multiple ways, but for this post:
 
-For the geeneric ones, it is highly recommended to expose `className` or `style` props, but **for the brand/app ones, it is a must to avoid them**, and that is the type of libraries I will be talking about in this post.
 
-## Why do we have `className` and `style` props in UI component libraries?
+- **General-purpose component libraries**: Libraries that provide a set of slightly opinionated components designed to work across projects with minimal configuration. For example, [HeroUI](https://heroui.com/en/docs/react/components/button) or [Radix UI](https://www.radix-ui.com/primitives/docs/components/button).
 
-As I mentioned before, a Brand or app component library is the one that represents the company UX language, UX patterns and it should part of the brand identity. Nothing else. If allow to modify the component's appearance via `className` or `style` props, you are opening the door to breaking the consistency of the app and the brand identity.
+- **Brand / app component libraries**: These are fully opinionated — they represent the company's UX language and patterns, and should be part of the brand identity. In other words, they are not just a set of components but also define a design system.
+
+For the general-purpose ones, it is perfectly fine to expose `className` or `style` props. But **for brand/app libraries, you must avoid them**. That is the type of library I will be talking about in this post.
+
+## Why `className` and `style` are a problem
+
+As I mentioned before, a brand or app component library represents the company's UX language and patterns, and it should be part of the brand identity. Nothing else. If you allow modifying the component's appearance via `className` or `style` props, you are opening the door to breaking the consistency of the app and the brand identity.
 
 
 ### Semantic (and enumerated value) props vs styling props
 
-As an opinionated component library, you should only allow to modify the component behavior or appearance via semantic and enumerated value props. 
+As an opinionated component library, you should only allow modifying the component behavior or appearance via semantic and enumerated value props.
 
-A semantic prop is a prop that modifies the behavior of the component or the visuals of the component, for example the color, the size, the variant, the disables state, etc. But the value represents more than just a style, For example, a `color` prop that accepts enumerated values: `primary`, `secondary`, `danger`, etc. is a semantic prop, because the value represents more than just a color, it represents a meaning, an intention, a purpose. 
+A semantic prop is a prop that modifies the behavior or visuals of the component — for example, `color`, `size`, `variant`, or `disabled`. The value represents more than just a style. For example, a `color` prop that accepts enumerated values like `primary`, `secondary`, `danger`, etc. is a semantic prop, because the value represents a meaning — an intention behind the choice.
 
-If danger is red, is just a color, but it can be red, orange or any other color, but it will always represent the same meaning: danger, And futhermore this can be used for more than just a color, for example, it to add ARIA attributes, or to change the icon of the button, for to make the button need a hold action instead of a click to execute the action.
+If danger is red, that is just a color. But it could also be orange or any other color — it will always represent the same meaning: danger. Furthermore, this can be used for more than just a color: for example, to add ARIA attributes, to change the icon of the button, or to make the button require a hold action instead of a click to execute the action.
 
-Also, for a typical component, a prop like `color` or `size`, affects to more than a single CSS property, for example, the `color` prop can affect to the background color, the text color, the border color, etc. and the `size` prop can affect to the padding, the font size, the icon size, etc.
+Also, for a typical component, a prop like `color` or `size` affects more than a single CSS property. For example, the `color` prop can affect the background color, the text color, and the border color, and the `size` prop can affect the padding, the font size, the icon size, and more.
 
-**The complexity and the patterns are in the component implementation, not in the API.** 
+**The complexity and the patterns are in the component implementation, not in the API.**
 
+The opposite of semantic props are styling props like `className` or `style`, or direct props like `textColor` or `backgroundColor`. They are just a way to modify the style of the component without any meaning or intention behind it, making it impossible to define good patterns and to maintain the consistency of the app and the brand identity.
 
-The opposite of semantic props are styling props, like `className` or `style`, or direct props like `textColor`, `backgroundColor`, because they are just a way to modify the style of the component without any meaning or intention behind it, making impossible to define good patterns, and to maintain the consistency of the app and the brand identity.
+One of the goals of semantic props is to reduce incorrect usage. If a developer picks `secondary` when `danger` would be more appropriate, the component still works correctly — it just conveys the wrong semantic meaning. The logic stays inside the component. The developer needs to know less about the component and has limited options to choose from, forcing them to use the component the way it was designed to be used, which maintains the consistency of the app and the brand identity.
 
-One of the goals of the semantic props is to reduce incorrect usages, obviously you use a `secondary` when it should be a `danger`, the logic and complexity is in the component implementation, not in the API, and the developer needs to know less about the component and also limited options to choose from, forces he/she to reduce the cognitive load, and to use the component in the way it was designed to be used, and to maintain the consistency of the app and the brand identity.
+The same applies to children — you should not allow arbitrary elements as children of the component.
 
-Same applies to the children, you should not allow to put any arbitrary element as children of the component
+#### Examples (from real experience)
 
-#### Examples (for real experiences)
+A button component *(I should pick a different component for examples someday, but buttons are universally understood — and deceptively complex internally)*,
 
-A button component (*some day I should start to use another kind of component for the examples, but a button is very convenient as is well known component, but can be more complex internally than you can think*), 
+You should allow changing the button's color via a `color` prop, or even better, via a `variant` prop that accepts enumerated values: `primary`, `secondary`, `danger`, etc. But never accept arbitrary values like a hex color or a CSS class name.
 
-You should allow to change the color of the button via a `color`, even better via `variant` prop that accepts enumerated values: `primary`, `secondary`, `danger`, etc. But never accept any arbitrary value, like a hex color or a CSS class name. 
+Suppose you allow arbitrary values — a hex color: `<Button color="#ff0000">` or a CSS class name: `<Button className="my-custom-class">`.
 
-Let's imagine you allow to use an arbitrary value, like a hex color: `<Button color="#ff0000">` or a CSS class name: `<Button className="my-custom-class">`.
+Even if the rendered color is the same as the `danger` variant, problems arise when your design team later decides the icon should use a color derived from the main color. If that derivation cannot be calculated automatically — because it must follow accessibility contrast rules — you will need to add a new prop to the API to allow specifying the color of the icon. This is just one example of how the complexity and the patterns are in the component implementation, not in the API.
 
-Even if the color rendered it is the same as the `danger` variant, if after some time your design team decides that the icon, if present, should use a derivated color from the main color, but if can not be calculated as it must follow Accesibility rules for contrast, you will have a problem, because you will need to add a new prop to the API to allow to specify the color of the icon, and that is just an example of how the complexity and the patterns are in the component implementation, not in the API.
-
-Exaggerating it, at the end you can finish with something like this:
-
-
-![Button with custom styles](./button-variants.png)
+The inevitable outcome: a prop API that mirrors every CSS property.
 
 
-## Evolving the components library
+![Button with custom styles](./button-variants.png)(style: max-width: 400px;)
 
-\- "But, I need a new state or a new behavior that is not provided by the component, we should be able to modify the component to adapt it to our needs,"
 
-There is another misconception about the "needs", a design system or a component library should not cover a team needs, it should cover the needs of the company and mantain the consistency across the app independently the team implements the features, customers don't care about teams or which team implements something, they are using your company's product.
+## Evolving the component library
 
-Obviously, the component library should evolve and adapt to the new needs, but bearing in mind always the full picture, not just a single feature or a single team needs.
+> "But I need a new state or behavior that is not provided by the component. We should be able to modify the component to adapt it to our needs."
 
-You can ignore this, but you will end with a mess, with different behaviors for the same thing in different parts of the app, that can be acceptable for a short term, but in the long term the perception of the product by the customers will be affected.
+There is another misconception here. A design system or component library should not cover a single team's needs — it should cover the needs of the company and maintain consistency across the app, regardless of which team implements the features. Customers experience the product as a single entity. They don't know — or care — which team built which screen. Inconsistency reads as incompetence.
+
+The component library should evolve and adapt, but always with the full picture in mind, not just a single feature or a single team's requirements.
+
+You can ignore this, but you will end up with a mess: different behaviors for the same thing in different parts of the app. That might be acceptable in the short term, but in the long term, the customers' perception of the product will suffer.
 
 ## Why not allow `className` and `style`? The short version
 
