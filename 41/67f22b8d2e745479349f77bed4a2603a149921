@@ -1,0 +1,25 @@
+src/content/blog/2026/2026-06-07-ui-components-classname/index.en.mdx
+  h_f90ee31b03fc41 1-81,84-91
+  s_cd9f7e32920591::t_bd4957bef92942 82-83,92
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "4167f22b8d2e745479349f77bed4a2603a149921",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_cd9f7e32920591": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_159cff6b4ffen4OU7v0ufwiR9I",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
