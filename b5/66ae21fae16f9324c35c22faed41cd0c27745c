@@ -1,0 +1,19 @@
+.github/workflows/deploy.yml
+  s_4bac97df5e96e8::t_c0c6b090640bd6 67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "b566ae21fae16f9324c35c22faed41cd0c27745c",
+  "prompts": {},
+  "sessions": {
+    "s_4bac97df5e96e8": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_15923f8bcffeu6kW41fqri6R3M",
+        "model": "MiniMax-M3"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
