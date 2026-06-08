@@ -1,0 +1,41 @@
+src/content/blog/2026/2026-06-07-ui-components-classname/index.en.mdx
+  s_cd9f7e32920591::t_79a22a4810af20 69
+  h_f90ee31b03fc41 13-14
+  s_cd9f7e32920591::t_74b1405ed61f5b 62
+  s_cd9f7e32920591::t_7bfc4d9fd5c606 17,19
+  s_cd9f7e32920591::t_9ccf845d5a3d1c 58
+  s_cd9f7e32920591::t_4e387ab752c732 78
+  s_cd9f7e32920591::t_d9587659a124bc 76
+  s_cd9f7e32920591::t_c62689a5f551f7 54,56,60
+  s_cd9f7e32920591::t_43ca3fd355ff67 64
+  s_cd9f7e32920591::t_969e5c895eb108 42
+  s_cd9f7e32920591::t_421dd18c3057d8 35
+  s_cd9f7e32920591::t_7c7f01ca12c7d1 40,44,46,48,50
+  s_cd9f7e32920591::t_102942c8f456dc 22,24,29,31
+  s_cd9f7e32920591::t_5ecfc56566d654 33
+  s_cd9f7e32920591::t_247c611a2b7458 52
+  s_cd9f7e32920591::t_1b62fe94646834 72,74,80
+  s_cd9f7e32920591::t_7f46307413a90f 27
+  s_cd9f7e32920591::t_20a80309a15a0c 66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "e19aec514bb94f7b374522d1f7951aaf0c26a202",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_cd9f7e32920591": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_159cff6b4ffen4OU7v0ufwiR9I",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
