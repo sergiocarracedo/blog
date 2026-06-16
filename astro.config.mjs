@@ -13,6 +13,7 @@ import './src/middleware';
 import { remarkDirectiveASCIInema } from './src/remark-plugins/remark-directive-asciinema';
 import { remarkDirectiveAstroEntryRef } from './src/remark-plugins/remark-directive-astro-entry-ref';
 import { remarkDirectiveBtn } from './src/remark-plugins/remark-directive-btn';
+import { remarkDirectiveReveal } from './src/remark-plugins/remark-directive-reveal';
 import { remarkDirectiveCenter } from './src/remark-plugins/remark-directive-center';
 import { remarkDirectiveCodeFrom } from './src/remark-plugins/remark-directive-code-from';
 import { remarkDirectiveCodeblock } from './src/remark-plugins/remark-directive-codeblock';
@@ -68,6 +69,7 @@ export default defineConfig({
       [remarkDirectiveCenter, {}],
       [remarkDirectiveCodeblock, {}],
       [remarkDirectiveBtn, {}],
+      [remarkDirectiveReveal, {}],
       [emoji, {}],
       [imgAttr, { extendWithLink: true }],
     ],
