@@ -1,0 +1,49 @@
+astro.config.mjs
+  s_ad0afb1b79e631::t_adb3cc8436045d 16
+  s_ad0afb1b79e631::t_6944cc67142bda 72
+src/remark-plugins/remark-directive-reveal/index.js
+  s_ad0afb1b79e631::t_b3a12fcfff2ac8 1,4-10,13,17
+  s_ad0afb1b79e631::t_0a151a45eebe0a 40,42-43,45
+  s_ad0afb1b79e631::t_4f2a1ca72851fa 2-3,11-12,18-25,27-30,33-35,37-39,47-49
+  s_ad0afb1b79e631::t_f0301e219a1ded 14-16,26,31-32,36,41,44,46
+src/content/blog/2026/2026-06-15-skills-security/index.en.mdx
+  s_fba35c785c0a4d::t_4423a4c417bc1f 261
+  h_f90ee31b03fc41 1-260,262-272
+src/styles/prose.css
+  s_ad0afb1b79e631::t_32bf51fa52e587 363-364,367-368,374,376,381,385-387,390-391,401,413-414
+  s_ad0afb1b79e631::t_4855585ad20ba6 369-370
+  s_ad0afb1b79e631::t_20119fb1943505 402
+  s_ad0afb1b79e631::t_1e625e8c41eddc 222
+  s_ad0afb1b79e631::t_085c49dfeba699 365,371-372,375,377-380,393-394,404,406-407,412
+  s_ad0afb1b79e631::t_ef96e05bdd0f3f 373,382-384,388,392,395-400,403,408,411
+  s_ad0afb1b79e631::t_b491b0097c1ab8 366,389,405,409-410
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "16593dbea3b2a415a1dd42de77e0b7ec3fe03ce2",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_ad0afb1b79e631": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_132c5a675ffeoGIoYfDpdvO91b",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    },
+    "s_fba35c785c0a4d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_12ff6ef73ffeOL7yH30wjOJKkp",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
