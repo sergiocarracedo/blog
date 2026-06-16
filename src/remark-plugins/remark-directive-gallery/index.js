@@ -56,7 +56,6 @@ export function remarkDirectiveGallery() {
       // Validate cols is between 1 and 6
       const validCols = Math.max(1, Math.min(6, cols));
 
-<<<<<<< Updated upstream:src/remark-plugins/remark-directive-gallery/index.js
       // Create image nodes - let the markdown pipeline handle URL resolution
       const imageNodes = images.map((src) => ({
         type: 'image',
@@ -74,25 +73,6 @@ export function remarkDirectiveGallery() {
         { type: 'mdxJsxAttribute', name: 'cols', value: validCols },
       ];
       node.children = imageNodes;
-=======
-      // Transform to MDX component that will be rendered by GalleryWrapper React component
-      // Create mdxJsxAttributeValueExpression for the images array
-      node.type = 'mdxJsxFlowElement';
-      node.name = 'GalleryWrapper';
-      node.attributes = [
-        {
-          type: 'mdxJsxAttributeValueExpression',
-          name: 'images',
-          value: `[${images.map((img) => `'${img}'`).join(', ')}]`,
-        },
-        {
-          type: 'mdxJsxAttributeValueExpression',
-          name: 'cols',
-          value: String(validCols),
-        },
-      ];
-      node.children = [];
->>>>>>> Stashed changes:src/remark-plugins/remark-directive-gallery.js
     });
   };
 }
