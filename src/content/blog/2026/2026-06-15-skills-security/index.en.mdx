@@ -249,7 +249,7 @@ Checking a skill's security risks manually can be annoying, slow and easy to mis
 
 I created the following prompt to review each skill:
 
-::codefrom[]{path=./_check-security.md}
+::codefrom[]{path=./assets/check-security.txt}
 
 You can use it to review any skill, but it is better to create an agent with this prompt, as the model gives more importance to the system prompts (agent prompt is a system prompt) rather than user prompts.
 
@@ -270,7 +270,7 @@ Checking the security with skill-organizer also has more advantages:
 
 And this is what it looks like in action — `check-security` running against the same test fixtures `skill-organizer` uses for its own integration tests (22 skills, 20 of them intentionally malicious):
 
-::asciinema[]{src="./check-security.cast" idleTimeLimit="2" speed="1.5" cols="200" rows="50"}
+::asciinema[]{src="./assets/check-security.cast" idleTimeLimit="2" speed="1.5" cols="200" rows="50"}
 
 > This check method (as any antivirus) is not infallible as still depends on a model, but can do a job job detecting most malicious cases.
 
