@@ -1,0 +1,14 @@
+src/content/blog/2026/2026-06-15-skills-security/index.en.mdx
+  h_f90ee31b03fc41 252,273
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "f82af1ef26e1a1e2a953741013df75ced9a44382",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
