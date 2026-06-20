@@ -1,0 +1,93 @@
+---
+title: "¿Estás exponiendo props de clase o estilos en tus componentes de UI? ¡Deja de hacerlo!"
+pubDate: "2026-06-08"
+slug: "ui-components-library-classname"
+heroVideo: "./cover.webm"
+heroImage: "./cover.png"
+heroImageMeta:
+  prompt: ""
+  author: "Gemini Nano Banana + Ommi"
+tags:
+  - "frontend"
+  - "ui"
+  - "design-systems"
+  - "architecture"
+autoTranslated: true
+originalLang: "en"
+---
+
+Un problema que veo mucho en las librerías de componentes de UI es exponer una prop `className`, una prop `style`, o cualquier otra forma de modificar la apariencia del componente para que los desarrolladores puedan personalizarlo según "sus necesidades" (explicaré cuáles son esas necesidades). Pero esto **es una mala práctica y deberías evitarla**.
+
+En este post, explicaré por qué.
+
+
+## ¿A qué tipos de librerías de componentes de UI se aplica esto?
+
+Antes de profundizar, quiero aclarar que existen diferentes tipos de librerías de componentes de UI. Podemos agruparlas de múltiples maneras, pero para este post:
+
+
+- **Librerías de componentes de propósito general**: Librerías que proporcionan un conjunto de componentes ligeramente de opinión (*opinionated*) diseñados para funcionar en diversos proyectos con una configuración mínima. Por ejemplo, [HeroUI](https://heroui.com/en/docs/react/components/button) o [Radix UI](https://www.radix-ui.com/primitives/docs/components/button).
+
+- **Librerías de componentes de marca / aplicación**: Estas son totalmente de opinión — representan el lenguaje de UX y los patrones de la empresa, y deben ser parte de la identidad de marca. En otras palabras, no son solo un conjunto de componentes, sino que también definen un sistema de diseño.
+
+Para las de propósito general, es perfectamente aceptable exponer props como `className` o `style`. Pero **para las librerías de marca/aplicación, debes evitarlas**. Ese es el tipo de librería de la que hablaré en este post.
+
+## Por qué `className` y `style` son un problema
+
+Como mencioné antes, una librería de componentes de marca o aplicación representa el lenguaje de UX y los patrones de la empresa, y debe ser parte de la identidad de marca. Nada más. Si permites modificar la apariencia del componente a través de props `className` o `style`, estás abriendo la puerta a romper la consistencia de la aplicación y la identidad de marca.
+
+
+### Props semánticas (y de valores enumerados) vs props de estilo
+
+Como librería de componentes de opinión, solo deberías permitir modificar el comportamiento o la apariencia del componente a través de props semánticas y de valores enumerados.
+
+Una prop semántica es una prop que modifica el comportamiento o los visuales del componente — por ejemplo, `color`, `size`, `variant`, o `disabled`. El valor representa algo más que un simple estilo. Por ejemplo, una prop `color` que acepta valores enumerados como `primary`, `secondary`, `danger`, etc., es una prop semántica, porque el valor representa un significado — una intención detrás de la elección.
+
+Si el peligro (*danger*) es rojo, eso es solo un color. Pero también podría ser naranja o cualquier otro color — siempre representará el mismo significado: peligro. Además, esto puede usarse para algo más que un color: por ejemplo, para añadir atributos ARIA, para cambiar el icono del botón, o para hacer que el botón requiera una acción de mantener presionado en lugar de un clic para ejecutar la acción.
+
+Además, para un componente típico, una prop como `color` o `size` afecta a más de una propiedad CSS. Por ejemplo, la prop `color` puede afectar al color de fondo, al color del texto y al color del borde, y la prop `size` puede afectar al padding, al tamaño de la fuente, al tamaño del icono y más.
+
+**La complejidad y los patrones están en la implementación del componente, no en la API.**
+
+Lo opuesto a las props semánticas son las props de estilo como `className` o `style`, o props directas como `textColor` o `backgroundColor`. Son simplemente una forma de modificar el estilo del componente sin ningún significado o intención detrás, lo que hace imposible definir buenos patrones y mantener la consistencia de la aplicación y la identidad de marca.
+
+Uno de los objetivos de las props semánticas es reducir el uso incorrecto. Si un desarrollador elige `secondary` cuando `danger` sería más apropiado, el componente sigue funcionando correctamente — simplemente transmite el significado semántico equivocado. La lógica permanece dentro del componente. El desarrollador necesita saber menos sobre el componente y tiene opciones limitadas para elegir, lo que le obliga a usar el componente de la manera en que fue diseñado para ser usado, manteniendo así la consistencia de la aplicación y la identidad de marca.
+
+Lo mismo se aplica a los children — no deberías permitir elementos arbitrarios como hijos del componente.
+
+#### Ejemplos (de la experiencia real)
+
+Un componente de botón *(debería elegir un componente diferente para los ejemplos algún día, pero los botones se entienden universalmente — y son engañosamente complejos internamente)*,
+
+Deberías permitir cambiar el color del botón a través de una prop `color`, o mejor aún, a través de una prop `variant` que acepte valores enumerados: `primary`, `secondary`, `danger`, etc. Pero nunca aceptes valores arbitrarios como un color hexadecimal o un nombre de clase CSS.
+
+Supongamos que permites valores arbitrarios — un color hexadecimal: `<Button color="#ff0000">` o un nombre de clase CSS: `<Button className="my-custom-class">`.
+
+Incluso si el color renderizado es el mismo que el de la variante `danger`, surgen problemas cuando tu equipo de diseño decide más tarde que el icono debe usar un color derivado del color principal. Si esa derivación no puede calcularse automáticamente — porque debe seguir reglas de contraste de accesibilidad — necesitarás añadir una nueva prop a la API para permitir especificar el color del icono. Este es solo un ejemplo de cómo la complejidad y los patrones están en la implementación del componente, no en la API.
+
+El resultado inevitable: una API de props que refleja cada propiedad CSS.
+
+
+![Button with custom styles](./button-variants.png)(style: max-width: 400px;)
+
+
+## Evolucionando la librería de componentes
+
+> "Pero necesito un nuevo estado o comportamiento que no proporciona el componente. Deberíamos poder modificar el componente para adaptarlo a nuestras necesidades."
+
+Aquí hay otro concepto erróneo. Un sistema de diseño o librería de componentes no debe cubrir las necesidades de un solo equipo — debe cubrir las necesidades de la empresa y mantener la consistencia en toda la aplicación, independientemente de qué equipo implemente las funcionalidades. Los clientes experimentan el producto como una sola entidad. No saben — ni les importa — qué equipo construyó qué pantalla. La inconsistencia se interpreta como incompetencia.
+
+La librería de componentes debe evolucionar y adaptarse, pero siempre con la visión de conjunto en mente, no solo para una funcionalidad específica o los requisitos de un solo equipo.
+
+Puedes ignorar esto, pero terminarás con un caos: comportamientos diferentes para la misma cosa en diferentes partes de la aplicación. Eso puede ser aceptable a corto plazo, pero a largo plazo, la percepción del producto por parte de los clientes se verá afectada.
+
+## ¿Por qué no permitir `className` y `style`? La versión corta
+
+- ❌ **Rompe la consistencia de marca** — cualquier desarrollador puede sobrescribir estilos y desviarse del sistema de diseño.
+- ❌ **Dificulta mucho la refactorización** — cambiar el marcado interno o las clases de un componente rompe las sobrescrituras de los consumidores, creando miedo a realizar cambios.
+- ❌ **Traslada la complejidad a la API** — en lugar de mantener la lógica dentro del componente, debes repetir la lógica en cada lugar donde se use.
+- ❌ **Elimina la intención semántica** — un `className` no transmite nada sobre el *porqué* se aplicó el estilo, solo el *cómo* se ve.
+- ❌ **Aumenta la carga cognitiva** — los desarrolladores deben leer la implementación para saber qué clases sobrescribir.
+- ❌ **Fomenta los hacks puntuales** — las sobrescrituras fáciles conducen a estilos personalizados que nunca se limpian.
+- ❌ **Anula los design tokens** — los estilos personalizados omiten el sistema de tokens, por lo que las actualizaciones del tema ya no se propagan.
+- ❌ **Dificulta la accesibilidad** — las sobrescrituras pueden romper accidentalmente el contraste, los indicadores de enfoque o el manejo de movimiento reducido.
