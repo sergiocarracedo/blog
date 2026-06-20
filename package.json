@@ -38,7 +38,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "ai": "^6.0.78",
-    "astro": "^5.17.0",
+    "astro": "^6.4.6",
     "astro-icon": "^1.1.5",
     "astro-mermaid": "^2.0.1",
     "astro-pagefind": "^1.8.5",
