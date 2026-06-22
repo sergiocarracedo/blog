@@ -96,20 +96,21 @@ const { Content } = await render(post);
             heroImageMeta?.licence) && (
             <div class="text-xs text-gray-500 dark:text-gray-400 absolute bottom-0 left-0 right-0 group-hover:translate-y-0 translate-y-[calc(100%-10px)] transition-transform duration-300 z-10">
               <div class="bg-gray-100/90 dark:bg-primary-700/90 p-2">
-                <em>{t('post.pictureBy')}</em> <strong>
-                  {heroImageMeta.source && (
-                  <a
-                    href={heroImageMeta.source}
-                    class="text-primary dark:text-secondary link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {heroImageMeta.author}
-                  </a>
-                  ) || (
-                    <strong>{heroImageMeta.author}</strong>
+                <em>{t('post.pictureBy')}</em>{' '}
+                <strong>
+                  {heroImageMeta.source ? (
+                    <a
+                      href={heroImageMeta.source}
+                      class="text-primary dark:text-secondary link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {heroImageMeta.author}
+                    </a>
+                  ) : (
+                    heroImageMeta.author
                   )}
-
+                </strong>
 
                 {heroImageMeta.prompt && (
                   <span>
@@ -117,7 +118,7 @@ const { Content } = await render(post);
                     - <em>{t('post.prompt')}</em>: {heroImageMeta.prompt}
                   </span>
                 )}
-                
+
                 {heroImageMeta.licence && (
                   <span>
                     {' '}

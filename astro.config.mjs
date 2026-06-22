@@ -1,5 +1,5 @@
 // @ts-check
-import { rehypeHeadingIds } from '@astrojs/markdown-remark';
+import { rehypeHeadingIds, unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
@@ -56,39 +56,41 @@ export default defineConfig({
     remotePatterns: [{ protocol: 'https' }],
   },
   markdown: {
-    remarkPlugins: [
-      [remarkDirective, {}],
-      [remarkDirectiveYoutube, {}],
-      [remarkDirectiveAstroEntryRef, {}],
-      [remarkDirectiveSpotify, {}],
-      [remarkDirectiveCodeFrom, {}],
-      [remarkDirectiveIframe, {}],
-      [remarkDirectiveASCIInema, {}],
-      [remarkDirectiveFloatImage, {}],
-      [remarkDirectiveGallery, {}],
-      [remarkDirectiveCenter, {}],
-      [remarkDirectiveCodeblock, {}],
-      [remarkDirectiveBtn, {}],
-      [remarkDirectiveReveal, {}],
-      [emoji, {}],
-      [imgAttr, { extendWithLink: true }],
-    ],
-    rehypePlugins: [
-      rehypeHeadingIds,
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: 'wrap',
-
-          headingProperties: {
-            className: ['anchor'],
-          },
-          properties: {
-            className: ['anchor-link'],
-          },
-        },
+    processor: unified({
+      remarkPlugins: [
+        [remarkDirective, {}],
+        [remarkDirectiveYoutube, {}],
+        [remarkDirectiveAstroEntryRef, {}],
+        [remarkDirectiveSpotify, {}],
+        [remarkDirectiveCodeFrom, {}],
+        [remarkDirectiveIframe, {}],
+        [remarkDirectiveASCIInema, {}],
+        [remarkDirectiveFloatImage, {}],
+        [remarkDirectiveGallery, {}],
+        [remarkDirectiveCenter, {}],
+        [remarkDirectiveCodeblock, {}],
+        [remarkDirectiveBtn, {}],
+        [remarkDirectiveReveal, {}],
+        [emoji, {}],
+        [imgAttr, { extendWithLink: true }],
       ],
-    ],
+      rehypePlugins: [
+        rehypeHeadingIds,
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: 'wrap',
+
+            headingProperties: {
+              className: ['anchor'],
+            },
+            properties: {
+              className: ['anchor-link'],
+            },
+          },
+        ],
+      ],
+    }),
   },
   vite: {
     assetsInclude: ['**/*.cast'],
