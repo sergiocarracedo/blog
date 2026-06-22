@@ -1,0 +1,26 @@
+package.json
+  s_389f2a1f9f21ce::t_abd6d7017c315b 43
+  s_389f2a1f9f21ce::t_351c10a6aca2bb 29-33,41
+src/components/posts/PostSingle.astro
+  s_389f2a1f9f21ce::t_ee9d5c0f54a1ff 99
+  s_389f2a1f9f21ce::t_b594b4a118131f 100-111,113,121
+astro.config.mjs
+  s_389f2a1f9f21ce::t_43a19fba41328c 2
+  s_389f2a1f9f21ce::t_82fe3d15fdf5b2 59-82,84-89,91,93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "d86d8c665af423726a9b9b671b08c3db34cf679f",
+  "prompts": {},
+  "sessions": {
+    "s_389f2a1f9f21ce": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10eee015dffeM204NyguvYN2eE",
+        "model": "MiniMax-M3"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
