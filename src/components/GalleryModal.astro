@@ -4,6 +4,7 @@ import GalleryCloseButton from './gallery/GalleryCloseButton.astro';
 
 interface Props {
   images?: string;
+  titles?: string;
   cols?: number;
 }
 
@@ -19,13 +20,17 @@ function parseImages(imagesProp: string | undefined): string[] {
   }
 }
 
-const { images: imagesProp, cols = 3 } = Astro.props;
+const { images: imagesProp, titles: titlesProp, cols = 3 } = Astro.props;
 const imageUrls = parseImages(imagesProp);
+const imageTitles = parseImages(titlesProp ?? '');
 const validCols = Math.max(1, Math.min(6, cols));
 
-if (!imageUrls || imageUrls.length === 0) {
-  throw new Error('Gallery must have at least one image');
-}
+  if (!imageUrls || imageUrls.length === 0) {
+    throw new Error('Gallery must have at least one image');
+  }
+
+  console.log('GalleryModal props:', { imagesProp, titlesProp, cols });
+  console.log('Parsed titles:', imageTitles);
 
 // Render slot content to get processed image sources
 const slotContent = await Astro.slots.render('default');
@@ -46,13 +51,20 @@ const images = processedImages.length > 0 ? processedImages : imageUrls;
   <div class="gallery-grid" style={`--gallery-cols: ${validCols}`}>
     {
       images.map((src: string, index: number) => (
-        <img
-          src={src}
-          alt={`Gallery image ${index + 1}`}
-          class="gallery-image"
-          data-gallery-index={index}
-          data-gallery-total={images.length}
-        />
+        <figure class="gallery-figure">
+          <img
+            src={src}
+            alt={`Gallery image ${index + 1}`}
+            class="gallery-image"
+            data-gallery-index={index}
+            data-gallery-total={images.length}
+          />
+          {
+            imageTitles[index] && (
+              <figcaption class="gallery-caption">{imageTitles[index]}</figcaption>
+            )
+          }
+        </figure>
       ))
     }
   </div>

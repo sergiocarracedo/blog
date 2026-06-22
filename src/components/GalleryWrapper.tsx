@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 interface GalleryWrapperProps {
   images: string[] | string;
   cols?: number;
+  titles?: string[];
 }
 
 function parseImages(imagesProp: string[] | string): string[] {
@@ -22,8 +23,19 @@ function parseImages(imagesProp: string[] | string): string[] {
 export default function GalleryWrapper({
   images: imagesProp,
   cols = 3,
+  titles = [],
 }: GalleryWrapperProps): ReactElement | null {
   const images = useMemo(() => parseImages(imagesProp), [imagesProp]);
+  const imageTitles = useMemo(() => {
+    if (typeof titles === 'string') {
+      try {
+        return JSON.parse(titles);
+      } catch {
+        return [];
+      }
+    }
+    return titles || [];
+  }, [titles]);
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -80,22 +92,26 @@ export default function GalleryWrapper({
     <>
       <div className="gallery-grid" style={galleryStyle}>
         {images.map((src, index) => (
-          <img
-            key={index}
-            src={src}
-            alt={`Gallery image ${index + 1}`}
-            className="gallery-image"
-            onClick={() => {
-              handleImageClick(index);
-            }}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
+          <figure key={index} className="gallery-figure">
+            <img
+              src={src}
+              alt={`Gallery image ${index + 1}`}
+              className="gallery-image"
+              onClick={() => {
                 handleImageClick(index);
-              }
-            }}
-          />
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleImageClick(index);
+                }
+              }}
+            />
+            {imageTitles[index] && (
+              <figcaption className="gallery-caption">{imageTitles[index]}</figcaption>
+            )}
+          </figure>
         ))}
       </div>
 
