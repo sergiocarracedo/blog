@@ -297,6 +297,13 @@ const normalizeWord = (word: string) =>
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase();
 
+const stripUrls = (text: string) =>
+  text
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
+    .replace(/\[(?<label>[^\]]*)\]\((?:[^)]+)\)/g, '$<label>')
+    .replace(/https?:\/\/[^\s)>\]]+/g, '')
+    .replace(/www\.[^\s)>\]]+/g, '');
+
 const getWords = (text: string, locale: Locale) => {
   const stopwords = STOPWORDS[locale];
   const matches = text.match(/[\p{L}\p{N}]+/gu) ?? [];
@@ -314,9 +321,11 @@ export const getBlogStats = async (locale: Locale): Promise<BlogStats> => {
   const entries = posts
     .map((post) => ({
       date: post.data.pubDate,
-      words: countWords(post.body ?? ''),
+      words: countWords(stripUrls(post.body ?? '')),
       tags: post.data.tags ?? [],
-      text: [post.data.title, post.data.description ?? '', post.body ?? ''].join(' '),
+      text: stripUrls(
+        [post.data.title, post.data.description ?? '', post.body ?? ''].join(' ')
+      ),
     }))
     .sort((a, b) => a.date.valueOf() - b.date.valueOf());
 
