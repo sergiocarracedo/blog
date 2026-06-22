@@ -70,6 +70,14 @@ jobs:
             echo "✅ Translations committed and pushed"
           fi
 
+      - name: Cache Astro build assets
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: ${{ runner.os }}-astro-cache-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-astro-cache-
+
       - name: Build Astro site
         run: pnpm build
 
