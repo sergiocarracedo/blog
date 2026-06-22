@@ -1,0 +1,21 @@
+src/utils/getBlogStats.ts
+  s_d0427062717517::t_be05f6c715318c 300-302,304-306
+  s_d0427062717517::t_5180b1122c0433 324,326-328
+  s_d0427062717517::t_640aa8bbbb2d8e 303
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "047fedf79d0150a2bc84af35d49bfe4bf84d6160",
+  "prompts": {},
+  "sessions": {
+    "s_d0427062717517": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10ecd765affeHv5Jg20YglB84S",
+        "model": "MiniMax-M3"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
