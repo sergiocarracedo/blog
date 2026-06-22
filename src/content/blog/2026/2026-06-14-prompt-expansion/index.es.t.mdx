@@ -1,0 +1,242 @@
+---
+title: "Consejos y trucos para mejores prompts y generación de imágenes consistente"
+pubDate: "2026-06-22"
+slug: "prompt-expansion"
+heroVideo: "./cover.webm"
+heroImage: "./cover.png"
+heroImageMeta:
+  prompt: ""
+  author: "Gemini Nano Banana + Ommi"
+tags:
+  - "ai"
+  - "prompt"
+autoTranslated: true
+originalLang: "en"
+---
+
+Si usas LLMs, probablemente hayas oído hablar de la importancia de un buen prompt para obtener un buen resultado. El concepto de "prompt engineering" fue tendencia en 2023.
+
+Pero todavía tiene sentido, aunque no la misma importancia que hace 3 años, cuando todo dependía del prompt. Sigue siendo importante, pero ahora tenemos otras técnicas para mejorar o enriquecer el prompt que recibe el LLM — por ejemplo, **prompt augmentation** (o enriquecimiento), que toma tu prompt y añade: contexto, reglas estructurales, conocimiento de dominio, etc.
+
+El objetivo de este post es simplemente entender los conceptos básicos y mostrarte una técnica muy sencilla, pero útil, para obtener mejores resultados en prompts de un solo intento (one-shot prompts).
+
+
+# ¿Qué es la expansión de prompts?
+
+La expansión de prompts es una técnica de IA que utiliza un LLM para generar prompts que son: 
+
+- detallados
+- menos ambiguos
+- completos
+
+
+En otras palabras, prompts generados por un LLM a partir de un prompt humano (o sin ningún prompt en absoluto), que son más completos para la tarea en cuestión que el original.
+
+
+Veámoslo con un ejemplo: Quieres iniciar o hacer el bootstrap de un proyecto frontend. Hay muchas pequeñas cosas que hacer y decidir: el tech stack, el linter, las reglas del linter, el formateador, el package manager, el runtime, TypeScript o no, herramientas y estrategia de testing, etc. Es mucho, pero probablemente no sea la primera vez que haces el bootstrap de un proyecto similar, así que en lugar de hacer una lista detallada de eso, puedes crear un prompt sencillo:
+
+> "Quiero crear un prompt para hacer el bootstrap de un addon de tarjeta frontend para Home Assistant. Usa https://github.com/sergiocarracedo/sc-custom-cards como base para el tech stack y las decisiones de código. Deberíamos preguntar al usuario el nombre del addon y las tarjetas a crear.
+> 
+> Pídeme cualquier laguna o duda que tengas para generar una descripción muy detallada de las tareas a realizar y preguntar al usuario para este bootstrap y proporciona una lista de verificación del resultado esperado"
+
+
+Esta parte es muy importante: "**Pídeme cualquier laguna o duda...**". Obliga al LLM a no proporcionar el prompt final infiriendo o alucinando las partes que faltan, y a preguntarte por ellas.
+
+
+
+:robot: 
+:::codeblock{maxHeight=300}
+```
+1. Card Architecture Structure: * sc-custom-cards packages multiple cards (e.g., Room Card, History Bars Card) together. Do you want this new addon to support a multi-card structure under one bundle from day one (as the repo does), or should it scaffold a repository dedicated to just a single standalone card?
+
+2. Build System Preference: * The repo uses a custom pnpm dev / pnpm build workflow (typically powered by Rollup or Vite to bundle the TypeScript elements and lit-html templates). Should the generated bootstrap prompt explicitly mandate a specific bundler (e.g., Vite or Rollup), or let the generator choose the best modern setup that matches the asset output (dist/[addon-name].js)?
+
+3. Visual Editor & Localization Configuration: * sc-custom-cards includes rich visual editors (with drag-and-drop, inline editing) and localization strings. Should the bootstrap prompt force the creation of a boilerplate *-editor.ts and a localize/ JSON translation structure for every card the user specifies?
+
+4. CI/CD and Release Automation: * The reference repo utilizes release-please and automated GitHub workflows for both stable and beta channels. Do you want the bootstrap prompt to include setting up these GitHub Action .github/workflows/ files automatically?
+```
+
+:man: Yo:
+
+```markdown
+1. Yes
+2. use vite. NOTE remember to include the formaters, lints, etc
+3. yes
+4. ask user if we want to add it
+```
+
+
+Y el LLM :robot: genera este prompt:
+
+:::codeblock{maxHeight=300}
+```markdown
+You are an expert Frontend Developer and Home Assistant Addon Architect. Your task is to generate a comprehensive, production-ready workspace blueprint and the initial codebase boilerplate for a Home Assistant custom frontend card bundle. 
+
+The architecture is a **multi-card monobundle** powered by **TypeScript**, **Lit**, and **Vite**.
+
+First, ask the user for the following inputs before generating the files:
+1. **Addon Name** (e.g., "my-custom-cards")
+2. **List of Cards to Create** (e.g., "Room Card, Battery Status Card")
+3. **CI/CD Integration**: Ask if they want GitHub Actions workflows configured for release automation.
+
+Once the user provides this information, generate a complete workspace matching the specifications below.
+
+
+## 🛠️ Architecture & Tech Stack Rules
+
+* **Package Manager:** `pnpm`
+* **Build Tool:** `Vite` configured to bundle all components, logic, and assets into a single distribution file (`dist/[addon-name].js`) suitable for Home Assistant Lovelace resource loading.
+* **UI Framework:** `Lit` (using lit-element and lit-html decorators).
+* **Language:** Strict TypeScript.
+* **Formatting/Linting:** Biome or ESLint + Prettier (choose a modern, fast setup).
+
+
+## 📂 Project Structure Blueprint
+
+Generate the files according to this exact folder layout:
+
+[addon-name]/
+├── .github/                  # (Only if user opted into CI/CD)
+│   └── workflows/
+│       └── release.yml
+├── dist/                     # Target build output
+├── src/
+│   ├── types/
+│   │   └── homeassistant.ts  # Generic Home Assistant/HASS types
+│   ├── utils/
+│   │   └── localize.ts       # Translation helper
+│   ├── localize/
+│   │   └── en.json           # Default English translations
+│   ├── cards/                # Dedicated folder per card
+│   │   ├── [card-1]/
+│   │   │   ├── [card-1].ts         # Main Lovelace card component
+│   │   │   ├── [card-1]-editor.ts  # Visual UI Editor component
+│   │   │   └── types.ts            # Card-specific configuration types
+│   │   └── [card-2]/
+│   │       ├── [card-2].ts
+│   │       ├── [card-2]-editor.ts
+│   │       └── types.ts
+│   └── main.ts               # Core entrypoint registering all cards to window.customCards
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── README.md
+
+## 📝 Implementation Details per File
+1. package.json
+Configure tasks: "dev": "vite build --watch", "build": "vite build", and lint/format scripts.
+
+Dependencies: Include lit and custom-card-helpers.
+
+DevDependencies: Include typescript, vite, vite-plugin-css-in-js (or similar to bundle styles into the JS), and your formatting/linting tooling.
+
+2. vite.config.ts
+Configure Vite to build in library mode.
+
+Output a single bundle file named [addon-name].js inside the dist folder.
+
+Ensure minification is turned on for production builds but keeps code readable enough for debugging in dev mode.
+
+3. src/main.ts (The Registry Entrypoint)
+Must hook into window.customCards to register every generated card so they appear natively in the Home Assistant visual card picker dashboard.
+
+Example schema to inject:
+
+TypeScript
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: 'card-1-tag-name',
+  name: 'Card 1 Name',
+  preview: true,
+  description: 'Description of Card 1',
+});
+4. src/cards/[card-name]/[card-name].ts (Main Card Boilerplate)
+Extends LitElement.
+
+Implements the mandatory Home Assistant Card Interface: setConfig(config) and the set hass(hass) setter.
+
+Includes basic error handling if the config is invalid.
+
+Links to its companion visual editor using a static getConfigElement() method.
+
+5. src/cards/[card-name]/[card-name]-editor.ts (Visual Editor Boilerplate)
+Extends LitElement.
+
+Implements setConfig(config) and fires config-changed custom events back to the Lovelace dashboard when fields are mutated.
+
+Renders an example configuration form (e.g., a text input for a card title or an entity selector dropdown).
+
+6. src/utils/localize.ts & src/localize/en.json
+A clean translation function that reads keys from the JSON structure depending on the current hass.language or defaults to en.
+
+## 🎯 Verification Checklist
+At the end of your generation, provide a checklist for the user detailing how to test and run their newly bootstrapped environment, including:
+
+Running pnpm install.
+
+Running pnpm dev to start the reactive build.
+
+Adding the dist/[addon-name].js file as a /local/ Lovelace resource in Home Assistant.
+
+Verifying the cards show up properly in the dashboard UI editor.
+```
+
+
+Como puedes ver, es muy detallado y puede funcionar muy bien para tu próxima tarjeta de Home Assistant. De todos modos, no necesitas usarlo tal cual — puedes cambiar lo que necesites o seguir iterando con el LLM.
+
+### Consejos y trucos
+
+- Pide al LLM que **no rellene los huecos asumiendo cosas** y que te pregunte: "Pídeme cualquier laguna o duda que tengas".
+- **Dale contexto**: Por ejemplo, una referencia: p. ej. "Quiero generar un prompt para hacer corrección de texto basado en el siguiente estilo de texto: [TEXTO DE REFERENCIA]".
+- Pide al LLM que **se comporte como un rol específico** si es necesario: p. ej. "Eres un escritor ganador del Premio Nobel de Literatura...". Esto obliga al LLM a hacer preguntas y resolver problemas con un contexto específico del dominio.
+- **Lee** los resultados cuidadosamente para asegurarte de que se ajustan a lo que esperas y para detectar elementos faltantes.
+- **No te conformes con un solo resultado**. Como los LLMs no son deterministas, cada vez que pidas un prompt obtendrás un resultado diferente. Genera al menos 2 y toma las mejores partes o ideas de ambos para crear uno.
+
+## De imagen a prompt
+
+¿Viste una imagen que te gustó y quieres generar tu versión usando una IA? Puedes simplemente pegar la imagen y decirle al LLM los cambios que quieres, pero también puedes hacer algo más inteligente, reutilizable y repetible:
+
+### Describir el estilo de imagen a partir de una imagen
+
+Imagina que quieres crear imágenes con el mismo estilo visual que la película "Steamboat Willie" (ya que ahora es una película de [dominio público](https://curell.com/mickey-mouse-y-derechos-de-autor/)).
+
+
+:::gallery{cols="3"}
+streamboat01.png
+streamboat02.png
+streamboat03.png
+:::
+
+Podemos pedir a un LLM que genere un prompt base:
+
+> A partir de las imágenes, genera un prompt que destile el estilo visual de las imágenes, sé detallado con respecto a los estilos genéricos, no sobre los elementos o personajes específicos en las imágenes. En el prompt, reserva un marcador de posición para que el usuario describa la imagen que quiere generar con este estilo.
+
+
+En mi caso, el prompt generado fue:
+
+:robot: 
+```
+A black and white traditional hand-drawn 2D animation still, evoking the style of late 1920s cartoons. The aesthetic features high-contrast, grainy film quality with visible scratches and flicker. The artwork consists of thick, wobbly ink lines and simple, rounded shapes. Backgrounds are soft, hand-painted grayscale watercolor washes on textured paper, often with a blurred, distorted perspective. There is no smooth in-betweening; the animation has a jerky, energetic, and slightly imprecise feel, with a noticeable film grain overlay. Characters and objects have a simplistic, rubber-hose quality.
+
+[INSERT YOUR DESCRIPTION OF THE IMAGE TO GENERATE HERE]
+```
+
+
+Y ahora puedo guardar este prompt (sin las imágenes — ya no las necesitamos), y simplemente usarlo cuando lo necesite, generando imágenes como estas:
+
+:::gallery{cols="3" titles="A pangolin doing surf (in honour of DotCSV),A tuxedo cat driving a f1 car,Me (in the picture) pilot a fight plane"}
+generated01.png 
+generated02.png 
+generated03.png
+:::
+
+Cada imagen fue generada en una sesión diferente, lo que significa que el modelo no tenía ninguna imagen previa como referencia. Es puro prompting.
+
+Te animo a que lo pruebes tú mismo y veas los resultados. Usé Gemini Flash para todos los prompts (excepto para la generación de imágenes, que usa nano banana).
+
+
+# Resumen
+
+Esta es una técnica "antigua", muy simple y básica para mejorar los resultados de los LLM, sin esfuerzo, pero que sigue siendo importante cuando trabajas con modelos.
+
+Si añades a la ecuación habilidades en ambos sentidos — habilidades para ayudarte a generar los prompts que necesitas (por ejemplo, usando [brainstorming](https://www.skills.sh/obra/superpowers/brainstorming)), y la generación de habilidades en lugar de un prompt "clásico" — tendrás una herramienta poderosa.
