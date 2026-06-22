@@ -1,0 +1,14 @@
+src/content/blog/2026/2026-06-14-prompt-augmentation/index.en.mdx
+  h_f90ee31b03fc41 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "a88cc31caf248e79a25f6aca3eb11c82a01de6e6",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}

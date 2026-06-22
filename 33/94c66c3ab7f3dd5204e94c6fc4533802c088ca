@@ -1,0 +1,40 @@
+src/remark-plugins/remark-directive-gallery/index.js
+  s_f39d80b9dae8e1::t_aa0e482cd65b3f 50-52,86-87
+  s_f39d80b9dae8e1::t_8c88955f81cb77 64
+  s_f39d80b9dae8e1::t_7554e2b3ca161b 10-13,30,54,56-57,59,63,65-72,75
+src/components/GalleryModal.astro
+  s_f39d80b9dae8e1::t_de823fd6197895 23,25
+  s_f39d80b9dae8e1::t_6926f711386de8 54-67
+  s_f39d80b9dae8e1::t_c500dd7b4ac31b 28-33
+  s_f39d80b9dae8e1::t_510ef32753da70 7
+src/components/GalleryWrapper.tsx
+  s_f39d80b9dae8e1::t_bbcba63294a032 95-100,102-114
+  s_f39d80b9dae8e1::t_371323330c80b3 9
+  s_f39d80b9dae8e1::t_a49a2b1529a221 26,29-38
+src/content/blog/2026/2026-06-14-prompt-expansion/index.en.mdx
+  h_f90ee31b03fc41 227,238,240-244,246-248
+src/styles/prose.css
+  s_f39d80b9dae8e1::t_9b9ec6ea84bdb3 329-338
+  s_f39d80b9dae8e1::t_1205feba3dc980 324,354
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "3394c66c3ab7f3dd5204e94c6fc4533802c088ca",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_f39d80b9dae8e1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_110584883ffeHncVZkJHzys858",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}

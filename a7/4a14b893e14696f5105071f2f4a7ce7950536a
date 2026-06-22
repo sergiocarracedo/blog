@@ -1,0 +1,47 @@
+src/content/blog/2026/2026-06-14-prompt-expansion/index.en.mdx
+  s_c1508293edcc5c::t_f6fc576b75b65d 225
+  s_c1508293edcc5c::t_88f79e22fc186d 233,235
+  s_c1508293edcc5c::t_8e1c7e131c4f67 210,212
+  s_c1508293edcc5c::t_13011d4c1ecf59 185
+  s_c1508293edcc5c::t_0b23bec291998e 201
+  s_c1508293edcc5c::t_b35ef147eba90e 240,242
+  s_c1508293edcc5c::t_c95eb75d31cf91 41
+  s_c1508293edcc5c::t_401167bb54a4df 34
+  s_c1508293edcc5c::t_e3f33f1a2342b3 19
+  s_c1508293edcc5c::t_e3360f1e9b837a 31
+  s_c1508293edcc5c::t_8ffd9c11b9cf5c 189-193
+  s_c1508293edcc5c::t_a0d02d59beafc2 197
+  s_c1508293edcc5c::t_5968c79e620335 15,17
+src/styles/prose.css
+  s_f39d80b9dae8e1::t_032270004f59bd 336-337,339
+  s_f39d80b9dae8e1::t_12c800e1142e25 338
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "a74a14b893e14696f5105071f2f4a7ce7950536a",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  },
+  "sessions": {
+    "s_c1508293edcc5c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10efc7d87ffeaU34TUSNGMtfVO",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    },
+    "s_f39d80b9dae8e1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_110584883ffeHncVZkJHzys858",
+        "model": "big-pickle"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
