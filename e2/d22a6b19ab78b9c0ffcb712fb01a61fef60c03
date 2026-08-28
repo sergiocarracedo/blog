@@ -1,0 +1,18 @@
+src/content/blog/2026/2026-07-07-ai-vendor-locking/index.en.mdx
+  h_f90ee31b03fc41 1-13
+.vscode/settings.json
+  h_f90ee31b03fc41 34,39-46
+src/content/blog/2026/2026-06-14-prompt-expansion/index.en.mdx
+  h_f90ee31b03fc41 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "e2d22a6b19ab78b9c0ffcb712fb01a61fef60c03",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
