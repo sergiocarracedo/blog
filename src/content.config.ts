@@ -8,7 +8,7 @@ const blog = defineCollection({
   // with the base post that shares the same `slug` value.
   loader: glob({
     base: './src/content/blog',
-    pattern: '**/*.{md,mdx}',
+    pattern: ['**/*.{md,mdx}', '!assets/**', '!**/assets/**'],
     generateId: ({ entry, base, data }) => {
       // Any file named index.{lang}[.t].mdx gets a path-based ID including the locale suffix
       // to avoid collisions between co-located files sharing the same frontmatter `slug`.

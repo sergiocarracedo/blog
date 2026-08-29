@@ -18,7 +18,6 @@ if (video && basePath) {
 {
   resolvedVideoUrl ? (
     autoplay ? (
-      <!-- Autoplay version for highlighted posts -->
       <div 
         class:list={['media-container-autoplay relative overflow-hidden', noHover && 'no-hover', ...className]}
         style={{ aspectRatio: `${width} / ${height}` }}
@@ -48,7 +47,6 @@ if (video && basePath) {
         </video>
       </div>
     ) : (
-      <!-- Lazy load version for default posts -->
       <div 
         class:list={['media-container relative overflow-hidden', noHover && 'no-hover', ...className]}
         data-video-url={resolvedVideoUrl}
