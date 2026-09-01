@@ -1,0 +1,24 @@
+src/content/blog/2026/2026-08-31-coffee-cost-analysis/index.en.mdx
+  h_f90ee31b03fc41 1-16
+src/content/blog/2026/2026-08-31-coffee-cost-analysis/assets/ats-specialist.md
+  h_f90ee31b03fc41 1-313
+src/content/blog/2026/2026-08-31-coffee-cost-analysis/assets/company-research.md
+  h_f90ee31b03fc41 1-219
+src/content/blog/2026/2026-08-31-coffee-cost-analysis/assets/cv-adversary.md
+  h_f90ee31b03fc41 1-159
+src/content/blog/2026/2026-08-31-coffee-cost-analysis/assets/cv-tailor.md
+  h_f90ee31b03fc41 1-373
+src/content/blog/2026/2026-08-31-coffee-cost-analysis/assets/position-finder.md
+  h_f90ee31b03fc41 1-222
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "5e4913bb57577d82eae7e3920f4bb00001437111",
+  "prompts": {},
+  "humans": {
+    "h_f90ee31b03fc41": {
+      "author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
