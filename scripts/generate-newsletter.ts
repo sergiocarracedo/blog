@@ -297,7 +297,7 @@ export async function generateNewsletterContent(
     );
   }
 
-  const model = google('gemini-2.0-flash');
+  const model = google('gemini-3.6-flash');
   const siteUrl = process.env.SITE_URL || 'https://sergiocarracedo.es';
   const langInstruction =
     locale === 'es' ? 'Write your response in Spanish.' : 'Write your response in English.';
