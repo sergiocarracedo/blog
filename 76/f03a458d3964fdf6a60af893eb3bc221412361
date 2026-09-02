@@ -1,0 +1,19 @@
+.github/workflows/newsletter-send.yml
+  s_330b19e0b2376d::t_687b35912d1723 20,126,129-130
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "76f03a458d3964fdf6a60af893eb3bc221412361",
+  "prompts": {},
+  "sessions": {
+    "s_330b19e0b2376d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_fa3a5725fffeYby2W3hkqKe1aV",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Sergio Carracedo <hi@sergiocarracedo.es>"
+    }
+  }
+}
