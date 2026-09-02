@@ -17,7 +17,7 @@ on:
 
 permissions:
   contents: write
-  actions: read
+  actions: write
   deployments: read
 
 jobs:
@@ -123,10 +123,11 @@ jobs:
             echo "✅ Changes pushed to repository"
           fi
 
-      - name: Wait for deploy workflow to trigger
+      - name: Trigger deploy workflow
         if: steps.push.outputs.pushed == 'true' && github.event.inputs.test_mode != 'true'
         run: |
-          echo "⏳ Waiting for deploy workflow to start..."
+          echo "🚀 Triggering the deploy workflow for the newsletter images..."
+          gh workflow run deploy.yml --ref main
           sleep 30
 
       - name: Wait for deploy workflow to complete
